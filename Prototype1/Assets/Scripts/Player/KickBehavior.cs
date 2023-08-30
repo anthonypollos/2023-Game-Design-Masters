@@ -7,10 +7,10 @@ public class KickBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("touch");
+        //Debug.Log("touch");
         if(other.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("hit");
+            //Debug.Log("hit");
             GetComponentInParent<PlayerAttackManager>().activateKick(other.gameObject);
             //Physics.IgnoreCollision(other.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
         }

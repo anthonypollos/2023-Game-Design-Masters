@@ -29,10 +29,12 @@ public class LassoBehavior : MonoBehaviour
             else if (temp.CompareTag("Enemy"))
             {
                 attached = temp;
+                attached.GetComponent<EnemyBehavior>().Lassoed();
                 Physics.IgnoreCollision(GetComponent<Collider>(), temp.GetComponent<Collider>(), true);
                 gameObject.transform.parent = temp.transform;
                 transform.localPosition = Vector3.zero;
                 gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                
             }
         }
     }

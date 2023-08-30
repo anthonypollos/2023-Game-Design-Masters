@@ -38,15 +38,16 @@ public class PlayerAttackManager : MonoBehaviour
         if(!kicking)
         {
             StartCoroutine(QuickKick());
-            Debug.Log("I kick em!");
+            //Debug.Log("I kick em!");
         }
 
     }
 
     public void activateKick(GameObject enemy)
     {
-        Debug.Log("Apply force");
+        //Debug.Log("Apply force");
         enemy.GetComponent<Rigidbody>().velocity = transform.forward * kickForce + Vector3.up * kickForce/2;
+        enemy.GetComponent<EnemyBehavior>().Kicked();
     }
 
     private void Lasso()
@@ -65,6 +66,7 @@ public class PlayerAttackManager : MonoBehaviour
                 Rigidbody rb = enemy.GetComponent<Rigidbody>();
                 Vector3 dir = ((cam.transform.position + cam.transform.forward * (Vector3.Distance(transform.position, enemy.transform.position) / 2)) - enemy.transform.position).normalized;
                 rb.AddForce(dir * pullForce, ForceMode.Impulse);
+                enemy.GetComponent<EnemyBehavior>().Pulled();
             }
             Destroy(lb.gameObject);
         }
