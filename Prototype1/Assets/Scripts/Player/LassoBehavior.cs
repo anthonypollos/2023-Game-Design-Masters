@@ -33,7 +33,7 @@ public class LassoBehavior : MonoBehaviour
                 Physics.IgnoreCollision(GetComponent<Collider>(), temp.GetComponent<Collider>(), true);
                 gameObject.transform.parent = temp.transform;
                 transform.localPosition = Vector3.zero;
-                gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                gameObject.GetComponent<Rigidbody>().isKinematic = true;
                 
             }
         }

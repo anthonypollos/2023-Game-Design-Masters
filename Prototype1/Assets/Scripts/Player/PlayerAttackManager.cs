@@ -46,9 +46,11 @@ public class PlayerAttackManager : MonoBehaviour
     public void activateKick(GameObject enemy)
     {
         //Debug.Log("Apply force");
-        enemy.GetComponent<Rigidbody>().velocity = transform.forward * kickForce + Vector3.up * kickForce/2;
+        Rigidbody rb = enemy.GetComponent<Rigidbody>();
+        rb.velocity = transform.forward * kickForce + Vector3.up * kickForce/2/rb.mass;
         enemy.GetComponent<EnemyBehavior>().Kicked();
     }
+
 
     private void Lasso()
     {
@@ -65,7 +67,7 @@ public class PlayerAttackManager : MonoBehaviour
             {
                 Rigidbody rb = enemy.GetComponent<Rigidbody>();
                 Vector3 dir = ((cam.transform.position + cam.transform.forward * (Vector3.Distance(transform.position, enemy.transform.position) / 2)) - enemy.transform.position).normalized;
-                rb.AddForce(dir * pullForce, ForceMode.Impulse);
+                rb.velocity = (dir * pullForce / rb.mass);
                 enemy.GetComponent<EnemyBehavior>().Pulled();
             }
             Destroy(lb.gameObject);
