@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class KickBehavior : MonoBehaviour
 {
+
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("touch");
@@ -11,7 +12,7 @@ public class KickBehavior : MonoBehaviour
         {
             Debug.Log("hit");
             GetComponentInParent<PlayerAttackManager>().activateKick(other.gameObject);
-            Physics.IgnoreCollision(other.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
+            //Physics.IgnoreCollision(other.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
         }
     }
 }

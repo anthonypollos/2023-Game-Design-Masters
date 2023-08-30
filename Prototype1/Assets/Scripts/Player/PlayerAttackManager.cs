@@ -10,6 +10,8 @@ public class PlayerAttackManager : MonoBehaviour
     Camera cam;
     MainControls mc;
     [SerializeField] GameObject lasso;
+    bool kicking;
+    GameObject kick;
 
     private void Awake()
     {
@@ -19,6 +21,8 @@ public class PlayerAttackManager : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
+        kicking = false;
+        kick = cam.transform.GetChild(0).gameObject;
     }
 
     private void OnEnable()
@@ -31,14 +35,18 @@ public class PlayerAttackManager : MonoBehaviour
 
     private void Kick()
     {
-        Debug.Log("I kick em!");
-        GameObject kick = cam.transform.GetChild(0).gameObject;
-        StartCoroutine(QuickKick(kick));
+        if(!kicking)
+        {
+            StartCoroutine(QuickKick());
+            Debug.Log("I kick em!");
+        }
+
     }
 
     public void activateKick(GameObject enemy)
     {
-        enemy.GetComponent<Rigidbody>().velocity = cam.transform.forward * kickForce;
+        Debug.Log("Apply force");
+        enemy.GetComponent<Rigidbody>().velocity = transform.forward * kickForce + Vector3.up * kickForce/2;
     }
 
     private void Lasso()
@@ -62,11 +70,13 @@ public class PlayerAttackManager : MonoBehaviour
         }
     }
 
-    IEnumerator QuickKick(GameObject kick)
+    IEnumerator QuickKick()
     {
+        kicking = true;
         kick.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         kick.SetActive(false);
+        kicking = false;
     }
 
 
