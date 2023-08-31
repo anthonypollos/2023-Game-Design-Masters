@@ -63,12 +63,21 @@ public class PlayerAttackManager : MonoBehaviour
         else
         {
             GameObject enemy = lb.getAttachment();
-            if(enemy != null)
+            if(enemy != null && enemy.GetComponent<Rigidbody>()!=null)
             {
                 Rigidbody rb = enemy.GetComponent<Rigidbody>();
-                Vector3 dir = ((cam.transform.position + cam.transform.forward * (Vector3.Distance(transform.position, enemy.transform.position) / 2)) - enemy.transform.position).normalized;
+                Vector3 dir = ((cam.transform.position + cam.transform.forward * (Vector3.Distance(transform.position, enemy.transform.position) / 1.5f)) - enemy.transform.position).normalized;
                 rb.velocity = (dir * pullForce / rb.mass);
                 enemy.GetComponent<EnemyBehavior>().Pulled();
+            }
+            else
+            {
+                IPullable pl = enemy.GetComponent<IPullable>();
+                if(pl != null)
+                {
+                    pl.Pull();
+                }
+                //Activate pull effect
             }
             Destroy(lb.gameObject);
         }
