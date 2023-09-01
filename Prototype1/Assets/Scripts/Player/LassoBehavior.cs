@@ -7,13 +7,15 @@ public class LassoBehavior : MonoBehaviour
     [SerializeField] float maxDistance;
     private GameObject attached;
     private bool grounded;
-    Vector3 startingPos;
+    public Vector3 startingPos;
+    public Quaternion startingRot;
     // Start is called before the first frame update
     private void Start()
     {
         grounded = false;
         attached = null;
         startingPos = transform.position;
+        startingRot = transform.rotation;
     }
     private void OnCollisionEnter(Collision collision)
     {
