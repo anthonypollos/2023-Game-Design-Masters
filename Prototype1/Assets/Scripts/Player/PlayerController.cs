@@ -104,5 +104,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public Vector3 GetMovement()
+    {
+        return movement;
+    }
+
 }
 

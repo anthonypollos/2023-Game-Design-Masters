@@ -10,8 +10,10 @@ public class PlayerAttackManager : MonoBehaviour
     Camera cam;
     MainControls mc;
     [SerializeField] GameObject lasso;
+    [SerializeField] [Tooltip("Toggle lasso pull mechanic")] bool toggleLasso;
     bool kicking;
     GameObject kick;
+    PlayerController pc;
 
     private void Awake()
     {
@@ -22,7 +24,9 @@ public class PlayerAttackManager : MonoBehaviour
     {
         cam = Camera.main;
         kicking = false;
-        kick = cam.transform.GetChild(0).gameObject;
+        kick = transform.Find("KickHitbox").gameObject;
+        kick.SetActive(false);
+        pc = GetComponentInParent<PlayerController>();
     }
 
     private void OnEnable()
@@ -68,8 +72,47 @@ public class PlayerAttackManager : MonoBehaviour
                 if (enemy.GetComponent<Rigidbody>() != null)
                 {
                     Rigidbody rb = enemy.GetComponent<Rigidbody>();
-                    Vector3 dir = ((cam.transform.position + cam.transform.forward * (Vector3.Distance(transform.position, enemy.transform.position) / 1.5f)) - enemy.transform.position).normalized;
-                    rb.velocity = (dir * pullForce / rb.mass);
+                    if (!toggleLasso)
+                    { //old pull code
+                        Vector3 dir = ((cam.transform.position + cam.transform.forward * (Vector3.Distance(transform.position, enemy.transform.position) / 1.5f)) - enemy.transform.position).normalized;
+                        rb.velocity = (dir * pullForce / rb.mass);
+                        
+                    }
+                    else
+                    { //new pull code
+                        Vector3 temp = pc.GetMovement();
+                        float pullModifier;
+                        if(temp.z == 0)
+                        {
+                            pullModifier = 1f;
+                        }
+                        else if(temp.z<0)
+                        {
+                            pullModifier = 1.25f;
+                        }
+                        else
+                        {
+                            pullModifier = .5f;
+                        }
+                        float aPullForce = pullForce * pullModifier;
+
+                        Vector3 targetPos;
+                        if (temp.x == 0)
+                        {
+                            targetPos = gameObject.transform.position;
+                        }
+                        else if (temp.x < 0)
+                        {
+                            targetPos = gameObject.transform.position + cam.transform.right * -4;
+                        }
+                        else
+                        {
+                            targetPos = gameObject.transform.position + cam.transform.right * 4;
+                        }
+
+                        Vector3 dir = (targetPos - enemy.transform.position).normalized;
+                        rb.velocity = new Vector3(dir.x, 0, dir.z) * aPullForce + Vector3.up/5 * pullForce;
+                    }
                     enemy.GetComponent<EnemyBehavior>().Pulled();
                 }
                 else
