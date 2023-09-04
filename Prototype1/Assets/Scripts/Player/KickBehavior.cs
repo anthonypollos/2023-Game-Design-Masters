@@ -8,7 +8,7 @@ public class KickBehavior : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //Debug.Log("touch");
-        if(other.gameObject.CompareTag("Enemy"))
+        if(other.gameObject.GetComponent<IKickable>()!=null)
         {
             //Debug.Log("hit");
             GetComponentInParent<PlayerAttackManager>().activateKick(other.gameObject);

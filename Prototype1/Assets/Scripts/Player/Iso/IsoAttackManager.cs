@@ -60,25 +60,17 @@ public class IsoAttackManager : MonoBehaviour
         }
         else
         {
-            GameObject enemy = lb.getAttachment();
-            if (enemy != null)
+            GameObject target = lb.getAttachment();
+            if (target != null)
             {
-                if (enemy.GetComponent<Rigidbody>() != null)
+                if (target.GetComponent<Rigidbody>() != null)
                 {
-                    Rigidbody rb = enemy.GetComponent<Rigidbody>();
-                    Vector3 dir = ((cam.transform.position + cam.transform.forward * (Vector3.Distance(transform.position, enemy.transform.position) / 1.5f)) - enemy.transform.position).normalized;
+                    Rigidbody rb = target.GetComponent<Rigidbody>();
+                    Vector3 dir = ((cam.transform.position + cam.transform.forward * (Vector3.Distance(transform.position, target.transform.position) / 1.5f)) - target.transform.position).normalized;
                     rb.velocity = (dir * pullForce / rb.mass);
-                    enemy.GetComponent<EnemyBehavior>().Pulled();
+                    target.GetComponent<IPullable>().Pulled();
                 }
-                else
-                {
-                    IPullable pl = enemy.GetComponent<IPullable>();
-                    if (pl != null)
-                    {
-                        pl.Pull();
-                    }
-                    //Activate pull effect
-                }
+                target.GetComponent<IPullable>().Pulled();
             }
             Destroy(lb.gameObject);
         }

@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable, IKickable
 {
     [SerializeField] [Tooltip("Movement speed of the player")] float movespeed;
     [SerializeField] [Tooltip("Vertical speed of your jump")] float jumpHeight;
     [SerializeField] [Tooltip("Mouse sensitivity")] float mouseSens;
     bool canJump;
-    bool crouched;
+    //bool crouched;
     Rigidbody rb;
     GameObject cam;
     MainControls mc;
+    bool stunned;
 
     Vector3 movement;
     Vector2 mouseInput;
@@ -24,8 +25,9 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        stunned = false;
         canJump = true;
-        crouched = false;
+        //crouched = false;
         rb = GetComponent<Rigidbody>();
         cam = transform.GetChild(0).gameObject;
         cam.transform.localRotation = Quaternion.identity;
@@ -52,7 +54,10 @@ public class PlayerController : MonoBehaviour
     }
     void FixedUpdate()
     {
-        Move(movement);
+        if (!stunned)
+        {
+            Move(movement);
+        }
     }
 
     private void Move(Vector3 temp)
@@ -63,7 +68,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if(canJump)
+        if(canJump && !stunned)
         {
             rb.velocity = new Vector3(rb.velocity.x, jumpHeight, rb.velocity.z);
             canJump = false;
@@ -94,6 +99,10 @@ public class PlayerController : MonoBehaviour
         {
             canJump = true;
         }
+        if(stunned)
+        {
+            stunned = false;
+        }
     }
 
     private void OnCollisionExit(Collision collision)
@@ -107,6 +116,23 @@ public class PlayerController : MonoBehaviour
     public Vector3 GetMovement()
     {
         return movement;
+    }
+
+    public void Kicked()
+    {
+        Stunned();
+    }
+
+
+    private void Stunned()
+    {
+        stunned = true;
+        
+    }
+
+    public void TakeDamage(int dmg)
+    {
+
     }
 
 }

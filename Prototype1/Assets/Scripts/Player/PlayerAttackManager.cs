@@ -47,12 +47,12 @@ public class PlayerAttackManager : MonoBehaviour
 
     }
 
-    public void activateKick(GameObject enemy)
+    public void activateKick(GameObject target)
     {
         //Debug.Log("Apply force");
-        Rigidbody rb = enemy.GetComponent<Rigidbody>();
+        Rigidbody rb = target.GetComponent<Rigidbody>();
         rb.velocity = transform.forward * kickForce + Vector3.up * kickForce/2/rb.mass;
-        enemy.GetComponent<EnemyBehavior>().Kicked();
+        target.GetComponent<IKickable>().Kicked();
     }
 
 
@@ -66,15 +66,15 @@ public class PlayerAttackManager : MonoBehaviour
         }
         else
         {
-            GameObject enemy = lb.getAttachment();
-            if (enemy != null)
+            GameObject target = lb.getAttachment();
+            if (target != null)
             {
-                if (enemy.GetComponent<Rigidbody>() != null)
+                if (target.GetComponent<Rigidbody>() != null)
                 {
-                    Rigidbody rb = enemy.GetComponent<Rigidbody>();
+                    Rigidbody rb = target.GetComponent<Rigidbody>();
                     if (!toggleLasso)
                     { //old pull code
-                        Vector3 dir = ((cam.transform.position + cam.transform.forward * (Vector3.Distance(transform.position, enemy.transform.position) / 1.5f)) - enemy.transform.position).normalized;
+                        Vector3 dir = ((cam.transform.position + cam.transform.forward * (Vector3.Distance(transform.position, target.transform.position) / 1.5f)) - target.transform.position).normalized;
                         rb.velocity = (dir * pullForce / rb.mass);
                         
                     }
@@ -110,20 +110,13 @@ public class PlayerAttackManager : MonoBehaviour
                             targetPos = gameObject.transform.position + cam.transform.right * 4;
                         }
 
-                        Vector3 dir = (targetPos - enemy.transform.position).normalized;
+                        Vector3 dir = (targetPos - target.transform.position).normalized;
                         rb.velocity = new Vector3(dir.x, 0, dir.z) * aPullForce + Vector3.up/5 * pullForce;
                     }
-                    enemy.GetComponent<EnemyBehavior>().Pulled();
+                    
+
                 }
-                else
-                {
-                    IPullable pl = enemy.GetComponent<IPullable>();
-                    if (pl != null)
-                    {
-                        pl.Pull();
-                    }
-                    //Activate pull effect
-                }
+                target.GetComponent<IPullable>().Pulled();
             }
             Destroy(lb.gameObject);
         }

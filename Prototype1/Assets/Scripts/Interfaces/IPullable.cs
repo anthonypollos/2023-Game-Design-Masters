@@ -4,5 +4,6 @@ using UnityEngine;
 
 public interface IPullable
 {
-    public void Pull();
+    public void Pulled();
+    public void Lassoed();
 }

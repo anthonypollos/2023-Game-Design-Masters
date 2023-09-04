@@ -28,19 +28,10 @@ public class LassoBehavior : MonoBehaviour
                 gameObject.GetComponent<Rigidbody>().useGravity = true;
                 gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             }
-            else if (temp.CompareTag("Enemy"))
+            else if (temp.GetComponent<IPullable>() != null)
             {
                 attached = temp;
-                attached.GetComponent<EnemyBehavior>().Lassoed();
-                Physics.IgnoreCollision(GetComponent<Collider>(), temp.GetComponent<Collider>(), true);
-                gameObject.transform.parent = temp.transform;
-                transform.localPosition = Vector3.zero;
-                gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                
-            }
-            else if (temp.GetComponent<IPullable>()!=null)
-            {
-                attached = temp;
+                attached.GetComponent<IPullable>().Lassoed();
                 Physics.IgnoreCollision(GetComponent<Collider>(), temp.GetComponent<Collider>(), true);
                 gameObject.transform.parent = temp.transform;
                 transform.localPosition = Vector3.zero;
