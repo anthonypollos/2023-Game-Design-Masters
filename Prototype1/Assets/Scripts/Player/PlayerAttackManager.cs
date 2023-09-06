@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttackManager : MonoBehaviour
+public class PlayerAttackManager : MonoBehaviour, ICanKick
 {
     [SerializeField] [Tooltip("The speed of the lasso")] float lassoSpeed;
     [SerializeField] [Tooltip("The force of the pull")] float pullForce;
@@ -37,6 +37,11 @@ public class PlayerAttackManager : MonoBehaviour
         
     }
 
+    private void OnDisable()
+    {
+        mc.Disable();
+    }
+
     private void Kick()
     {
         if(!kicking)
@@ -47,7 +52,7 @@ public class PlayerAttackManager : MonoBehaviour
 
     }
 
-    public void activateKick(GameObject target)
+    public void ActivateKick(GameObject target)
     {
         //Debug.Log("Apply force");
         Rigidbody rb = target.GetComponent<Rigidbody>();

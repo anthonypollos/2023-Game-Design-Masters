@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    MenuControls mc;
+    private void OnEnable()
     {
-        
+        mc = new MenuControls();
+        mc.Main.Enable();
+        mc.Main.Menu.performed += _ => SceneManager.LoadScene("MainMenu");
+        mc.Main.Restart.performed += _ => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        mc.Disable();
     }
 }

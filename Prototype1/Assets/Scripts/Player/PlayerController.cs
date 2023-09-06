@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour, IDamageable, IKickable
     [SerializeField] [Tooltip("Movement speed of the player")] float movespeed;
     [SerializeField] [Tooltip("Vertical speed of your jump")] float jumpHeight;
     [SerializeField] [Tooltip("Mouse sensitivity")] float mouseSens;
+    //[SerializeField] bool isFirstPerson = true;
     bool canJump;
     //bool crouched;
     Rigidbody rb;

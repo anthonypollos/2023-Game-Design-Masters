@@ -12,6 +12,7 @@ public class IsoCamera : MonoBehaviour
     void Start()
     {
         _offset = transform.position - _player.position;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     // Update is called once per frame

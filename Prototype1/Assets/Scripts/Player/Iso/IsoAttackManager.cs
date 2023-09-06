@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IsoAttackManager : MonoBehaviour
+public class IsoAttackManager : MonoBehaviour, ICanKick
 {
     [SerializeField][Tooltip("The speed of the lasso")] float lassoSpeed;
     [SerializeField][Tooltip("The force of the pull")] float pullForce;
-    //[SerializeField][Tooltip("The force of the kick")] float kickForce;
+    [SerializeField][Tooltip("The force of the kick")] float kickForce;
     [SerializeField] GameObject lasso;
-    Camera cam;
+    //Camera cam;
     MainControls mc;
-    //bool kicking;
-    //GameObject kick;
+    bool kicking;
+    GameObject kick;
+    IsoPlayerController pc;
+
+
 
     private void Awake()
     {
@@ -21,42 +24,52 @@ public class IsoAttackManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cam = Camera.main;
-        //kicking = false;
-        //kick = cam.transform.GetChild(0).gameObject;
+        kicking = false;
+        kick = transform.Find("KickHitbox").gameObject;
+        kick.SetActive(false);
+        pc = GetComponentInParent<IsoPlayerController>();
     }
 
     private void OnEnable()
     {
         mc.Enable();
-        //mc.Main.Primary.performed += _ => Kick();
+        mc.Main.Primary.performed += _ => Kick();
         mc.Main.Secondary.performed += _ => Lasso();
+    }
+
+    private void OnDisable()
+    {
+        mc.Disable();
+    }
+
+    private void Kick()
+    {
+        if (!kicking)
+        {
+            StartCoroutine(QuickKick());
+            //Debug.Log("I kick em!");
+        }
+
+    }
+
+    public void ActivateKick(GameObject target)
+    {
+        //Debug.Log("Apply force");
+        Rigidbody rb = target.GetComponent<Rigidbody>();
+        rb.velocity = transform.forward * kickForce + Vector3.up * kickForce / 2 / rb.mass;
+        target.GetComponent<IKickable>().Kicked();
     }
 
     private void Lasso()
     {
         LassoBehavior lb = FindObjectOfType<LassoBehavior>();
 
-        if (lb != null)
+        if (lb == null)
         {
-            Ray raycast = cam.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(raycast, out RaycastHit hitInfo))
-            {
-                Vector3 hypotenuseLine = (raycast.origin = hitInfo.point).normalized;
-
-                float angle = Vector3.Angle(hypotenuseLine, new Vector3(hypotenuseLine.x, 0, hypotenuseLine.z));
-                float opposite = lb.startingPos.y - hitInfo.point.y;
-
-                float hypotenuseLength = opposite / Mathf.Sin(angle * Mathf.Deg2Rad);
-
-                Vector3 hitPosition = hitInfo.point + (hypotenuseLine * hypotenuseLength);
-                Vector3 hitDirection = hitPosition - lb.startingPos;
-
-                GameObject temp = Instantiate(lasso, lb.startingPos, lb.startingRot);
-                temp.GetComponent<Rigidbody>().velocity = cam.transform.forward * lassoSpeed;
-                raycast.direction = hitDirection.normalized;
-            }
+            
+            GameObject temp = Instantiate(lasso, transform.position, Quaternion.identity);
+            temp.GetComponent<Rigidbody>().velocity = transform.forward * lassoSpeed;
+            
         }
         else
         {
@@ -66,14 +79,24 @@ public class IsoAttackManager : MonoBehaviour
                 if (target.GetComponent<Rigidbody>() != null)
                 {
                     Rigidbody rb = target.GetComponent<Rigidbody>();
-                    Vector3 dir = ((cam.transform.position + cam.transform.forward * (Vector3.Distance(transform.position, target.transform.position) / 1.5f)) - target.transform.position).normalized;
-                    rb.velocity = (dir * pullForce / rb.mass);
-                    target.GetComponent<IPullable>().Pulled();
+                    Vector3 dir = ((transform.position + transform.forward * (Vector3.Distance(transform.position, target.transform.position) / 1.5f)) - target.transform.position).normalized;
+                    dir.y = 0;
+                    rb.velocity = (dir * pullForce / rb.mass) + Vector3.up/5*pullForce;
+                    //target.GetComponent<IPullable>().Pulled();
                 }
                 target.GetComponent<IPullable>().Pulled();
             }
             Destroy(lb.gameObject);
         }
 
+    }
+
+    IEnumerator QuickKick()
+    {
+        kicking = true;
+        kick.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        kick.SetActive(false);
+        kicking = false;
     }
 }
