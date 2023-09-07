@@ -26,8 +26,6 @@ public class ExplosionBehavior : MonoBehaviour
         {
             IDamageable damaged = entity.GetComponent<IDamageable>();
             if (damaged != null) damaged.TakeDamage(dmg);
-            IKickable kicked = entity.GetComponent<IKickable>();
-            if (kicked != null) kicked.Kicked();
             Rigidbody rb = entity.GetComponent<Rigidbody>();
             if (rb != null)
             {
@@ -37,6 +35,8 @@ public class ExplosionBehavior : MonoBehaviour
                 rb.velocity = (dir.normalized + Vector3.up / 5) * explosiveForce;
 
             }
+            IKickable kicked = entity.GetComponent<IKickable>();
+            if (kicked != null) kicked.Kicked();
         }
     }
 

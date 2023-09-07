@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour, IDamageable, IKickable
     GameObject cam;
     MainControls mc;
     bool stunned;
+    float stundelay = .2f;
+    bool canUnstun;
+    
 
     Vector3 movement;
     Vector2 mouseInput;
@@ -26,6 +29,7 @@ public class PlayerController : MonoBehaviour, IDamageable, IKickable
     // Start is called before the first frame update
     void Start()
     {
+        canUnstun = false;
         stunned = false;
         canJump = true;
         //crouched = false;
@@ -98,12 +102,13 @@ public class PlayerController : MonoBehaviour, IDamageable, IKickable
     {
         if(collision.gameObject.CompareTag("Ground"))
         {
-            canJump = true;
-        }
-        if(stunned)
-        {
+            canJump = true; 
+            if(stunned)
+            {
             stunned = false;
+            }
         }
+       
     }
 
     private void OnCollisionExit(Collision collision)
@@ -127,8 +132,16 @@ public class PlayerController : MonoBehaviour, IDamageable, IKickable
 
     private void Stunned()
     {
+        canUnstun = false;
         stunned = true;
-        
+        StartCoroutine(UnStunDelay());
+
+    }
+
+    IEnumerator UnStunDelay()
+    {
+        yield return new WaitForSeconds(stundelay);
+        canUnstun = true;
     }
 
     public void TakeDamage(int dmg)

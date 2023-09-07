@@ -12,12 +12,13 @@ public class IsoPlayerController : MonoBehaviour, IKickable, IDamageable
     MainControls mc;
     [SerializeField] LayerMask groundMask;
     bool stunned;
-
+    float stundelay = .2f;
+    bool canUnstun;
     private void Start()
     {
         cam = Camera.main;
         stunned = false;
-       
+        canUnstun = false;
     }
 
     private void Awake()
@@ -39,13 +40,17 @@ public class IsoPlayerController : MonoBehaviour, IKickable, IDamageable
             Move();
     }
 
-    private void OnCollisionStay (Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
-        if(stunned)
+        if (collision.gameObject.CompareTag("Ground"))
         {
-            if (collision.transform.CompareTag("Ground"))
+            
+            if (stunned && canUnstun)
+            {
                 stunned = false;
+            }
         }
+
     }
 
     private void GatherInput()
@@ -94,12 +99,28 @@ public class IsoPlayerController : MonoBehaviour, IKickable, IDamageable
 
     public void Kicked()
     {
+        Stunned();
+    }
+
+
+    private void Stunned()
+    {
+        Debug.Log("stunned");
+        canUnstun = false;
         stunned = true;
+        StartCoroutine(UnStunDelay());
+
+    }
+
+    IEnumerator UnStunDelay()
+    {
+        yield return new WaitForSeconds(stundelay);
+        canUnstun = true;
     }
 
     public void TakeDamage(int dmg)
     {
-        throw new System.NotImplementedException();
+        return;    
     }
 
 
