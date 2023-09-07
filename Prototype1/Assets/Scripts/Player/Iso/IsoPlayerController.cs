@@ -2,22 +2,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IsoPlayerController : MonoBehaviour
+public class IsoPlayerController : MonoBehaviour, IKickable, IDamageable
 {
     [SerializeField] [Tooltip("The rigidbody used for movement")] private Rigidbody _rb;
     [SerializeField] [Tooltip("The player's movement speed")] private float _speed = 5;
     [SerializeField][Tooltip("The player's turn speed")] private float _turnSpeed = 360;
     private Vector3 _input;
+    private Camera cam;
+    MainControls mc;
+    [SerializeField] LayerMask groundMask;
+    bool stunned;
+    float stundelay = .2f;
+    bool canUnstun;
+    private void Start()
+    {
+        cam = Camera.main;
+        stunned = false;
+        canUnstun = false;
+    }
+
+    private void Awake()
+    {
+        mc = new MainControls();
+        mc.Enable();
+        mc.Main.Move.performed += ctx => _input = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
+        mc.Main.Move.canceled += _ => _input = Vector3.zero;
+    }
 
     private void Update()
     {
-        GatherInput();
         Look();
     }
 
     private void FixedUpdate()
     {
-        Move();
+        if(!stunned)
+            Move();
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            
+            if (stunned && canUnstun)
+            {
+                stunned = false;
+            }
+        }
+
     }
 
     private void GatherInput()
@@ -28,16 +61,69 @@ public class IsoPlayerController : MonoBehaviour
   // The character rotates to move in the direction of the player's input
     private void Look()
     {
-        if (_input == Vector3.zero) return;
+        //if (_input == Vector3.zero) return;
 
-        var rot = Quaternion.LookRotation(_input.ToIso(), Vector3.up);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, rot, _turnSpeed * Time.deltaTime);
+        //var rot = Quaternion.LookRotation(_input.ToIso(), Vector3.up);
+        //transform.rotation = Quaternion.RotateTowards(transform.rotation, rot, _turnSpeed * Time.deltaTime);
+
+        var (success, position) = GetMousePosition();
+        if(success)
+        {
+            var direction = position - transform.position;
+
+            direction.y = 0;
+            transform.forward = direction;
+        }
+    }
+
+    private (bool success, Vector3 position) GetMousePosition()
+    {
+        var ray = cam.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
+        {
+            return (success: true, position: hitInfo.point);
+
+        }
+        else
+        {
+            return (success: false, position: Vector3.zero);
+        }
     }
     
     private void Move()
     {
-        _rb.MovePosition(transform.position + transform.forward * _input.normalized.magnitude * _speed * Time.deltaTime);
+
+        _rb.velocity = _input.ToIso().normalized * _speed;
     }
+
+    public void Kicked()
+    {
+        Stunned();
+    }
+
+
+    private void Stunned()
+    {
+        Debug.Log("stunned");
+        canUnstun = false;
+        stunned = true;
+        StartCoroutine(UnStunDelay());
+
+    }
+
+    IEnumerator UnStunDelay()
+    {
+        yield return new WaitForSeconds(stundelay);
+        canUnstun = true;
+    }
+
+    public void TakeDamage(int dmg)
+    {
+        return;    
+    }
+
+
 }
 
 // Automatically adjusts the player's movement to match the camera's rotation

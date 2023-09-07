@@ -11,7 +11,7 @@ public class KickBehavior : MonoBehaviour
         if(other.gameObject.GetComponent<IKickable>()!=null)
         {
             //Debug.Log("hit");
-            GetComponentInParent<PlayerAttackManager>().activateKick(other.gameObject);
+            GetComponentInParent<ICanKick>().ActivateKick(other.gameObject);
             //Physics.IgnoreCollision(other.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
         }
     }
