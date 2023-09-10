@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IDamageable, IKickable
+public class PlayerController : MonoBehaviour, IKickable
 {
     [SerializeField] [Tooltip("Movement speed of the player")] float movespeed;
     [SerializeField] [Tooltip("Vertical speed of your jump")] float jumpHeight;
@@ -144,10 +144,6 @@ public class PlayerController : MonoBehaviour, IDamageable, IKickable
         canUnstun = true;
     }
 
-    public void TakeDamage(int dmg)
-    {
-
-    }
 
 }
 

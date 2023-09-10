@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IDamageable
+public class EnemyBehavior : MonoBehaviour, IPullable, IKickable
 {
     [SerializeField] Material[] materials;
     //Material debugStartingMaterial;
@@ -30,16 +30,23 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IDamageable
     private bool inRange;
     #endregion movementVariables
     #region combatVariables
+    private EnemyHealth eh;
     private bool lockedOn;
     private bool canShoot;
     private Rigidbody rb;
     bool moved;
+    bool knockBackDMG;
     private bool stunned;
-    [SerializeField] LayerMask layerMask;
+    private List<GameObject> collided;
+    [SerializeField] LayerMask layerMask1;
+    [SerializeField] LayerMask layerMask2;
     #endregion combatVariables
     // Start is called before the first frame update
     void Start()
     {
+        knockBackDMG = false;
+        collided = new List<GameObject>();
+        eh = GetComponent<EnemyHealth>();
         count = 1;
         corner = 0;
         mr = GetComponent<MeshRenderer>();
@@ -66,7 +73,15 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IDamageable
             count = 0;
             if(!NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path))
             {
-                //Debug.Log("Calculate Path failed");
+                //Debug.Log("calculate path failed");
+                RandomPoint(out targetPosition);
+            }
+            else
+            {
+                if(path.status != NavMeshPathStatus.PathComplete)
+                {
+                    RandomPoint(out targetPosition);
+                }
             }
         }
         if (!stunned)
@@ -112,7 +127,7 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IDamageable
             //Debug.Log("hunt");
             targetPosition = player.position;
             //Debug.Log(Vector3.Distance(player.position, transform.position) + " + " + CanSee());
-            if(Vector3.Distance(player.position, transform.position)<enemyDistance && CanSee())
+            if(Vector3.Distance(player.position, transform.position)<enemyDistance && CanSeePlayer())
             {
                 transform.LookAt(player.position);
                 rb.velocity = Vector3.zero;
@@ -123,7 +138,7 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IDamageable
             {
                 inRange = false;
             }
-            if (canShoot && Vector3.Distance(player.position, transform.position) < (enemyDistance + rangeBuffer) && CanSee())
+            if (canShoot && Vector3.Distance(player.position, transform.position) < (enemyDistance + rangeBuffer) && CanSeePlayer())
             {
                 transform.LookAt(player.position);
                 StartCoroutine(Shoot());
@@ -175,14 +190,35 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IDamageable
         return false;
     }
 
-    private bool CanSee()
+    private bool CanSeePlayer()
     {
         RaycastHit hit;
         //Debug.DrawRay(transform.position, player.position - transform.position, Color.red);
-        if(Physics.Raycast(transform.position, player.position-transform.position, out hit, Mathf.Infinity, layerMask))
+        if(Physics.Raycast(transform.position, player.position-transform.position, out hit, Mathf.Infinity, layerMask1))
         {
             //Debug.Log(hit.transform.name);
             if(hit.transform.gameObject.CompareTag("Player"))
+            {
+                return true;
+            }
+            else
+            {
+                //Debug.Log(hit.transform.name);
+                return false;
+            }
+        }
+        //Debug.Log("no hit");
+        return false;
+    }
+    
+    private bool CanSee(GameObject target)
+    {
+        RaycastHit hit;
+        //Debug.DrawRay(transform.position, player.position - transform.position, Color.red);
+        if (Physics.Raycast(transform.position, target.transform.position - transform.position, out hit, Mathf.Infinity, layerMask2))
+        {
+            //Debug.Log(hit.transform.name);
+            if (hit.transform.gameObject == target)
             {
                 return true;
             }
@@ -213,8 +249,10 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IDamageable
         foreach (EnemyBehavior enemy in GameObject.FindObjectsByType<EnemyBehavior>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
         {
             //insert code to have a distance modifier if wanted (enemies would be "inactive" if in another room)
-            enemy.PackAggro();
+            if(CanSee(enemy.gameObject))
+                enemy.PackAggro();
         }
+        PackAggro();
     }
 
     public void PackAggro()
@@ -244,6 +282,21 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IDamageable
         //Insert kicked animation here
     }
 
+    public void Stagger()
+    {
+        StopCoroutine(Staggered());
+        StartCoroutine(Staggered());
+    }
+
+    private IEnumerator Staggered()
+    {
+        Stunned();
+        yield return new WaitForSeconds(0.5f);
+        if(!moved)
+            UnStunned();
+
+    }
+
 
     private void Stunned()
     {
@@ -271,7 +324,9 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IDamageable
     {
         Stunned();
         yield return new WaitForSeconds(0.1f);
+        collided.Clear();
         moved = true;
+        knockBackDMG = true;
     }
 
     private void OnCollisionStay(Collision collision)
@@ -281,14 +336,48 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IDamageable
         {
             //Debug.Log("Unstun");
             moved = false;
+            knockBackDMG = false;
             UnStunned();
         }
     }
 
-    public void TakeDamage(int dmg)
+    private void OnCollisionEnter(Collision collision)
     {
-
+        if(moved && !collision.gameObject.CompareTag("Player"))
+        {
+            GameObject hit = collision.gameObject;
+            if (!collided.Contains(hit))
+            {
+                collided.Add(hit);
+                if (hit.CompareTag("Wall"))
+                    if (knockBackDMG) {
+                        eh.TakeDamage(5);
+                        knockBackDMG = false;
+                    }
+                IDamageable temp = hit.GetComponent<IDamageable>();
+                if (temp != null)
+                {
+                    if (knockBackDMG)
+                    {
+                        eh.TakeDamage(5);
+                        knockBackDMG = false;
+                    }
+                    temp.TakeDamage(5);
+                }
+                ITrap temp2 = hit.GetComponent<ITrap>();
+                if(temp2 != null)
+                {
+                    if (knockBackDMG)
+                    {
+                        eh.TakeDamage(5);
+                        knockBackDMG = false;
+                    }
+                    temp2.ActivateTrap(gameObject);
+                }
+            }
+        }
     }
+
 
     #endregion combat
 

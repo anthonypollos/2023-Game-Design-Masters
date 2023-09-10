@@ -22,7 +22,7 @@ public class LassoBehavior : MonoBehaviour
         GameObject temp = collision.gameObject;
         if (attached == null && !grounded)
         {
-            if (temp.CompareTag("Ground"))
+            if (temp.CompareTag("Ground") || temp.CompareTag("Wall"))
             {
                 grounded = true;
                 gameObject.GetComponent<Rigidbody>().useGravity = true;
@@ -31,7 +31,24 @@ public class LassoBehavior : MonoBehaviour
             else if (temp.GetComponent<IPullable>() != null)
             {
                 attached = temp;
-                attached.GetComponent<IPullable>().Lassoed();
+                attached.GetComponentInParent<IPullable>().Lassoed();
+                Physics.IgnoreCollision(GetComponent<Collider>(), temp.GetComponent<Collider>(), true);
+                gameObject.transform.parent = temp.transform;
+                transform.localPosition = Vector3.zero;
+                gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        GameObject temp = other.gameObject;
+        if(attached == null && !grounded)
+        {
+            if(temp.GetComponent<IPullable>() != null)
+            {
+                attached = temp;
+                attached.GetComponentInParent<IPullable>().Lassoed();
                 Physics.IgnoreCollision(GetComponent<Collider>(), temp.GetComponent<Collider>(), true);
                 gameObject.transform.parent = temp.transform;
                 transform.localPosition = Vector3.zero;

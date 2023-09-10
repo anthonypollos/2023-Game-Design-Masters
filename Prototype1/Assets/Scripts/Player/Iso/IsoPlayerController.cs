@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IsoPlayerController : MonoBehaviour, IKickable, IDamageable
+public class IsoPlayerController : MonoBehaviour, IKickable
 {
     [SerializeField] [Tooltip("The rigidbody used for movement")] private Rigidbody _rb;
     [SerializeField] [Tooltip("The player's movement speed")] private float _speed = 5;
@@ -118,10 +118,6 @@ public class IsoPlayerController : MonoBehaviour, IKickable, IDamageable
         canUnstun = true;
     }
 
-    public void TakeDamage(int dmg)
-    {
-        return;    
-    }
 
 
 }

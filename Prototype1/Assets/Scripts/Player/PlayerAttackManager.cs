@@ -76,7 +76,7 @@ public class PlayerAttackManager : MonoBehaviour, ICanKick
             {
                 if (target.GetComponent<Rigidbody>() != null)
                 {
-                    Rigidbody rb = target.GetComponent<Rigidbody>();
+                    Rigidbody rb = target.GetComponentInParent<Rigidbody>();
                     if (!toggleLasso)
                     { //old pull code
                         Vector3 dir = ((cam.transform.position + cam.transform.forward * (Vector3.Distance(transform.position, target.transform.position) / 1.5f)) - target.transform.position).normalized;
@@ -121,7 +121,7 @@ public class PlayerAttackManager : MonoBehaviour, ICanKick
                     
 
                 }
-                target.GetComponent<IPullable>().Pulled();
+                target.GetComponentInParent<IPullable>().Pulled();
             }
             Destroy(lb.gameObject);
         }

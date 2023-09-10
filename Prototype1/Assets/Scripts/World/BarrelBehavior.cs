@@ -6,6 +6,7 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
 {
     bool primed;
     [SerializeField] GameObject explosion;
+    [SerializeField] float fuse = 5f;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,9 +30,14 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
 
     public void TakeDamage(int dmg)
     {
-        Explode();
+        StartCoroutine(Timer());
     }
 
+    private IEnumerator Timer()
+    {
+        yield return new WaitForSeconds(fuse);
+        Explode();
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if(primed)
