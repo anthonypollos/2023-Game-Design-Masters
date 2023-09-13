@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyBehavior : MonoBehaviour, IPullable, IKickable
+public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
 {
     [SerializeField] Material[] materials;
     //Material debugStartingMaterial;
@@ -12,6 +12,7 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable
 
     //AI required code
     private Transform player;
+    private EnemyContainer ec;
     #region movementVariables
     [SerializeField] float enemyDistance;
     [SerializeField] float aggroDistance;
@@ -40,10 +41,15 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable
     private List<GameObject> collided;
     [SerializeField] LayerMask layerMask1;
     [SerializeField] LayerMask layerMask2;
+    [SerializeField] float deaggroTime = 10f;
+    float deaggroCurrentTime;
     #endregion combatVariables
     // Start is called before the first frame update
     void Start()
     {
+        ec = FindObjectOfType<EnemyContainer>();
+        ec.AddEnemy(gameObject);
+        deaggroCurrentTime = 0;
         knockBackDMG = false;
         collided = new List<GameObject>();
         eh = GetComponent<EnemyHealth>();
@@ -73,15 +79,30 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable
             count = 0;
             if(!NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path))
             {
+
                 //Debug.Log("calculate path failed");
                 RandomPoint(out targetPosition);
+                deaggroCurrentTime += Time.deltaTime;
             }
             else
             {
                 if(path.status != NavMeshPathStatus.PathComplete)
                 {
                     RandomPoint(out targetPosition);
+                    deaggroCurrentTime += Time.deltaTime;
+
                 }
+                else
+                {
+                    if(lockedOn)
+                    {
+                        deaggroCurrentTime = 0;
+                    }
+                }
+            }
+            if(deaggroCurrentTime>=deaggroTime)
+            {
+                Deaggro();
             }
         }
         if (!stunned)
@@ -93,7 +114,7 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable
             {
                 if (Vector3.Distance(player.position, transform.position) < aggroDistance)
                 {
-                    Aggro();
+                    PackAggro();
                 }
             }
         }
@@ -244,21 +265,29 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable
         canShoot = true;
 
     }
-    private void Aggro()
+    private void PackAggro()
     {
         foreach (EnemyBehavior enemy in GameObject.FindObjectsByType<EnemyBehavior>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
         {
             //insert code to have a distance modifier if wanted (enemies would be "inactive" if in another room)
             if(CanSee(enemy.gameObject))
-                enemy.PackAggro();
+                enemy.Aggro();
         }
-        PackAggro();
+        Aggro();
     }
 
-    public void PackAggro()
+    public void Aggro()
     {
         lockedOn = true;
         mr.material = materials[0];
+        ec.AddAggro(gameObject);
+    }
+
+    public void Deaggro()
+    {
+        lockedOn = false;
+        mr.material = materials[2];
+        ec.RemoveAggro(gameObject);
     }
 
     public void Lassoed()

@@ -10,9 +10,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     int maxHealth;
     Slider slider;
     EnemyBehavior eb;
-
+    EnemyContainer ec;
     private void Start()
     {
+        ec = FindObjectOfType<EnemyContainer>();
         maxHealth = health;
         slider = GetComponentInChildren<Slider>();
         slider.value = health / maxHealth;
@@ -31,6 +32,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     private void Die()
     {
+        ec.RemoveEnemy(gameObject);
+        ec.RemoveAggro(gameObject);
         Destroy(gameObject);
     }
 }

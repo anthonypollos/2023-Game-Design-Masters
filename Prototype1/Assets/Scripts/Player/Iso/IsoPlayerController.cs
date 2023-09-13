@@ -19,6 +19,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         cam = Camera.main;
         stunned = false;
         canUnstun = false;
+        Helpers.UpdateMatrix();
     }
 
     private void Awake()
@@ -125,6 +126,11 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 // Automatically adjusts the player's movement to match the camera's rotation
 public static class Helpers
 {
-    private static Matrix4x4 _isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 35, 0));
+    private static Matrix4x4 _isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0));
     public static Vector3 ToIso(this Vector3 input) => _isoMatrix.MultiplyPoint3x4(input);
+
+    public static void UpdateMatrix()
+    {
+        _isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0));
+    }
 }
