@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour, IKickable
     bool stunned;
     float stundelay = .2f;
     bool canUnstun;
-    
+    public bool dead;
 
     Vector3 movement;
     Vector2 mouseInput;
@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour, IKickable
     // Start is called before the first frame update
     void Start()
     {
+        dead = false;
         canUnstun = false;
         stunned = false;
         canJump = true;
@@ -55,11 +56,12 @@ public class PlayerController : MonoBehaviour, IKickable
 
     private void Update()
     {
-        RotateCamera();
+        if(!dead)
+         RotateCamera();
     }
     void FixedUpdate()
     {
-        if (!stunned)
+        if (!stunned && !dead)
         {
             Move(movement);
         }
@@ -73,7 +75,7 @@ public class PlayerController : MonoBehaviour, IKickable
 
     private void Jump()
     {
-        if(canJump && !stunned)
+        if(canJump && !stunned && !dead)
         {
             rb.velocity = new Vector3(rb.velocity.x, jumpHeight, rb.velocity.z);
             canJump = false;

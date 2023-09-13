@@ -7,9 +7,11 @@ public class ExplosionBehavior : MonoBehaviour
     [SerializeField] int dmg;
     [SerializeField] float explosiveForce;
     [SerializeField] LayerMask layerMask;
+    List<GameObject> hit;
     private void Start()
     {
         StartCoroutine(DestroySelf());
+        hit = new List<GameObject>();
     }
     IEnumerator DestroySelf()
     {
@@ -22,8 +24,9 @@ public class ExplosionBehavior : MonoBehaviour
         GameObject entity = other.gameObject;
         bool visible = CanSee(other.transform);
 
-        if (visible)
+        if (visible && !hit.Contains(entity))
         {
+            hit.Add(entity);
             IDamageable damaged = entity.GetComponent<IDamageable>();
             if (damaged != null) damaged.TakeDamage(dmg);
             Rigidbody rb = entity.GetComponent<Rigidbody>();

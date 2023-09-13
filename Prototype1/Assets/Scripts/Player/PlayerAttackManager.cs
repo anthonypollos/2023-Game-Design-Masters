@@ -44,7 +44,7 @@ public class PlayerAttackManager : MonoBehaviour, ICanKick
 
     private void Kick()
     {
-        if(!kicking)
+        if(!kicking && !pc.dead)
         {
             StartCoroutine(QuickKick());
             //Debug.Log("I kick em!");
@@ -63,67 +63,70 @@ public class PlayerAttackManager : MonoBehaviour, ICanKick
 
     private void Lasso()
     {
-        LassoBehavior lb = FindObjectOfType<LassoBehavior>();
-        if (lb == null)
+        if (!pc.dead)
         {
-            GameObject temp = Instantiate(lasso, transform.position + cam.transform.forward, cam.transform.localRotation);
-            temp.GetComponent<Rigidbody>().velocity = cam.transform.forward * lassoSpeed;
-        }
-        else
-        {
-            GameObject target = lb.getAttachment();
-            if (target != null)
+            LassoBehavior lb = FindObjectOfType<LassoBehavior>();
+            if (lb == null)
             {
-                if (target.GetComponent<Rigidbody>() != null)
-                {
-                    Rigidbody rb = target.GetComponentInParent<Rigidbody>();
-                    if (!toggleLasso)
-                    { //old pull code
-                        Vector3 dir = ((cam.transform.position + cam.transform.forward * (Vector3.Distance(transform.position, target.transform.position) / 1.5f)) - target.transform.position).normalized;
-                        rb.velocity = (dir * pullForce / rb.mass);
-                        
-                    }
-                    else
-                    { //new pull code
-                        Vector3 temp = pc.GetMovement();
-                        float pullModifier;
-                        if(temp.z == 0)
-                        {
-                            pullModifier = 1f;
-                        }
-                        else if(temp.z<0)
-                        {
-                            pullModifier = 1.25f;
-                        }
-                        else
-                        {
-                            pullModifier = .5f;
-                        }
-                        float aPullForce = pullForce * pullModifier;
-
-                        Vector3 targetPos;
-                        if (temp.x == 0)
-                        {
-                            targetPos = gameObject.transform.position;
-                        }
-                        else if (temp.x < 0)
-                        {
-                            targetPos = gameObject.transform.position + cam.transform.right * -4;
-                        }
-                        else
-                        {
-                            targetPos = gameObject.transform.position + cam.transform.right * 4;
-                        }
-
-                        Vector3 dir = (targetPos - target.transform.position).normalized;
-                        rb.velocity = new Vector3(dir.x, 0, dir.z) * aPullForce + Vector3.up/5 * pullForce;
-                    }
-                    
-
-                }
-                target.GetComponentInParent<IPullable>().Pulled();
+                GameObject temp = Instantiate(lasso, transform.position + cam.transform.forward, cam.transform.localRotation);
+                temp.GetComponent<Rigidbody>().velocity = cam.transform.forward * lassoSpeed;
             }
-            Destroy(lb.gameObject);
+            else
+            {
+                GameObject target = lb.getAttachment();
+                if (target != null)
+                {
+                    if (target.GetComponent<Rigidbody>() != null)
+                    {
+                        Rigidbody rb = target.GetComponentInParent<Rigidbody>();
+                        if (!toggleLasso)
+                        { //old pull code
+                            Vector3 dir = ((cam.transform.position + cam.transform.forward * (Vector3.Distance(transform.position, target.transform.position) / 1.5f)) - target.transform.position).normalized;
+                            rb.velocity = (dir * pullForce / rb.mass);
+
+                        }
+                        else
+                        { //new pull code
+                            Vector3 temp = pc.GetMovement();
+                            float pullModifier;
+                            if (temp.z == 0)
+                            {
+                                pullModifier = 1f;
+                            }
+                            else if (temp.z < 0)
+                            {
+                                pullModifier = 1.25f;
+                            }
+                            else
+                            {
+                                pullModifier = .5f;
+                            }
+                            float aPullForce = pullForce * pullModifier;
+
+                            Vector3 targetPos;
+                            if (temp.x == 0)
+                            {
+                                targetPos = gameObject.transform.position;
+                            }
+                            else if (temp.x < 0)
+                            {
+                                targetPos = gameObject.transform.position + cam.transform.right * -4;
+                            }
+                            else
+                            {
+                                targetPos = gameObject.transform.position + cam.transform.right * 4;
+                            }
+
+                            Vector3 dir = (targetPos - target.transform.position).normalized;
+                            rb.velocity = new Vector3(dir.x, 0, dir.z) * aPullForce + Vector3.up / 5 * pullForce;
+                        }
+
+
+                    }
+                    target.GetComponentInParent<IPullable>().Pulled();
+                }
+                Destroy(lb.gameObject);
+            }
         }
     }
 

@@ -81,14 +81,16 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
             {
 
                 //Debug.Log("calculate path failed");
-                RandomPoint(out targetPosition);
+                if(!lockedOn)
+                    RandomPoint(out targetPosition);
                 deaggroCurrentTime += Time.deltaTime;
             }
             else
             {
                 if(path.status != NavMeshPathStatus.PathComplete)
                 {
-                    RandomPoint(out targetPosition);
+                    if(!lockedOn)
+                        RandomPoint(out targetPosition);
                     deaggroCurrentTime += Time.deltaTime;
 
                 }

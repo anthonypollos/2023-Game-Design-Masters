@@ -40,7 +40,7 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(primed)
+        if(primed && !collision.gameObject.CompareTag("Player"))
         {
             Explode();
         }
