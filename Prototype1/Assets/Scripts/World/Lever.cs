@@ -15,7 +15,7 @@ public class Lever : MonoBehaviour, IPullable
     void Start()
     {
         mr = gameObject.GetComponentInParent<MeshRenderer>();
-        it = target.GetComponent<IToggleable>();
+        it = target.GetComponentInChildren<IToggleable>();
         toggle = it.GetToggle();
         lt = GetComponentInParent<Light>();
         UpdateMaterial();

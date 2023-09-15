@@ -23,14 +23,14 @@ public class EnemyContainer : MonoBehaviour
     {
         if(!enemyList.Contains(enemy))
             enemyList.Add(enemy);
-        Debug.Log("Total Enemy Count: " + enemyList.Count);
+        //Debug.Log("Total Enemy Count: " + enemyList.Count);
     }
 
     public void RemoveEnemy(GameObject enemy)
     {
         if(enemyList.Contains(enemy))
             enemyList.Remove(enemy);
-        Debug.Log("Total Enemy Count: " + enemyList.Count);
+        //Debug.Log("Total Enemy Count: " + enemyList.Count);
         if (enemyList.Count == 0)
             Debug.Log("All Enemies Dead");
     }

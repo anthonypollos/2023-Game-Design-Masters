@@ -124,7 +124,7 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
         {
             corner++;
         }
-        if (transform.position.y < -5f) Destroy(gameObject);
+        if (transform.position.y < -5f) eh.TakeDamage(999999999);
     }
     #region movement 
     private void MovementCalc()

@@ -21,7 +21,7 @@ public class ProjectileBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("hit");
+        //Debug.Log("hit");
         GameObject hit = other.gameObject;
         if (gameObject.CompareTag("Wall") || gameObject.CompareTag("Ground"))
             Destroy(gameObject);
