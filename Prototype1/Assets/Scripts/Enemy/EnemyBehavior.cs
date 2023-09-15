@@ -32,6 +32,8 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
     #endregion movementVariables
     #region combatVariables
     private EnemyHealth eh;
+    [SerializeField][Tooltip("Damage enemies take when hitting a wall")] int wallDamage = 15;
+    [SerializeField][Tooltip("Damage enemies take when hitting each other")] int clashDamage = 15;
     private bool lockedOn;
     private bool canShoot;
     private Rigidbody rb;
