@@ -19,7 +19,7 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
     [SerializeField] float rangeBuffer = 2;
     [SerializeField] GameObject projectile;
     [SerializeField] float projectileSpeed;
-    [SerializeField] float projectileCD;
+    [SerializeField] [Tooltip("projectile cooldown")] float projectileCD;
     [SerializeField] [Tooltip("Center of the patrol circle")] Vector3 centerPoint;
     [SerializeField] float patrolRadius;
     [SerializeField] float speed = 3f;
@@ -44,6 +44,7 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
     [SerializeField] float deaggroTime = 10f;
     float deaggroCurrentTime;
     #endregion combatVariables
+
     // Start is called before the first frame update
     void Start()
     {
@@ -382,7 +383,7 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
                 collided.Add(hit);
                 if (hit.CompareTag("Wall"))
                     if (knockBackDMG) {
-                        eh.TakeDamage(5);
+                        eh.TakeDamage(wallDamage);
                         knockBackDMG = false;
                     }
                 IDamageable temp = hit.GetComponent<IDamageable>();
@@ -390,10 +391,10 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
                 {
                     if (knockBackDMG)
                     {
-                        eh.TakeDamage(5);
+                        eh.TakeDamage(clashDamage);
                         knockBackDMG = false;
                     }
-                    temp.TakeDamage(5);
+                    temp.TakeDamage(clashDamage);
                 }
                 ITrap temp2 = hit.GetComponent<ITrap>();
                 if(temp2 != null)

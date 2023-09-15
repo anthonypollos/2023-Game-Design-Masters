@@ -20,7 +20,7 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
 
     public void Pulled()
     {
-
+        primed = true;
     }
 
     public void Lassoed()
