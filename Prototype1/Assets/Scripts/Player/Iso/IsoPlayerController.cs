@@ -11,13 +11,19 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     private Camera cam;
     MainControls mc;
     [SerializeField] LayerMask groundMask;
-    bool stunned;
+    public bool isStunned;
     float stundelay = .2f;
     bool canUnstun;
+    [HideInInspector]
+    public int attackState;
+    [HideInInspector]
+    public bool isDead;
     private void Start()
     {
+        attackState = 0;
+        isDead = false;
         cam = Camera.main;
-        stunned = false;
+        isStunned = false;
         canUnstun = false;
         Helpers.UpdateMatrix();
     }
@@ -32,13 +38,16 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
     private void Update()
     {
-        Look();
+        if(!isDead && !isStunned)
+            Look();
     }
 
     private void FixedUpdate()
     {
-        if(!stunned)
+        if (!isStunned && !isDead && attackState == Helpers.NOTATTACKING)
             Move();
+        else
+            _rb.velocity = Vector3.zero;
     }
 
     private void OnCollisionStay(Collision collision)
@@ -46,9 +55,9 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         if (collision.gameObject.CompareTag("Ground"))
         {
             
-            if (stunned && canUnstun)
+            if (isStunned && canUnstun)
             {
-                stunned = false;
+                isStunned = false;
             }
         }
 
@@ -67,8 +76,20 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         //var rot = Quaternion.LookRotation(_input.ToIso(), Vector3.up);
         //transform.rotation = Quaternion.RotateTowards(transform.rotation, rot, _turnSpeed * Time.deltaTime);
 
+        if (attackState==Helpers.CHARGING)
+        {
+            lookAtMouse();
+        }
+        else if (_input != Vector3.zero && attackState==Helpers.NOTATTACKING)
+        {
+            transform.forward = _input.ToIso().normalized;
+        }
+    }
+
+    public void lookAtMouse()
+    {
         var (success, position) = GetMousePosition();
-        if(success)
+        if (success)
         {
             var direction = position - transform.position;
 
@@ -77,7 +98,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         }
     }
 
-    private (bool success, Vector3 position) GetMousePosition()
+    public (bool success, Vector3 position) GetMousePosition()
     {
         var ray = cam.ScreenPointToRay(Input.mousePosition);
 
@@ -95,7 +116,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     private void Move()
     {
 
-        _rb.velocity = _input.ToIso().normalized * _speed;
+        _rb.velocity = _input.ToIso().normalized * _speed + (Vector3.up * _rb.velocity.y);
     }
 
     public void Kicked()
@@ -108,7 +129,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     {
         Debug.Log("stunned");
         canUnstun = false;
-        stunned = true;
+        isStunned = true;
         StartCoroutine(UnStunDelay());
 
     }
@@ -133,4 +154,9 @@ public static class Helpers
     {
         _isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0));
     }
+
+    public const int NOTATTACKING = 0;
+    public const int CHARGING = 1;
+    public const int KICKING = 2;
+    
 }

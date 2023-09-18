@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LassoBehavior : MonoBehaviour
 {
-    [SerializeField] float maxDistance;
+    public float maxDistance = 999;
     private GameObject attached;
     private bool grounded;
     public Vector3 startingPos;

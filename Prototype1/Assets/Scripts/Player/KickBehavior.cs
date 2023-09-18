@@ -5,6 +5,18 @@ using UnityEngine;
 public class KickBehavior : MonoBehaviour
 {
     [SerializeField] int dmg = 5;
+    Animator an;
+    IsoAttackManager attackManager;
+
+    private void Start()
+    {
+        an = GetComponent<Animator>();
+        attackManager = GetComponentInParent<IsoAttackManager>();
+    }
+    private void OnEnable()
+    {
+        an.SetTrigger("Kick");
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -20,5 +32,10 @@ public class KickBehavior : MonoBehaviour
             //Debug.Log("deal damage");
             other.gameObject.GetComponentInParent<IDamageable>().TakeDamage(dmg);
         }
+    }
+
+    public void KickEnd()
+    {
+        attackManager.KickEnd();
     }
 }

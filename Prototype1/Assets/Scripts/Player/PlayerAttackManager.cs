@@ -4,13 +4,22 @@ using UnityEngine;
 
 public class PlayerAttackManager : MonoBehaviour, ICanKick
 {
+    [Header("Lasso properties")]
     [SerializeField] [Tooltip("The speed of the lasso")] float lassoSpeed;
     [SerializeField] [Tooltip("The force of the pull")] float pullForce;
+    [SerializeField] [Tooltip("The time it takes for full charge")] float lassoChargeTime;
+    [SerializeField] [Tooltip("Minimum distance of lasso")] float minLassoDistance;
+    [SerializeField] [Tooltip("Maximum distance of lasso")] float maxLassoDistance;
+    [SerializeField] GameObject lasso;
+    [SerializeField] [Tooltip("Toggle lasso pull mechanic")] bool toggleLasso;
+    float currentLassoCharge;
+    bool isCharging;
+    LineRenderer lr;
+    [Header("Kick Properties")]
     [SerializeField] [Tooltip("The force of the kick")] float kickForce;
     Camera cam;
     MainControls mc;
-    [SerializeField] GameObject lasso;
-    [SerializeField] [Tooltip("Toggle lasso pull mechanic")] bool toggleLasso;
+    
     bool kicking;
     GameObject kick;
     PlayerController pc;
@@ -33,7 +42,8 @@ public class PlayerAttackManager : MonoBehaviour, ICanKick
     {
         mc.Enable();
         mc.Main.Primary.performed += _ => Kick();
-        mc.Main.Secondary.performed += _ => Lasso();
+        mc.Main.Secondary.performed += _ => LassoCharge();
+        mc.Main.Secondary.canceled += _ => Lasso();
         
     }
 
@@ -58,6 +68,16 @@ public class PlayerAttackManager : MonoBehaviour, ICanKick
         Rigidbody rb = target.GetComponent<Rigidbody>();
         rb.velocity = transform.forward * kickForce + Vector3.up * kickForce/2/rb.mass;
         target.GetComponent<IKickable>().Kicked();
+    }
+
+    private void LassoCharge()
+    {
+
+    }
+
+    private void Update()
+    {
+        
     }
 
 
