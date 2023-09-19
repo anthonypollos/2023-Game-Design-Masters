@@ -15,7 +15,8 @@ public class KickBehavior : MonoBehaviour
     }
     private void OnEnable()
     {
-        an.SetTrigger("Kick");
+        if(an != null) 
+            an.SetTrigger("Kick");
     }
 
     private void OnTriggerEnter(Collider other)

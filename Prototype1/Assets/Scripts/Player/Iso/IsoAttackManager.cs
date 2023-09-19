@@ -20,6 +20,9 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     [SerializeField] [Tooltip("The force of the kick")] float kickForce;
     MainControls mc;
 
+    [Header("Sound")]
+    [SerializeField] private JukeBox jukebox;
+
     bool kicking;
     GameObject kick;
     IsoPlayerController pc;
@@ -29,6 +32,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     private void Awake()
     {
         mc = new MainControls();
+        jukebox.SetTransform(transform);
     }
 
     // Start is called before the first frame update
