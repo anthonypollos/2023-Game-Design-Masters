@@ -7,6 +7,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     [Header("Lasso properties")]
     [SerializeField] [Tooltip("The speed of the lasso")] float lassoSpeed;
     [SerializeField] [Tooltip("The force of the pull")] float pullForce;
+    [SerializeField] [Tooltip("How far a pulled object will go assuming 1 mass")] float pullCarryDistance;
     [SerializeField] [Tooltip("The time it takes for full charge")] float lassoChargeTime;
     [SerializeField] [Tooltip("Minimum distance of lasso")] float minLassoDistance;
     [SerializeField] [Tooltip("Maximum distance of lasso")] float maxLassoDistance;
@@ -18,6 +19,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     LineRenderer lr;
     [Header("Kick Properties")]
     [SerializeField] [Tooltip("The force of the kick")] float kickForce;
+    [SerializeField] [Tooltip("How far a kicked object will go assuming 1 mass")] float kickCarryDistance;
     MainControls mc;
 
     [Header("Sound")]
@@ -63,7 +65,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     private void Kick()
     {
-        if (!kicking && !isCharging && !pc.isStunned)
+        if (!kicking && !isCharging && !pc.moveable.isLaunched)
         {
             pc.lookAtMouse();
             kicking = true;
@@ -79,15 +81,15 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     public void ActivateKick(GameObject target)
     {
         //Debug.Log("Apply force");
-        Rigidbody rb = target.GetComponent<Rigidbody>();
-        rb.velocity = transform.forward * kickForce + Vector3.up * kickForce / 2 / rb.mass;
+        Moveable moveable = target.GetComponent<Moveable>();
+        moveable.Launched(transform.forward * kickCarryDistance ,kickForce);
         target.GetComponent<IKickable>().Kicked();
         
     }
 
     private void LassoCharge()
     {
-        if (!pc.isStunned)
+        if (!pc.moveable.isLaunched)
         {
             LassoBehavior lb = FindObjectOfType<LassoBehavior>();
             isLassoOut = (lb != null);
@@ -107,7 +109,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     private void Update()
     {
-        if (isCharging && !pc.isStunned)
+        if (isCharging && !pc.moveable.isLaunched)
         {
             currentLassoCharge = Mathf.Clamp(currentLassoCharge + Time.deltaTime, 0, lassoChargeTime);
             float currentDistance = minLassoDistance + (maxLassoDistance - minLassoDistance) * currentLassoCharge / lassoChargeTime;
@@ -122,7 +124,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     private void Lasso()
     {
-        if(!isLassoOut && !kicking && !pc.isStunned)
+        if(!isLassoOut && !kicking && !pc.moveable.isLaunched)
         { 
 
             isCharging = false;
@@ -130,7 +132,10 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             GameObject temp = Instantiate(lasso, transform.position, Quaternion.identity);
             temp.GetComponent<Rigidbody>().velocity = transform.forward * lassoSpeed;
             float currentDistance = minLassoDistance + (maxLassoDistance - minLassoDistance) * currentLassoCharge / lassoChargeTime;
-            temp.GetComponent<LassoBehavior>().maxDistance = currentDistance;
+            LassoBehavior lb = temp.GetComponent<LassoBehavior>();
+            lb.maxDistance = currentDistance;
+            lb.player = gameObject.transform;
+            lb.pullDistance = pullCarryDistance;
             
         }
 
@@ -138,25 +143,29 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     private void Pull(LassoBehavior lb)
     {
-        GameObject target = lb.getAttachment();
+        GameObject target;
+        Moveable moveable;
+        (target, moveable) = lb.GetAttachment();
         if (target != null)
         {
-            if (target.GetComponent<Rigidbody>() != null)
+            if (moveable != null)
             {
-                Rigidbody rb = target.GetComponent<Rigidbody>();
-                var (success, position) = pc.GetMousePosition();
-                if (success)
-                {
-                    Vector3 dir = ((transform.position + (position - transform.position).normalized * (Vector3.Distance(transform.position, target.transform.position) / 1.5f)) - target.transform.position).normalized;
-                    dir.y = 0;
-                    rb.velocity = (dir * pullForce / rb.mass) + Vector3.up / 5 * pullForce;
-                }
-                else
-                {
-                    Vector3 dir = ((transform.position + transform.forward * (Vector3.Distance(transform.position, target.transform.position) / 1.5f)) - target.transform.position).normalized;
-                    dir.y = 0;
-                    rb.velocity = (dir * pullForce / rb.mass) + Vector3.up / 5 * pullForce;
-                }
+
+                moveable.Launched(lb.dir * pullCarryDistance, pullForce);
+                //Rigidbody rb = target.GetComponent<Rigidbody>();
+                //var (success, position) = pc.GetMousePosition();
+                //if (success)
+                //{
+                   // Vector3 dir = ((transform.position + (position - transform.position).normalized * (Vector3.Distance(transform.position, target.transform.position) / 1.5f)) - target.transform.position).normalized;
+                    //dir.y = 0;
+                    //rb.velocity = (dir * pullForce / rb.mass) + Vector3.up / 5 * pullForce;
+                //}
+               // else
+                //{
+                    //Vector3 dir = ((transform.position + transform.forward * (Vector3.Distance(transform.position, target.transform.position) / 1.5f)) - target.transform.position).normalized;
+                    //dir.y = 0;
+                    //rb.velocity = (dir * pullForce / rb.mass) + Vector3.up / 5 * pullForce;
+                //}
                 //target.GetComponent<IPullable>().Pulled();
             }
             target.GetComponent<IPullable>().Pulled();

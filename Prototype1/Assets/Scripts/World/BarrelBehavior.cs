@@ -5,11 +5,15 @@ using UnityEngine;
 public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
 {
     bool primed;
+    private Moveable moveable;
     [SerializeField] GameObject explosion;
+    private int health;
     [SerializeField] float fuse = 5f;
     // Start is called before the first frame update
     void Start()
     {
+        health = 20;
+        moveable = GetComponent<Moveable>();
         primed = false;
     }
 
@@ -20,7 +24,6 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
 
     public void Pulled()
     {
-        primed = true;
     }
 
     public void Lassoed()
@@ -30,7 +33,15 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
 
     public void TakeDamage(int dmg)
     {
-        StartCoroutine(Timer());
+        health -= dmg;
+        if (health <= 0)
+        {
+            Explode();
+        }
+        else
+        {
+            StartCoroutine(Timer());
+        }
     }
 
     private IEnumerator Timer()
@@ -40,10 +51,28 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(primed && !collision.gameObject.CompareTag("Player"))
+        if (!collision.gameObject.CompareTag("Player") && moveable.isLaunched)
         {
-            Explode();
+            if (primed)
+            {
+                Explode();
+            }
+            ITrap trap = collision.gameObject.GetComponent<ITrap>();
+            if(trap!=null)
+            {
+                trap.ActivateTrap(gameObject);
+            }
+            
+            if (!collision.gameObject.CompareTag("Ground"))
+            {
+                TakeDamage(10);
+                IDamageable dam = collision.gameObject.GetComponent<IDamageable>();
+                if (dam!=null)
+                    dam.TakeDamage(10);
+
+            }
         }
+
     }
 
     private void Explode()

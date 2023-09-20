@@ -6,6 +6,7 @@ public class ExplosionBehavior : MonoBehaviour
 {
     [SerializeField] int dmg;
     [SerializeField] float explosiveForce;
+    [SerializeField] float explosiveCarryDistance;
     [SerializeField] LayerMask layerMask;
     List<GameObject> hit;
     private void Start()
@@ -29,13 +30,13 @@ public class ExplosionBehavior : MonoBehaviour
             hit.Add(entity);
             IDamageable damaged = entity.GetComponent<IDamageable>();
             if (damaged != null) damaged.TakeDamage(dmg);
-            Rigidbody rb = entity.GetComponent<Rigidbody>();
-            if (rb != null)
+            Moveable moveable = entity.GetComponent<Moveable>();
+            if (moveable != null)
             {
                 Vector3 dir = (entity.transform.position - transform.position);
                 dir.y = 0;
 
-                rb.velocity = (dir.normalized + Vector3.up / 5) * explosiveForce;
+                moveable.Launched(dir.normalized * explosiveCarryDistance , explosiveForce);
 
             }
             IKickable kicked = entity.GetComponent<IKickable>();

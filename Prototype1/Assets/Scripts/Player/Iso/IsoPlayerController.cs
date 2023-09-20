@@ -6,25 +6,23 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 {
     [SerializeField] [Tooltip("The rigidbody used for movement")] private Rigidbody _rb;
     [SerializeField] [Tooltip("The player's movement speed")] private float _speed = 5;
-    [SerializeField][Tooltip("The player's turn speed")] private float _turnSpeed = 360;
+    //[SerializeField][Tooltip("The player's turn speed")] private float _turnSpeed = 360;
     private Vector3 _input;
     private Camera cam;
     MainControls mc;
     [SerializeField] LayerMask groundMask;
-    public bool isStunned;
-    float stundelay = .2f;
     bool canUnstun;
+    public Moveable moveable;
     [HideInInspector]
     public int attackState;
     [HideInInspector]
     public bool isDead;
     private void Start()
     {
+        moveable = GetComponent<Moveable>();
         attackState = 0;
         isDead = false;
         cam = Camera.main;
-        isStunned = false;
-        canUnstun = false;
         Helpers.UpdateMatrix();
     }
 
@@ -38,35 +36,20 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
     private void Update()
     {
-        if(!isDead && !isStunned)
+        if(!isDead && !moveable.isLaunched)
             Look();
     }
 
     private void FixedUpdate()
     {
-        if (!isStunned && !isDead && attackState == Helpers.NOTATTACKING)
+        if (!moveable.isLaunched && !isDead && attackState == Helpers.NOTATTACKING)
             Move();
         else
-            _rb.velocity = Vector3.zero;
+            if(!moveable.isLaunched)
+                _rb.velocity = Vector3.zero;
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            
-            if (isStunned && canUnstun)
-            {
-                isStunned = false;
-            }
-        }
 
-    }
-
-    private void GatherInput()
-    {
-        _input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-    }
 
   // The character rotates to move in the direction of the player's input
     private void Look()
@@ -121,24 +104,10 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
     public void Kicked()
     {
-        Stunned();
-    }
-
-
-    private void Stunned()
-    {
-        Debug.Log("stunned");
-        canUnstun = false;
-        isStunned = true;
-        StartCoroutine(UnStunDelay());
 
     }
 
-    IEnumerator UnStunDelay()
-    {
-        yield return new WaitForSeconds(stundelay);
-        canUnstun = true;
-    }
+
 
 
 

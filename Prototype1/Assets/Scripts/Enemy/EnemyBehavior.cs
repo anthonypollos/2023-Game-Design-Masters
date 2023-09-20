@@ -13,6 +13,7 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
     //AI required code
     private Transform player;
     private EnemyContainer ec;
+    private Moveable moveable;
     #region movementVariables
     [SerializeField] float enemyDistance;
     [SerializeField] float aggroDistance;
@@ -32,34 +33,33 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
     #endregion movementVariables
     #region combatVariables
     private EnemyHealth eh;
-    [SerializeField][Tooltip("Damage enemies take when hitting a wall")] int wallDamage = 15;
+    //[SerializeField][Tooltip("Damage enemies take when hitting a wall")] int wallDamage = 15;
     [SerializeField][Tooltip("Damage enemies take when hitting each other")] int clashDamage = 15;
     private bool lockedOn;
     private bool canShoot;
     private Rigidbody rb;
-    bool moved;
-    bool knockBackDMG;
     private bool stunned;
-    private List<GameObject> collided;
+    private bool hasCollided;
     [SerializeField] LayerMask layerMask1;
     [SerializeField] LayerMask layerMask2;
     [SerializeField] float deaggroTime = 10f;
     float deaggroCurrentTime;
+    bool launching;
     #endregion combatVariables
 
     // Start is called before the first frame update
     void Start()
     {
+        launching = false;
+        moveable = GetComponent<Moveable>();
         ec = FindObjectOfType<EnemyContainer>();
         ec.AddEnemy(gameObject);
         deaggroCurrentTime = 0;
-        knockBackDMG = false;
-        collided = new List<GameObject>();
+        hasCollided = false;
         eh = GetComponent<EnemyHealth>();
         count = 1;
         corner = 0;
         mr = GetComponent<MeshRenderer>();
-        moved = false;
         rb = GetComponent<Rigidbody>();
         mr.material = materials[2];
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -110,7 +110,17 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
                 Deaggro();
             }
         }
-        if (!stunned)
+        if (moveable.isLaunched)
+        {
+            launching = true;
+        }
+        if(launching && !moveable.isLaunched)
+        {
+            hasCollided = false;
+            UnStunned();
+            launching = false;
+        }
+        if (!stunned && !moveable.isLaunched)
         {
             //Debug.Log("move");
             MovementCalc();
@@ -303,16 +313,11 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
 
     public void Pulled()
     {
-        if(!moved)
-            StartCoroutine(Moved());
         //Insert pulled animation
     }
 
     public void Kicked()
     {
-        if (!moved)
-            StartCoroutine(Moved());
-        //Insert damage here
         //Insert kicked animation here
     }
 
@@ -326,7 +331,7 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
     {
         Stunned();
         yield return new WaitForSeconds(0.5f);
-        if(!moved)
+        if(!moveable.isLaunched)
             UnStunned();
 
     }
@@ -354,67 +359,31 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
         }
         //insert unstunned code here
     }
-    private IEnumerator Moved()
-    {
-        Stunned();
-        yield return new WaitForSeconds(0.1f);
-        collided.Clear();
-        moved = true;
-        knockBackDMG = true;
-    }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        //Debug.Log("Moved: " + moved + "\ncollision tag: " + collision.gameObject.tag);
-        if(moved && collision.gameObject.CompareTag("Ground"))
-        {
-            //Debug.Log("Unstun");
-            moved = false;
-            knockBackDMG = false;
-            UnStunned();
-        }
-    }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(moved && !collision.gameObject.CompareTag("Player"))
+        if(moveable.isLaunched && !collision.gameObject.CompareTag("Player") && !hasCollided)
         {
+            hasCollided = true;
             GameObject hit = collision.gameObject;
-            if (!collided.Contains(hit))
-            {
-                collided.Add(hit);
-                if (hit.CompareTag("Wall"))
-                    if (knockBackDMG) {
-                        eh.TakeDamage(wallDamage);
-                        knockBackDMG = false;
-                    }
+            eh.TakeDamage(clashDamage);
                 IDamageable temp = hit.GetComponent<IDamageable>();
                 if (temp != null)
                 {
-                    if (knockBackDMG)
-                    {
-                        eh.TakeDamage(clashDamage);
-                        knockBackDMG = false;
-                    }
                     temp.TakeDamage(clashDamage);
                 }
                 ITrap temp2 = hit.GetComponent<ITrap>();
                 if(temp2 != null)
                 {
-                    if (knockBackDMG)
-                    {
-                        eh.TakeDamage(5);
-                        knockBackDMG = false;
-                    }
                     temp2.ActivateTrap(gameObject);
                 }
-            }
-        }
-    }
+       }
+   }
+}
 
 
     #endregion combat
 
 
 
-}

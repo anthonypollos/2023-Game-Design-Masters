@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 339944857379058434}
   - component: {fileID: 6157092007949576416}
   - component: {fileID: 3291948898611814059}
+  - component: {fileID: -2951775800152396056}
   m_Layer: 3
   m_Name: IsoPlayer
   m_TagString: Player
@@ -130,11 +131,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rb: {fileID: 6157092007949576416}
   _speed: 10
-  _turnSpeed: 5000
   groundMask:
     serializedVersion: 2
     m_Bits: 2880
-  isStunned: 0
+  moveable: {fileID: 0}
   attackState: 0
   isDead: 0
 --- !u!114 &1401297822148593465
@@ -151,11 +151,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lassoSpeed: 30
   pullForce: 20
+  pullCarryDistance: 15
   lassoChargeTime: 1
   minLassoDistance: 1
   maxLassoDistance: 15
   lasso: {fileID: 4061035934557330123, guid: 9743e2d1264538348971149f682c891e, type: 3}
   kickForce: 10
+  kickCarryDistance: 10
   jukebox:
     tracks: []
     transform: {fileID: 0}
@@ -312,6 +314,19 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &-2951775800152396056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030166625210922752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLaunched: 0
 --- !u!1 &2589270186440912574
 GameObject:
   m_ObjectHideFlags: 0
