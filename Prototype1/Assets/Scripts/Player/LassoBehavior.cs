@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class LassoBehavior : MonoBehaviour
 {
+    private GameController gc;
+    public IsoAttackManager attackManager;
     public float maxDistance = 999;
     private GameObject attached;
     private Rigidbody attachedRB;
@@ -28,6 +30,7 @@ public class LassoBehavior : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        attackManager=FindObjectOfType<IsoAttackManager>();
         lassoRange = GetComponentInChildren<LassoRange>();
         grounded = false;
         attached = null;
@@ -39,7 +42,8 @@ public class LassoBehavior : MonoBehaviour
         cam = Camera.main;
         lr = GetComponent<LineRenderer>();
         lr.enabled = false;
-        Handles.color = Color.cyan;
+        gc = FindObjectOfType<GameController>();
+        //Handles.color = Color.cyan;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -49,13 +53,12 @@ public class LassoBehavior : MonoBehaviour
         {
             if (temp.CompareTag("Ground") || temp.CompareTag("Wall"))
             {
-                grounded = true;
-                gameObject.GetComponent<Rigidbody>().useGravity = true;
-                gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                Destroy(gameObject);
             }
             else if (temp.GetComponent<IPullable>() != null)
             {
                 attached = temp;
+                forwardVector = (player.position - attached.transform.position).normalized;
                 attached.GetComponentInParent<IPullable>().Lassoed();
                 Physics.IgnoreCollision(GetComponent<Collider>(), temp.GetComponent<Collider>(), true);
                 gameObject.transform.parent = temp.transform;
@@ -69,6 +72,11 @@ public class LassoBehavior : MonoBehaviour
                     lr.enabled = true;
                     attachedRB = temp.GetComponent<Rigidbody>();
                     adjustedPullRange = pullDistance / attachedRB.mass;
+                }
+                if (gc.toggleLasso)
+                {
+                    dir = forwardVector;
+                    attackManager.Pull(this);
                 }
             }
         }
@@ -95,7 +103,7 @@ public class LassoBehavior : MonoBehaviour
     {
         if (Vector3.Distance(startingPos, transform.position) >= maxDistance && attached==null) Destroy(gameObject);
         
-        if(moveable!=null)
+        if(moveable!=null && !gc.toggleLasso)
         {
             
             if (!CheckAngle())

@@ -44,6 +44,15 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleLasso"",
+                    ""type"": ""Button"",
+                    ""id"": ""dafbaa4f-dc93-4805-9b5d-9a231f15b40b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -79,6 +88,17 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
                     ""action"": ""Restart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0f08ac83-e77c-4bb0-a0b9-765c2b2a2c29"",
+                    ""path"": ""<Keyboard>/equals"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleLasso"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -89,6 +109,7 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
         m_Main = asset.FindActionMap("Main", throwIfNotFound: true);
         m_Main_Menu = m_Main.FindAction("Menu", throwIfNotFound: true);
         m_Main_Restart = m_Main.FindAction("Restart", throwIfNotFound: true);
+        m_Main_ToggleLasso = m_Main.FindAction("ToggleLasso", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -152,12 +173,14 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
     private List<IMainActions> m_MainActionsCallbackInterfaces = new List<IMainActions>();
     private readonly InputAction m_Main_Menu;
     private readonly InputAction m_Main_Restart;
+    private readonly InputAction m_Main_ToggleLasso;
     public struct MainActions
     {
         private @MenuControls m_Wrapper;
         public MainActions(@MenuControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Menu => m_Wrapper.m_Main_Menu;
         public InputAction @Restart => m_Wrapper.m_Main_Restart;
+        public InputAction @ToggleLasso => m_Wrapper.m_Main_ToggleLasso;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -173,6 +196,9 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
             @Restart.started += instance.OnRestart;
             @Restart.performed += instance.OnRestart;
             @Restart.canceled += instance.OnRestart;
+            @ToggleLasso.started += instance.OnToggleLasso;
+            @ToggleLasso.performed += instance.OnToggleLasso;
+            @ToggleLasso.canceled += instance.OnToggleLasso;
         }
 
         private void UnregisterCallbacks(IMainActions instance)
@@ -183,6 +209,9 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
             @Restart.started -= instance.OnRestart;
             @Restart.performed -= instance.OnRestart;
             @Restart.canceled -= instance.OnRestart;
+            @ToggleLasso.started -= instance.OnToggleLasso;
+            @ToggleLasso.performed -= instance.OnToggleLasso;
+            @ToggleLasso.canceled -= instance.OnToggleLasso;
         }
 
         public void RemoveCallbacks(IMainActions instance)
@@ -204,5 +233,6 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
     {
         void OnMenu(InputAction.CallbackContext context);
         void OnRestart(InputAction.CallbackContext context);
+        void OnToggleLasso(InputAction.CallbackContext context);
     }
 }

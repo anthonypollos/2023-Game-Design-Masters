@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -13,9 +15,14 @@ public class GameController : MonoBehaviour
     [SerializeField] float zoomTime = 1;
     float[] targetZoom;
     private float velocity = 0;
+    public bool toggleLasso = false;
+    private TextMeshProUGUI text;
+
 
     private void Start()
     {
+        text = GetComponentInChildren<TextMeshProUGUI>();
+        text.text = "Instant Lasso: " + toggleLasso;
         mainCameras = new List<Camera>();
         GameObject[] temp = GameObject.FindGameObjectsWithTag("MainCamera");
         foreach (GameObject go in temp) {
@@ -28,6 +35,7 @@ public class GameController : MonoBehaviour
         mc.Main.Enable();
         mc.Main.Menu.performed += _ => SceneManager.LoadScene("MainMenu");
         mc.Main.Restart.performed += _ => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        mc.Main.ToggleLasso.performed += _ => ToggleLasso();
         CombatState(false);
     }
 
@@ -65,6 +73,12 @@ public class GameController : MonoBehaviour
             {
                 targetZoom = nonCombatZoom;
             }
+    }
+
+    private void ToggleLasso()
+    {
+        toggleLasso = !toggleLasso;
+        text.text = "Instant Lasso: " + toggleLasso;
     }
 
 }

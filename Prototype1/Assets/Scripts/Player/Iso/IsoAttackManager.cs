@@ -28,6 +28,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     bool kicking;
     GameObject kick;
     IsoPlayerController pc;
+    GameController gc;
 
 
 
@@ -48,6 +49,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         kick = transform.Find("KickHitbox").gameObject;
         kick.SetActive(false);
         pc = GetComponentInParent<IsoPlayerController>();
+        gc = FindObjectOfType<GameController>();
     }
 
     private void OnEnable()
@@ -141,7 +143,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     }
 
-    private void Pull(LassoBehavior lb)
+    public void Pull(LassoBehavior lb)
     {
         GameObject target;
         Moveable moveable;
@@ -150,7 +152,6 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         {
             if (moveable != null)
             {
-
                 moveable.Launched(lb.dir * pullCarryDistance, pullForce);
                 //Rigidbody rb = target.GetComponent<Rigidbody>();
                 //var (success, position) = pc.GetMousePosition();

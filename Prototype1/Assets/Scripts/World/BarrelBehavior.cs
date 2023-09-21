@@ -12,7 +12,7 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
     // Start is called before the first frame update
     void Start()
     {
-        health = 20;
+        health = 10;
         moveable = GetComponent<Moveable>();
         primed = false;
     }
@@ -65,11 +65,11 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
             
             if (!collision.gameObject.CompareTag("Ground"))
             {
-                TakeDamage(10);
+                
                 IDamageable dam = collision.gameObject.GetComponent<IDamageable>();
                 if (dam!=null)
                     dam.TakeDamage(10);
-
+                Explode();
             }
         }
 

@@ -5,15 +5,16 @@ using UnityEngine;
 public class Transparency : MonoBehaviour
 {
     Material mat;
-    float fadeSpeed, fadeAmount;
+    [SerializeField]
+    float fadeSpeed = 2.0f;
+    [SerializeField]
+    float fadeAmount = 0.4f;
     float originalOpacity;
     private bool fade = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        fadeSpeed = 2.0f;
-        fadeAmount = 0.4f;
         mat = GetComponent<Renderer>().material;
         originalOpacity = mat.color.a;
         fade = false;
