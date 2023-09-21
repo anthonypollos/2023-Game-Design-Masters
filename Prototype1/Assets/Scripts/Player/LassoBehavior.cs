@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class LassoBehavior : MonoBehaviour
@@ -13,6 +14,8 @@ public class LassoBehavior : MonoBehaviour
     private Vector3 forwardVector;
     private Vector3 rightVector;
     private Vector3 leftVector;
+    private LassoRange lassoRange;
+    private float adjustedPullRange;
     [SerializeField] float pullAngle = 90f;
     [HideInInspector]public Transform player;
     [HideInInspector]public Vector3 dir;
@@ -25,6 +28,7 @@ public class LassoBehavior : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        lassoRange = GetComponentInChildren<LassoRange>();
         grounded = false;
         attached = null;
         attachedRB = null;
@@ -35,7 +39,9 @@ public class LassoBehavior : MonoBehaviour
         cam = Camera.main;
         lr = GetComponent<LineRenderer>();
         lr.enabled = false;
+        Handles.color = Color.cyan;
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         GameObject temp = collision.gameObject;
@@ -59,8 +65,10 @@ public class LassoBehavior : MonoBehaviour
                 moveable = temp.GetComponent<Moveable>();
                 if (moveable != null)
                 {
+                    lassoRange.SetAttached(attached.transform);
                     lr.enabled = true;
                     attachedRB = temp.GetComponent<Rigidbody>();
+                    adjustedPullRange = pullDistance / attachedRB.mass;
                 }
             }
         }
@@ -86,10 +94,11 @@ public class LassoBehavior : MonoBehaviour
     private void Update()
     {
         if (Vector3.Distance(startingPos, transform.position) >= maxDistance && attached==null) Destroy(gameObject);
-
+        
         if(moveable!=null)
         {
-            if(!CheckAngle())
+            
+            if (!CheckAngle())
                 if(IsRight())
                 {
                     dir = rightVector;
@@ -99,7 +108,8 @@ public class LassoBehavior : MonoBehaviour
                     dir = leftVector;
                 }
             dir.y = 0;
-            Vector3[] positions = { attached.transform.position, attached.transform.position + dir * pullDistance/attachedRB.mass};
+            Vector3[] positions = { attached.transform.position, attached.transform.position + dir * adjustedPullRange};
+            lassoRange.SetRangeArc(forwardVector, pullAngle, adjustedPullRange);
             lr.SetPositions(positions);
         }
     }
