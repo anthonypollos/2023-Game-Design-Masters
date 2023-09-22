@@ -113,6 +113,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     {
         if (isCharging && !pc.moveable.isLaunched)
         {
+            lr.enabled = true;
             currentLassoCharge = Mathf.Clamp(currentLassoCharge + Time.deltaTime, 0, lassoChargeTime);
             float currentDistance = minLassoDistance + (maxLassoDistance - minLassoDistance) * currentLassoCharge / lassoChargeTime;
             Vector3[] positions = { transform.position, transform.forward * currentDistance + transform.position };
