@@ -41,7 +41,7 @@ public class Moveable : MonoBehaviour
             targetIgnoreY.y = 0;
             if(Vector3.Distance(positionIgnoreY, targetIgnoreY) < 0.5f)
             {
-                Debug.Log("stop");
+                Debug.Log("Reached Destination");
                 if(stopping==null)
                     stopping = StartCoroutine(Stop());
             }
@@ -53,7 +53,7 @@ public class Moveable : MonoBehaviour
         if(!collision.transform.CompareTag("Ground") && isLaunched && buffer>.5f)
         {
             Debug.Log(collision.gameObject.name);
-            Debug.Log("stop");
+            Debug.Log("Hit object");
             if (stopping == null)
                 stopping = StartCoroutine(Stop());
         }

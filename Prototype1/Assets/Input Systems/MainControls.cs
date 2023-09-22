@@ -98,6 +98,24 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Tertiary"",
+                    ""type"": ""Button"",
+                    ""id"": ""b55c0dc9-35ff-4ae5-a6af-2348351bc94b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""4711bac7-eb98-49c0-956e-960b3412f8f5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -243,6 +261,28 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
                     ""action"": ""MouseY"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5c4e0290-87c0-49e9-9e5b-1ba3b71b6d4b"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tertiary"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""774832c5-d719-452a-bd2e-acad2142cf34"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -259,6 +299,8 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         m_Main_Secondary = m_Main.FindAction("Secondary", throwIfNotFound: true);
         m_Main_MouseX = m_Main.FindAction("MouseX", throwIfNotFound: true);
         m_Main_MouseY = m_Main.FindAction("MouseY", throwIfNotFound: true);
+        m_Main_Tertiary = m_Main.FindAction("Tertiary", throwIfNotFound: true);
+        m_Main_Dash = m_Main.FindAction("Dash", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -328,6 +370,8 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_Secondary;
     private readonly InputAction m_Main_MouseX;
     private readonly InputAction m_Main_MouseY;
+    private readonly InputAction m_Main_Tertiary;
+    private readonly InputAction m_Main_Dash;
     public struct MainActions
     {
         private @MainControls m_Wrapper;
@@ -340,6 +384,8 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         public InputAction @Secondary => m_Wrapper.m_Main_Secondary;
         public InputAction @MouseX => m_Wrapper.m_Main_MouseX;
         public InputAction @MouseY => m_Wrapper.m_Main_MouseY;
+        public InputAction @Tertiary => m_Wrapper.m_Main_Tertiary;
+        public InputAction @Dash => m_Wrapper.m_Main_Dash;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -373,6 +419,12 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
             @MouseY.started += instance.OnMouseY;
             @MouseY.performed += instance.OnMouseY;
             @MouseY.canceled += instance.OnMouseY;
+            @Tertiary.started += instance.OnTertiary;
+            @Tertiary.performed += instance.OnTertiary;
+            @Tertiary.canceled += instance.OnTertiary;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
         }
 
         private void UnregisterCallbacks(IMainActions instance)
@@ -401,6 +453,12 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
             @MouseY.started -= instance.OnMouseY;
             @MouseY.performed -= instance.OnMouseY;
             @MouseY.canceled -= instance.OnMouseY;
+            @Tertiary.started -= instance.OnTertiary;
+            @Tertiary.performed -= instance.OnTertiary;
+            @Tertiary.canceled -= instance.OnTertiary;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
         }
 
         public void RemoveCallbacks(IMainActions instance)
@@ -428,5 +486,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         void OnSecondary(InputAction.CallbackContext context);
         void OnMouseX(InputAction.CallbackContext context);
         void OnMouseY(InputAction.CallbackContext context);
+        void OnTertiary(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
 }

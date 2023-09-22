@@ -10,14 +10,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     int maxHealth;
     IsoPlayerController pc;
     Slider hpBar;
-    GameObject deathscreen;
 
     private void Start()
     {
         hpBar = GetComponentInChildren<Slider>();
         pc = GetComponent<IsoPlayerController>();
-        deathscreen = GameObject.FindGameObjectWithTag("DeathScreen");
-        deathscreen.SetActive(false);
         maxHealth = health;
     }
 
@@ -35,7 +32,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void Die()
     {
-        deathscreen.SetActive(true);
         pc.isDead = true;
+        GameController.instance.Lose();
     }
 }

@@ -363,7 +363,7 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(moveable.isLaunched && !collision.gameObject.CompareTag("Player") && !hasCollided)
+        if(moveable.isLaunched && !collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Lasso") && !hasCollided)
         {
             hasCollided = true;
             GameObject hit = collision.gameObject;

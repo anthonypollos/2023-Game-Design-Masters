@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+
     MenuControls mc;
     List<Camera> mainCameras;
     [SerializeField] bool isThirdPerson = false;
@@ -17,10 +18,29 @@ public class GameController : MonoBehaviour
     private float velocity = 0;
     public bool toggleLasso = false;
     private TextMeshProUGUI text;
+    [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject deathMenu;
+    [SerializeField] List<string> nonGameScenes;
+
+    public static GameController instance;
+
+    private void Awake()
+    {
+        Cursor.lockState = CursorLockMode.Confined;
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
 
 
     private void Start()
     {
+        Time.timeScale = 1;
         text = GetComponentInChildren<TextMeshProUGUI>();
         text.text = "Instant Lasso: " + toggleLasso;
         mainCameras = new List<Camera>();
@@ -33,7 +53,7 @@ public class GameController : MonoBehaviour
     {
         mc = new MenuControls();
         mc.Main.Enable();
-        mc.Main.Menu.performed += _ => SceneManager.LoadScene("MainMenu");
+        mc.Main.Menu.performed += _ => TogglePauseMenu();
         mc.Main.Restart.performed += _ => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         mc.Main.ToggleLasso.performed += _ => ToggleLasso();
         CombatState(false);
@@ -42,6 +62,42 @@ public class GameController : MonoBehaviour
     private void OnDisable()
     {
         mc.Disable();
+    }
+
+    private void TogglePauseMenu()
+    {
+        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name))
+        {
+            if (pauseMenu.activeInHierarchy)
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+                pauseMenu.SetActive(false);
+                Time.timeScale = 1;
+            }
+            else if (Time.timeScale != 0)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                pauseMenu.SetActive(true);
+                Time.timeScale = 0;
+            }
+        }
+    }
+
+    public void Lose()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        deathMenu.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public void SetScene(string scene)
+    {
+        Time.timeScale = 1;
+        if (scene.Equals("Reset"))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        else
+            SceneManager.LoadScene(scene);
+
     }
 
     private void Update()

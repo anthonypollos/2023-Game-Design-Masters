@@ -15,7 +15,6 @@ public class IsoCamera : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         currentFade = new List<Transparency>();
         _offset = transform.position - player.position;
-        Cursor.lockState = CursorLockMode.Confined;
     }
 
     private void Update()

@@ -6,7 +6,7 @@ public class EnemyContainer : MonoBehaviour
 {
     private List<GameObject> aggroList;
     private List<GameObject> enemyList;
-    private GameController gc;
+    //private GameController gc;
 
     private void Awake()
     {
@@ -16,7 +16,7 @@ public class EnemyContainer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gc = FindObjectOfType<GameController>();
+        //gc = FindObjectOfType<GameController>();
     }
 
     public void AddEnemy(GameObject enemy)
@@ -39,7 +39,7 @@ public class EnemyContainer : MonoBehaviour
     {
         if(!aggroList.Contains(enemy))
             aggroList.Add(enemy);
-        gc.CombatState(true);
+        GameController.instance.CombatState(true);
     }
 
     public void RemoveAggro(GameObject enemy)
@@ -47,6 +47,6 @@ public class EnemyContainer : MonoBehaviour
         if(aggroList.Contains(enemy))
             aggroList.Remove(enemy);
         if (aggroList.Count == 0)
-            gc.CombatState(false);
+            GameController.instance.CombatState(false);
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class IsoPlayerController : MonoBehaviour, IKickable
 {
@@ -17,6 +18,12 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     public int attackState;
     [HideInInspector]
     public bool isDead;
+    private bool canDash;
+    private GameController gc;
+
+    [SerializeField] float dashRange, dashSpeed, dashCD;
+    [SerializeField] Image dashCDIndicator;
+    
     private void Start()
     {
         moveable = GetComponent<Moveable>();
@@ -24,14 +31,17 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         isDead = false;
         cam = Camera.main;
         Helpers.UpdateMatrix();
+        canDash = true;
+        gc = FindObjectOfType<GameController>();
     }
 
-    private void Awake()
+    private void OnEnable()
     {
         mc = new MainControls();
         mc.Enable();
         mc.Main.Move.performed += ctx => _input = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
         mc.Main.Move.canceled += _ => _input = Vector3.zero;
+        mc.Main.Dash.performed += _ => Dash();
     }
 
     private void Update()
@@ -80,6 +90,28 @@ public class IsoPlayerController : MonoBehaviour, IKickable
             transform.forward = direction;
         }
     }
+
+    private void Dash()
+    {
+        if(canDash && !moveable.isLaunched && !isDead && attackState == Helpers.NOTATTACKING)
+        {
+            canDash = false;
+            moveable.Launched(transform.forward * dashRange, dashSpeed);
+            StartCoroutine(DashCD());
+        }
+    }
+
+    private IEnumerator DashCD()
+    {
+        for (float i =0; i<dashCD; i+=0.01f)
+        {
+            yield return new WaitForSeconds(0.01f);
+            dashCDIndicator.fillAmount = i / dashCD;
+        }
+        canDash = true;
+        dashCDIndicator.fillAmount = 1;
+    }
+
 
     public (bool success, Vector3 position) GetMousePosition()
     {
