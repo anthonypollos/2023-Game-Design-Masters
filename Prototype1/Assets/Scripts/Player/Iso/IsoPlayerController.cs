@@ -48,6 +48,11 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     {
         if(!isDead && !moveable.isLaunched)
             Look();
+
+        if(gameObject.layer == LayerMask.NameToLayer("PlayerDashing") && !moveable.isLaunched)
+        {
+            gameObject.layer = LayerMask.NameToLayer("Player");
+        }
     }
 
     private void FixedUpdate()
@@ -93,16 +98,26 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
     private void Dash()
     {
-        if(canDash && !moveable.isLaunched && !isDead && attackState == Helpers.NOTATTACKING)
+        if(canDash && !moveable.isLaunched && !isDead)
         {
-            canDash = false;
-            moveable.Launched(transform.forward * dashRange, dashSpeed);
-            StartCoroutine(DashCD());
+            if( attackState == Helpers.NOTATTACKING || _input == Vector3.zero)
+            {   
+                canDash = false;
+                moveable.Launched(transform.forward * dashRange, dashSpeed);
+                StartCoroutine(DashCD());
+            }
+            else if (attackState == Helpers.CHARGING)
+            {
+                canDash = false;
+                moveable.Launched(_input.ToIso().normalized * dashRange, dashSpeed);
+                StartCoroutine(DashCD());
+            }
         }
     }
 
     private IEnumerator DashCD()
     {
+        gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
         for (float i =0; i<dashCD; i+=0.01f)
         {
             yield return new WaitForSeconds(0.01f);

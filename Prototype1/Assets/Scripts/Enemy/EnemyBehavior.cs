@@ -204,7 +204,7 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
         if (!inRange)
         {
             dir.y = 0;
-            rb.velocity = speed * (dir) + new Vector3(0, rb.velocity.y, 0);
+            rb.velocity = speed * (dir) + Vector3.up * rb.velocity.y;
         }
 
     }
