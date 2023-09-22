@@ -102,12 +102,14 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         {
             if( attackState == Helpers.NOTATTACKING || _input == Vector3.zero)
             {   
+                gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
                 moveable.Launched(transform.forward * dashRange, dashSpeed);
                 StartCoroutine(DashCD());
             }
             else if (attackState == Helpers.CHARGING)
             {
+                gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
                 moveable.Launched(_input.ToIso().normalized * dashRange, dashSpeed);
                 StartCoroutine(DashCD());
@@ -117,7 +119,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
     private IEnumerator DashCD()
     {
-        gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
+        
         for (float i =0; i<dashCD; i+=0.01f)
         {
             yield return new WaitForSeconds(0.01f);
