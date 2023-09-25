@@ -5,12 +5,12 @@ using UnityEngine;
 public class Transparency : MonoBehaviour
 {
     Material[] mats;
-    [SerializeField]
-    float fadeSpeed = 2.0f;
+    float fadeSpeed = 10f;
     [SerializeField]
     float fadeAmount = 0.4f;
     float[] originalOpacities;
     private bool fade = false;
+    private bool lastFade = false;
 
     // Start is called before the first frame update
     void Start()
@@ -31,9 +31,17 @@ public class Transparency : MonoBehaviour
             Color smoothColor;
             if (fade)
             {
-                //Debug.Log("Applying fade");
-                smoothColor = new Color(currentColor.r, currentColor.g, currentColor.b,
-                    Mathf.Lerp(currentColor.a, fadeAmount, fadeSpeed * Time.deltaTime));
+                if (lastFade)
+                {
+                    //Debug.Log("Applying fade");
+                    smoothColor = new Color(currentColor.r, currentColor.g, currentColor.b,
+                        Mathf.Lerp(currentColor.a, fadeAmount, fadeSpeed * Time.deltaTime));
+                }
+                else
+                {
+                    smoothColor = new Color(currentColor.r, currentColor.g, currentColor.b,
+                        Mathf.Lerp(currentColor.a, 0, fadeSpeed * Time.deltaTime));
+                }
 
             }
             else
@@ -46,10 +54,11 @@ public class Transparency : MonoBehaviour
         }
     }
 
-    public void DoFade(bool fade)
+    public void DoFade(bool fade, bool lastFade)
     {
-        Debug.Log("Setting fade to " + fade);
         this.fade = fade;
-        Debug.Log("Fade is set to " + this.fade);
+        this.lastFade = lastFade;
+        if(lastFade)
+            Debug.Log("Last Fade set to " + name);
     }
 }

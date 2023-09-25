@@ -34,7 +34,7 @@ public class Moveable : MonoBehaviour
         {
             Vector3 dir = targetLocation - transform.position;
             dir.y = 0;
-            rb.velocity = dir.normalized * speed + Vector3.up * rb.velocity.y;
+            rb.velocity = dir.normalized * speed + Vector3.up * Mathf.Clamp(rb.velocity.y, Mathf.NegativeInfinity, 1);
             Vector3 positionIgnoreY = transform.position;
             positionIgnoreY.y = 0;
             Vector3 targetIgnoreY = targetLocation;
