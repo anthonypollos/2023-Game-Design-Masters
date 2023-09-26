@@ -8,6 +8,8 @@ public class Transparency : MonoBehaviour
     float fadeSpeed = 10f;
     [SerializeField]
     float fadeAmount = 0.4f;
+    [SerializeField]
+    bool keepShadows = true;
     float[] originalOpacities;
     private bool fade = false;
     private bool lastFade = false;
@@ -29,7 +31,7 @@ public class Transparency : MonoBehaviour
         {
             Color currentColor = mats[i].color;
             Color smoothColor;
-            if (fade)
+            if (fade && mats[i].HasProperty("_Color"))
             {
                 if (lastFade)
                 {
@@ -49,8 +51,43 @@ public class Transparency : MonoBehaviour
                 //Debug.Log("Unapplying fade");
                 smoothColor = new Color(currentColor.r, currentColor.g, currentColor.b,
                     Mathf.Lerp(currentColor.a, originalOpacities[i], fadeSpeed * Time.deltaTime));
+                
             }
             mats[i].color = smoothColor;
+            if(smoothColor.a >= originalOpacities[i])
+            {
+                mats[i].SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                mats[i].SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                mats[i].SetInt("_ZWrite", 1);
+                mats[i].SetInt("_Surface", 0);
+
+                mats[i].renderQueue = (int)UnityEngine.Rendering.RenderQueue.Geometry;
+
+                mats[i].SetShaderPassEnabled("DepthOnly", true);
+                mats[i].SetShaderPassEnabled("SHADOWCASTER", true);
+
+                mats[i].SetOverrideTag("RenderType", "Opaque");
+
+                mats[i].DisableKeyword("_SURFACE_TYPE_TRANSPARENT");
+                mats[i].DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            }
+            else
+            {
+                mats[i].SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                mats[i].SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                mats[i].SetInt("_ZWrite", 0);
+                mats[i].SetInt("_Surface", 1);
+
+                mats[i].renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+
+                mats[i].SetShaderPassEnabled("DepthOnly", false);
+                mats[i].SetShaderPassEnabled("SHADOWCASTER", keepShadows);
+
+                mats[i].SetOverrideTag("RenderType", "Transparent");
+
+                mats[i].EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+                mats[i].EnableKeyword("_ALPHAPREMULTIPLY_ON");
+            }
         }
     }
 
