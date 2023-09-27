@@ -9,12 +9,15 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
     [SerializeField] GameObject explosion;
     private int health;
     [SerializeField] float fuse = 5f;
+    [SerializeField] JukeBox jukebox;
+
     // Start is called before the first frame update
     void Start()
     {
         health = 10;
         moveable = GetComponent<Moveable>();
         primed = false;
+        jukebox.SetTransform(transform);
     }
 
     public void Kicked()
@@ -77,6 +80,7 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
 
     private void Explode()
     {
+        jukebox.PlaySound(0);
         Instantiate(explosion, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
