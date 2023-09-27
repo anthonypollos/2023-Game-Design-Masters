@@ -150,9 +150,10 @@ public class LassoBehavior : MonoBehaviour
         (check, mouseVector) = GetMousePosition();
         if(check)
         {
-            mouseVector = mouseVector - attached.transform.position;
-            dir = mouseVector.normalized;
-            float angle = Vector3.Angle(forwardVector.normalized, mouseVector.normalized);
+            var direction = mouseVector - attached.transform.position;
+            direction.y = 0;
+            dir = direction.normalized;
+            float angle = Vector3.Angle(forwardVector.normalized, dir);
             return (angle <= pullAngle);
         }
         else

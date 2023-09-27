@@ -136,6 +136,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
         if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
         {
+            //Debug.Log("Target Hit\nName:" + hitInfo.transform.name + "\nLayer:" + LayerMask.LayerToName(hitInfo.transform.gameObject.layer));
             return (success: true, position: hitInfo.point);
 
         }
@@ -148,7 +149,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     private void Move()
     {
 
-        _rb.velocity = _input.ToIso().normalized * _speed + (Vector3.up * _rb.velocity.y);
+        _rb.velocity = _input.ToIso().normalized * _speed + (Vector3.up * Mathf.Clamp(_rb.velocity.y, Mathf.NegativeInfinity, 0));
     }
 
     public void Kicked()

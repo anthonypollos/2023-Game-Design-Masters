@@ -8,15 +8,18 @@ public class FadingObject : MonoBehaviour, IEquatable<FadingObject>
 {
     [Tooltip("Leave blank for all renderers to be used")]
     public List<Renderer> renderers = new List<Renderer>();
-    public Vector3 position;
     [HideInInspector]
     public List<Material> materials = new List<Material>();
     [HideInInspector]
-    public float InitialAlpha;
+    public float initialAlpha;
+    [HideInInspector]
+    public bool lastHit;
+    [HideInInspector]
+    public List<GameObject> moveables = new List<GameObject>();
 
     private void Awake()
     {
-        position = transform.position; 
+        lastHit = false;
 
         if(renderers.Count == 0)
         {
@@ -28,18 +31,18 @@ public class FadingObject : MonoBehaviour, IEquatable<FadingObject>
             materials.AddRange(renderer.materials);
         }
 
-        InitialAlpha = materials[0].color.a;
+        initialAlpha = materials[0].color.a;
 
     }
 
     public bool Equals(FadingObject other)
     {
-        return position.Equals(other.position);
+        return string.Equals(name, other.name);
     }
 
     public override int GetHashCode()
     {
-        return position.GetHashCode();
+        return name.GetHashCode();
     }
 
 }
