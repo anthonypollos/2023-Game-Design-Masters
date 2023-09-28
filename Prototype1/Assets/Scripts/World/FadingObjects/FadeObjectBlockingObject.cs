@@ -66,7 +66,7 @@ public class FadeObjectBlockingObject : MonoBehaviour
             //Debug.Log("Target's hit: " + targets);
             if (targets > 0)
             {
-                Dictionary<float, FadingObject> tempDic = new Dictionary<float, FadingObject>();
+                Dictionary<FadingObject, float> tempDic = new Dictionary<FadingObject, float>();
                 for (int i = 0; i<targets; i++)
                 {
   
@@ -74,7 +74,7 @@ public class FadeObjectBlockingObject : MonoBehaviour
                     FadingObject fadingObject = hit.transform.GetComponent<FadingObject>();
                     if (fadingObject != null)
                     {
-                        tempDic.Add(hit.distance, fadingObject);
+                        tempDic.Add(fadingObject, hit.distance);
                         hitFadingObjects.Add(fadingObject);
                         if (!objectsBlockingView.Contains(fadingObject))
                         {
@@ -100,11 +100,14 @@ public class FadeObjectBlockingObject : MonoBehaviour
                 }
                 foreach (FadingObject obj in objectsBlockingView)
                     obj.lastHit = false;
-                float greatestKey = -1;
-                foreach (float key in tempDic.Keys)
-                    if (key > greatestKey) greatestKey = key;
-                if(greatestKey!=-1)
-                    tempDic[greatestKey].lastHit = true;
+                float greatestValue = -1;
+                foreach (float value in tempDic.Values)
+                    if (value > greatestValue) greatestValue = value;
+                if(greatestValue!=-1)
+                    foreach (var (key, value) in tempDic)
+                    {
+                        if (greatestValue == value) key.lastHit = true;
+                    }
             }
 
             FadeObjectsNoLongerBeingHit();

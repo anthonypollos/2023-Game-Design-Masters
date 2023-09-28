@@ -136,7 +136,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
         if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
         {
-            //Debug.Log("Target Hit\nName:" + hitInfo.transform.name + "\nLayer:" + LayerMask.LayerToName(hitInfo.transform.gameObject.layer));
+            Debug.DrawRay(hitInfo.point, Vector3.down, Color.red);
             return (success: true, position: hitInfo.point);
 
         }
