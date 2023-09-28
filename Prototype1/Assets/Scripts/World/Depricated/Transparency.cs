@@ -70,6 +70,17 @@ public class Transparency : MonoBehaviour
 
                 mats[i].DisableKeyword("_SURFACE_TYPE_TRANSPARENT");
                 mats[i].DisableKeyword("_ALPHAPREMULTIPLY_ON");
+
+                if (gameObject.layer == LayerMask.NameToLayer("Ground_Transparent"))
+                {
+                    gameObject.layer = LayerMask.NameToLayer("Ground");
+                }
+                else if (gameObject.layer == LayerMask.NameToLayer("Default_Transparent"))
+                {
+                    gameObject.layer = LayerMask.NameToLayer("Default");
+                }
+
+
             }
             else
             {
@@ -87,6 +98,16 @@ public class Transparency : MonoBehaviour
 
                 mats[i].EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
                 mats[i].EnableKeyword("_ALPHAPREMULTIPLY_ON");
+
+
+                if (gameObject.layer == LayerMask.NameToLayer("Ground"))
+                {
+                    gameObject.layer = LayerMask.NameToLayer("Ground_Transparent");
+                }
+                else if (gameObject.layer == LayerMask.NameToLayer("Default"))
+                {
+                    gameObject.layer = LayerMask.NameToLayer("Default_Transparent");
+                }
             }
         }
     }
@@ -95,7 +116,7 @@ public class Transparency : MonoBehaviour
     {
         this.fade = fade;
         this.lastFade = lastFade;
-        if(lastFade)
-            Debug.Log("Last Fade set to " + name);
+        //if(lastFade)
+            //Debug.Log("Last Fade set to " + name);
     }
 }

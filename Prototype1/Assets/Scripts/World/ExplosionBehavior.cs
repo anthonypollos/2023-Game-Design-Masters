@@ -9,15 +9,30 @@ public class ExplosionBehavior : MonoBehaviour
     [SerializeField] float explosiveCarryDistance;
     [SerializeField] LayerMask layerMask;
     List<GameObject> hit;
+    ParticleSystem[] particleSystems;
     private void Start()
     {
         StartCoroutine(DestroySelf());
         hit = new List<GameObject>();
+        particleSystems = GetComponentsInChildren<ParticleSystem>();
     }
     IEnumerator DestroySelf()
     {
         yield return new WaitForSeconds(0.1f);
-        Destroy(gameObject);
+        GetComponent<Collider>().enabled = false;
+    }
+
+    private void Update()
+    {
+        bool stillPlaying = false;
+        foreach(ParticleSystem ps in  particleSystems)
+        {
+            stillPlaying = ps.isPlaying;
+        }
+        if (!stillPlaying)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerStay(Collider other)

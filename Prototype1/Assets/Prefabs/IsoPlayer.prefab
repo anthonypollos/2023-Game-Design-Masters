@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 6157092007949576416}
   - component: {fileID: 3291948898611814059}
   - component: {fileID: -2951775800152396056}
+  - component: {fileID: 7830389134396124948}
   m_Layer: 3
   m_Name: IsoPlayer
   m_TagString: Player
@@ -208,7 +209,7 @@ MonoBehaviour:
   _speed: 10
   groundMask:
     serializedVersion: 2
-    m_Bits: 2880
+    m_Bits: 2881
   moveable: {fileID: 0}
   attackState: 0
   isDead: 0
@@ -406,6 +407,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLaunched: 0
+--- !u!114 &7830389134396124948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030166625210922752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f47e1c55a9b36ea48a0248b518d3b814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layermask:
+    serializedVersion: 2
+    m_Bits: 24833
+  fadeAlpha: 0.4
+  keepShadows: 0
+  targetPositionOffset: {x: 0, y: 0, z: 0}
+  fadeSpeed: 5
+  fadeAOEX: 0.4
+  fadeAOEY: 0.8
+  fadeAOEZ: 0.4
+  objectsBlockingView: []
 --- !u!1 &2589270186440912574
 GameObject:
   m_ObjectHideFlags: 0
@@ -424,7 +448,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1364245773939271813
 Transform:
   m_ObjectHideFlags: 0
@@ -525,7 +549,7 @@ GameObject:
   - component: {fileID: 9017589768193913195}
   - component: {fileID: 4057085110967645005}
   - component: {fileID: 7272981938980669717}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: KickHitbox
   m_TagString: Kick
   m_Icon: {fileID: 0}
