@@ -21,7 +21,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     private bool canDash;
     private GameController gc;
 
-    [SerializeField] float dashRange, dashSpeed, dashCD;
+    [SerializeField] float dashRange, dashTime, dashCD;
     [SerializeField] Image dashCDIndicator;
     
     private void Start()
@@ -104,14 +104,14 @@ public class IsoPlayerController : MonoBehaviour, IKickable
             {   
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
-                moveable.Launched(transform.forward * dashRange, dashSpeed);
+                moveable.Dash(transform.forward * dashRange, dashTime);
                 StartCoroutine(DashCD());
             }
             else if (attackState == Helpers.CHARGING)
             {
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
-                moveable.Launched(_input.ToIso().normalized * dashRange, dashSpeed);
+                moveable.Dash(_input.ToIso().normalized * dashRange, dashTime);
                 StartCoroutine(DashCD());
             }
         }
