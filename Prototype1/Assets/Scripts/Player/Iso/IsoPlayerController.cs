@@ -21,7 +21,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     private bool canDash;
     private GameController gc;
 
-    [SerializeField] float dashRange, dashSpeed, dashCD;
+    [SerializeField] float dashRange, dashTime, dashCD;
     [SerializeField] Image dashCDIndicator;
     
     private void Start()
@@ -104,14 +104,14 @@ public class IsoPlayerController : MonoBehaviour, IKickable
             {   
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
-                moveable.Launched(transform.forward * dashRange, dashSpeed);
+                moveable.Dash(transform.forward * dashRange, dashTime);
                 StartCoroutine(DashCD());
             }
             else if (attackState == Helpers.CHARGING)
             {
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
-                moveable.Launched(_input.ToIso().normalized * dashRange, dashSpeed);
+                moveable.Dash(_input.ToIso().normalized * dashRange, dashTime);
                 StartCoroutine(DashCD());
             }
         }
@@ -136,6 +136,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
         if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
         {
+            Debug.DrawRay(hitInfo.point, Vector3.down, Color.red);
             return (success: true, position: hitInfo.point);
 
         }
@@ -148,7 +149,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     private void Move()
     {
 
-        _rb.velocity = _input.ToIso().normalized * _speed + (Vector3.up * _rb.velocity.y);
+        _rb.velocity = _input.ToIso().normalized * _speed + (Vector3.up * Mathf.Clamp(_rb.velocity.y, Mathf.NegativeInfinity, 0));
     }
 
     public void Kicked()

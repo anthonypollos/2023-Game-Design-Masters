@@ -34,7 +34,7 @@ public class Moveable : MonoBehaviour
         {
             Vector3 dir = targetLocation - transform.position;
             dir.y = 0;
-            rb.velocity = dir.normalized * speed + Vector3.up * rb.velocity.y;
+            rb.velocity = dir.normalized * speed + Vector3.up * Mathf.Clamp(rb.velocity.y, Mathf.NegativeInfinity, 1);
             Vector3 positionIgnoreY = transform.position;
             positionIgnoreY.y = 0;
             Vector3 targetIgnoreY = targetLocation;
@@ -75,6 +75,15 @@ public class Moveable : MonoBehaviour
         targetLocation.y = transform.position.y;
         Debug.DrawRay(transform.position, target / rb.mass, Color.gray, 5f);
         speed = force;
+        isLaunched = true;
+    }
+
+    public void Dash(Vector3 target, float time)
+    {
+        buffer = 0;
+        targetLocation = transform.position + target;
+        targetLocation.y = transform.position.y;
+        speed = Vector3.Distance(transform.position, targetLocation) / time;
         isLaunched = true;
     }
 }

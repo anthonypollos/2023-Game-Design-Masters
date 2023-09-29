@@ -7,6 +7,7 @@ public class LassoBehavior : MonoBehaviour
 {
     private GameController gc;
     public IsoAttackManager attackManager;
+    [HideInInspector]
     public float maxDistance = 999;
     private GameObject attached;
     private Rigidbody attachedRB;
@@ -128,6 +129,7 @@ public class LassoBehavior : MonoBehaviour
 
         if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
         {
+            Debug.DrawRay(hitInfo.point, Vector3.down * 10, Color.red, 10f);
             return (success: true, position: hitInfo.point);
 
         }
@@ -150,9 +152,10 @@ public class LassoBehavior : MonoBehaviour
         (check, mouseVector) = GetMousePosition();
         if(check)
         {
-            mouseVector = mouseVector - attached.transform.position;
-            dir = mouseVector.normalized;
-            float angle = Vector3.Angle(forwardVector.normalized, mouseVector.normalized);
+            var direction = mouseVector - attached.transform.position;
+            direction.y = 0;
+            dir = direction.normalized;
+            float angle = Vector3.Angle(forwardVector.normalized, dir);
             return (angle <= pullAngle);
         }
         else
