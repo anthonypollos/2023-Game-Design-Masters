@@ -7,6 +7,7 @@ public class LassoBehavior : MonoBehaviour
 {
     private GameController gc;
     public IsoAttackManager attackManager;
+    [HideInInspector]
     public float maxDistance = 999;
     private GameObject attached;
     private Rigidbody attachedRB;
