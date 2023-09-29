@@ -57,7 +57,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
     private void FixedUpdate()
     {
-        if (!moveable.isLaunched && !isDead && attackState == Helpers.NOTATTACKING)
+        if (!moveable.isLaunched && !isDead && attackState != Helpers.ATTACKING)
             Move();
         else
             if(!moveable.isLaunched)
@@ -176,6 +176,6 @@ public static class Helpers
 
     public const int NOTATTACKING = 0;
     public const int CHARGING = 1;
-    public const int KICKING = 2;
+    public const int ATTACKING = 2;
     
 }
