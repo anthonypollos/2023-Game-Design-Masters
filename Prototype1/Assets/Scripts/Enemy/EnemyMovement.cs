@@ -43,6 +43,8 @@ public class EnemyMovement : MonoBehaviour
         {
             RandomPoint(out targetPosition);
         }
+        if (isPatrolling)
+            targetPosition = patrolPoints[0];
     }
 
     // Update is called once per frame

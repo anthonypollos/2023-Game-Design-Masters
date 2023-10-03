@@ -84,8 +84,11 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     {
         //Debug.Log("Apply force");
         Moveable moveable = target.GetComponent<Moveable>();
-        moveable.Launched(transform.forward * kickCarryDistance ,kickForce);
-        target.GetComponent<IKickable>().Kicked();
+        if(moveable != null)
+            moveable.Launched(transform.forward * kickCarryDistance ,kickForce);
+        IKickable kick = target.GetComponent<IKickable>();
+        if (kick != null)
+            kick.Kicked();
         
     }
 

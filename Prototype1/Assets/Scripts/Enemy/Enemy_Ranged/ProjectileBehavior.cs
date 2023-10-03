@@ -26,7 +26,7 @@ public class ProjectileBehavior : MonoBehaviour
         if (gameObject.CompareTag("Wall") || gameObject.CompareTag("Ground"))
             Destroy(gameObject);
         IDamageable id = hit.GetComponent<IDamageable>();
-        if(id != null && !gameObject.CompareTag("Enemy"))
+        if(id != null)
         {
             id.TakeDamage(damage);
             Destroy(gameObject);
