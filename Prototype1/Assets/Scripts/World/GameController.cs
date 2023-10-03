@@ -16,11 +16,14 @@ public class GameController : MonoBehaviour
     [SerializeField] float zoomTime = 1;
     float[] targetZoom;
     private float velocity = 0;
+    [HideInInspector]
     public bool toggleLasso = false;
     private TextMeshProUGUI text;
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject deathMenu;
     [SerializeField] List<string> nonGameScenes;
+
+    [HideInInspector] public static GameObject player;
 
     public static GameController instance;
 
@@ -34,6 +37,7 @@ public class GameController : MonoBehaviour
         else
         {
             instance = this;
+            player = GameObject.FindGameObjectWithTag("Player");
         }
     }
 

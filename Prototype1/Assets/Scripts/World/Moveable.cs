@@ -77,4 +77,13 @@ public class Moveable : MonoBehaviour
         speed = force;
         isLaunched = true;
     }
+
+    public void Dash(Vector3 target, float time)
+    {
+        buffer = 0;
+        targetLocation = transform.position + target;
+        targetLocation.y = transform.position.y;
+        speed = Vector3.Distance(transform.position, targetLocation) / time;
+        isLaunched = true;
+    }
 }
