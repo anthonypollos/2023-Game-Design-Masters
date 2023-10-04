@@ -78,7 +78,7 @@ public class FadeObjectBlockingObject : MonoBehaviour
                         hitFadingObjects.Add(fadingObject);
                         if (!objectsBlockingView.Contains(fadingObject))
                         {
-                            Debug.Log("Starting Fading Coroutine on: " + fadingObject.name);
+                            //Debug.Log("Starting Fading Coroutine on: " + fadingObject.name);
                             if (runningCoroutines.ContainsKey(fadingObject))
                             {
                                 if (runningCoroutines[fadingObject] != null)
@@ -195,7 +195,7 @@ public class FadeObjectBlockingObject : MonoBehaviour
 
     private IEnumerator FadeObjectOut(FadingObject fadingObject)
     {
-        Debug.Log("Begin fading out: " + fadingObject.transform.name);
+        //Debug.Log("Begin fading out: " + fadingObject.transform.name);
         foreach (Material material in fadingObject.materials)
         {
             material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);

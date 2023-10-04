@@ -9,7 +9,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [SerializeField] int health = 20;
     int maxHealth;
     Slider slider;
-    EnemyContainer ec;
+    [HideInInspector]
+    public EnemyContainer ec;
     [HideInInspector]
     public EnemyBrain brain;
     private void Start()

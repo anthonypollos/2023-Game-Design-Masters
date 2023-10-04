@@ -60,7 +60,7 @@ public class MovingFadingObject : MonoBehaviour
 
     private void FadeLayer(bool isFadingOut)
     {
-        Debug.Log("Fade Layer called: " + isFadingOut);
+        //Debug.Log("Fade Layer called: " + isFadingOut);
         if (isFadingOut)
         {
             if (gameObject.layer == LayerMask.NameToLayer("Ground"))

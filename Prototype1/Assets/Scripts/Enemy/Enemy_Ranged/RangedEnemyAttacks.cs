@@ -15,9 +15,6 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
     [Tooltip("The location the projectiles spawn at")]
     Transform shootLocation;
     [SerializeField]
-    [Tooltip("Projectile speed")]
-    float projectileSpeed = 10f;
-    [SerializeField]
     [Tooltip("Spread angle")]
     float spreadAngle = 10f;
     public override void Attack()
@@ -37,7 +34,7 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
     private void TriggerAttack(int attack)
     {
         brain.an.SetBool("Attacking", true);
-        Debug.Log("trigger attack" + attack);
+        //Debug.Log("trigger attack" + attack);
         brain.an.SetTrigger("Attack" + attack.ToString());
         brain.state = EnemyStates.ATTACKING;
         brain.LookAtPlayer();
@@ -53,27 +50,24 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
 
     public void ShootProjectile()
     {
-        List<Rigidbody> projectiles = new List<Rigidbody>();
         currentShot++;
-        int projectilesToSpawn = currentShot == multiShotInterval ? 3 : 1;
+        int projectilesToSpawn = (currentShot%multiShotInterval)==0 ? 3 : 1;
+        if (currentShot%multiShotInterval == 0) Debug.Log("trigger multi");
         for (int i = 0; i < projectilesToSpawn; i++)
-            projectiles.Add(Instantiate(projectile, shootLocation.position, Quaternion.identity).GetComponent<Rigidbody>());
-        int temp = 0;
-        foreach (Rigidbody projectile in projectiles)
-        {
-            temp++;
-            switch(temp)
+        { 
+            IProjectile shot = Instantiate(projectile, shootLocation.position, Quaternion.identity).GetComponent<IProjectile>();
+            switch(i)
             {
+                case 0:
+                    shot.Shoot(transform.forward, brain.player.position);
+                    break;
                 case 1:
-                    projectile.AddForce(transform.forward * projectileSpeed, ForceMode.Impulse);
+                    Quaternion rotation1 = Quaternion.Euler(0, spreadAngle, 0);
+                    shot.Shoot(rotation1 * transform.forward, brain.player.position);
                     break;
                 case 2:
-                    Quaternion rotation1 = Quaternion.Euler(0, spreadAngle, 0);
-                    projectile.AddForce(rotation1 * transform.forward * projectileSpeed, ForceMode.Impulse);
-                    break;
-                case 3:
                     Quaternion rotation2 = Quaternion.Euler(0, -spreadAngle, 0);
-                    projectile.AddForce(rotation2 * transform.forward * projectileSpeed, ForceMode.Impulse);
+                    shot.Shoot(rotation2 * transform.forward, brain.player.position);
                     break;
                 default:
                     break;
@@ -97,6 +91,6 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
     {
         float previous = count;
         base.UpdateCounter();
-        if (count <= previous) currentShot = 0;
+        if (count < previous) currentShot = 0;
     }
 }
