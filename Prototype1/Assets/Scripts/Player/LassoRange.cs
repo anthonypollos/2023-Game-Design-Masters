@@ -37,7 +37,7 @@ public class LassoRange : MonoBehaviour
             dir.y = 0;
             positions.Add(attached.position + dir*range);
         }
-        Debug.Log(positions.Count);
+        //Debug.Log(positions.Count);
         lr.SetPositions(positions.ToArray());
         lr.enabled = true;
         

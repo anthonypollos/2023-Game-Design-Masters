@@ -23,7 +23,7 @@ public class GameController : MonoBehaviour
     [SerializeField] GameObject deathMenu;
     [SerializeField] List<string> nonGameScenes;
 
-    [HideInInspector] public static GameObject player;
+    static GameObject player;
 
     public static GameController instance;
 
@@ -37,8 +37,18 @@ public class GameController : MonoBehaviour
         else
         {
             instance = this;
+            player = null;
+        }
+    }
+
+    public static Transform GetPlayer()
+    {
+        if (player == null)
+        {
             player = GameObject.FindGameObjectWithTag("Player");
         }
+        return player.transform;
+
     }
 
 

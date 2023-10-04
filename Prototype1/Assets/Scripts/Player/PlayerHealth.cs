@@ -16,7 +16,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         hpBar = GetComponentInChildren<Slider>();
         pc = GetComponent<IsoPlayerController>();
         maxHealth = health;
-        GameController.player = gameObject;
     }
 
     private void Update()

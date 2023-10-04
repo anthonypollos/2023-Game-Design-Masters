@@ -60,7 +60,7 @@ public class MovingFadingObject : MonoBehaviour
 
     private void FadeLayer(bool isFadingOut)
     {
-        Debug.Log("Fade Layer called: " + isFadingOut);
+        //Debug.Log("Fade Layer called: " + isFadingOut);
         if (isFadingOut)
         {
             if (gameObject.layer == LayerMask.NameToLayer("Ground"))
@@ -99,5 +99,15 @@ public class MovingFadingObject : MonoBehaviour
                 gameObject.layer = LayerMask.NameToLayer("Interactables");
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        foreach (Material material in render.materials)
+            if(parentFade!=null)
+            {
+                parentFade.materials.Remove(material);
+                parentFade.moveables.Remove(gameObject);
+            }
     }
 }

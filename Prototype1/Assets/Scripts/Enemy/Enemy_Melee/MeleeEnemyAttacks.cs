@@ -46,7 +46,7 @@ public class MeleeEnemyAttacks : EnemyAttackTemplate
     private void TriggerAttack(int attack)
     {
         brain.an.SetBool("Attacking", true);
-        Debug.Log("trigger attack" + attack);
+        //Debug.Log("trigger attack" + attack);
         brain.an.SetTrigger("Attack" + attack.ToString());
         brain.state = EnemyStates.ATTACKING;
         brain.LookAtPlayer();

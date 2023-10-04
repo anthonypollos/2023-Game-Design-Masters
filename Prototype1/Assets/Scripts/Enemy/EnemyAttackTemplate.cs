@@ -19,7 +19,7 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
 
     protected float count = 0;
 
-    protected void UpdateCounter()
+    protected virtual void UpdateCounter()
     {
         if (brain.interaction.stunned)
             count = 0;

@@ -41,7 +41,7 @@ public class Moveable : MonoBehaviour
             targetIgnoreY.y = 0;
             if(Vector3.Distance(positionIgnoreY, targetIgnoreY) < 0.5f)
             {
-                Debug.Log("Reached Destination");
+                //Debug.Log("Reached Destination");
                 if(stopping==null)
                     stopping = StartCoroutine(Stop());
             }
