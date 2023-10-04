@@ -9,8 +9,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [SerializeField] int health = 20;
     int maxHealth;
     Slider slider;
-    EnemyInteractionBehaviorTemplate interaction;
-    EnemyContainer ec;
+    [HideInInspector]
+    public EnemyContainer ec;
     [HideInInspector]
     public EnemyBrain brain;
     private void Start()
@@ -20,13 +20,12 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         maxHealth = health;
         slider = GetComponentInChildren<Slider>();
         slider.value = health / maxHealth;
-        interaction = GetComponent<EnemyInteractionBehaviorTemplate>();
     }
     public void TakeDamage(int dmg)
     {
         //Debug.Log("dealt damage");
         health -= dmg;
-        interaction.Stagger();
+        brain.interaction.Stagger();
         if (health <= 0) Die();
         //Debug.Log((float)health / maxHealth);
         //Debug.Log(health);
