@@ -27,7 +27,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     bool kicking;
     GameObject kick;
-    IsoPlayerController pc;
+    [HideInInspector]
+    public IsoPlayerController pc;
     GameController gc;
 
 
@@ -69,7 +70,10 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     {
         if (!kicking && !isCharging && !pc.moveable.isLaunched)
         {
-            pc.lookAtMouse();
+            if (InputChecker.instance.IsController())
+                pc.LookAtAim();
+            else
+                pc.LookAtMouse();
             kicking = true;
             pc.attackState = Helpers.KICKING;
             kick.SetActive(true);
