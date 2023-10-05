@@ -9,6 +9,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     [SerializeField] [Tooltip("The player's movement speed")] private float _speed = 5;
     //[SerializeField][Tooltip("The player's turn speed")] private float _turnSpeed = 360;
     private Vector3 _input;
+    public Vector3 _aimInput;
     private Camera cam;
     MainControls mc;
     [SerializeField] LayerMask groundMask;
@@ -41,6 +42,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         mc.Enable();
         mc.Main.Move.performed += ctx => _input = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
         mc.Main.Move.canceled += _ => _input = Vector3.zero;
+        mc.Main.Aim.performed += ctx => _aimInput = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue <Vector2>().y);
         mc.Main.Dash.performed += _ => Dash();
     }
 
@@ -61,7 +63,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
             Move();
         else
             if(!moveable.isLaunched)
-                _rb.velocity = Vector3.zero;
+                _rb.velocity = Vector3.zero + Vector3.up * _rb.velocity.y;
     }
 
 
@@ -76,7 +78,11 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
         if (attackState==Helpers.CHARGING)
         {
-            lookAtMouse();
+            if (InputChecker.instance.IsController())
+                LookAtAim();
+            else
+                LookAtMouse();
+
         }
         else if (_input != Vector3.zero && attackState==Helpers.NOTATTACKING)
         {
@@ -84,7 +90,12 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         }
     }
 
-    public void lookAtMouse()
+    public void LookAtAim()
+    {
+        transform.forward = Helpers.ToIso(_aimInput.normalized);
+    }
+
+    public void LookAtMouse()
     {
         var (success, position) = GetMousePosition();
         if (success)
@@ -92,7 +103,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
             var direction = position - transform.position;
 
             direction.y = 0;
-            transform.forward = direction;
+            transform.forward = direction.normalized;
         }
     }
 

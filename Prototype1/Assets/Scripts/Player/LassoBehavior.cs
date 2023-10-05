@@ -147,21 +147,28 @@ public class LassoBehavior : MonoBehaviour
         //Debug.DrawRay(attached.transform.position, forwardVector, Color.black);
         //Debug.DrawRay(attached.transform.position, rightVector, Color.green);
         //Debug.DrawRay(attached.transform.position, -rightVector, Color.red);
-        bool check;
-        Vector3 mouseVector;
-        (check, mouseVector) = GetMousePosition();
-        if(check)
+        if (InputChecker.instance.IsController())
         {
-            var direction = mouseVector - attached.transform.position;
+            var direction = Helpers.ToIso(attackManager.pc._aimInput);
             direction.y = 0;
             dir = direction.normalized;
+
+        }
+        else {
+            bool check;
+            Vector3 mouseVector;
+            (check, mouseVector) = GetMousePosition();
+            if (check)
+            {
+                var direction = mouseVector - attached.transform.position;
+                direction.y = 0;
+                dir = direction.normalized;
+            }
+            else return false;
+        }
             float angle = Vector3.Angle(forwardVector.normalized, dir);
             return (angle <= pullAngle);
-        }
-        else
-        {
-            return false;
-        }
+
     }
 
     private bool IsRight()
