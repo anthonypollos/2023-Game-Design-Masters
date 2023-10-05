@@ -80,6 +80,17 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""74196267-f22e-47fb-9f83-6f9adafb4e95"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""7c1dcde0-b30a-4c52-bf3e-04e75debe51a"",
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
@@ -93,6 +104,17 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""0f08ac83-e77c-4bb0-a0b9-765c2b2a2c29"",
                     ""path"": ""<Keyboard>/equals"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleLasso"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7255c41e-2bec-4174-aa29-181a0d68f83b"",
+                    ""path"": ""<Gamepad>/select"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
