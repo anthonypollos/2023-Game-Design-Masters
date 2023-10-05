@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileBehavior : MonoBehaviour, IProjectile
+public class ThornBehavior : MonoBehaviour, IProjectile
 {
 
-    [SerializeField] float despawnTime = 10f;
+    [SerializeField] float despawnTime = 20f;
     [SerializeField] int damage = 15;
+    [SerializeField] float speed = 4f;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,18 +24,18 @@ public class ProjectileBehavior : MonoBehaviour, IProjectile
     {
         //Debug.Log("hit");
         GameObject hit = other.gameObject;
-        if (gameObject.CompareTag("Wall") || gameObject.CompareTag("Ground"))
-            Destroy(gameObject);
         IDamageable id = hit.GetComponent<IDamageable>();
-        if(id != null)
+        if (id != null)
         {
             id.TakeDamage(damage);
             Destroy(gameObject);
         }
+        if (gameObject.CompareTag("Wall") || gameObject.CompareTag("Ground"))
+            Destroy(gameObject);
     }
 
     public void Shoot(Vector3 dir, Vector3 playerPos)
     {
-        ;
+        GetComponent<Rigidbody>().velocity = dir * speed;
     }
 }
