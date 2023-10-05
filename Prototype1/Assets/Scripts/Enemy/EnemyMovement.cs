@@ -5,8 +5,6 @@ using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField]
-    bool isMoving = true;
     [SerializeField] 
     float movementSpeed;
     [SerializeField] [Tooltip("Is the enemy a patrol type enemy or a random wandering enemy")] 
@@ -39,11 +37,11 @@ public class EnemyMovement : MonoBehaviour
         isforward = true;
         currentPoint = 0;
         corner = 0;
-        if (isMoving)
+        RandomPoint(out targetPosition);
+        //get first path
+        while(!NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path))
         {
             RandomPoint(out targetPosition);
-            if (isPatrolling)
-                targetPosition = patrolPoints[0];
         }
     }
 
@@ -55,36 +53,32 @@ public class EnemyMovement : MonoBehaviour
 
     public void Move()
     {
-
-        if (isMoving)
+        
+        if (count>=1f || corner>=path.corners.Length)
         {
-            if (count >= 1f || corner >= path.corners.Length)
+            if(!NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path))
             {
-                if (!NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path))
+                RandomPoint(out targetPosition);
+            }
+            else
+            {
+                if(path.status != NavMeshPathStatus.PathComplete)
                 {
                     RandomPoint(out targetPosition);
                 }
-                else
-                {
-                    if (path.status != NavMeshPathStatus.PathComplete)
-                    {
-                        RandomPoint(out targetPosition);
-                    }
-                }
             }
-
-            if (corner < path.corners.Length && Vector3.Distance(transform.position, path.corners[corner]) < 1.0f)
-            {
-                corner++;
-            }
-
-            MovementCalc();
         }
+
+        if (corner < path.corners.Length && Vector3.Distance(transform.position, path.corners[corner]) < 1.0f)
+        {
+            corner++;
+        }
+
+        MovementCalc();
     }
 
     public void Stop()
     {
-        if (isMoving)
         rb.velocity = Vector3.zero + rb.velocity.y * Vector3.up;
     }
 

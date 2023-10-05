@@ -8,6 +8,7 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     protected bool lassoed;
     [HideInInspector]
     protected bool hasCollided;
+    [HideInInspector]
     public bool stunned;
     [HideInInspector]
     public EnemyBrain brain;

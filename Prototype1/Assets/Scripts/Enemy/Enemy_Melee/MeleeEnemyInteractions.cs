@@ -8,9 +8,6 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     [Tooltip("Damage dealt and taken when colliding with someone then launched")]
     int clashDamage = 20;
     bool launched;
-    [SerializeField]
-    [Tooltip("Stun time when taking damage")]
-    float stunTime = 0.5f;
      void Start()
     {
         lassoed = false;
@@ -31,24 +28,23 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     }
     public override void Kicked()
     {
-        launched = true;
         Stunned();
         hasCollided = false;
-        
+        launched = true;
     }
 
     public override void Lassoed()
     {
         lassoed = true;
+        launched = true;
         Stunned();
         brain.an.SetBool("Lassoed", true);
     }
 
     public override void Pulled()
     {
-        launched = true;
         lassoed = false;
-        hasCollided = false;
+        hasCollided = true;
         brain.an.SetBool("Lassoed", false);
     }
 
@@ -78,7 +74,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     private IEnumerator Staggered()
     {
         Stunned();
-        yield return new WaitForSeconds(stunTime);
+        yield return new WaitForSeconds(0.5f);
         if (!brain.moveable.isLaunched)
             UnStunned();
 

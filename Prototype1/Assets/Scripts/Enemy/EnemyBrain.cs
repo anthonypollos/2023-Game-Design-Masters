@@ -40,7 +40,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     // Start is called before the first frame update
     void Start()
     {
-        player = GameController.GetPlayer();
+        player = GameController.player.transform;
         isAggro = false;
         moveable = GetComponent<Moveable>();
         an = GetComponent<Animator>();
@@ -67,7 +67,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
             CheckAttack();
             CheckArea();
         }
-        else if(interaction.stunned && !moveable.isLaunched)
+        else if(interaction.stunned)
         {
             movement.Stop();
         }
@@ -177,12 +177,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     }
     public void Aggro()
     {
-        if (!isAggro)
-        {
-            isAggro = true;
-            health.ec.AddAggro(gameObject);
-        }
-        
+        isAggro = true;
     }
 
     public void Deaggro()
