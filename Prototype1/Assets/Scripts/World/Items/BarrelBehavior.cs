@@ -34,6 +34,11 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
 
     }
 
+    public void Break()
+    {
+        
+    }
+
     public void TakeDamage(int dmg)
     {
         health -= dmg;

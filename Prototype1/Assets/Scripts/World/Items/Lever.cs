@@ -47,4 +47,9 @@ public class Lever : MonoBehaviour, IPullable
         it.Toggle();
         UpdateMaterial();
     }
+
+    public void Break()
+    {
+
+    }
 }

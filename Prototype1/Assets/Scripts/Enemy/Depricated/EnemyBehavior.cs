@@ -380,6 +380,11 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
                 }
        }
    }
+
+    public void Break()
+    {
+        throw new System.NotImplementedException();
+    }
 }
 
 

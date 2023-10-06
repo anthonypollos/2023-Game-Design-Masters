@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LassoBehavior : MonoBehaviour
 {
     private GameController gc;
     public IsoAttackManager attackManager;
+    private float maxThrowDistance = 999;
     private float maxDistance = 999;
     private GameObject attached;
     private Rigidbody attachedRB;
@@ -21,9 +23,10 @@ public class LassoBehavior : MonoBehaviour
     private float maxPullDistance;
     private float minPullDistance;
     private float calculatedDistance;
-    [SerializeField] float pullAngle = 90f;
+    //[SerializeField] float pullAngle = 90f;
     private Transform player;
     private Vector3 dir;
+    private Slider slider;
 
     private Moveable moveable;
     private Camera cam;
@@ -48,12 +51,14 @@ public class LassoBehavior : MonoBehaviour
         //Handles.color = Color.cyan;
     }
 
-    public void SetValues(float maxPullDistance, float minModifier, float maxRange, Transform playerPos)
+    public void SetValues(float maxPullDistance, float minModifier, float maxThrowRange, Transform playerPos, float breakRange, Slider slider)
     {
         this.maxPullDistance = maxPullDistance;
         this.minPullDistance = maxPullDistance * minModifier;
-        this.maxDistance = maxRange;
+        this.maxThrowDistance = maxThrowRange;
         this.player = playerPos;
+        this.slider = slider;
+        this.maxDistance = breakRange;
     }
 
     public (Vector3, float) GetValues()
@@ -70,7 +75,7 @@ public class LassoBehavior : MonoBehaviour
             {
                 Destroy(gameObject);
             }
-            else if (temp.GetComponent<IPullable>() != null)
+            else if (temp.GetComponentInParent<IPullable>() != null)
             {
                 attached = temp;
                 forwardVector = (player.position - attached.transform.position).normalized;
@@ -79,7 +84,8 @@ public class LassoBehavior : MonoBehaviour
                 gameObject.transform.parent = temp.transform;
                 transform.localPosition = Vector3.zero;
                 gameObject.GetComponent<Rigidbody>().isKinematic = true;
-
+                slider.value = 0;
+                slider.gameObject.SetActive(true);
                 moveable = temp.GetComponent<Moveable>();
                 if (moveable != null)
                 {
@@ -103,13 +109,15 @@ public class LassoBehavior : MonoBehaviour
         GameObject temp = other.gameObject;
         if(attached == null && !grounded)
         {
-            if(temp.GetComponent<IPullable>() != null)
+            if(temp.GetComponentInParent<IPullable>() != null)
             {
                 attached = temp;
                 attached.GetComponentInParent<IPullable>().Lassoed();
                 Physics.IgnoreCollision(GetComponent<Collider>(), temp.GetComponent<Collider>(), true);
                 gameObject.transform.parent = temp.transform;
                 transform.localPosition = Vector3.zero;
+                slider.value = 0;
+                slider.gameObject.SetActive(true);
                 gameObject.GetComponent<Rigidbody>().isKinematic = true;
             }
         }
@@ -117,8 +125,19 @@ public class LassoBehavior : MonoBehaviour
 
     private void Update()
     {
-        if (Vector3.Distance(startingPos, transform.position) >= maxDistance && attached==null) Destroy(gameObject);
-        
+        if (Vector3.Distance(startingPos, transform.position) >= maxThrowDistance && attached==null) Destroy(gameObject);
+        if (attached != null)
+        {
+            float distance = Vector3.Distance(transform.position, player.position);
+            slider.value = distance / maxDistance;
+            if(distance>maxDistance)
+            {
+                slider.gameObject.SetActive(false);
+                if (attached != null)
+                    attached.GetComponent<IPullable>().Break();
+                Destroy(gameObject);
+            }
+        }
         if(moveable!=null && !gc.toggleLasso)
         {
 
@@ -177,6 +196,11 @@ public class LassoBehavior : MonoBehaviour
             float angle = Vector3.Angle(forwardVector.normalized, dir);
         return angle;
 
+    }
+
+    private void OnDestroy()
+    {
+        slider.gameObject.SetActive(false);
     }
 
 
