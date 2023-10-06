@@ -44,4 +44,9 @@ public class CrateBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
     {
         Destroy(gameObject);
     }
+
+    void IPullable.Break()
+    {
+        throw new System.NotImplementedException();
+    }
 }
