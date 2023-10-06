@@ -80,7 +80,7 @@ public class GameController : MonoBehaviour
         mc.Disable();
     }
 
-    private void TogglePauseMenu()
+    public void TogglePauseMenu()
     {
         if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name))
         {
