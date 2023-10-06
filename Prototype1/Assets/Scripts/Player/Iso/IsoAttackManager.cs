@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class IsoAttackManager : MonoBehaviour, ICanKick
 {
     [Header("Lasso properties")]
     [SerializeField] [Tooltip("The speed of the lasso")] float lassoSpeed;
-    [SerializeField] [Tooltip("The speed of the pull")] float pullForce;
+    [SerializeField] [Tooltip("The speed of the pull")] float pullSpeed;
     [SerializeField] [Range(0f, 1f)] [Tooltip("The % force of the pull if aiming fully away from the player")] float minPullForceModifier = 0.5f;
     [SerializeField] [Tooltip("How far a pulled object will go assuming 1 mass")] float pullCarryDistance;
     [SerializeField] [Tooltip("The time it takes for full charge")] float lassoChargeTime;
-    [SerializeField] [Tooltip("Minimum distance of lasso")] float minLassoDistance;
-    [SerializeField] [Tooltip("Maximum distance of lasso")] float maxLassoDistance;
+    [SerializeField] [Tooltip("Minimum distance throwing the lasso")] float minThrowLassoDistance;
+    [SerializeField] [Tooltip("Maximum distance throwing the lasso")] float maxThrowLassoDistance;
+    [SerializeField] [Tooltip("Maximum distance of lasso till it breaks")] float maxLassoDistance;
+    [SerializeField] Slider lassoRangeUIIndicator;
     [SerializeField] GameObject lasso;
     //[SerializeField] [Tooltip("Toggle lasso pull mechanic")] bool toggleLasso;
     float currentLassoCharge;
@@ -123,7 +126,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         {
             lr.enabled = true;
             currentLassoCharge = Mathf.Clamp(currentLassoCharge + Time.deltaTime, 0, lassoChargeTime);
-            float currentDistance = minLassoDistance + (maxLassoDistance - minLassoDistance) * currentLassoCharge / lassoChargeTime;
+            float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
             Vector3[] positions = { transform.position, transform.forward * currentDistance + transform.position };
             lr.SetPositions(positions);
         }
@@ -142,10 +145,9 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             pc.attackState = Helpers.NOTATTACKING;
             GameObject temp = Instantiate(lasso, transform.position, Quaternion.identity);
             temp.GetComponent<Rigidbody>().velocity = transform.forward * lassoSpeed;
-            float currentDistance = minLassoDistance + (maxLassoDistance - minLassoDistance) * currentLassoCharge / lassoChargeTime;
+            float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
             LassoBehavior lb = temp.GetComponent<LassoBehavior>();
-            lb.SetValues(pullCarryDistance, minPullForceModifier, maxLassoDistance, transform);
-            
+            lb.SetValues(pullCarryDistance, minPullForceModifier, maxThrowLassoDistance, transform, maxLassoDistance, lassoRangeUIIndicator);
         }
 
     }
@@ -164,7 +166,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 (dir, calculatedDistance) = lb.GetValues();
                 Debug.Log(calculatedDistance);
                 Debug.Log(dir.magnitude);
-                moveable.Launched(dir * calculatedDistance, pullForce);
+                moveable.Launched(dir * calculatedDistance, pullSpeed);
                 //Rigidbody rb = target.GetComponent<Rigidbody>();
                 //var (success, position) = pc.GetMousePosition();
                 //if (success)

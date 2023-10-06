@@ -20,20 +20,30 @@ public class RangedEnemyInteractions : EnemyInteractionBehaviorTemplate
     }
     public override void Kicked()
     {
-        brain.health.TakeDamage(9999999);
+        UnStunned();
 
     }
 
     public override void Lassoed()
     {
         lassoed = true;
+        base.Lassoed();
         Stunned();
         brain.an.SetBool("Lassoed", true);
     }
 
     public override void Pulled()
     {
+        base.Pulled();
         brain.health.TakeDamage(9999999);
+    }
+
+    public override void Break()
+    {
+        base.Break();
+        lassoed = false;
+        brain.an.SetBool("Lassoed", false);
+        UnStunned();
     }
 
     public override void Stagger()
@@ -63,8 +73,7 @@ public class RangedEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         Stunned();
         yield return new WaitForSeconds(stunTime);
-        if (!brain.moveable.isLaunched)
-            UnStunned();
+        UnStunned();
 
     }
 

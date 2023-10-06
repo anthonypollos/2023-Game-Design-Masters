@@ -40,16 +40,26 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     public override void Lassoed()
     {
         lassoed = true;
+        base.Lassoed();
         Stunned();
         brain.an.SetBool("Lassoed", true);
     }
 
     public override void Pulled()
     {
+        base.Pulled();
         launched = true;
         lassoed = false;
         hasCollided = false;
         brain.an.SetBool("Lassoed", false);
+    }
+
+    public override void Break()
+    {
+        base.Break();
+        lassoed = false;
+        brain.an.SetBool("Lassoed", false);
+        UnStunned();
     }
 
     public override void Stagger()
