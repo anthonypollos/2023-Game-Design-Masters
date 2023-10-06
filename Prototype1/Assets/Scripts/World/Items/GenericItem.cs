@@ -67,9 +67,4 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 
     }
 
-    private void Explode()
-    {
-        Instantiate(explosion, transform.position, Quaternion.identity);
-        Destroy(gameObject);
-    }
 }
