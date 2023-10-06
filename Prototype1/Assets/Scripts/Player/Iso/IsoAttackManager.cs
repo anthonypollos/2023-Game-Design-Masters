@@ -79,7 +79,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             else
                 pc.LookAtMouse();
             kicking = true;
-            pc.attackState = Helpers.KICKING;
+            pc.attackState = Helpers.ATTACKING;
             kick.SetActive(true);
             //Debug.Log("I kick em!");
         }
