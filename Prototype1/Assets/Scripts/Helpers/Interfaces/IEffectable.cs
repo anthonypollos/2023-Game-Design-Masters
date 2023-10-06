@@ -9,4 +9,6 @@ public enum StatusEffects
 public interface IEffectable 
 {
     public void ActivateStatus(StatusEffects status);
+
+    public void DeactivateStatus(StatusEffects status);
 }
