@@ -9,14 +9,17 @@ public class Flammable : IStatus
     private Coroutine onFire;
     private IDamageable iDamageable;
     [SerializeField] bool startOnFire;
+    public Animator an;
     
     protected override void Deactivate()
     {
+        an.SetBool("Burning", false);
         throw new System.NotImplementedException();
     }
 
     protected override void Effect()
     {
+        an.SetBool("Burning", true);
         onFire = StartCoroutine(Damage());
     }
 
@@ -55,6 +58,7 @@ public class Flammable : IStatus
     // Start is called before the first frame update
     void Start()
     {
+        an = GetComponent<Animator>();
         iDamageable = GetComponent<IDamageable>();
         if (startOnFire)
         {
