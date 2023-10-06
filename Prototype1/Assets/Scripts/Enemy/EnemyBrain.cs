@@ -67,9 +67,15 @@ public class EnemyBrain : MonoBehaviour, IEnemy
             CheckAttack();
             CheckArea();
         }
+<<<<<<< HEAD
         else if(interaction.stunned)
+=======
+        else if(interaction.stunned && moveable !=null)
+>>>>>>> main
         {
-            movement.Stop();
+            if(!moveable.isLaunched)
+
+                movement.Stop();
         }
     }
 

@@ -54,7 +54,7 @@ public class InputChecker : MonoBehaviour
 
     private void ToggleControlType(InputType type)
     {
-        Debug.Log(type.ToString());
+        //Debug.Log(type.ToString());
         if (type != this.type)
         {
             this.type = type;

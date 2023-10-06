@@ -21,6 +21,8 @@ public class GameController : MonoBehaviour
     private TextMeshProUGUI text;
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject deathMenu;
+    [SerializeField] Button topButtonPause;
+    [SerializeField] Button topButtonDead;
     [SerializeField] List<string> nonGameScenes;
 
     [HideInInspector] public static GameObject player;
@@ -68,7 +70,7 @@ public class GameController : MonoBehaviour
         mc.Disable();
     }
 
-    private void TogglePauseMenu()
+    public void TogglePauseMenu()
     {
         if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name))
         {
@@ -82,6 +84,7 @@ public class GameController : MonoBehaviour
             {
                 Cursor.lockState = CursorLockMode.None;
                 pauseMenu.SetActive(true);
+                topButtonPause.Select();
                 Time.timeScale = 0;
             }
         }
@@ -91,6 +94,7 @@ public class GameController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         deathMenu.SetActive(true);
+        topButtonDead.Select();
         Time.timeScale = 0;
     }
 

@@ -6,4 +6,6 @@ public interface IPullable
 {
     public void Pulled();
     public void Lassoed();
+
+    public void Break();
 }
