@@ -6,7 +6,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 {
     [Header("Lasso properties")]
     [SerializeField] [Tooltip("The speed of the lasso")] float lassoSpeed;
-    [SerializeField] [Tooltip("The force of the pull")] float pullForce;
+    [SerializeField] [Tooltip("The speed of the pull")] float pullForce;
+    [SerializeField] [Range(0f, 1f)] [Tooltip("The % force of the pull if aiming fully away from the player")] float minPullForceModifier = 0.5f;
     [SerializeField] [Tooltip("How far a pulled object will go assuming 1 mass")] float pullCarryDistance;
     [SerializeField] [Tooltip("The time it takes for full charge")] float lassoChargeTime;
     [SerializeField] [Tooltip("Minimum distance of lasso")] float minLassoDistance;
@@ -143,9 +144,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             temp.GetComponent<Rigidbody>().velocity = transform.forward * lassoSpeed;
             float currentDistance = minLassoDistance + (maxLassoDistance - minLassoDistance) * currentLassoCharge / lassoChargeTime;
             LassoBehavior lb = temp.GetComponent<LassoBehavior>();
-            lb.maxDistance = currentDistance;
-            lb.player = gameObject.transform;
-            lb.pullDistance = pullCarryDistance;
+            lb.SetValues(pullCarryDistance, minPullForceModifier, maxLassoDistance, transform);
             
         }
 
@@ -160,7 +159,12 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         {
             if (moveable != null)
             {
-                moveable.Launched(lb.dir * pullCarryDistance, pullForce);
+                Vector3 dir;
+                float calculatedDistance;
+                (dir, calculatedDistance) = lb.GetValues();
+                Debug.Log(calculatedDistance);
+                Debug.Log(dir.magnitude);
+                moveable.Launched(dir * calculatedDistance, pullForce);
                 //Rigidbody rb = target.GetComponent<Rigidbody>();
                 //var (success, position) = pc.GetMousePosition();
                 //if (success)
