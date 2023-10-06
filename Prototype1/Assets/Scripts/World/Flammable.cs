@@ -9,7 +9,7 @@ public class Flammable : IStatus
     private Coroutine onFire;
     private IDamageable iDamageable;
     [SerializeField] bool startOnFire;
-    public Animator an;
+    [HideInInspector] public Animator an;
     
     protected override void Deactivate()
     {
