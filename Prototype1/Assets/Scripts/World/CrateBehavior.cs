@@ -47,6 +47,10 @@ public class CrateBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
 
     void IPullable.Break()
     {
+<<<<<<< Updated upstream
         throw new System.NotImplementedException();
+=======
+        
+>>>>>>> Stashed changes
     }
 }
