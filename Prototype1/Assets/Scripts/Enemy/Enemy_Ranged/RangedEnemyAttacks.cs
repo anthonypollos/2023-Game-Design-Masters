@@ -52,7 +52,7 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
     {
         currentShot++;
         int projectilesToSpawn = (currentShot%multiShotInterval)==0 ? 3 : 1;
-        if (currentShot%multiShotInterval == 0) Debug.Log("trigger multi");
+        //if (currentShot%multiShotInterval == 0) Debug.Log("trigger multi");
         for (int i = 0; i < projectilesToSpawn; i++)
         { 
             IProjectile shot = Instantiate(projectile, shootLocation.position, Quaternion.identity).GetComponent<IProjectile>();
