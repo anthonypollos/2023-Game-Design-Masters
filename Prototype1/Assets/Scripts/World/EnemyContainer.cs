@@ -6,6 +6,7 @@ public class EnemyContainer : MonoBehaviour
 {
     private List<GameObject> aggroList;
     private List<GameObject> enemyList;
+    private MissionFolder missionFolder;
     //private GameController gc;
 
     private void Awake()
@@ -19,6 +20,11 @@ public class EnemyContainer : MonoBehaviour
         //gc = FindObjectOfType<GameController>();
     }
 
+    public void SetMissionFolder(MissionFolder temp)
+    {
+        missionFolder = temp;
+    }
+
     public void AddEnemy(GameObject enemy)
     {
         if(!enemyList.Contains(enemy))
@@ -28,11 +34,12 @@ public class EnemyContainer : MonoBehaviour
 
     public void RemoveEnemy(GameObject enemy)
     {
-        if(enemyList.Contains(enemy))
+        if (enemyList.Contains(enemy))
+        {
             enemyList.Remove(enemy);
-        //Debug.Log("Total Enemy Count: " + enemyList.Count);
-        if (enemyList.Count == 0)
-            Debug.Log("All Enemies Dead");
+            missionFolder.EnemyRemoved(enemy);
+        }
+        
     }
 
     public void AddAggro(GameObject enemy)
