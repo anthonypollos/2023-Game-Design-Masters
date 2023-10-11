@@ -6,7 +6,8 @@ public class EnemyContainer : MonoBehaviour
 {
     private List<GameObject> aggroList;
     private List<GameObject> enemyList;
-    private GameController gc;
+    private MissionFolder missionFolder;
+    //private GameController gc;
 
     private void Awake()
     {
@@ -16,7 +17,12 @@ public class EnemyContainer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gc = FindObjectOfType<GameController>();
+        //gc = FindObjectOfType<GameController>();
+    }
+
+    public void SetMissionFolder(MissionFolder temp)
+    {
+        missionFolder = temp;
     }
 
     public void AddEnemy(GameObject enemy)
@@ -28,18 +34,19 @@ public class EnemyContainer : MonoBehaviour
 
     public void RemoveEnemy(GameObject enemy)
     {
-        if(enemyList.Contains(enemy))
+        if (enemyList.Contains(enemy))
+        {
             enemyList.Remove(enemy);
-        //Debug.Log("Total Enemy Count: " + enemyList.Count);
-        if (enemyList.Count == 0)
-            Debug.Log("All Enemies Dead");
+            missionFolder.EnemyRemoved(enemy);
+        }
+        
     }
 
     public void AddAggro(GameObject enemy)
     {
         if(!aggroList.Contains(enemy))
             aggroList.Add(enemy);
-        gc.CombatState(true);
+        GameController.instance.CombatState(true);
     }
 
     public void RemoveAggro(GameObject enemy)
@@ -47,6 +54,6 @@ public class EnemyContainer : MonoBehaviour
         if(aggroList.Contains(enemy))
             aggroList.Remove(enemy);
         if (aggroList.Count == 0)
-            gc.CombatState(false);
+            GameController.instance.CombatState(false);
     }
 }
