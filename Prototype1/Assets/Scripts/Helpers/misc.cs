@@ -14,7 +14,7 @@ public static class BasicMath
         y = (-ydif + 0.5f * (-Physics.gravity.y * time*time))/time;
         origin.y = 0; target.y = 0;
         x = Vector3.Distance(origin, target) / time;
-        Debug.Log("<" + x + "," + y + ">");
+        //Debug.Log("<" + x + "," + y + ">");
         return new Vector2(x, y);   
     }
 }
