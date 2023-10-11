@@ -53,6 +53,24 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NextMission"",
+                    ""type"": ""Button"",
+                    ""id"": ""39bbd840-743a-4d49-9124-6fa22d5f39a0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PreviousMission"",
+                    ""type"": ""Button"",
+                    ""id"": ""f20ab1df-5358-47db-b3b4-6e8caa76124f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -121,6 +139,50 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
                     ""action"": ""ToggleLasso"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""72b94747-a395-4dc2-a1e0-f3179e7a36f8"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextMission"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0ee41c5d-bcf4-4ce7-89b9-efaf9595c781"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextMission"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a6c24137-6860-401e-ae81-368df3e35ef2"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PreviousMission"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d5fe5c73-d754-46e1-8687-ef06aa2a56c6"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PreviousMission"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -132,6 +194,8 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
         m_Main_Menu = m_Main.FindAction("Menu", throwIfNotFound: true);
         m_Main_Restart = m_Main.FindAction("Restart", throwIfNotFound: true);
         m_Main_ToggleLasso = m_Main.FindAction("ToggleLasso", throwIfNotFound: true);
+        m_Main_NextMission = m_Main.FindAction("NextMission", throwIfNotFound: true);
+        m_Main_PreviousMission = m_Main.FindAction("PreviousMission", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -196,6 +260,8 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_Menu;
     private readonly InputAction m_Main_Restart;
     private readonly InputAction m_Main_ToggleLasso;
+    private readonly InputAction m_Main_NextMission;
+    private readonly InputAction m_Main_PreviousMission;
     public struct MainActions
     {
         private @MenuControls m_Wrapper;
@@ -203,6 +269,8 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
         public InputAction @Menu => m_Wrapper.m_Main_Menu;
         public InputAction @Restart => m_Wrapper.m_Main_Restart;
         public InputAction @ToggleLasso => m_Wrapper.m_Main_ToggleLasso;
+        public InputAction @NextMission => m_Wrapper.m_Main_NextMission;
+        public InputAction @PreviousMission => m_Wrapper.m_Main_PreviousMission;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -221,6 +289,12 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
             @ToggleLasso.started += instance.OnToggleLasso;
             @ToggleLasso.performed += instance.OnToggleLasso;
             @ToggleLasso.canceled += instance.OnToggleLasso;
+            @NextMission.started += instance.OnNextMission;
+            @NextMission.performed += instance.OnNextMission;
+            @NextMission.canceled += instance.OnNextMission;
+            @PreviousMission.started += instance.OnPreviousMission;
+            @PreviousMission.performed += instance.OnPreviousMission;
+            @PreviousMission.canceled += instance.OnPreviousMission;
         }
 
         private void UnregisterCallbacks(IMainActions instance)
@@ -234,6 +308,12 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
             @ToggleLasso.started -= instance.OnToggleLasso;
             @ToggleLasso.performed -= instance.OnToggleLasso;
             @ToggleLasso.canceled -= instance.OnToggleLasso;
+            @NextMission.started -= instance.OnNextMission;
+            @NextMission.performed -= instance.OnNextMission;
+            @NextMission.canceled -= instance.OnNextMission;
+            @PreviousMission.started -= instance.OnPreviousMission;
+            @PreviousMission.performed -= instance.OnPreviousMission;
+            @PreviousMission.canceled -= instance.OnPreviousMission;
         }
 
         public void RemoveCallbacks(IMainActions instance)
@@ -256,5 +336,7 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
         void OnMenu(InputAction.CallbackContext context);
         void OnRestart(InputAction.CallbackContext context);
         void OnToggleLasso(InputAction.CallbackContext context);
+        void OnNextMission(InputAction.CallbackContext context);
+        void OnPreviousMission(InputAction.CallbackContext context);
     }
 }
