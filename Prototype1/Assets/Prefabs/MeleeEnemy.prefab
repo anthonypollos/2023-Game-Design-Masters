@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2302295144562389563}
   - component: {fileID: 7058785170159077991}
   - component: {fileID: 1296693069684953556}
+  - component: {fileID: 5102436731251959328}
   m_Layer: 6
   m_Name: LeftArm
   m_TagString: Untagged
@@ -83,6 +84,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &5102436731251959328
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 252264370890180767}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5000001
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &771082483444036881
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,7 +292,6 @@ GameObject:
   - component: {fileID: 3373158658636065816}
   - component: {fileID: 1983138082056413422}
   - component: {fileID: 5329225685958834764}
-  - component: {fileID: 2703223280071539808}
   m_Layer: 6
   m_Name: MeleeEnemy
   m_TagString: Enemy
@@ -409,6 +432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 50
+  staggerThreshold: 15
   ec: {fileID: 0}
   brain: {fileID: 0}
 --- !u!114 &6698455220376435857
@@ -461,11 +485,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMoving: 1
-  movementSpeed: 9
+  movementSpeed: 6
   isPatrolling: 0
   patrolPoints: []
-  centerPoint: {x: 198.91414, y: -0.26, z: -501.20203}
-  wanderRadius: 5
+  centerPoint: {x: 0, y: 0, z: 0}
+  wanderRadius: 10
   brain: {fileID: 0}
   rb: {fileID: 0}
 --- !u!114 &3373158658636065816
@@ -520,30 +544,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxAttackRange: 10
-  minAttackRange: 1.5
-  attackSpeed: 1
+  minAttackRange: 3
+  attackSpeed: 0.3
   brain: {fileID: 0}
-  dashRange: 10
-  dashTime: 0.5
+  dashRange: 8
+  dashTime: 0.25
   baseDashChance: 1
-  multiAttackChance: 0.2
---- !u!114 &2703223280071539808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3061086021513973470}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41c6abad749d3f645b6bdb822862d427, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectDuration: 3
-  damagePerTick: 4
-  tickInterval: 0.5
-  startOnFire: 0
-  an: {fileID: 0}
+  multiAttackChance: 0.33
 --- !u!1 &3499154697573519260
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,6 +594,7 @@ GameObject:
   - component: {fileID: 6035837614692657343}
   - component: {fileID: 1363218883234533075}
   - component: {fileID: 5265452832179866489}
+  - component: {fileID: 4649354907275356018}
   m_Layer: 6
   m_Name: RightArm
   m_TagString: Untagged
@@ -659,6 +667,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &4649354907275356018
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4007799717534193499}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5000001
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &4442407367760241658
 GameObject:
   m_ObjectHideFlags: 0
