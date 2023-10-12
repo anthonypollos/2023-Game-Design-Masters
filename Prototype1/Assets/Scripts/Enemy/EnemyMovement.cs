@@ -119,7 +119,7 @@ public class EnemyMovement : MonoBehaviour
         else
         {
 
-            if (Vector3.Distance(targetPosition, transform.position) < 2f)
+            if (Vector3.Distance(targetPosition, transform.position) < 1f)
             {
                 if (!isPatrolling)
                 {

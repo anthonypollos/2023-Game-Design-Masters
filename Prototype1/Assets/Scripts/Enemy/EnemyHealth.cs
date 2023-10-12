@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
 
-    [SerializeField] int health = 20;
+    [SerializeField] int health = 100;
+    [SerializeField] int staggerThreshold = 15;
     int maxHealth;
     Slider slider;
     [HideInInspector]
@@ -25,7 +26,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         //Debug.Log("dealt damage");
         health -= dmg;
-        brain.interaction.Stagger();
+        if(dmg>staggerThreshold)
+            brain.interaction.Stagger();
         if (health <= 0) Die();
         //Debug.Log((float)health / maxHealth);
         //Debug.Log(health);

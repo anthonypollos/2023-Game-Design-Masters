@@ -36,6 +36,8 @@ public class MissionFolder : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (missions.Count == 0)
+            this.enabled = false;
         missionsCompleted = 0;
         missionsStatuses = new bool[missions.Count];
         FindObjectOfType<EnemyContainer>().SetMissionFolder(this);
