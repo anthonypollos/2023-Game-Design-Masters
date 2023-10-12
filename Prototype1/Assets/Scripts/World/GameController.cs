@@ -57,8 +57,6 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         Time.timeScale = 1;
-        text = GetComponentInChildren<TextMeshProUGUI>();
-        text.text = "Instant Lasso: " + toggleLasso;
         mainCameras = new List<Camera>();
         GameObject[] temp = GameObject.FindGameObjectsWithTag("MainCamera");
         foreach (GameObject go in temp) {
@@ -152,7 +150,6 @@ public class GameController : MonoBehaviour
     private void ToggleLasso()
     {
         toggleLasso = !toggleLasso;
-        text.text = "Instant Lasso: " + toggleLasso;
     }
 
 }

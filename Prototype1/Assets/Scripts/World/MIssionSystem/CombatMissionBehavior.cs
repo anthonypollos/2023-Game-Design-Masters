@@ -8,9 +8,10 @@ public class CombatMissionBehavior : MissionBehavior
     int startingCount;
     [SerializeField] List<GameObject> arenaBarriers;
 
-    private void Start()
+    private void Awake()
     {
         startingCount = enemies.Count;
+
     }
     protected override void OnTriggered()
     {
@@ -27,6 +28,7 @@ public class CombatMissionBehavior : MissionBehavior
         {
             barrier.SetActive(true);
         }
+        folder.StartCombat(this);
     }
 
     public string GetCount()
