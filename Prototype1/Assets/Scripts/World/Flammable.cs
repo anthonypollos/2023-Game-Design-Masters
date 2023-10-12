@@ -15,6 +15,8 @@ public class Flammable : IStatus
     {
         if(an != null) 
             an.SetBool("Burning", false);
+        StopCoroutine(onFire);
+        onFire = null;
         //throw new System.NotImplementedException();
     }
 
@@ -42,7 +44,7 @@ public class Flammable : IStatus
     private void OnCollisionStay(Collision collision)
     {
         Flammable flammable = collision.gameObject.GetComponent<Flammable>();
-        if (flammable != null)
+        if (flammable != null && onFire!=null)
         {
             flammable.Activate();
         }
@@ -51,7 +53,7 @@ public class Flammable : IStatus
     private void OnTriggerStay(Collider other)
     {
         Flammable flammable = other.gameObject.GetComponent<Flammable>();
-        if (flammable != null)
+        if (flammable != null && onFire!=null)
         {
             flammable.Activate();
         }
@@ -63,6 +65,7 @@ public class Flammable : IStatus
     {
         an = GetComponent<Animator>();
         iDamageable = GetComponent<IDamageable>();
+        onFire = null;
         if (startOnFire)
         {
             effectDuration = Mathf.Infinity;
