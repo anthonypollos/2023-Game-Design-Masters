@@ -38,16 +38,19 @@ public class MissionFolder : MonoBehaviour
     {
         if (missions.Count == 0)
             this.enabled = false;
-        missionsCompleted = 0;
-        missionsStatuses = new bool[missions.Count];
-        FindObjectOfType<EnemyContainer>().SetMissionFolder(this);
-        foreach(MissionBehavior folder in missions)
+        else
         {
-            folder.SetFolder(this);
+            missionsCompleted = 0;
+            missionsStatuses = new bool[missions.Count];
+            FindObjectOfType<EnemyContainer>().SetMissionFolder(this);
+            foreach (MissionBehavior folder in missions)
+            {
+                folder.SetFolder(this);
+            }
+            combatMissionActive = false;
+            currentDisplayedMission = 0;
+            SetMission();
         }
-        combatMissionActive = false;
-        currentDisplayedMission = 0;
-        SetMission();
     }
 
     private void Update()

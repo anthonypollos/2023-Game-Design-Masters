@@ -37,7 +37,8 @@ public class EnemyContainer : MonoBehaviour
         if (enemyList.Contains(enemy))
         {
             enemyList.Remove(enemy);
-            missionFolder.EnemyRemoved(enemy);
+            if(missionFolder!=null)
+                missionFolder.EnemyRemoved(enemy);
         }
         
     }

@@ -38,7 +38,8 @@ public class InputChecker : MonoBehaviour
 
     private void OnDisable()
     {
-        inputTester.Disable();
+        if(inputTester!=null)
+            inputTester.Disable();
     }
 
     public InputType GetInputType()
