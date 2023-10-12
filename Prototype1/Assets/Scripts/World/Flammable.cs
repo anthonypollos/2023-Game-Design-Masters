@@ -13,14 +13,17 @@ public class Flammable : IStatus
     
     protected override void Deactivate()
     {
-        an.SetBool("Burning", false);
-        throw new System.NotImplementedException();
+        if(an != null) 
+            an.SetBool("Burning", false);
+        //throw new System.NotImplementedException();
     }
 
     protected override void Effect()
     {
-        an.SetBool("Burning", true);
-        onFire = StartCoroutine(Damage());
+        if(an != null)
+            an.SetBool("Burning", true);
+        if(onFire==null)
+            onFire = StartCoroutine(Damage());
     }
 
     protected IEnumerator Damage()

@@ -53,7 +53,8 @@ public class MissionFolder : MonoBehaviour
         if(!missionsStatuses[currentDisplayedMission])
         {
             Vector3 dir = (missions[currentDisplayedMission].transform.position - player.position).normalized;
-            wayFinder.transform.position = player.position + dir * wayFinderDistanceFromPlayer;
+            dir.y = 0;
+            wayFinder.transform.position = player.position + dir * wayFinderDistanceFromPlayer + Vector3.up * 2;
             wayFinder.transform.forward = dir;
         }
     }
@@ -79,7 +80,7 @@ public class MissionFolder : MonoBehaviour
                 {
                     currentDisplayedMission = i;
                     SetMission();
-                    break;
+                    return;
                 }
             }
         }
@@ -100,6 +101,7 @@ public class MissionFolder : MonoBehaviour
         missionsCompleted++;
         int idx = missions.IndexOf(mission);
         missionsStatuses[idx] = true;
+        SetMission();
         if (missionsCompleted >= missions.Count)
             Victory();
         else
@@ -126,10 +128,14 @@ public class MissionFolder : MonoBehaviour
             wayFinder.SetActive(true);
         }
         string temp = missionsStatuses[currentDisplayedMission] ? 
-            "<color = green>Completed</color>" : "<color = orange>In Progress</color>";
+            "<color=green>Completed</color>" : "<color=orange>In Progress</color>";
         string message = "Current Status: " + temp + "\n" +
             missions[currentDisplayedMission].GetMissionText();
         missionTextBox.text = message;
+        if (!missionsStatuses[currentDisplayedMission])
+        {
+            wayFinder.SetActive(true);
+        }
     }
 
     public void EnemyRemoved(GameObject enemy)
@@ -143,14 +149,18 @@ public class MissionFolder : MonoBehaviour
 
     private void CombatText()
     {
-        string message = "Current Status: <color = red>Active</color>\n" +
-            currentCombatMissionActive.GetMissionText() +
-            "\nEnemies Slain: " + currentCombatMissionActive.GetCount();
-        missionTextBox.text = message;
+        if (combatMissionActive)
+        {
+            string message = "Current Status: <color=red>Active</color>\n" +
+                currentCombatMissionActive.GetMissionText() +
+                "\nEnemies Slain: " + currentCombatMissionActive.GetCount();
+            missionTextBox.text = message;
+        }
     }
 
     public void StartCombat(CombatMissionBehavior mission)
     {
+        wayFinder.SetActive(false);
         currentDisplayedMission = missions.IndexOf(mission);
         combatMissionActive = true;
         currentCombatMissionActive = mission;
