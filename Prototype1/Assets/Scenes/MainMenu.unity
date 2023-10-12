@@ -254,37 +254,33 @@ PrefabInstance:
         <b>Player Movement and Abilities:</b>
 
         -
-        If the dash ability is too strong, the player can sometimes clip through
-        walls.
+        Players can sometimes dash through walls.
 
-        - the lasso aim will attempt to snap to floors above the
-        player if said floors are visible and the cursor is over them.
+        - the lasso aim will attempt
+        to snap to floors above the player if said floors are visible and the cursor
+        is over them.
 
-        -
-        The lasso direction snaps to the ground, not to where the visible cone is.
-        This can make aim feel weird on maps where the camera is closer to the ground.
-
-        -
-        Boxes cannot be lasso''d at the moment.
+        - The lasso aim is NOT height agnostic, meaning it
+        will snap to the nearest floor/wall that the cursor is over. This makes aim
+        weird on maps where the camera is low to the ground.
 
         <b>Environment/Etc:</b>
 
         -
         Melee enemies will lose their functionality if they are lasso''d during an
-        animation (such as an attack or dash.)
+        animation (such as an attack or dash.) This can also happen inconsistently
+        when colliding with other objects.
 
-        - Patrolling enemies will
-        not turn to face their move direction.
+        - Patrolling enemies will not
+        turn to face their move direction.
 
-        - Fire is currently broken
-        and does not harm enemies or the player.
-
-        - There is HTML text in
-        the top left of the player HUD that says "green."'
+        - There is text in the top left
+        of the HUD that says "green." This is for the upcoming mission system and
+        is purely visual.'
       objectReference: {fileID: 0}
     - target: {fileID: 3332267905619631055, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_fontSize
-      value: 32.5
+      value: 28.95
       objectReference: {fileID: 0}
     - target: {fileID: 3332267905619631055, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_fontStyle
