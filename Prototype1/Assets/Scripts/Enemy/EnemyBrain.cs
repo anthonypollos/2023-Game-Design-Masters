@@ -60,6 +60,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(state);
         if (!interaction.stunned && state == EnemyStates.NOTHING)
         {
             CheckMovement();

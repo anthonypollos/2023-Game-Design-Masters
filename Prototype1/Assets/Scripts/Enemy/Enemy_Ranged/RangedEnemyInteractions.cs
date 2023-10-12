@@ -54,6 +54,7 @@ public class RangedEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     protected override void Stunned()
     {
+        base.Stunned();
         stunned = true;
         brain.an.SetBool("Stunned", true);
         brain.an.SetBool("Attacking", false);

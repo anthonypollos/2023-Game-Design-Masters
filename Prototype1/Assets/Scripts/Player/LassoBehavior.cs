@@ -18,7 +18,7 @@ public class LassoBehavior : MonoBehaviour
     private Vector3 forwardVector;
     private Vector3 rightVector;
     private Vector3 leftVector;
-    private LassoRange lassoRange;
+    //private LassoRange lassoRange;
     private float adjustedPullRange;
     private float maxPullDistance;
     private float minPullDistance;
@@ -36,7 +36,7 @@ public class LassoBehavior : MonoBehaviour
     private void Start()
     {
         attackManager=FindObjectOfType<IsoAttackManager>();
-        lassoRange = GetComponentInChildren<LassoRange>();
+        //lassoRange = GetComponentInChildren<LassoRange>();
         grounded = false;
         attached = null;
         attachedRB = null;
@@ -90,7 +90,7 @@ public class LassoBehavior : MonoBehaviour
                 if (moveable != null)
                 {
                     attachedRB = temp.GetComponent<Rigidbody>();
-                    lassoRange.SetAttached(attached.transform, attachedRB);
+                    //lassoRange.SetAttached(attached.transform, attachedRB);
                     lr.enabled = true;
                     
                     adjustedPullRange = maxPullDistance / attachedRB.mass;
@@ -146,7 +146,7 @@ public class LassoBehavior : MonoBehaviour
             //(maxPullDistance - ((maxPullDistance - minPullDistance) / 180) * Mathf.Abs(angle)) / attachedRB.mass
             dir.y = 0;
             Vector3[] positions = { attached.transform.position, attached.transform.position + dir * calculatedDistance};
-            lassoRange.SetRangeArc(forwardVector, maxPullDistance, minPullDistance);
+            //lassoRange.SetRangeArc(forwardVector, maxPullDistance, minPullDistance);
             lr.SetPositions(positions);
             //Debug.Log(calculatedDistance);
         }

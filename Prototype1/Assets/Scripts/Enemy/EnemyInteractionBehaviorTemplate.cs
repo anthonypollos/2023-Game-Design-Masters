@@ -34,7 +34,10 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
         Destroy(gameObject.GetComponentInChildren<LassoBehavior>().gameObject);
     }
     public abstract void Stagger();
-    protected abstract void Stunned();
+    protected virtual void Stunned()
+    {
+        brain.state = EnemyStates.NOTHING;
+    }
     protected abstract void UnStunned();
 
     protected IEnumerator BreakOut()
