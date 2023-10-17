@@ -12,17 +12,17 @@ public class JukeBox
     {
         public AudioClip sound;
         [Tooltip("The audio mixer group this sound should output to")] public AudioMixerGroup outputGroup;
-        public float volume;
+        [Tooltip("On a scale of 0.0 to 1.0")] public float volume;
         [Tooltip("Does the sound play from the object or not")] public bool isLocalized;
         [Tooltip("How the AudioSource attenuates over distance")] public AudioRolloffMode rolloffMode;
         [Tooltip("The distance a sound starts attenuating at/becomes audible")] public float minDistance;
         [Tooltip("The distance a sound stops attenuating at/becomes inaudible")] public float maxDistance;
+        public float spatialBlend;
 
     }
 
     [SerializeField] private SoundTrack[] tracks;
     [SerializeField] private Transform transform;
-    [SerializeField] private AudioSource source;
 
     public void SetTransform(Transform transform)
     {
@@ -34,7 +34,7 @@ public class JukeBox
     public void PlaySound(int idx)
     {
  
-        if(idx>tracks.Length-1 || source == null)
+        if(idx>tracks.Length-1 || tracks == null)
         {
             Debug.LogError("Error: That audio clip is not set");
             return;
@@ -42,24 +42,9 @@ public class JukeBox
         else
         {
             SoundTrack track = tracks[idx];
-            source.clip = track.sound;
-            source.outputAudioMixerGroup = track.outputGroup;
-            source.volume = track.volume;
-            if (track.isLocalized)
-            {
-                source.spread = 360;
-            }
-            else
-            {
-                source.spread = 0;
-            }
-            source.rolloffMode = track.rolloffMode;
-            source.minDistance = track.minDistance;
-            source.maxDistance = track.maxDistance;
-
             Vector3 location = track.isLocalized ? transform.position : Camera.main.transform.position;
-            //AudioSource.PlayClipAtPoint(track.sound, location, track.volume);
-            source.Play();
+            AudioSource.PlayClipAtPoint(track.sound, location, track.volume);
+            //source.Play();
             Debug.Log("Should play");
         }
     }
