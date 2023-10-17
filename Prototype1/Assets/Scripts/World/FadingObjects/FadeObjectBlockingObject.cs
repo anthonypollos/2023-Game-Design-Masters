@@ -332,7 +332,7 @@ public class FadeObjectBlockingObject : MonoBehaviour
 
         foreach (FadingObject temp in fadingObject.childrenFadingObjects)
         {
-            temp.enabled = false;
+            temp.enabled = true;
             if (runningCoroutines.ContainsKey(temp))
             {
                 if (runningCoroutines[temp] != null)

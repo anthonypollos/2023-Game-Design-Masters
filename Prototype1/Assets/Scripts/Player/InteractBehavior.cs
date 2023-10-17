@@ -9,18 +9,31 @@ public class InteractBehavior : MonoBehaviour
     MainControls mc;
     List<string> buttons;
     [SerializeField] TextMeshProUGUI textBox;
+    Transform cam;
 
 
     private void OnEnable()
     {
+        cam = Camera.main.transform;
+        currentInteractables = new List<InteractableBehaviorTemplate>();
         mc = new MainControls();
         mc.Main.Interact.Enable();
         mc.Main.Interact.performed += _ => Interact();
-        List<string> buttons = new List<string>();
-        foreach (InputAction action in mc.Main.Interact.actionMap.actions)
+        buttons = new List<string>();
+        Debug.Log(mc.Main.Interact.bindings.Count);
+        foreach (InputBinding action in mc.Main.Interact.bindings)
         {
-            buttons.Add(action.GetBindingDisplayString());
+            buttons.Add(action.ToDisplayString());
+            Debug.Log(action.ToDisplayString());
         }
+        Changed();
+    }
+    
+    private void LateUpdate()
+    {
+        Vector3 pos = cam.position;
+        textBox.transform.LookAt(textBox.transform.position - (pos-textBox.transform.position));
+
     }
 
     private void OnDisable()
@@ -70,7 +83,9 @@ public class InteractBehavior : MonoBehaviour
     {
         if(currentInteractables.Count>0)
         {
-            textBox.text = "Press " + buttons[(int)InputChecker.instance.GetInputType()] + " to " + currentInteractables[0].Activate();
+            string one = "[" + buttons[(int)InputChecker.instance.GetInputType()].ToString() + "]";
+            string two = currentInteractables[0].Activate();
+            textBox.text = "Press " + one + " to " + two;
             textBox.gameObject.SetActive(true);
         }
         else
