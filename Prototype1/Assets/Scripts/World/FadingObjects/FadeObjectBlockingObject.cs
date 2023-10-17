@@ -260,7 +260,7 @@ public class FadeObjectBlockingObject : MonoBehaviour
         }
         else
         {
-            while (fadingObject.materials[0].color.a > 0)
+            while (fadingObject.materials[0].color.a > fadeAlpha)
             {
                 foreach (Material material in fadingObject.materials)
                 {
