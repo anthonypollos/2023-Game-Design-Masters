@@ -11,6 +11,8 @@ public class FadingObject : MonoBehaviour, IEquatable<FadingObject>
     [HideInInspector]
     public List<Material> materials = new List<Material>();
     [HideInInspector]
+    public List<FadingObject> childrenFadingObjects = new List<FadingObject>();
+    [HideInInspector]
     public float initialAlpha;
     [HideInInspector]
     public bool lastHit;
@@ -30,6 +32,9 @@ public class FadingObject : MonoBehaviour, IEquatable<FadingObject>
         {
             materials.AddRange(renderer.materials);
         }
+        
+        childrenFadingObjects.AddRange(gameObject.GetComponentsInChildren<FadingObject>());
+        childrenFadingObjects.Remove(this);
 
         initialAlpha = materials[0].color.a;
 

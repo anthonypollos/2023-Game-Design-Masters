@@ -81,6 +81,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             kicking = true;
             pc.attackState = Helpers.ATTACKING;
             kick.SetActive(true);
+            jukebox.PlaySound(0);
             //Debug.Log("I kick em!");
         }
 

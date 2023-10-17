@@ -72,7 +72,7 @@ public class FadeObjectBlockingObject : MonoBehaviour
   
                     RaycastHit hit = hits[i];
                     FadingObject fadingObject = hit.transform.GetComponent<FadingObject>();
-                    if (fadingObject != null)
+                    if (fadingObject != null && fadingObject.enabled)
                     {
                         tempDic.Add(fadingObject, hit.distance);
                         hitFadingObjects.Add(fadingObject);
@@ -214,6 +214,23 @@ public class FadeObjectBlockingObject : MonoBehaviour
             material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
            
         }
+        foreach(FadingObject temp in fadingObject.childrenFadingObjects)
+        {
+            temp.enabled = false;
+            if (runningCoroutines.ContainsKey(temp))
+            {
+                if (runningCoroutines[temp] != null)
+                {
+                    StopCoroutine(runningCoroutines[temp]);
+                }
+                runningCoroutines.Remove(temp);
+            }
+            if(objectsBlockingView.Contains(temp))
+            {
+                objectsBlockingView.Remove(temp);
+            }
+            
+        }
         FadeLayer(fadingObject.gameObject, true);
         foreach (Transform child in fadingObject.transform)
             FadeLayer(child.gameObject, true);
@@ -311,6 +328,20 @@ public class FadeObjectBlockingObject : MonoBehaviour
             material.DisableKeyword("_SURFACE_TYPE_TRANSPARENT");
             material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
           
+        }
+
+        foreach (FadingObject temp in fadingObject.childrenFadingObjects)
+        {
+            temp.enabled = false;
+            if (runningCoroutines.ContainsKey(temp))
+            {
+                if (runningCoroutines[temp] != null)
+                {
+                    StopCoroutine(runningCoroutines[temp]);
+                }
+                runningCoroutines.Remove(temp);
+            }
+            
         }
         FadeLayer(fadingObject.gameObject, false);
         foreach (Transform child in fadingObject.transform)
