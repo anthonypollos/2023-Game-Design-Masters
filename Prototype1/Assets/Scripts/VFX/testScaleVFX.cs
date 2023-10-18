@@ -8,20 +8,46 @@ public class testScaleVFX : MonoBehaviour
 
     public float scaleMod;
 
-    private SpawnVFX spawnVFX;
+    private VFXSpawner vfxSpawner;
 
     // Start is called before the first frame update
     void Start()
     {
-        spawnVFX = GetComponent<SpawnVFX>();
+        vfxSpawner= GetComponent<VFXSpawner>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Alpha1))
         {
-            spawnVFX.SpawnScaledVFX(vfx, transform, scaleMod);
+            vfxSpawner.SpawnVFX(vfx, transform);
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            vfxSpawner.SpawnVFXScale(vfx, transform, 2);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            vfxSpawner.SpawnVFXScaleRandom(vfx, transform, 1, 4);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            vfxSpawner.SpawnVFX(vfx, transform, 3);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            vfxSpawner.SpawnVFXScale(vfx, transform, 2, 3);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            vfxSpawner.SpawnVFXScaleRandom(vfx, transform, 1, 4, 3);
+        }
+
     }
 }
