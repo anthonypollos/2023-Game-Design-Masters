@@ -8,6 +8,14 @@ public class KickBehavior : MonoBehaviour
     Animator an;
     IsoAttackManager attackManager;
 
+    [Header("Sound")]
+    [SerializeField] private JukeBox jukebox;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);   
+    }
+
     private void Start()
     {
         an = GetComponent<Animator>();
@@ -26,6 +34,14 @@ public class KickBehavior : MonoBehaviour
         {
             //Debug.Log("hit");
             GetComponentInParent<ICanKick>().ActivateKick(other.gameObject);
+            if (other.tag == "Interactable")
+            {
+                jukebox.PlaySound(0);
+            }
+            else if (other.tag == "Enemy")
+            {
+                jukebox.PlaySound(1);
+            }
             //Physics.IgnoreCollision(other.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
         }
         if(other.gameObject.GetComponentInParent<IDamageable>()!=null)
