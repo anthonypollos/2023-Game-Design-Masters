@@ -32,6 +32,8 @@ public class LassoBehavior : MonoBehaviour
     private Camera cam;
     private LineRenderer lr;
     [SerializeField] private LayerMask groundMask;
+
+    LassoLine line;
     // Start is called before the first frame update
     private void Start()
     {
@@ -48,6 +50,12 @@ public class LassoBehavior : MonoBehaviour
         lr = GetComponent<LineRenderer>();
         lr.enabled = false;
         gc = FindObjectOfType<GameController>();
+        line = GetComponentInChildren<LassoLine>();
+        if (line != null)
+        {
+            //Debug.Log("Setting Values");
+            line.SetValues(player, maxDistance);
+        }
         //Handles.color = Color.cyan;
     }
 
@@ -59,11 +67,12 @@ public class LassoBehavior : MonoBehaviour
         this.player = playerPos;
         this.slider = slider;
         this.maxDistance = breakRange;
+        
     }
 
     public (Vector3, float) GetValues()
     {
-        return (dir, calculatedDistance);
+        return (dir, calculatedDistance * attachedRB.mass);
     }
 
     private void OnCollisionEnter(Collision collision)
