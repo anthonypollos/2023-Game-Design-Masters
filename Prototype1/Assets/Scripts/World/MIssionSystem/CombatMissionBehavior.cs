@@ -29,6 +29,7 @@ public class CombatMissionBehavior : MissionBehavior
             barrier.SetActive(true);
         }
         folder.StartCombat(this);
+        RemoveEnemy(null);
     }
 
     public string GetCount()

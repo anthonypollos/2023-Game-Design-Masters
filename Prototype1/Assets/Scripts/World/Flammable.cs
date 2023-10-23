@@ -33,7 +33,7 @@ public class Flammable : IStatus
         while (true)
         {
             yield return new WaitForSeconds(tickInterval);
-            Debug.Log("Tick Damage");
+            //Debug.Log("Tick Damage");
             if (iDamageable != null)
             {
                 iDamageable.TakeDamage(damagePerTick);

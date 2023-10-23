@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -63,6 +64,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         mc.Main.Primary.performed += _ => Kick();
         mc.Main.Secondary.performed += _ => LassoCharge();
         mc.Main.Secondary.canceled += _ => Lasso();
+        mc.Main.Release.performed += _ => Release();
     }
 
     private void OnDisable()
@@ -145,12 +147,23 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             isCharging = false;
             pc.attackState = Helpers.NOTATTACKING;
             GameObject temp = Instantiate(lasso, transform.position, Quaternion.identity);
+            isLassoOut = true;
             temp.GetComponent<Rigidbody>().velocity = transform.forward * lassoSpeed;
             float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
             LassoBehavior lb = temp.GetComponent<LassoBehavior>();
-            lb.SetValues(pullCarryDistance, minPullForceModifier, maxThrowLassoDistance, transform, maxLassoDistance, lassoRangeUIIndicator);
+            lb.SetValues(pullCarryDistance, minPullForceModifier, currentDistance, transform, maxLassoDistance, lassoRangeUIIndicator);
         }
 
+    }
+
+    private void Release()
+    {
+        if(isLassoOut)
+        {
+            LassoBehavior lb = FindObjectOfType<LassoBehavior>();
+            if(lb != null)
+                Destroy(lb.gameObject);
+        }
     }
 
     public void Pull(LassoBehavior lb)
@@ -165,8 +178,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 Vector3 dir;
                 float calculatedDistance;
                 (dir, calculatedDistance) = lb.GetValues();
-                Debug.Log(calculatedDistance);
-                Debug.Log(dir.magnitude);
+                //Debug.Log(calculatedDistance);
+                //Debug.Log(dir.magnitude);
                 moveable.Launched(dir * calculatedDistance, pullSpeed);
                 //Rigidbody rb = target.GetComponent<Rigidbody>();
                 //var (success, position) = pc.GetMousePosition();

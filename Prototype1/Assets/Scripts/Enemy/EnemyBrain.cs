@@ -92,7 +92,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     {
         if(state == EnemyStates.NOTHING)
         {
-            if (movement.rb.velocity.x != 0 && movement.rb.velocity.z != 0)
+            if (movement.rb.velocity.x != 0 || movement.rb.velocity.z != 0)
                 transform.forward = movement.rb.velocity.normalized;
         }
     }

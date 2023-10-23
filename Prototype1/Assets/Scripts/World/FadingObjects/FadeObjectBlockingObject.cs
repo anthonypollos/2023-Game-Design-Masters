@@ -260,7 +260,7 @@ public class FadeObjectBlockingObject : MonoBehaviour
         }
         else
         {
-            while (fadingObject.materials[0].color.a > 0)
+            while (fadingObject.materials[0].color.a > fadeAlpha)
             {
                 foreach (Material material in fadingObject.materials)
                 {
@@ -332,7 +332,7 @@ public class FadeObjectBlockingObject : MonoBehaviour
 
         foreach (FadingObject temp in fadingObject.childrenFadingObjects)
         {
-            temp.enabled = false;
+            temp.enabled = true;
             if (runningCoroutines.ContainsKey(temp))
             {
                 if (runningCoroutines[temp] != null)

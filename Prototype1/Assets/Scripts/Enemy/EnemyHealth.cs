@@ -22,6 +22,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         slider = GetComponentInChildren<Slider>();
         slider.value = health / maxHealth;
     }
+    private void Update()
+    {
+        if (transform.position.y < -20f)
+            Die();
+    }
     public void TakeDamage(int dmg)
     {
         //Debug.Log("dealt damage");
