@@ -145,9 +145,18 @@ public class MissionFolder : MonoBehaviour
 
     public void EnemyRemoved(GameObject enemy)
     {
-        if(combatMissionActive)
+        foreach (MissionBehavior mission in missions)
         {
-            currentCombatMissionActive.RemoveEnemy(enemy.GetComponent<EnemyBrain>());
+            CombatMissionBehavior combatMissionBehavior = mission.GetComponent<CombatMissionBehavior>();
+            if (combatMissionBehavior != null)
+            {
+                combatMissionBehavior.RemoveEnemy(enemy.GetComponent<EnemyBrain>());
+
+            }
+        }
+        //currentCombatMissionActive.RemoveEnemy(enemy.GetComponent<EnemyBrain>());
+        if (combatMissionActive)
+        {
             CombatText();
         }
     }
@@ -174,9 +183,13 @@ public class MissionFolder : MonoBehaviour
 
     public void CombatFinished()
     {
-        missionsStatuses[missions.IndexOf(currentCombatMissionActive)] = true;
-        currentCombatMissionActive = null;
-        combatMissionActive = false;
+        if (currentCombatMissionActive)
+        {
+            missionsStatuses[missions.IndexOf(currentCombatMissionActive)] = true;
+            currentCombatMissionActive = null;
+            combatMissionActive = false;
+        }
+        
         
     }
 

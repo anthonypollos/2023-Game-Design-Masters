@@ -20,11 +20,11 @@ public class InteractBehavior : MonoBehaviour
         mc.Main.Interact.Enable();
         mc.Main.Interact.performed += _ => Interact();
         buttons = new List<string>();
-        Debug.Log(mc.Main.Interact.bindings.Count);
+        //Debug.Log(mc.Main.Interact.bindings.Count);
         foreach (InputBinding action in mc.Main.Interact.bindings)
         {
             buttons.Add(action.ToDisplayString());
-            Debug.Log(action.ToDisplayString());
+            //Debug.Log(action.ToDisplayString());
         }
         Changed();
     }
