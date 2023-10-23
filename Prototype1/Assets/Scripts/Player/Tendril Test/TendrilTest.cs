@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class TendrilTest : MonoBehaviour
 {
-    public Transform target;
+    [SerializeField] Transform target;
 
-    public float rotateSpeed = 10000;
+    [SerializeField] bool isStart;
 
     public Vector3 rotateOffset;
     // Start is called before the first frame update
@@ -23,8 +23,14 @@ public class TendrilTest : MonoBehaviour
 
     private void RotateToTarget()
     {
-        // root rotate to face target
-        var q = Quaternion.LookRotation(target.position - transform.position);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, q, rotateSpeed * Time.deltaTime);
+        Vector3 dir = target.position - transform.position;
+        dir = dir.normalized;
+        if (dir != Vector3.zero)
+        {
+            if (isStart)
+                transform.forward = (target.position - transform.position).normalized;
+            else
+                transform.up = -(target.position - transform.position).normalized;
+        }
     }
 }

@@ -31,7 +31,7 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     public virtual void Break()
     {
         lassoImage.gameObject.SetActive(false);
-        Destroy(gameObject.GetComponentInChildren<LassoBehavior>().gameObject);
+        gameObject.GetComponentInChildren<LassoBehavior>().attackManager.Release();
     }
     public abstract void Stagger();
     protected virtual void Stunned()
