@@ -77,7 +77,7 @@ public class MissionFolder : MonoBehaviour
     {
         for (int i = currentDisplayedMission+1; i!=currentDisplayedMission; i++)
         {
-            if (i > missions.Count)
+            if (i >= missions.Count)
                 i = 0;
             else
             {
