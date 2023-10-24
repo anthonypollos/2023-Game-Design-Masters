@@ -22,6 +22,7 @@ public class Moveable : MonoBehaviour
     Collider col;
     bool isStopping = false;
     bool isThrowing = false;
+    public IsoAttackManager tendrilOwner;
     Vector3 dir;
 
     // Start is called before the first frame update
@@ -75,8 +76,14 @@ public class Moveable : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if(!collision.transform.CompareTag("Ground") && isLaunched && buffer>.5f)
+        if(!collision.transform.CompareTag("Ground") && isLaunched && buffer>.1f)
         {
+            Debug.Log("collided");
+            if (tendrilOwner != null)
+            {
+                Debug.Log("Force release");
+                tendrilOwner.ForceRelease();
+            }
             //Debug.Log(collision.gameObject.name);
             //Debug.Log("Hit object");
             if (!isStopping)
@@ -172,12 +179,13 @@ public class Moveable : MonoBehaviour
         {
             return true;
         }
-        Debug.Log(!(stopping == null));
+        //Debug.Log(!(stopping == null));
         return !(stopping == null);
     }
 
     public void ForceRelease()
     {
+        tendrilOwner = null;
         isThrowing = false;
         stopping = StartCoroutine(Tumbling());
     }

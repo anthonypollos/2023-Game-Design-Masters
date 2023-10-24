@@ -113,6 +113,7 @@ public class LassoBehavior : MonoBehaviour
                 moveable = temp.GetComponent<Moveable>();
                 if (moveable != null)
                 {
+                    moveable.tendrilOwner = attackManager;
                     attachedRB = temp.GetComponent<Rigidbody>();
                     //lassoRange.SetAttached(attached.transform, attachedRB);
                     lr.enabled = true;
@@ -252,14 +253,20 @@ public class LassoBehavior : MonoBehaviour
         line.gameObject.SetActive(true);
         if (moveable != null && moveable.gameObject.activeInHierarchy)
         {
-            Debug.Log("movable avalible");
+            //Debug.Log("movable avalible");
             returnValue = moveable.TriggerRelease();
             if (!returnValue)
                 transform.position = moveable.transform.position;
             else
+            {
+                if(moveable != null)
+                    moveable.tendrilOwner = null;
                 moveable = null;
+            }
+                
+                
         }
-        Debug.Log(returnValue);
+        //Debug.Log(returnValue);
         return returnValue;
     }
 
@@ -273,6 +280,8 @@ public class LassoBehavior : MonoBehaviour
 
     public void StartRetracting()
     {
+        moveable = null;
+        attached = null;
         lr.enabled = false;
         collider.enabled = false;
     }

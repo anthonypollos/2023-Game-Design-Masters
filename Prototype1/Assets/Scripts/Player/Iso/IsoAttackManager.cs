@@ -252,6 +252,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     void Retraction()
     {
+        Debug.Log("Start retracting");
         lb.StartRetracting();
         //lassoRB.isKinematic = false;
         isRetracting = true;
