@@ -20,6 +20,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     [SerializeField] GameObject lassoOrigin;
     [SerializeField] float retractionSpeed;
     [SerializeField] GameObject tendril;
+    [SerializeField] Image sliderFill;
     Rigidbody lassoRB;
     bool isRetracting;
     LassoBehavior lb;
@@ -66,7 +67,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         lb.enabled = false;
         tendril.SetActive(false);
         lassoRB = lasso.GetComponent<Rigidbody>();
-        lb.SetValues(pullCarryDistance, minPullForceModifier, maxThrowLassoDistance, maxLassoDistance, lassoRangeUIIndicator);
+        lb.SetValues(pullCarryDistance, minPullForceModifier, maxThrowLassoDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
     }
 
     private void OnEnable()
@@ -150,6 +151,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
         if(isRetracting)
         {
+            if(lassoRB.isKinematic) { lassoRB.isKinematic = false; }
             lassoRB.velocity = (lassoOrigin.transform.position - lasso.transform.position).normalized * lassoSpeed;
             if (Vector3.Distance(lassoOrigin.transform.position, lasso.transform.position) < 1f)
                 Retracted();
@@ -171,16 +173,22 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             lassoRB.velocity = transform.forward * lassoSpeed;
             float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
             //LassoBehavior lb = temp.GetComponent<LassoBehavior>();
-            lb.SetValues(pullCarryDistance, minPullForceModifier, currentDistance, maxLassoDistance, lassoRangeUIIndicator);
+            lb.SetValues(pullCarryDistance, minPullForceModifier, currentDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
+            lb.Launched();
         }
 
+    }
+
+    public void ForceRelease()
+    {
+        Retraction();
     }
 
     public void Release()
     {
         if(lasso.activeInHierarchy && returnCall == null)
         {
-            lassoRangeUIIndicator.gameObject.SetActive(false);
+            //lassoRangeUIIndicator.gameObject.SetActive(false);
             returnCall = StartCoroutine(WaitForRetraction());
         }
     }
@@ -216,7 +224,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 //}
                 //target.GetComponent<IPullable>().Pulled();
             }
-            lassoRangeUIIndicator.gameObject.SetActive(false);
+            //lassoRangeUIIndicator.gameObject.SetActive(false);
             lb.transform.parent = null;
             target.GetComponent<IPullable>().Pulled();
         }
@@ -244,8 +252,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     void Retraction()
     {
-        lassoRB.isKinematic = false;
-        lb.enabled = false;
+        lb.StartRetracting();
+        //lassoRB.isKinematic = false;
         isRetracting = true;
         lasso.transform.parent = null;
     }
@@ -253,6 +261,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     void Retracted()
     {
         isRetracting = false;
+        lb.Retracted();
         lasso.transform.parent = transform;
         lasso.transform.localPosition = lassoOrigin.transform.localPosition;
         lasso.SetActive(false);

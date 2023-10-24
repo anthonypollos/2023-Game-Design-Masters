@@ -175,4 +175,10 @@ public class Moveable : MonoBehaviour
         Debug.Log(!(stopping == null));
         return !(stopping == null);
     }
+
+    public void ForceRelease()
+    {
+        isThrowing = false;
+        stopping = StartCoroutine(Tumbling());
+    }
 }

@@ -58,8 +58,11 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         base.Break();
         lassoed = false;
+        if (!brain.moveable.isLaunched)
+        { 
         brain.an.SetBool("Lassoed", false);
         UnStunned();
+        }
     }
 
     public override void Stagger()

@@ -8,8 +8,8 @@ public class LassoBehavior : MonoBehaviour
 {
     private GameController gc;
     public IsoAttackManager attackManager;
-    
-    private bool launched;
+    private Collider collider;
+
     private float maxThrowDistance = 999;
     private float maxDistance = 999;
     private GameObject attached;
@@ -29,7 +29,7 @@ public class LassoBehavior : MonoBehaviour
     private Transform player;
     private Vector3 dir;
     private Slider slider;
-    [SerializeField] Image sliderFill;
+    private Image sliderFill;
 
     private Moveable moveable;
     private Camera cam;
@@ -40,7 +40,8 @@ public class LassoBehavior : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        attackManager=FindObjectOfType<IsoAttackManager>();
+        collider = GetComponent<Collider>();
+        attackManager = FindObjectOfType<IsoAttackManager>();
         //lassoRange = GetComponentInChildren<LassoRange>();
         grounded = false;
         attached = null;
@@ -56,11 +57,10 @@ public class LassoBehavior : MonoBehaviour
         line = GetComponentInChildren<LassoLine>();
         line.gameObject.SetActive(false);
         player = attackManager.transform;
-        launched = false;
         //Handles.color = Color.cyan;
     }
 
-    public void SetValues(float maxPullDistance, float minModifier, float maxThrowRange, float breakRange, Slider slider)
+    public void SetValues(float maxPullDistance, float minModifier, float maxThrowRange, float breakRange, Slider slider, Image sliderFill)
     {
         moveable = null;
         attached = null;
@@ -72,7 +72,9 @@ public class LassoBehavior : MonoBehaviour
         this.slider = slider;
         this.maxDistance = breakRange;
         line.SetValues(player, maxDistance);
-        
+        line.gameObject.SetActive(true);
+        this.sliderFill = sliderFill;
+
     }
 
     public (Vector3, float) GetValues()
@@ -82,8 +84,10 @@ public class LassoBehavior : MonoBehaviour
 
     public void Launched()
     {
-        launched = true;
-        
+        line.gameObject.SetActive(true);
+        slider.value = 0f;
+        slider.gameObject.SetActive(true);
+        collider.enabled = true;
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -113,7 +117,7 @@ public class LassoBehavior : MonoBehaviour
                     //lassoRange.SetAttached(attached.transform, attachedRB);
                     lr.enabled = true;
                     line.gameObject.SetActive(true);
-                    
+
                     adjustedPullRange = maxPullDistance / attachedRB.mass;
                 }
                 if (gc.toggleLasso)
@@ -146,35 +150,37 @@ public class LassoBehavior : MonoBehaviour
 
     private void Update()
     {
-        if (Vector3.Distance(startingPos, transform.position) >= maxThrowDistance && attached==null) attackManager.Release();
-        if (attached != null)
+        if (Vector3.Distance(startingPos, transform.position) >= maxThrowDistance && attached == null) attackManager.Release();
+        float distance = Vector3.Distance(transform.position, player.position);
+        slider.value = distance / maxDistance;
+        sliderFill.color = line.GetGradient().Evaluate(distance / maxDistance);
+
+        if (distance > maxDistance)
         {
-            float distance = Vector3.Distance(transform.position, player.position);
-            slider.value = distance / maxDistance;
-            sliderFill.color = line.GetGradient().Evaluate(distance / maxDistance);
-            
-            if(distance>maxDistance)
-            {
-                slider.gameObject.SetActive(false);
-                if (attached != null)
-                    attached.GetComponent<IPullable>().Break();
-                attackManager.Release();
-            }
+            slider.gameObject.SetActive(false);
+            if (attached != null)
+                attached.GetComponent<IPullable>().Break();
+            attackManager.ForceRelease();
+            if(moveable != null)
+                moveable.ForceRelease();
+            moveable = null;
+            attached = null;
         }
-        if(moveable!=null && !gc.toggleLasso)
+
+        if (moveable != null && !gc.toggleLasso)
         {
 
             float angle = CheckAngle();
-            calculatedDistance = Mathf.Lerp(maxPullDistance, minPullDistance, angle/180)/attachedRB.mass;
+            calculatedDistance = Mathf.Lerp(maxPullDistance, minPullDistance, angle / 180) / attachedRB.mass;
             //(maxPullDistance - ((maxPullDistance - minPullDistance) / 180) * Mathf.Abs(angle)) / attachedRB.mass
             dir.y = 0;
-            Vector3[] positions = { attached.transform.position, attached.transform.position + dir * calculatedDistance};
+            Vector3[] positions = { attached.transform.position, attached.transform.position + dir * calculatedDistance };
             //lassoRange.SetRangeArc(forwardVector, maxPullDistance, minPullDistance);
             lr.SetPositions(positions);
             //Debug.Log(calculatedDistance);
         }
 
-        if(attached!= null && !attached.activeInHierarchy)
+        if (attached != null && !attached.activeInHierarchy)
         {
             attackManager.Release();
         }
@@ -209,7 +215,8 @@ public class LassoBehavior : MonoBehaviour
             dir = direction.normalized;
 
         }
-        else {
+        else
+        {
             bool check;
             Vector3 mouseVector;
             (check, mouseVector) = GetMousePosition();
@@ -221,7 +228,7 @@ public class LassoBehavior : MonoBehaviour
             }
             else return 0;
         }
-            float angle = Vector3.Angle(forwardVector.normalized, dir);
+        float angle = Vector3.Angle(forwardVector.normalized, dir);
         return angle;
 
     }
@@ -232,7 +239,7 @@ public class LassoBehavior : MonoBehaviour
     }
 
 
-    public (GameObject,Moveable) GetAttachment()
+    public (GameObject, Moveable) GetAttachment()
     {
         return (attached, moveable);
     }
@@ -241,8 +248,8 @@ public class LassoBehavior : MonoBehaviour
     {
         bool returnValue = true;
         transform.parent = null;
-        lr.enabled = false;
-        line.gameObject.SetActive(false);
+        lr.enabled = true;
+        line.gameObject.SetActive(true);
         if (moveable != null && moveable.gameObject.activeInHierarchy)
         {
             Debug.Log("movable avalible");
@@ -256,5 +263,19 @@ public class LassoBehavior : MonoBehaviour
         return returnValue;
     }
 
-    
+    public void Retracted()
+    {
+        lr.enabled = false;
+        line.gameObject.SetActive(false);
+        slider.gameObject.SetActive(false);
+
+    }
+
+    public void StartRetracting()
+    {
+        lr.enabled = false;
+        collider.enabled = false;
+    }
+
+
 }
