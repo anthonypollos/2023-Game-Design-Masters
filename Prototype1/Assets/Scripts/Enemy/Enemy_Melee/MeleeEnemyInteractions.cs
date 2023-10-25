@@ -83,6 +83,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         if(!lassoed)
         {
+            brain.an.SetBool("Lassoed", false);
             brain.an.SetBool("Stunned", false);
             stunned = false;
             brain.PackAggro();
