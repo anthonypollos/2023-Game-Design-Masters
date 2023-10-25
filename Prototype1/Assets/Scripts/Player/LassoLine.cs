@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class LassoLine : MonoBehaviour
 {
-    LineRenderer lr;
+    //LineRenderer lr;
     //List<GameObject> bones;
     //List<GameObject> hingeJoints;
     //[SerializeField] GameObject bone;
@@ -14,6 +14,7 @@ public class LassoLine : MonoBehaviour
     [SerializeField] Gradient gradient;
     [SerializeField] float distancePerBone;
     [SerializeField] float deleteBuffer = 0.1f;
+    [SerializeField] SkinnedMeshRenderer tendrilMaterial;
     // Start is called before the first frame update
     void Awake()
     {
@@ -22,18 +23,18 @@ public class LassoLine : MonoBehaviour
         maxDistance = 0;
         //bones = new List<GameObject>();
         //hingeJoints = new List<GameObject>();
-        lr = GetComponent<LineRenderer>();
-        lr.enabled = false;
+        //lr = GetComponent<LineRenderer>();
+        //lr.enabled = false;
     }
 
     public void SetValues(Transform player, float maxDistance)
     {
         this.player = player;
         this.maxDistance = maxDistance;
-        lr.enabled = true;
+        //lr.enabled = true;
         Color color = gradient.Evaluate(GetDistance() / maxDistance);
-        lr.startColor = color;
-        lr.endColor = color;
+        //lr.startColor = color;
+        //lr.endColor = color;
     }
 
     // Update is called once per frame
@@ -41,12 +42,13 @@ public class LassoLine : MonoBehaviour
     {
         if (player != null)
         {
-            lr.positionCount = 2;
-            lr.SetPosition(0, transform.parent.position);
-            lr.SetPosition(1, player.position);
+            //lr.positionCount = 2;
+            //lr.SetPosition(0, transform.parent.position);
+            //lr.SetPosition(1, player.position);
             Color color = gradient.Evaluate(GetDistance() / maxDistance);
-            lr.startColor = color;
-            lr.endColor = color;
+            tendrilMaterial.material.color = color;
+            //lr.startColor = color;
+            //lr.endColor = color;
             /*if (bones.Count == 0)
              {
                  Vector3 dir = (player.position - transform.position).normalized;
@@ -120,5 +122,10 @@ public class LassoLine : MonoBehaviour
     {
         //foreach (GameObject temp in bones)
             //Destroy(temp);
+    }
+
+    public Gradient GetGradient()
+    {
+        return gradient;
     }
 }

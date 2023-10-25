@@ -17,10 +17,15 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     [SerializeField] [Tooltip("Maximum distance of lasso till it breaks")] float maxLassoDistance;
     [SerializeField] Slider lassoRangeUIIndicator;
     [SerializeField] GameObject lasso;
+    [SerializeField] GameObject lassoOrigin;
+    [SerializeField] float retractionSpeed;
+    [SerializeField] GameObject tendril;
+    Rigidbody lassoRB;
+    bool isRetracting;
+    LassoBehavior lb;
     //[SerializeField] [Tooltip("Toggle lasso pull mechanic")] bool toggleLasso;
     float currentLassoCharge;
     bool isCharging;
-    bool isLassoOut;
     LineRenderer lr;
     [Header("Kick Properties")]
     [SerializeField] [Tooltip("The force of the kick")] float kickForce;
@@ -35,7 +40,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     [HideInInspector]
     public IsoPlayerController pc;
     GameController gc;
-
+    Coroutine returnCall;
 
 
     private void Awake()
@@ -47,8 +52,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     // Start is called before the first frame update
     void Start()
     {
+        isRetracting = false;
         lr = GetComponent<LineRenderer>();
-        isLassoOut = false;
         isCharging = false;
         currentLassoCharge = 0;
         kicking = false;
@@ -56,6 +61,12 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         kick.SetActive(false);
         pc = GetComponentInParent<IsoPlayerController>();
         gc = FindObjectOfType<GameController>();
+        lb = lasso.GetComponentInChildren<LassoBehavior>();
+        lasso.SetActive(false);
+        lb.enabled = false;
+        tendril.SetActive(false);
+        lassoRB = lasso.GetComponent<Rigidbody>();
+        lb.SetValues(pullCarryDistance, minPullForceModifier, maxThrowLassoDistance, maxLassoDistance, lassoRangeUIIndicator);
     }
 
     private void OnEnable()
@@ -108,12 +119,11 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         if (!pc.moveable.isLaunched)
         {
             LassoBehavior lb = FindObjectOfType<LassoBehavior>();
-            isLassoOut = (lb != null);
-            if (!isLassoOut)
+            if (!lasso.activeInHierarchy)
             {
                 currentLassoCharge = 0;
                 lr.enabled = true;
-                pc.attackState = Helpers.CHARGING;
+                pc.attackState = Helpers.LASSOING;
                 isCharging = true;
             }
             else
@@ -137,32 +147,41 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         {
             lr.enabled = false;
         }
+
+        if(isRetracting)
+        {
+            lassoRB.velocity = (lassoOrigin.transform.position - lasso.transform.position).normalized * lassoSpeed;
+            if (Vector3.Distance(lassoOrigin.transform.position, lasso.transform.position) < 1f)
+                Retracted();
+        }
     }
 
     private void Lasso()
     {
-        if(!isLassoOut && !kicking && !pc.moveable.isLaunched)
+        if(!lasso.activeInHierarchy && !kicking && !pc.moveable.isLaunched && isCharging)
         { 
 
             isCharging = false;
-            pc.attackState = Helpers.NOTATTACKING;
-            GameObject temp = Instantiate(lasso, transform.position, Quaternion.identity);
-            isLassoOut = true;
-            temp.GetComponent<Rigidbody>().velocity = transform.forward * lassoSpeed;
+            pc.attackState = Helpers.LASSOED;
+            //GameObject temp = Instantiate(lasso, transform.position, Quaternion.identity);
+            lasso.SetActive(true);
+            tendril.SetActive(true);
+            lb.enabled = true;
+            lasso.transform.parent = null;
+            lassoRB.velocity = transform.forward * lassoSpeed;
             float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
-            LassoBehavior lb = temp.GetComponent<LassoBehavior>();
-            lb.SetValues(pullCarryDistance, minPullForceModifier, currentDistance, transform, maxLassoDistance, lassoRangeUIIndicator);
+            //LassoBehavior lb = temp.GetComponent<LassoBehavior>();
+            lb.SetValues(pullCarryDistance, minPullForceModifier, currentDistance, maxLassoDistance, lassoRangeUIIndicator);
         }
 
     }
 
-    private void Release()
+    public void Release()
     {
-        if(isLassoOut)
+        if(lasso.activeInHierarchy && returnCall == null)
         {
-            LassoBehavior lb = FindObjectOfType<LassoBehavior>();
-            if(lb != null)
-                Destroy(lb.gameObject);
+            lassoRangeUIIndicator.gameObject.SetActive(false);
+            returnCall = StartCoroutine(WaitForRetraction());
         }
     }
 
@@ -197,16 +216,50 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 //}
                 //target.GetComponent<IPullable>().Pulled();
             }
+            lassoRangeUIIndicator.gameObject.SetActive(false);
+            lb.transform.parent = null;
             target.GetComponent<IPullable>().Pulled();
         }
-        Destroy(lb.gameObject);
+        Release();
     }
 
 
     public void KickEnd()
     {
-        pc.attackState = Helpers.NOTATTACKING;
+        if (lasso.activeInHierarchy)
+            pc.attackState = Helpers.LASSOED;
+        else
+            pc.attackState = Helpers.NOTATTACKING;
         kick.SetActive(false);
         kicking = false;
     }
+
+    IEnumerator WaitForRetraction()
+    {
+        //yield return new WaitForSeconds(0.15f);
+        yield return new WaitUntil(lb.TriggerRelease);
+        Retraction();
+        returnCall = null;
+    }
+
+    void Retraction()
+    {
+        lassoRB.isKinematic = false;
+        lb.enabled = false;
+        isRetracting = true;
+        lasso.transform.parent = null;
+    }
+
+    void Retracted()
+    {
+        isRetracting = false;
+        lasso.transform.parent = transform;
+        lasso.transform.localPosition = lassoOrigin.transform.localPosition;
+        lasso.SetActive(false);
+        tendril.SetActive(false);
+        if(pc.attackState!=Helpers.ATTACKING)
+            pc.attackState = Helpers.NOTATTACKING;
+    }
+
+    
 }

@@ -21,6 +21,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     public bool isDead;
     private bool canDash;
     private GameController gc;
+    [SerializeField] GameObject lasso;
 
     [SerializeField] float dashRange, dashTime, dashCD;
     [SerializeField] Image dashCDIndicator;
@@ -76,7 +77,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         //var rot = Quaternion.LookRotation(_input.ToIso(), Vector3.up);
         //transform.rotation = Quaternion.RotateTowards(transform.rotation, rot, _turnSpeed * Time.deltaTime);
 
-        if (attackState==Helpers.CHARGING)
+        if (attackState==Helpers.LASSOING)
         {
             if (InputChecker.instance.IsController())
                 LookAtAim();
@@ -88,6 +89,17 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         {
             transform.forward = _input.ToIso().normalized;
         }
+        else if (attackState == Helpers.LASSOED)
+        {
+            LookAtLasso();
+        }
+    }
+
+    public void LookAtLasso()
+    {
+        Vector3 dir = lasso.transform.position - transform.position;
+        dir.y = 0;
+        transform.forward = dir.normalized;
     }
 
     public void LookAtAim()
@@ -118,7 +130,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
                 moveable.Dash(transform.forward * dashRange, dashTime);
                 StartCoroutine(DashCD());
             }
-            else if (attackState == Helpers.CHARGING)
+            else if (attackState == Helpers.LASSOING)
             {
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
@@ -159,8 +171,10 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     
     private void Move()
     {
-
-        _rb.velocity = _input.ToIso().normalized * _speed + (Vector3.up * Mathf.Clamp(_rb.velocity.y, Mathf.NegativeInfinity, 0));
+        float adjustedSpeed = _speed;
+        if (attackState != Helpers.NOTATTACKING)
+            adjustedSpeed *= 0.75f;
+        _rb.velocity = _input.ToIso().normalized * adjustedSpeed + (Vector3.up * Mathf.Clamp(_rb.velocity.y, Mathf.NegativeInfinity, 0));
     }
 
     public void Kicked()
@@ -186,7 +200,8 @@ public static class Helpers
     }
 
     public const int NOTATTACKING = 0;
-    public const int CHARGING = 1;
+    public const int LASSOING = 1;
     public const int ATTACKING = 2;
+    public const int LASSOED = 3;
     
 }

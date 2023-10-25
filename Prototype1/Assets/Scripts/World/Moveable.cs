@@ -21,11 +21,13 @@ public class Moveable : MonoBehaviour
     float boundsZ;
     Collider col;
     bool isStopping = false;
+    bool isThrowing = false;
     Vector3 dir;
 
     // Start is called before the first frame update
     void Start()
     {
+
         col = GetComponent<Collider>();
         boundsY = col.bounds.size.y / 2;
         boundsX = col.bounds.size.x / 2;
@@ -62,6 +64,7 @@ public class Moveable : MonoBehaviour
             targetIgnoreY.y = 0;
             if(Vector3.Distance(positionIgnoreY, targetIgnoreY) < 0.5f)
             {
+                isThrowing = false;
                 if (isDashing)
                     stopping = StartCoroutine(Stop());
                 else
@@ -114,6 +117,7 @@ public class Moveable : MonoBehaviour
 
     public void Launched(Vector3 target, float force)
     {
+        isThrowing = true;
         isStopping = false;
         isDashing = false;
         buffer = 0;
@@ -160,5 +164,15 @@ public class Moveable : MonoBehaviour
         //Debug.Log(y);
         //Debug.Log(z);
         return Vector3.Magnitude(new Vector3(x,y,z)); 
+    }
+
+    public bool TriggerRelease()
+    {
+        if(!isLaunched)
+        {
+            return true;
+        }
+        Debug.Log(!(stopping == null));
+        return !(stopping == null);
     }
 }
