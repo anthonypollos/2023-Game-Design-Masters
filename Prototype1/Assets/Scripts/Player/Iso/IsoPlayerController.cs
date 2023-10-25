@@ -25,7 +25,12 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
     [SerializeField] float dashRange, dashTime, dashCD;
     [SerializeField] Image dashCDIndicator;
-    
+    [SerializeField] private JukeBox jukebox;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
     private void Start()
     {
         moveable = GetComponent<Moveable>();
@@ -127,6 +132,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
             {   
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
+                jukebox.PlaySound(0);
                 moveable.Dash(transform.forward * dashRange, dashTime);
                 StartCoroutine(DashCD());
             }
