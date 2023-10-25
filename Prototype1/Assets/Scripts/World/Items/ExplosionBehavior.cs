@@ -10,11 +10,16 @@ public class ExplosionBehavior : MonoBehaviour
     [SerializeField] LayerMask layerMask;
     List<GameObject> hit;
     ParticleSystem[] particleSystems;
+
+    [Header("Sound")]
+    [SerializeField] private JukeBox jukebox;
     private void Start()
     {
         StartCoroutine(DestroySelf());
         hit = new List<GameObject>();
         particleSystems = GetComponentsInChildren<ParticleSystem>();
+        jukebox.SetTransform(transform);
+        jukebox.PlaySound(0);
     }
     IEnumerator DestroySelf()
     {
