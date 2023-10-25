@@ -36,8 +36,13 @@ public class LassoBehavior : MonoBehaviour
     private Camera cam;
     private LineRenderer lr;
     [SerializeField] private LayerMask groundMask;
-
+    [SerializeField] private JukeBox jukebox;
     LassoLine line;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
     // Start is called before the first frame update
     private void Start()
     {
@@ -89,6 +94,7 @@ public class LassoBehavior : MonoBehaviour
         slider.value = 0f;
         slider.gameObject.SetActive(true);
         collider.enabled = true;
+        jukebox.PlaySound(0);
     }
 
     private void OnTriggerEnter(Collider collision)
