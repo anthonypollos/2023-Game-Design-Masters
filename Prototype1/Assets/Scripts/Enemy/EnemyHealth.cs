@@ -8,6 +8,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [SerializeField] private JukeBox jukebox;
     [SerializeField] int health = 100;
     [SerializeField] int staggerThreshold = 15;
+    [SerializeField] GameObject bloodParticle;
     int maxHealth;
     Slider slider;
     [HideInInspector]
@@ -37,7 +38,17 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         //Debug.Log("dealt damage");
         health -= dmg;
         if(dmg>staggerThreshold)
-            brain.interaction.Stagger();
+
+            //If there is a blood particle, create it.
+            if (bloodParticle != null)
+            {
+                //create the particle
+                GameObject vfxobj = Instantiate(bloodParticle, gameObject.transform.position, Quaternion.identity);
+                //destroy the particle
+                Destroy(vfxobj, 4);
+            }
+
+        brain.interaction.Stagger();
         if (health <= 0) Die();
         //Debug.Log((float)health / maxHealth);
         //Debug.Log(health);
