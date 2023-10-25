@@ -13,6 +13,11 @@ public class MeleeEnemyAttacks : EnemyAttackTemplate
     [Tooltip("Chance to chose multi attack over single attack")]
     [Range(0, 1)]
     float multiAttackChance;
+    [SerializeField] private JukeBox jukebox;
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
     public override void Attack()
     {
         if (count >= attackSpeed)
@@ -50,6 +55,7 @@ public class MeleeEnemyAttacks : EnemyAttackTemplate
         brain.an.SetTrigger("Attack" + attack.ToString());
         brain.state = EnemyStates.ATTACKING;
         brain.LookAtPlayer();
+        jukebox.PlaySound(0);
     }
 
     public void Dashing()
