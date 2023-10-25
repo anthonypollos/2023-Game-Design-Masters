@@ -1958,6 +1958,7 @@ GameObject:
   - component: {fileID: -2951775800152396056}
   - component: {fileID: 7830389134396124948}
   - component: {fileID: 8086080676862633664}
+  - component: {fileID: 8846991779598543818}
   m_Layer: 3
   m_Name: IsoPlayer
   m_TagString: Player
@@ -2033,9 +2034,9 @@ MonoBehaviour:
   attackState: 0
   isDead: 0
   lasso: {fileID: 387308811525342433}
-  dashRange: 7
-  dashTime: 0.2
-  dashCD: 0.75
+  dashRange: 8
+  dashTime: 0.25
+  dashCD: 0.25
   dashCDIndicator: {fileID: 3641572029893190079}
 --- !u!114 &1401297822148593465
 MonoBehaviour:
@@ -2050,7 +2051,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lassoSpeed: 60
-  pullSpeed: 25
+  pullSpeed: 15
   minPullForceModifier: 0.5
   pullCarryDistance: 15
   lassoChargeTime: 0.1
@@ -2118,7 +2119,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2030166625210922752}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 50
   m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -2302,6 +2303,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textBox: {fileID: 8053272589178392021}
+--- !u!81 &8846991779598543818
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030166625210922752}
+  m_Enabled: 1
 --- !u!1 &2060190097638719890
 GameObject:
   m_ObjectHideFlags: 0
