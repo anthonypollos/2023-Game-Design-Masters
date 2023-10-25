@@ -49,7 +49,7 @@ public class GameController : MonoBehaviour
         {
             player = GameObject.FindGameObjectWithTag("Player");
         }
-        Debug.Log(player.transform.position);
+        //Debug.Log(player.transform.position);
         return player.transform;
 
     }

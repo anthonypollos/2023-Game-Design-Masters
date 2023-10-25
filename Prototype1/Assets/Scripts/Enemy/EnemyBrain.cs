@@ -41,7 +41,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     void Start()
     {
         player = GameController.GetPlayer();
-        Debug.Log(player);
+        //Debug.Log(player);
         isAggro = false;
         moveable = GetComponent<Moveable>();
         an = GetComponent<Animator>();

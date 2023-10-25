@@ -25,6 +25,7 @@ public class LassoBehavior : MonoBehaviour
     private float maxPullDistance;
     private float minPullDistance;
     private float calculatedDistance;
+    [SerializeField] [Tooltip("Set to 0 for old version, else this takes over")]float trajectoryArrowDistance = 0f;
     //[SerializeField] float pullAngle = 90f;
     private Transform player;
     private Vector3 dir;
@@ -172,7 +173,7 @@ public class LassoBehavior : MonoBehaviour
         {
 
             float angle = CheckAngle();
-            calculatedDistance = Mathf.Lerp(maxPullDistance, minPullDistance, angle / 180) / attachedRB.mass;
+            calculatedDistance = trajectoryArrowDistance == 0f ? Mathf.Lerp(maxPullDistance, minPullDistance, angle / 180) / attachedRB.mass : trajectoryArrowDistance;
             //(maxPullDistance - ((maxPullDistance - minPullDistance) / 180) * Mathf.Abs(angle)) / attachedRB.mass
             dir.y = 0;
             Vector3[] positions = { attached.transform.position, attached.transform.position + dir * calculatedDistance };
@@ -183,7 +184,7 @@ public class LassoBehavior : MonoBehaviour
 
         if (attached != null && !attached.activeInHierarchy)
         {
-            attackManager.Release();
+            attackManager.ForceRelease();
         }
     }
 
@@ -280,6 +281,10 @@ public class LassoBehavior : MonoBehaviour
 
     public void StartRetracting()
     {
+        if(attached!=null)
+        {
+            attached.GetComponent<IPullable>().Break();
+        }
         moveable = null;
         attached = null;
         lr.enabled = false;

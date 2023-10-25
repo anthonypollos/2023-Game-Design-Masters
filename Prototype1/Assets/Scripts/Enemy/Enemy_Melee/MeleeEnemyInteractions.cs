@@ -49,9 +49,9 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         base.Pulled();
         launched = true;
-        lassoed = false;
+        //lassoed = false;
         hasCollided = false;
-        brain.an.SetBool("Lassoed", false);
+        //brain.an.SetBool("Lassoed", false);
     }
 
     public override void Break()

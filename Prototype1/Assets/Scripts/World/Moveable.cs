@@ -62,9 +62,20 @@ public class Moveable : MonoBehaviour
             Vector3 positionIgnoreY = transform.position;
             positionIgnoreY.y = 0;
             Vector3 targetIgnoreY = targetLocation;
-            targetIgnoreY.y = 0;
+            if (tendrilOwner != null && InputChecker.instance.GetInputType() == InputType.KaM)
+            {
+                targetIgnoreY = tendrilOwner.lb.GetMousePosition().Item2;
+            }
+                targetIgnoreY.y = 0;
             if(Vector3.Distance(positionIgnoreY, targetIgnoreY) < 0.5f)
             {
+                //Debug.Log("Too close");
+                if (tendrilOwner != null)
+                {
+                    //Debug.Log("Force release");
+                    tendrilOwner.ForceRelease();
+                    tendrilOwner = null;
+                }
                 isThrowing = false;
                 if (isDashing)
                     stopping = StartCoroutine(Stop());
@@ -78,11 +89,30 @@ public class Moveable : MonoBehaviour
     {
         if(!collision.transform.CompareTag("Ground") && isLaunched && buffer>.1f)
         {
-            Debug.Log("collided");
+            //Debug.Log("collide stay");
             if (tendrilOwner != null)
             {
-                Debug.Log("Force release");
+                //Debug.Log("Force release");
                 tendrilOwner.ForceRelease();
+                tendrilOwner = null;
+            }
+            //Debug.Log(collision.gameObject.name);
+            //Debug.Log("Hit object");
+            if (!isStopping)
+                stopping = StartCoroutine(Stop());
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!collision.transform.CompareTag("Ground") && isLaunched)
+        {
+            //Debug.Log("collide enter");
+            if (tendrilOwner != null)
+            {
+                //Debug.Log("Force release");
+                tendrilOwner.ForceRelease();
+                tendrilOwner = null;
             }
             //Debug.Log(collision.gameObject.name);
             //Debug.Log("Hit object");
