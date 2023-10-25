@@ -7,6 +7,8 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     private Moveable moveable;
     [SerializeField] private int health = 20;
     [SerializeField] int clashDamage;
+    [SerializeField] GameObject DestructionParticle;
+    [SerializeField] GameObject KickedParticle;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +17,14 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 
     public void Kicked()
     {
-
+        //If there is a kicked particle, create it.
+        if (KickedParticle != null)
+        {
+            //create the particle
+            GameObject vfxobj = Instantiate(KickedParticle, gameObject.transform.position, Quaternion.identity);
+            //destroy the particle
+            Destroy(vfxobj, 4);
+        }
     }
 
     public void Pulled()
@@ -38,6 +47,14 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         health -= dmg;
         if (health <= 0)
         {
+            //If there is a destruction particle, create it.
+            if (DestructionParticle != null)
+            {
+                //create the particle
+                GameObject vfxobj = Instantiate(DestructionParticle, gameObject.transform.position, Quaternion.identity);
+                //destroy the particle
+                Destroy(vfxobj, 4);
+            }
             Destroy(gameObject);
         }
     }

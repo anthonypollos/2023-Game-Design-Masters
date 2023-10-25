@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
-
+    [SerializeField] private JukeBox jukebox;
     [SerializeField] int health = 100;
     [SerializeField] int staggerThreshold = 15;
     int maxHealth;
@@ -14,6 +14,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public EnemyContainer ec;
     [HideInInspector]
     public EnemyBrain brain;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform); 
+    }
     private void Start()
     {
         ec = FindObjectOfType<EnemyContainer>();
@@ -37,10 +42,12 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         //Debug.Log((float)health / maxHealth);
         //Debug.Log(health);
         slider.value = (float)health/ maxHealth;
+        jukebox.PlaySound(0);
     }
 
     private void Die()
     {
+        jukebox.PlaySound(1);
         ec.RemoveEnemy(gameObject);
         ec.RemoveAggro(gameObject);
         Destroy(gameObject);
