@@ -285,6 +285,10 @@ public class LassoBehavior : MonoBehaviour
         {
             attached.GetComponent<IPullable>().Break();
         }
+        if(moveable!=null)
+        {
+            moveable.tendrilOwner = null;
+        }
         moveable = null;
         attached = null;
         lr.enabled = false;
