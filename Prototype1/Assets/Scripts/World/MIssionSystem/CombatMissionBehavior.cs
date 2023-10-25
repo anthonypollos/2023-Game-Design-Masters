@@ -43,9 +43,9 @@ public class CombatMissionBehavior : MissionBehavior
         if(enemies.Contains(enemy))
         {
             enemies.Remove(enemy);
+            if (enemies.Count <= 0)
+                OnComplete();
         }
-        if (enemies.Count <= 0)
-            OnComplete();
     }
 
     protected override void OnComplete()
