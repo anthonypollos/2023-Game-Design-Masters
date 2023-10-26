@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.SceneTemplate;
+//using UnityEditor.SceneTemplate;
 using UnityEngine;
 
 public class Moveable : MonoBehaviour

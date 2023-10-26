@@ -384,24 +384,20 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3332267905619631055, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_text
-      value: "<b>Town Level:</b>\n- Only individual parts of the town become transparent
-        when walking behind them. \n- Some interior faces look strange due to lightmap
-        issues.\n<b>Player Movement and Abilities:</b>\n- the tendril aim will attempt
-        to snap to floors above the player if said floors are visible and the cursor
-        is over them.\n- The tendril aim will snap to the nearest floor/wall that
-        the cursor is over. This can make aim weird on maps where the camera is low
-        to the ground.\n- The aim reticle lags on some computers.\n- The player's
-        kick direction does not always update to face the cursor.\n- Small throwables
-        are buggy (Sometimes they won't get grabbed, sometimes they go over/under
-        enemies instead of hitting them.)\n<b>Enemies (Potentially Outdated):</b>\n-
-        Melee enemies can sometimes lose functionality under specific circumstances.
-        This can also make the tendrils unusable for a few seconds.\n- Ranged enemies
-        can be pushed, breaking their aim.\n- Patrolling enemies will not turn to
-        face their move direction."
+      value: "\u2022 Object aim indicator UI can be inaccurate, especially when moving
+        cursor over walls or ceilings\n\u2022 The first object grabbed in the town
+        level cannot be thrown\n\u2022 Kick direction can be inaccurate\n\u2022 Can
+        tendril and kick enemies/object through walls and props\n\u2022 Can occasionally
+        dash through walls or props, which may cause player to be soft locked in
+        inaccessible areas\n\u2022 Enemies may spawn behind blockades, preventing
+        player from completing objective needed to progress\n\u2022 Enemies may get
+        caught on level geometry\nIf an enemy dies while the player is holding it,
+        the game may stop responding to player input\n\u2022 Exploding barrels will
+        occasionally explode on porches and doorways"
       objectReference: {fileID: 0}
     - target: {fileID: 3332267905619631055, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_fontSize
-      value: 33.95
+      value: 32.25
       objectReference: {fileID: 0}
     - target: {fileID: 3332267905619631055, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_fontStyle
@@ -410,6 +406,34 @@ PrefabInstance:
     - target: {fileID: 3332267905619631055, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_isRightToLeft
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3332267905619631055, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
+      propertyPath: m_paragraphSpacing
+      value: 37.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 5864064988665819313, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5864064988665819313, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5864064988665819313, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1210
+      objectReference: {fileID: 0}
+    - target: {fileID: 5864064988665819313, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 635
+      objectReference: {fileID: 0}
+    - target: {fileID: 5864064988665819313, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 625
+      objectReference: {fileID: 0}
+    - target: {fileID: 5864064988665819313, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -337.5
       objectReference: {fileID: 0}
     - target: {fileID: 6382293903405195558, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_Name
@@ -504,7 +528,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8442829318145831863, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
@@ -1860,6 +1885,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Level Select Panel BG
       objectReference: {fileID: 0}
+    - target: {fileID: 8815175506325427395, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8897185143929030075, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1886,11 +1915,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897185143929030075, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -1141.5627
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8897185143929030075, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_SizeDelta.y
-      value: -86.3035
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8897185143929030075, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3626,55 +3655,59 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2640914915403910327, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2640914915403910327, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2640914915403910327, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 543.08496
       objectReference: {fileID: 0}
     - target: {fileID: 2640914915403910327, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 635
       objectReference: {fileID: 0}
     - target: {fileID: 2640914915403910327, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 958.45746
       objectReference: {fileID: 0}
     - target: {fileID: 2640914915403910327, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -337.5
       objectReference: {fileID: 0}
     - target: {fileID: 5864064988665819313, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5864064988665819313, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5864064988665819313, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 566.915
       objectReference: {fileID: 0}
     - target: {fileID: 5864064988665819313, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 635
       objectReference: {fileID: 0}
     - target: {fileID: 5864064988665819313, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 303.4575
       objectReference: {fileID: 0}
     - target: {fileID: 5864064988665819313, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -337.5
       objectReference: {fileID: 0}
     - target: {fileID: 6382293903405195558, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_Name
       value: Controls Panel
+      objectReference: {fileID: 0}
+    - target: {fileID: 6382293903405195558, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8897185143929030075, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_Pivot.x
