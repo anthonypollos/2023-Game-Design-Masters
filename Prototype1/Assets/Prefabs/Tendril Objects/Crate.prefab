@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 6184908530248477327}
   m_Layer: 9
   m_Name: Crate
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,7 +106,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 20
-  clashDamage: 20
+  clashDamage: 30
+  DestructionParticle: {fileID: 7141866554852115599, guid: eb4485787cd10004da588128fe280f63, type: 3}
+  KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
 --- !u!65 &1448451104197299370
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -168,6 +170,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLaunched: 0
+  timeToStop: 1
+  groundCheckBuffer: 0.1
 --- !u!114 &4200893838909149319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,6 +253,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 20
   clashDamage: 20
+  DestructionParticle: {fileID: 7141866554852115599, guid: eb4485787cd10004da588128fe280f63, type: 3}
+  KickedParticle: {fileID: 0}
 --- !u!1001 &3772696764704790127
 PrefabInstance:
   m_ObjectHideFlags: 0

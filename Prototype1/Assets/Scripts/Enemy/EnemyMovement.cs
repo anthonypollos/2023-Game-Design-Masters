@@ -5,8 +5,7 @@ using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField]
-    bool isMoving = true;
+    public bool isMoving = true;
     [SerializeField] 
     float movementSpeed;
     [SerializeField] [Tooltip("Is the enemy a patrol type enemy or a random wandering enemy")] 

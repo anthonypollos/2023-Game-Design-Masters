@@ -43,9 +43,16 @@ public class JukeBox
         {
             SoundTrack track = tracks[idx];
             Vector3 location = track.isLocalized ? transform.position : Camera.main.transform.position;
-            AudioSource.PlayClipAtPoint(track.sound, location, track.volume);
-            //source.Play();
-            Debug.Log("Should play");
+            if (track.sound != null)
+            {
+                AudioSource.PlayClipAtPoint(track.sound, location, track.volume);
+                //source.Play();
+                Debug.Log("Should play");
+            }
+            else
+            {
+                Debug.LogError("Error: That audio clip is not set");
+            }
         }
     }
 }

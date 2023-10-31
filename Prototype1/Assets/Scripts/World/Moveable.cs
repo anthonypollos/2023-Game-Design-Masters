@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.SceneTemplate;
+//using UnityEditor.SceneTemplate;
 using UnityEngine;
 
 public class Moveable : MonoBehaviour
@@ -22,6 +22,7 @@ public class Moveable : MonoBehaviour
     Collider col;
     bool isStopping = false;
     bool isThrowing = false;
+    public IsoAttackManager tendrilOwner;
     Vector3 dir;
 
     // Start is called before the first frame update
@@ -61,9 +62,20 @@ public class Moveable : MonoBehaviour
             Vector3 positionIgnoreY = transform.position;
             positionIgnoreY.y = 0;
             Vector3 targetIgnoreY = targetLocation;
-            targetIgnoreY.y = 0;
+            if (tendrilOwner != null && InputChecker.instance.GetInputType() == InputType.KaM)
+            {
+                targetIgnoreY = tendrilOwner.lb.GetMousePosition().Item2;
+            }
+                targetIgnoreY.y = 0;
             if(Vector3.Distance(positionIgnoreY, targetIgnoreY) < 0.5f)
             {
+                //Debug.Log("Too close");
+                if (tendrilOwner != null)
+                {
+                    //Debug.Log("Force release");
+                    tendrilOwner.ForceRelease();
+                    tendrilOwner = null;
+                }
                 isThrowing = false;
                 if (isDashing)
                     stopping = StartCoroutine(Stop());
@@ -75,8 +87,33 @@ public class Moveable : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if(!collision.transform.CompareTag("Ground") && isLaunched && buffer>.5f)
+        if(!collision.transform.CompareTag("Ground") && isLaunched && buffer>.1f)
         {
+            //Debug.Log("collide stay");
+            if (tendrilOwner != null)
+            {
+                //Debug.Log("Force release");
+                tendrilOwner.ForceRelease();
+                tendrilOwner = null;
+            }
+            //Debug.Log(collision.gameObject.name);
+            //Debug.Log("Hit object");
+            if (!isStopping)
+                stopping = StartCoroutine(Stop());
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!collision.transform.CompareTag("Ground") && isLaunched)
+        {
+            //Debug.Log("collide enter");
+            if (tendrilOwner != null)
+            {
+                //Debug.Log("Force release");
+                tendrilOwner.ForceRelease();
+                tendrilOwner = null;
+            }
             //Debug.Log(collision.gameObject.name);
             //Debug.Log("Hit object");
             if (!isStopping)
@@ -172,7 +209,14 @@ public class Moveable : MonoBehaviour
         {
             return true;
         }
-        Debug.Log(!(stopping == null));
+        //Debug.Log(!(stopping == null));
         return !(stopping == null);
+    }
+
+    public void ForceRelease()
+    {
+        tendrilOwner = null;
+        isThrowing = false;
+        stopping = StartCoroutine(Tumbling());
     }
 }

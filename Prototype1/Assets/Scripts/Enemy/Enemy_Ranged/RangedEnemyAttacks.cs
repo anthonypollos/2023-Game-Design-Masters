@@ -33,6 +33,7 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
 
     private void TriggerAttack(int attack)
     {
+        //Debug.Log("attack triggered");
         brain.an.SetBool("Attacking", true);
         //Debug.Log("trigger attack" + attack);
         brain.an.SetTrigger("Attack" + attack.ToString());

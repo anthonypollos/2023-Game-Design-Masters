@@ -41,6 +41,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     void Start()
     {
         player = GameController.GetPlayer();
+        //Debug.Log(player);
         isAggro = false;
         moveable = GetComponent<Moveable>();
         an = GetComponent<Animator>();
@@ -93,7 +94,8 @@ public class EnemyBrain : MonoBehaviour, IEnemy
         if(state == EnemyStates.NOTHING)
         {
             if (movement.rb.velocity.x != 0 || movement.rb.velocity.z != 0)
-                transform.forward = movement.rb.velocity.normalized;
+                if(movement.isMoving)
+                    transform.forward = movement.rb.velocity.normalized;
         }
     }
 

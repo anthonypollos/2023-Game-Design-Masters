@@ -8,6 +8,9 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     [Tooltip("Damage dealt and taken when colliding with someone then launched")]
     int clashDamage = 20;
     bool launched;
+
+    [SerializeField] GameObject KickedParticle;
+
     [SerializeField]
     [Tooltip("Stun time when taking damage")]
     float stunTime = 0.5f;
@@ -34,7 +37,16 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         launched = true;
         Stunned();
         hasCollided = false;
-        
+
+        //If there is a kicked particle, create it.
+        if (KickedParticle != null)
+        {
+            //create the particle
+            GameObject vfxobj = Instantiate(KickedParticle, gameObject.transform.position, Quaternion.identity);
+            //destroy the particle
+            Destroy(vfxobj, 4);
+        }
+
     }
 
     public override void Lassoed()
@@ -49,17 +61,20 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         base.Pulled();
         launched = true;
-        lassoed = false;
+        //lassoed = false;
         hasCollided = false;
-        brain.an.SetBool("Lassoed", false);
+        //brain.an.SetBool("Lassoed", false);
     }
 
     public override void Break()
     {
         base.Break();
         lassoed = false;
+        if (!brain.moveable.isLaunched)
+        { 
         brain.an.SetBool("Lassoed", false);
         UnStunned();
+        }
     }
 
     public override void Stagger()
@@ -80,6 +95,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         if(!lassoed)
         {
+            brain.an.SetBool("Lassoed", false);
             brain.an.SetBool("Stunned", false);
             stunned = false;
             brain.PackAggro();

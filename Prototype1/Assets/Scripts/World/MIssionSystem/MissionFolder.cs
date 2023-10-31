@@ -75,15 +75,17 @@ public class MissionFolder : MonoBehaviour
 
     void NextUnfinished()
     {
-        for (int i = currentDisplayedMission+1; i!=currentDisplayedMission; i++)
+        for (int i = 0; i<missions.Count; i++)
         {
-            if (i > missions.Count)
+            int temp = i + currentDisplayedMission;
+            temp %= missions.Count;
+            if (i >= missions.Count)
                 i = 0;
             else
             {
-                if(!missionsStatuses[i])
+                if(!missionsStatuses[temp])
                 {
-                    currentDisplayedMission = i;
+                    currentDisplayedMission = temp;
                     SetMission();
                     return;
                 }
@@ -109,7 +111,7 @@ public class MissionFolder : MonoBehaviour
         SetMission();
         if (missionsCompleted >= missions.Count)
             Victory();
-        else
+        else if (currentDisplayedMission == idx)
             NextUnfinished();
     }
 
