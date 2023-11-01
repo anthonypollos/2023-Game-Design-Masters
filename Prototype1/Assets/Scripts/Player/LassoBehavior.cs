@@ -68,6 +68,7 @@ public class LassoBehavior : MonoBehaviour
 
     public void SetValues(float maxPullDistance, float minModifier, float maxThrowRange, float breakRange, Slider slider, Image sliderFill)
     {
+        lr.enabled = false;
         moveable = null;
         attached = null;
         startingPos = transform.position;
@@ -112,8 +113,8 @@ public class LassoBehavior : MonoBehaviour
                 forwardVector = (player.position - attached.transform.position).normalized;
                 attached.GetComponentInParent<IPullable>().Lassoed();
                 //Physics.IgnoreCollision(GetComponent<Collider>(), temp.GetComponent<Collider>(), true);
-                gameObject.transform.parent = temp.transform;
-                transform.localPosition = Vector3.zero;
+                //gameObject.transform.parent = temp.transform;
+                //transform.localPosition = Vector3.zero;
                 gameObject.GetComponent<Rigidbody>().isKinematic = true;
                 slider.value = 0;
                 slider.gameObject.SetActive(true);
@@ -187,10 +188,14 @@ public class LassoBehavior : MonoBehaviour
             lr.SetPositions(positions);
             //Debug.Log(calculatedDistance);
         }
-
-        if (attached != null && !attached.activeInHierarchy)
+        if (attached != null)
         {
-            attackManager.ForceRelease();
+            Debug.Log(attached.transform.position);
+            transform.position = attached.transform.position;
+            if(!attached.activeInHierarchy)
+            {
+                attackManager.ForceRelease();
+            }
         }
     }
 
@@ -256,7 +261,7 @@ public class LassoBehavior : MonoBehaviour
     {
         bool returnValue = true;
         transform.parent = null;
-        lr.enabled = true;
+        //lr.enabled = true;
         line.gameObject.SetActive(true);
         if (moveable != null && moveable.gameObject.activeInHierarchy)
         {

@@ -23,6 +23,8 @@ public class EnemyMovement : MonoBehaviour
     [HideInInspector]
     public EnemyBrain brain;
 
+    private Vector3 previousPosition;
+    private float refreshTime;
     private Vector3 targetPosition;
     private NavMeshPath path;
     private float count;
@@ -32,6 +34,8 @@ public class EnemyMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        previousPosition = transform.position;
+        refreshTime = 0;
         rb = GetComponent<Rigidbody>();
         path = new NavMeshPath();
         targetPosition = transform.position;
@@ -50,6 +54,20 @@ public class EnemyMovement : MonoBehaviour
     void Update()
     {
         count += Time.deltaTime;
+        refreshTime += Time.deltaTime;
+        if(!brain.isAggro && !isPatrolling)
+        {
+            if(refreshTime > 2f)
+            {
+                refreshTime = 0;
+                if (Vector3.Distance(previousPosition, transform.position) < 0.5f)
+                {
+                    Debug.Log("Stuck, resetting");
+                    RandomPoint(out targetPosition);
+                }
+                previousPosition = transform.position;
+            }
+        }
     }
 
     public void Move()
@@ -161,6 +179,7 @@ public class EnemyMovement : MonoBehaviour
 
     private bool RandomPoint(out Vector3 output)
     {
+        if (isPatrolling) centerPoint = transform.position;
         Vector3 randomPoint = centerPoint + Random.insideUnitSphere * wanderRadius;
         NavMeshHit hit;
         for (int i = 0; i < 100; i++)

@@ -136,10 +136,11 @@ public class IsoPlayerController : MonoBehaviour, IKickable
                 moveable.Dash(transform.forward * dashRange, dashTime);
                 StartCoroutine(DashCD());
             }
-            else if (attackState == Helpers.LASSOING)
+            else if (attackState == Helpers.LASSOING || attackState == Helpers.LASSOED)
             {
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
+                jukebox.PlaySound(0);
                 moveable.Dash(_input.ToIso().normalized * dashRange, dashTime);
                 StartCoroutine(DashCD());
             }
