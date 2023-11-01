@@ -226,7 +226,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 //Debug.Log(calculatedDistance);
                 //Debug.Log(dir.magnitude);
                 moveable.Launched(dir * calculatedDistance, pullSpeed);
-                lb.transform.position = moveable.transform.position;
+                //lb.transform.position = moveable.transform.position;
                 //Rigidbody rb = target.GetComponent<Rigidbody>();
                 //var (success, position) = pc.GetMousePosition();
                 //if (success)
@@ -244,7 +244,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 //target.GetComponent<IPullable>().Pulled();
             }
             //lassoRangeUIIndicator.gameObject.SetActive(false);
-            lb.transform.parent = null;
+            //lb.transform.parent = null;
             target.GetComponent<IPullable>().Pulled();
         }
         if(moveable==null)
@@ -275,11 +275,14 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     void Retraction()
     {
-        isRetracting = true;
-        //Debug.Log("Start retracting");
-        lb.StartRetracting();
-        //lassoRB.isKinematic = false;
-        lasso.transform.parent = null;
+        if (!isRetracting)
+        {
+            isRetracting = true;
+            //Debug.Log("Start retracting");
+            lb.StartRetracting();
+            //lassoRB.isKinematic = false;
+            //lasso.transform.parent = null;
+        }
     }
 
     void Retracted()
