@@ -8,7 +8,7 @@ public class LassoBehavior : MonoBehaviour
 {
     private GameController gc;
     public IsoAttackManager attackManager;
-    private Collider collider;
+    //private Collider collider;
 
     private float maxThrowDistance = 999;
     private float maxDistance = 999;
@@ -46,7 +46,7 @@ public class LassoBehavior : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        collider = GetComponent<Collider>();
+        //collider = GetComponent<Collider>();
         attackManager = FindObjectOfType<IsoAttackManager>();
         //lassoRange = GetComponentInChildren<LassoRange>();
         grounded = false;
@@ -94,7 +94,7 @@ public class LassoBehavior : MonoBehaviour
         line.gameObject.SetActive(true);
         slider.value = 0f;
         slider.gameObject.SetActive(true);
-        collider.enabled = true;
+        GetComponent<Collider>().enabled = true;
         jukebox.PlaySound(0);
     }
 
@@ -303,7 +303,7 @@ public class LassoBehavior : MonoBehaviour
         moveable = null;
         attached = null;
         lr.enabled = false;
-        collider.enabled = false;
+        GetComponent<Collider>().enabled = false;
     }
 
 

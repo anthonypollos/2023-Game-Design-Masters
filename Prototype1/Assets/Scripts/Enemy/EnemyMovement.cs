@@ -62,7 +62,7 @@ public class EnemyMovement : MonoBehaviour
                 refreshTime = 0;
                 if (Vector3.Distance(previousPosition, transform.position) < 0.5f)
                 {
-                    Debug.Log("Stuck, resetting");
+                    //Debug.Log("Stuck, resetting");
                     RandomPoint(out targetPosition);
                 }
                 previousPosition = transform.position;

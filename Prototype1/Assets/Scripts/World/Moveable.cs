@@ -15,13 +15,13 @@ public class Moveable : MonoBehaviour
     [SerializeField] float timeToStop = 1f;
     bool isDashing;
     LayerMask groundLayers;
-    [SerializeField] float groundCheckBuffer = 0.1f;
+    //[SerializeField] float groundCheckBuffer = 0.1f;
     float boundsY;
     float boundsX;
     float boundsZ;
     Collider col;
     bool isStopping = false;
-    bool isThrowing = false;
+    //bool isThrowing = false;
     public IsoAttackManager tendrilOwner;
     Vector3 dir;
 
@@ -76,7 +76,7 @@ public class Moveable : MonoBehaviour
                     tendrilOwner.ForceRelease();
                     tendrilOwner = null;
                 }
-                isThrowing = false;
+                //isThrowing = false;
                 if (isDashing)
                     stopping = StartCoroutine(Stop());
                 else
@@ -154,7 +154,7 @@ public class Moveable : MonoBehaviour
 
     public void Launched(Vector3 target, float force)
     {
-        isThrowing = true;
+        //isThrowing = true;
         isStopping = false;
         isDashing = false;
         buffer = 0;
@@ -216,7 +216,7 @@ public class Moveable : MonoBehaviour
     public void ForceRelease()
     {
         tendrilOwner = null;
-        isThrowing = false;
+        //isThrowing = false;
         stopping = StartCoroutine(Tumbling());
     }
 }
