@@ -51,14 +51,14 @@ public class SaveLoadManager : MonoBehaviour
 
         if (saveableObjects != null)
         {
-            Debug.Log("Total Saveable Objects: " + saveableObjects.Count);
+            Debug.Log("Total Loadable Objects: " + saveableObjects.Count);
             foreach (ISaveable temp in saveableObjects)
             {
                 temp.LoadData(savedValues);
             }
         }
         else
-            Debug.Log("No Saveable Objects Found");
+            Debug.Log("No Loadable Objects Found");
         
     }
 
