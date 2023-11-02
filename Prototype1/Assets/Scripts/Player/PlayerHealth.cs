@@ -47,8 +47,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void Die()
     {
-        jukebox.PlaySound(1);
-        pc.isDead = true;
-        GameController.instance.Lose();
+        if (!pc.isDead)
+        {
+            jukebox.PlaySound(1);
+            pc.isDead = true;
+            GameController.instance.Lose();
+        }
     }
 }

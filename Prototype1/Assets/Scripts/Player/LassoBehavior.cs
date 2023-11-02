@@ -157,7 +157,7 @@ public class LassoBehavior : MonoBehaviour
         }
     } */
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (Vector3.Distance(startingPos, transform.position) >= maxThrowDistance && attached == null) attackManager.Release();
         float distance = Vector3.Distance(transform.position, player.position);

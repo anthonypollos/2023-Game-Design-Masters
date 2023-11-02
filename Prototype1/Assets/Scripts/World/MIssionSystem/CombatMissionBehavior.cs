@@ -48,8 +48,16 @@ public class CombatMissionBehavior : MissionBehavior
         }
     }
 
-    protected override void OnComplete()
+    public override void OnComplete()
     {
+        if(enemies.Count>0)
+        {
+            foreach(EnemyBrain enemy in enemies)
+            {
+                enemy.gameObject.SetActive(false);
+            }
+        }
+        enemies.Clear();
         foreach (GameObject barrier in arenaBarriers)
         {
             barrier.SetActive(false);

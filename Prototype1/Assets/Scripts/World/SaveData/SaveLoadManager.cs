@@ -62,6 +62,16 @@ public class SaveLoadManager : MonoBehaviour
         
     }
 
+    private void InitialLoad()
+    {
+        this.savedValues = dataHandler.Load();
+
+        if (this.savedValues == null)
+        {
+            NewGame();
+        }
+    }
+
     public void SaveGame()
     {
         if (saveableObjects != null)
@@ -77,6 +87,7 @@ public class SaveLoadManager : MonoBehaviour
 
                 temp.SaveData(ref savedValues);
             }
+            savedValues.currentLevel = SceneManager.GetActiveScene().name;
         }
         else
             Debug.Log("No Saveable Objects Found");
@@ -91,9 +102,27 @@ public class SaveLoadManager : MonoBehaviour
 
     private void NewScene(Scene scene, LoadSceneMode loadMode)
     {
-        
+        if(savedValues == null)
+        {
+            InitialLoad();
+        }
         IEnumerable<ISaveable> saveableObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISaveable>();
         this.saveableObjects = new List<ISaveable>(saveableObjects);
+        Transform player = FindObjectOfType<PlayerHealth>().gameObject.transform;
+        //Debug.Log("Current saved level: " + savedValues.currentLevel);
+        if(savedValues.currentLevel != scene.name)
+        {
+            //Debug.Log("New level: " + scene.name);
+            savedValues.currentLevel = scene.name;
+            //Debug.Log("New level: " +  savedValues.currentLevel);
+            savedValues.currentLevelMissionStatuses.Clear();
+            savedValues.checkPointLocation = player.position;
+        }
+        else if(savedValues.checkPointLocation != Vector3.zero)
+        {
+            //Debug.Log("Setting checkpoint");
+            //player.position = savedValues.checkPointLocation;
+        }
         LoadGame();
     }
 
