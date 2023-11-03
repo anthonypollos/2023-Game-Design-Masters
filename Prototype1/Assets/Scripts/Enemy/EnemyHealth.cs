@@ -39,7 +39,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     }
     public void TakeDamage(int dmg)
     {
-        //Debug.Log("dealt damage");
+        Debug.Log("dealt damage");
         health -= dmg;
         if(dmg>staggerThreshold)
 

@@ -239,6 +239,7 @@ public class MissionFolder : MonoBehaviour, ISaveable
         }
         else
         {
+            checkPoint = Vector3.zero;
             missionsStatuses = savedValues.currentLevelMissionStatuses;
             for (int temp = 0; temp<missionsStatuses.Count; temp++)
             {
@@ -251,9 +252,14 @@ public class MissionFolder : MonoBehaviour, ISaveable
                 }
             }
             Debug.Log("Checkpoint location: " + checkPoint);
-            IsoPlayerController player = FindObjectOfType<IsoPlayerController>();
-            player.GetComponent<Rigidbody>().position = checkPoint;
-            Debug.Log("Player Position: " + player.transform.position);
+            
+            if(checkPoint != Vector3.zero)
+            {
+                IsoPlayerController player = FindObjectOfType<IsoPlayerController>();
+                player.GetComponent<Rigidbody>().position = checkPoint;
+                Debug.Log("Player Position: " + player.transform.position);
+            }
+            
         }
     }
 }
