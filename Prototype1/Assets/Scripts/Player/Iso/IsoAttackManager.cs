@@ -136,6 +136,23 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (isRetracting)
+        {
+            pulling = false;
+            if (lassoRB.isKinematic) { lassoRB.isKinematic = false; }
+            lassoRB.velocity = (lassoOrigin.transform.position - lasso.transform.position).normalized * lassoSpeed;
+            if (Vector3.Distance(lassoOrigin.transform.position, lasso.transform.position) < 1f)
+                Retracted();
+        }
+        else
+        {
+            if (pulling)
+                Pull(lb);
+        }
+    }
+
     private void Update()
     {
         if (isCharging && !pc.moveable.isLaunched)
@@ -151,19 +168,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             lr.enabled = false;
         }
 
-        if(isRetracting)
-        {
-            pulling = false;
-            if(lassoRB.isKinematic) { lassoRB.isKinematic = false; }
-            lassoRB.velocity = (lassoOrigin.transform.position - lasso.transform.position).normalized * lassoSpeed;
-            if (Vector3.Distance(lassoOrigin.transform.position, lasso.transform.position) < 1f)
-                Retracted();
-        }
-        else
-        {
-            if (pulling)
-                Pull(lb);
-        }
+        
     }
 
     private void Lasso()
