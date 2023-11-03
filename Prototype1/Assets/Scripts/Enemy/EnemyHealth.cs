@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
@@ -15,10 +16,13 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public EnemyContainer ec;
     [HideInInspector]
     public EnemyBrain brain;
+    bool quitting = false;
 
     private void Awake()
     {
-        jukebox.SetTransform(transform); 
+        quitting = false;
+        jukebox.SetTransform(transform);
+        SceneManager.sceneUnloaded += OnSceneChange;
     }
     private void Start()
     {
@@ -66,11 +70,21 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     private void OnDisable()
     {
-        if (ec != null)
+        if (ec != null && !quitting)
         {
             ec.RemoveEnemy(gameObject);
             ec.RemoveAggro(gameObject);
         }
         Destroy(gameObject);
+    }
+
+    private void OnApplicationQuit()
+    {
+        quitting = true;
+    }
+
+    private void OnSceneChange(Scene scene)
+    {
+        quitting = true;
     }
 }

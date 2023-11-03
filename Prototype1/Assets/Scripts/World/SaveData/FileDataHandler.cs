@@ -18,6 +18,7 @@ public class FileDataHandler
 
     public SavedValues Load()
     {
+        //Debug.Log("Loading files");
         string fullPath = Path.Combine(dataDirPath, dataFileName);
         SavedValues loadedData = null;
         if(File.Exists(fullPath))
@@ -30,6 +31,7 @@ public class FileDataHandler
                     using(StreamReader reader = new StreamReader(stream))
                     {
                         dataToLoad = reader.ReadToEnd();
+                        Debug.Log(dataToLoad);
                     }
                 }
                 loadedData = JsonUtility.FromJson<SavedValues>(dataToLoad);
@@ -44,6 +46,7 @@ public class FileDataHandler
 
     public void Save(SavedValues savedValues)
     {
+        //Debug.Log("Saving files");
         string fullPath = Path.Combine(dataDirPath, dataFileName);
         try
         {
@@ -56,6 +59,7 @@ public class FileDataHandler
                 using(StreamWriter writer = new StreamWriter(stream))
                 {
                     writer.Write(dataToStore);
+                    //Debug.Log("Saving Complete");
                 }
             }
         }
