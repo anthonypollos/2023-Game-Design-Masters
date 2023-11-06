@@ -10,6 +10,8 @@ public class Flammable : IStatus
     private IDamageable iDamageable;
     [SerializeField] bool startOnFire;
     [HideInInspector] public Animator an;
+    [SerializeField] private ParticleSystem fireEffect;
+
     
     protected override void Deactivate()
     {
@@ -22,6 +24,8 @@ public class Flammable : IStatus
 
     protected override void Effect()
     {
+    //Debug.Log("be on fire now");
+    fireEffect.Play(true);
         if(an != null)
             an.SetBool("Burning", true);
         if(onFire==null)

@@ -63,4 +63,14 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         ec.RemoveAggro(gameObject);
         Destroy(gameObject);
     }
+
+    private void OnDisable()
+    {
+        if (ec != null)
+        {
+            ec.RemoveEnemy(gameObject);
+            ec.RemoveAggro(gameObject);
+        }
+        Destroy(gameObject);
+    }
 }

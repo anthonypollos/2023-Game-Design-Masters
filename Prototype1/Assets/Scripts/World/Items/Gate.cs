@@ -19,6 +19,7 @@ public class Gate : MonoBehaviour, IToggleable
     
     public void Toggle()
     {
+        if(an == null) an = GetComponent<Animator>();
         an.speed = 1;
         open = !open;
         an.SetBool("Open", open);

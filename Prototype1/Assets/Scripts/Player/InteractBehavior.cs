@@ -49,6 +49,10 @@ public class InteractBehavior : MonoBehaviour
             {
                 currentInteractables.Add(currentInteractables[0]);
             }
+            else
+            {
+                currentInteractables[0].gameObject.SetActive(false);
+            }
             currentInteractables.RemoveAt(0);
 
             Changed();

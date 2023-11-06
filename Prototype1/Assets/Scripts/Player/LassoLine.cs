@@ -13,7 +13,7 @@ public class LassoLine : MonoBehaviour
     float maxDistance;
     [SerializeField] Gradient gradient;
     [SerializeField] float distancePerBone;
-    [SerializeField] float deleteBuffer = 0.1f;
+    //[SerializeField] float deleteBuffer = 0.1f;
     [SerializeField] SkinnedMeshRenderer tendrilMaterial;
     // Start is called before the first frame update
     void Awake()

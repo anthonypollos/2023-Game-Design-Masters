@@ -7,16 +7,20 @@ public class MissionBehavior : MonoBehaviour
     [SerializeField] List<GameObject> toggleOnFinish;
     private List<IToggleable> toggles;
     [SerializeField] string missionText;
+    public Vector3 checkPointLocation;
     protected MissionFolder folder;
     protected bool triggered;
 
     protected void Start()
     {
-        toggles = new List<IToggleable>();
-        foreach (GameObject temp in toggleOnFinish)
+        if (toggles == null)
         {
-            IToggleable toggle = temp.GetComponentInChildren<IToggleable>();
-            if (toggle != null) { toggles.Add(toggle); }
+            toggles = new List<IToggleable>();
+            foreach (GameObject temp in toggleOnFinish)
+            {
+                IToggleable toggle = temp.GetComponentInChildren<IToggleable>();
+                if (toggle != null) { toggles.Add(toggle); }
+            }
         }
     }
     public void SetFolder(MissionFolder folder)
@@ -43,8 +47,22 @@ public class MissionBehavior : MonoBehaviour
         }
     }
 
-    protected virtual void OnComplete()
+    public void QuickSetToggles()
     {
+        if (toggles == null)
+        {
+            toggles = new List<IToggleable>();
+            foreach (GameObject temp in toggleOnFinish)
+            {
+                IToggleable toggle = temp.GetComponentInChildren<IToggleable>();
+                if (toggle != null) { toggles.Add(toggle); }
+            }
+        }
+    }
+
+    public virtual void OnComplete()
+    {
+        triggered = true;
         if(toggles.Count> 0) 
         foreach(IToggleable toggle in toggles)
         {
@@ -52,4 +70,5 @@ public class MissionBehavior : MonoBehaviour
         }
         folder.MissionComplete(this);
     }
+
 }
