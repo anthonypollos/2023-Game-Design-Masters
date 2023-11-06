@@ -47,7 +47,7 @@ public class JukeBox
             {
                 AudioSource.PlayClipAtPoint(track.sound, location, track.volume);
                 //source.Play();
-                Debug.Log("Should play");
+                //Debug.Log("Should play");
             }
             else
             {
