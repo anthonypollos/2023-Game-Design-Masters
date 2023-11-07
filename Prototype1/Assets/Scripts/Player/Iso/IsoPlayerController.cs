@@ -27,12 +27,17 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     [SerializeField] Image dashCDIndicator;
     [SerializeField] private JukeBox jukebox;
 
+    [SerializeField] float speedModWhenLassoOut;
+    [SerializeField] float speedModWhenPulling;
+    IsoAttackManager attackManager;
+
     private void Awake()
     {
         jukebox.SetTransform(transform);
     }
     private void Start()
     {
+        attackManager = GetComponent<IsoAttackManager>();
         moveable = GetComponent<Moveable>();
         attackState = 0;
         isDead = false;
@@ -144,6 +149,10 @@ public class IsoPlayerController : MonoBehaviour, IKickable
                 moveable.Dash(_input.ToIso().normalized * dashRange, dashTime);
                 StartCoroutine(DashCD());
             }
+            else if (attackState == Helpers.PULLING)
+            {
+                attackManager.ForceRelease();
+            }
         }
     }
 
@@ -179,8 +188,10 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     private void Move()
     {
         float adjustedSpeed = _speed;
-        if (attackState != Helpers.NOTATTACKING)
-            adjustedSpeed *= 0.75f;
+        if (attackState == Helpers.LASSOING || attackState == Helpers.LASSOED)
+            adjustedSpeed *= speedModWhenLassoOut;
+        if (attackState == Helpers.PULLING)
+            adjustedSpeed *= speedModWhenPulling;
         _rb.velocity = _input.ToIso().normalized * adjustedSpeed + (Vector3.up * Mathf.Clamp(_rb.velocity.y, Mathf.NegativeInfinity, 0));
     }
 
@@ -210,5 +221,6 @@ public static class Helpers
     public const int LASSOING = 1;
     public const int ATTACKING = 2;
     public const int LASSOED = 3;
+    public const int PULLING = 4;
     
 }

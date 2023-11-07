@@ -149,7 +149,10 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         else
         {
             if (pulling)
+            {
+                pc.attackState = Helpers.PULLING;
                 Pull(lb);
+            }
         }
     }
 
@@ -202,8 +205,12 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     public void ForceRelease()
     {
-        pulling = false;
-        Retraction();
+        if (lasso.activeInHierarchy)
+        {
+            pc.attackState = Helpers.LASSOED;
+            pulling = false;
+            Retraction();
+        }
     }
 
     public void Release()

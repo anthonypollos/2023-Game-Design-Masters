@@ -1,14 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RangedEnemyInteractions : EnemyInteractionBehaviorTemplate
 {
     [SerializeField]
     [Tooltip("Stun time when taking damage")]
     float stunTime = 1.5f;
+    [SerializeField]
+    float pullTimeToKill = 2f;
+    [SerializeField] Slider pullSlider;
+    float currentTime;
     void Start()
     {
+        currentTime = 0f;
+        pullSlider.gameObject.SetActive(false);
         lassoed = false;
         stunned = false;
     }
@@ -35,12 +42,22 @@ public class RangedEnemyInteractions : EnemyInteractionBehaviorTemplate
     public override void Pulled()
     {
         base.Pulled();
+        pullSlider.gameObject.SetActive(true);
+        currentTime += Time.fixedDeltaTime;
+        pullSlider.value = currentTime / pullTimeToKill;
+        if (currentTime >= pullTimeToKill) { PulledOut(); }
+    }
+
+    private void PulledOut()
+    {
         brain.health.TakeDamage(9999999);
     }
 
     public override void Break()
     {
         base.Break();
+        currentTime = 0;
+        pullSlider.gameObject.SetActive(false);
         lassoed = false;
         brain.an.SetBool("Lassoed", false);
         UnStunned();
