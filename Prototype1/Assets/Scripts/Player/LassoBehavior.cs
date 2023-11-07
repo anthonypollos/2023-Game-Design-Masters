@@ -298,6 +298,7 @@ public class LassoBehavior : MonoBehaviour
         }
         if(moveable!=null)
         {
+            moveable.ForceRelease();
             moveable.tendrilOwner = null;
         }
         moveable = null;

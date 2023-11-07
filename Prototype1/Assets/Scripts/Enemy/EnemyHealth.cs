@@ -11,7 +11,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [SerializeField] int staggerThreshold = 15;
     [SerializeField] GameObject bloodParticle;
     int maxHealth;
-    Slider slider;
+    [SerializeField] Slider healthSlider;
     [HideInInspector]
     public EnemyContainer ec;
     [HideInInspector]
@@ -29,8 +29,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         ec = FindObjectOfType<EnemyContainer>();
         ec.AddEnemy(gameObject);
         maxHealth = health;
-        slider = GetComponentInChildren<Slider>();
-        slider.value = health / maxHealth;
+        //slider = GetComponentInChildren<Slider>();
+        healthSlider.value = health / maxHealth;
     }
     private void Update()
     {
@@ -39,7 +39,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     }
     public void TakeDamage(int dmg)
     {
-        Debug.Log("dealt damage");
+        //Debug.Log("dealt damage");
         health -= dmg;
         if(dmg>staggerThreshold)
 
@@ -56,7 +56,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         if (health <= 0) Die();
         //Debug.Log((float)health / maxHealth);
         //Debug.Log(health);
-        slider.value = (float)health/ maxHealth;
+        healthSlider.value = (float)health/ maxHealth;
         jukebox.PlaySound(0);
     }
 

@@ -22,6 +22,7 @@ public class Moveable : MonoBehaviour
     Collider col;
     bool isStopping = false;
     //bool isThrowing = false;
+    [HideInInspector]
     public IsoAttackManager tendrilOwner;
     Vector3 dir;
 
