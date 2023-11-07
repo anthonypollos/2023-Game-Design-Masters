@@ -73,7 +73,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 
                 if (!collision.gameObject.CompareTag("Ground"))
                 {
-
+                    Debug.Log("Deal damage to hit target");
                     IDamageable dam = collision.gameObject.GetComponent<IDamageable>();
                     if (dam != null)
                         dam.TakeDamage(clashDamage);

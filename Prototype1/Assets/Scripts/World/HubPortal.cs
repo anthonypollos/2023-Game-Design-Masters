@@ -15,13 +15,20 @@ public class HubPortal : InteractableBehaviorTemplate, ISaveable
     {
         bool temp = false;
         savedValues.levelsCompleted.TryGetValue(worldName, out temp);
-        if(temp)
+        if (savedValues.currentLevel == "HubScene")
         {
-            GetComponent<MeshRenderer>().material.color = Color.green;
+            if (temp)
+            {
+                GetComponent<MeshRenderer>().material.color = Color.green;
+            }
+            else
+            {
+                GetComponent<MeshRenderer>().material.color = Color.red;
+            }
         }
         else
         {
-            GetComponent<MeshRenderer>().material.color = Color.red;
+            GetComponent<MeshRenderer>().material.color = Color.cyan;
         }
     }
 

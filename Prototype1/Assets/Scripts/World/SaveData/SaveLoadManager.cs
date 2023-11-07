@@ -24,7 +24,7 @@ public class SaveLoadManager : MonoBehaviour
         transform.parent = null;
         DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += NewScene;
-        
+        SceneManager.sceneUnloaded += LeaveScene;
     }
 
     private void Start()
@@ -41,47 +41,68 @@ public class SaveLoadManager : MonoBehaviour
 
     public void LoadGame()
     {
-        this.savedValues = dataHandler.Load();
-
-        if(this.savedValues == null)
+        if (dataHandler != null)
         {
-            NewGame();
-        }
+            instance.savedValues = dataHandler.Load();
 
-
-        if (saveableObjects != null)
-        {
-            Debug.Log("Total Loadable Objects: " + saveableObjects.Count);
-            foreach (ISaveable temp in saveableObjects)
+            if (instance.savedValues == null)
             {
-                temp.LoadData(savedValues);
+                NewGame();
+            }
+
+
+            if (saveableObjects != null)
+            {
+                //Debug.Log("Total Loadable Objects: " + saveableObjects.Count);
+                foreach (ISaveable temp in saveableObjects)
+                {
+                    temp.LoadData(savedValues);
+                }
+            }
+            else
+            {
+                //Debug.Log("No Loadable Objects Found");
             }
         }
-        else
-            Debug.Log("No Loadable Objects Found");
         
     }
 
     private void InitialLoad()
     {
-        this.savedValues = dataHandler.Load();
-
-        if (this.savedValues == null)
+        if (dataHandler != null)
         {
-            NewGame();
+
+
+            instance.savedValues = dataHandler.Load();
+
+            if (instance.savedValues == null)
+            {
+                NewGame();
+            }
         }
+    }
+
+    private void InitialSave()
+    {
+        dataHandler.Save(savedValues);
+    }
+
+    private void LeaveScene(Scene scene)
+    {
+        SaveGame();
     }
 
     public void SaveGame()
     {
+        Debug.Log("Saving");
         if (saveableObjects != null)
         {
-            Debug.Log("Total Saveable Objects: " + saveableObjects.Count);
+            //Debug.Log("Total Saveable Objects: " + saveableObjects.Count);
             foreach (ISaveable temp in saveableObjects)
             {
                 if (savedValues == null)
                 {
-                    Debug.LogError("savedValues = null");
+                    //Debug.LogError("savedValues = null");
                     return;
                 }
 
@@ -90,7 +111,10 @@ public class SaveLoadManager : MonoBehaviour
             savedValues.currentLevel = SceneManager.GetActiveScene().name;
         }
         else
-            Debug.Log("No Saveable Objects Found");
+        {
+            //Debug.Log("No Saveable Objects Found");
+        }
+            
 
         dataHandler.Save(savedValues);
     }
@@ -102,27 +126,16 @@ public class SaveLoadManager : MonoBehaviour
 
     private void NewScene(Scene scene, LoadSceneMode loadMode)
     {
-        if(savedValues == null)
+        InitialLoad();
+        if(scene.name != savedValues.currentLevel)
         {
-            InitialLoad();
+            Debug.Log("Different Scene");
+            savedValues.currentLevel = scene.name;
+            savedValues.currentLevelMissionStatuses.Clear();
         }
+        InitialSave();
         IEnumerable<ISaveable> saveableObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISaveable>();
         this.saveableObjects = new List<ISaveable>(saveableObjects);
-        Transform player = FindObjectOfType<PlayerHealth>().gameObject.transform;
-        //Debug.Log("Current saved level: " + savedValues.currentLevel);
-        if(savedValues.currentLevel != scene.name)
-        {
-            //Debug.Log("New level: " + scene.name);
-            savedValues.currentLevel = scene.name;
-            //Debug.Log("New level: " +  savedValues.currentLevel);
-            savedValues.currentLevelMissionStatuses.Clear();
-            savedValues.checkPointLocation = player.position;
-        }
-        else if(savedValues.checkPointLocation != Vector3.zero)
-        {
-            //Debug.Log("Setting checkpoint");
-            //player.position = savedValues.checkPointLocation;
-        }
         LoadGame();
     }
 

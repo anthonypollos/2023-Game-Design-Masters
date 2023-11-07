@@ -41,10 +41,14 @@ public class MissionFolder : MonoBehaviour, ISaveable
     void Start()
     {
         if (missions.Count == 0)
+        {
+            win = true;
+            SaveLoadManager.instance.SaveGame();
             this.enabled = false;
+        }
         else
         {
-            
+
             FindObjectOfType<EnemyContainer>().SetMissionFolder(this);
             foreach (MissionBehavior folder in missions)
             {
@@ -94,7 +98,7 @@ public class MissionFolder : MonoBehaviour, ISaveable
                 }
             }
         }
-        Debug.Log("Error, game not ending when all missions complete");
+        //Debug.Log("Error, game not ending when all missions complete");
     }
 
     void PreviousMission()
@@ -113,7 +117,7 @@ public class MissionFolder : MonoBehaviour, ISaveable
         missionsStatuses[idx] = true;
         SetMission();
         checkPoint = mission.checkPointLocation;
-        SaveLoadManager.instance.SaveGame();
+        //SaveLoadManager.instance.SaveGame();
         if (missionsCompleted >= missions.Count)
             Victory();
         else if (currentDisplayedMission == idx)
@@ -154,7 +158,9 @@ public class MissionFolder : MonoBehaviour, ISaveable
     {
         foreach (MissionBehavior mission in missions)
         {
-            CombatMissionBehavior combatMissionBehavior = mission.GetComponent<CombatMissionBehavior>();
+            CombatMissionBehavior combatMissionBehavior = null;
+            if(mission != null) 
+                 combatMissionBehavior = mission.GetComponent<CombatMissionBehavior>();
             if (combatMissionBehavior != null)
             {
                 combatMissionBehavior.RemoveEnemy(enemy.GetComponent<EnemyBrain>());
@@ -204,7 +210,7 @@ public class MissionFolder : MonoBehaviour, ISaveable
     {
         win = true;
         SaveLoadManager.instance.SaveGame();
-        Debug.Log("Victory!");
+        //Debug.Log("Victory!");
     }
 
     public void SaveData(ref SavedValues savedValues)
@@ -217,7 +223,6 @@ public class MissionFolder : MonoBehaviour, ISaveable
 
         savedValues.currentLevelMissionStatuses = missionsStatuses;
 
-        savedValues.checkPointLocation = checkPoint;
     }
 
     public void LoadData(SavedValues savedValues)
@@ -226,21 +231,35 @@ public class MissionFolder : MonoBehaviour, ISaveable
         missionsCompleted = 0;
         if(savedValues.currentLevelMissionStatuses.Count == 0)
         {
+            //Debug.Log("No missions found");
             bool[] temp = new bool[missions.Count];
+            for (int i = 0; i < temp.Length; i++)
+                temp[i] = false;
             missionsStatuses = new List<bool>(temp);
         }
         else
         {
+            checkPoint = Vector3.zero;
             missionsStatuses = savedValues.currentLevelMissionStatuses;
             for (int temp = 0; temp<missionsStatuses.Count; temp++)
             {
-                if (missionsStatuses[temp])
+                //Debug.Log("Mission " + (temp+1).ToString() + " is completed: " + missionsStatuses[temp]);
+                if (missionsStatuses[temp] & missions.Count>0)
                 {
                     missions[temp].SetFolder(this);
                     missions[temp].QuickSetToggles();
                     missions[temp].OnComplete();
                 }
             }
+            Debug.Log("Checkpoint location: " + checkPoint);
+            
+            if(checkPoint != Vector3.zero)
+            {
+                IsoPlayerController player = FindObjectOfType<IsoPlayerController>();
+                player.GetComponent<Rigidbody>().position = checkPoint;
+                Debug.Log("Player Position: " + player.transform.position);
+            }
+            
         }
     }
 }
