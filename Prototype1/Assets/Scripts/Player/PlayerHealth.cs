@@ -13,7 +13,10 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     IsoPlayerController pc;
     Slider hpBar;
 
-   private void Awake()
+    [Header("Animator Variables")]
+    [SerializeField] Animator anim; //assigned in inspector for now; can change
+
+    private void Awake()
    {
      jukebox.SetTransform(transform);
    }
@@ -43,12 +46,15 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         health -= dmg;
         hpBar.value = (float)health / (float)maxHealth;
         if (health <= 0) Die();
+        else anim.SetTrigger("damage");
+
     }
 
     private void Die()
     {
         if (!pc.isDead)
         {
+            anim.SetTrigger("death");
             jukebox.PlaySound(1);
             pc.isDead = true;
             GameController.instance.Lose();
