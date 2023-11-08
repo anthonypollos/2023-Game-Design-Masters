@@ -59,22 +59,28 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
     private void Update()
     {
-        if(!isDead && !moveable.isLaunched)
-            Look();
-
-        if(gameObject.layer == LayerMask.NameToLayer("PlayerDashing") && !moveable.isLaunched)
+        if (Time.timeScale != 0)
         {
-            gameObject.layer = LayerMask.NameToLayer("Player");
+            if (!isDead && !moveable.isLaunched)
+                Look();
+
+            if (gameObject.layer == LayerMask.NameToLayer("PlayerDashing") && !moveable.isLaunched)
+            {
+                gameObject.layer = LayerMask.NameToLayer("Player");
+            }
         }
     }
 
     private void FixedUpdate()
     {
-        if (!moveable.isLaunched && !isDead && attackState != Helpers.ATTACKING)
-            Move();
-        else
-            if(!moveable.isLaunched)
+        if (Time.timeScale != 0)
+        {
+            if (!moveable.isLaunched && !isDead && attackState != Helpers.ATTACKING)
+                Move();
+            else
+                if (!moveable.isLaunched)
                 _rb.velocity = Vector3.zero + Vector3.up * _rb.velocity.y;
+        }
     }
 
 
@@ -131,7 +137,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
     private void Dash()
     {
-        if(canDash && !moveable.isLaunched && !isDead)
+        if(canDash && !moveable.isLaunched && !isDead && Time.timeScale != 0)
         {
             if( attackState == Helpers.NOTATTACKING || _input == Vector3.zero)
             {   

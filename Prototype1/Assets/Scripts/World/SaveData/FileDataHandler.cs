@@ -31,7 +31,7 @@ public class FileDataHandler
                     using(StreamReader reader = new StreamReader(stream))
                     {
                         dataToLoad = reader.ReadToEnd();
-                        Debug.Log(dataToLoad);
+                        //Debug.Log(dataToLoad);
                     }
                 }
                 loadedData = JsonUtility.FromJson<SavedValues>(dataToLoad);
