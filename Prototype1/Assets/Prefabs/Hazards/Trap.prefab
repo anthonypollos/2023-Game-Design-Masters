@@ -205,6 +205,7 @@ GameObject:
   - component: {fileID: 5997103079539360517}
   - component: {fileID: 7018426044136068033}
   - component: {fileID: 167738741292044279}
+  - component: {fileID: 7880492416280564237}
   m_Layer: 0
   m_Name: Trap
   m_TagString: Trap
@@ -312,7 +313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3694ad5e04340e409fff522dbc7e83f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dmg: 20
+  dmg: 15
 --- !u!114 &167738741292044279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,9 +328,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderers: []
   materials: []
+  childrenFadingObjects: []
   initialAlpha: 0
   lastHit: 0
   moveables: []
+--- !u!114 &7880492416280564237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5138533084633399015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41c6abad749d3f645b6bdb822862d427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectDuration: 0
+  damagePerTick: 1
+  tickInterval: 0.25
+  startOnFire: 1
+  an: {fileID: 0}
 --- !u!1 &9186345256931555798
 GameObject:
   m_ObjectHideFlags: 0

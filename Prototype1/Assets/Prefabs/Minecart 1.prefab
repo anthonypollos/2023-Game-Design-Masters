@@ -120,8 +120,8 @@ Rigidbody:
   m_GameObject: {fileID: 2455763709867211777}
   serializedVersion: 4
   m_Mass: 0.7
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 2
+  m_AngularDrag: 0.6
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -152,6 +152,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 2000
   clashDamage: 40
+  DestructionParticle: {fileID: 0}
+  KickedParticle: {fileID: 0}
 --- !u!114 &4870263642396592144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,5 +167,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLaunched: 0
-  timeToStop: 1
-  groundCheckBuffer: 0.1
+  timeToStop: 1.5
+  tendrilOwner: {fileID: 0}
