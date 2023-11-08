@@ -43,19 +43,22 @@ public class InteractBehavior : MonoBehaviour
 
     private void Interact()
     {
-        if(currentInteractables.Count>0)
+        if (Time.timeScale != 0)
         {
-            if(!currentInteractables[0].Interact())
+            if (currentInteractables.Count > 0)
             {
-                currentInteractables.Add(currentInteractables[0]);
-            }
-            else
-            {
-                currentInteractables[0].gameObject.SetActive(false);
-            }
-            currentInteractables.RemoveAt(0);
+                if (!currentInteractables[0].Interact())
+                {
+                    currentInteractables.Add(currentInteractables[0]);
+                }
+                else
+                {
+                    currentInteractables[0].gameObject.SetActive(false);
+                }
+                currentInteractables.RemoveAt(0);
 
-            Changed();
+                Changed();
+            }
         }
     }
 
