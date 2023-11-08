@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Ink.Runtime;
+using UnityEngine.EventSystems;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class DialogueManager : MonoBehaviour
     List<TextMeshProUGUI> buttonText;
     private Story currentStory;
     private bool storyStarted;
+    private bool choiceNeeded;
+    private bool choiceBuffer;
     MainControls mc;
 
     private void Awake()
@@ -40,12 +43,14 @@ public class DialogueManager : MonoBehaviour
     {
         if (mc != null)
         {
-
+            mc.Main.Interact.Disable();
         }
     }
 
     private void Start()
     {
+        choiceBuffer = false;
+        choiceNeeded = false;
         currentStory = null;
         buttonText = new List<TextMeshProUGUI>();
         if (choiceButtons.Count != 0)
@@ -58,11 +63,12 @@ public class DialogueManager : MonoBehaviour
                 i++;
             }
         }
-        gameObject.SetActive(false);
+        dialogBox.gameObject.SetActive(false);
     }
 
     public void EnterDialogMode(TextAsset inkJSON)
     {
+        Debug.Log("Starting Dialog");
         currentStory = new Story(inkJSON.text);
         Time.timeScale = 0f;
         dialogBox.SetActive(true);
@@ -73,7 +79,7 @@ public class DialogueManager : MonoBehaviour
 
     private void AttemptContinue()
     {
-        if (storyStarted)
+        if (storyStarted && !choiceNeeded)
             ContinueStory();
     }
 
@@ -85,6 +91,7 @@ public class DialogueManager : MonoBehaviour
             {
                 storyStarted = true;
                 mainText.text = currentStory.Continue();
+                DisplayChoices();
             }
             else
             {
@@ -98,6 +105,7 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator EndStory()
     {
+        Debug.Log("Ending Dialog");
         yield return new WaitForSecondsRealtime(0.05f);
         foreach (GameObject button in choiceButtons)
             button.SetActive(false);
@@ -108,7 +116,52 @@ public class DialogueManager : MonoBehaviour
 
     private void DisplayChoices()
     {
+        List<Choice> currentChoices = currentStory.currentChoices;
+        if(currentChoices.Count > choiceButtons.Count)
+        {
+            Debug.LogError("Not enough buttons in dialog manager");
+        }
+        int i = 0;
+        foreach (Choice choice in currentChoices)
+        {
+            choiceButtons[i].SetActive(true);
+            buttonText[i].text = choice.text;
+            i++;
+        }
 
+        for (int temp = i; temp<choiceButtons.Count; temp++)
+        {
+            choiceButtons[temp].SetActive(false);
+        }
+        if (currentChoices.Count > 0)
+        {
+            topButton.Select();
+            StartCoroutine(ChoiceBuffer());
+            choiceNeeded = true;
+        }
+        else
+        {
+            choiceNeeded = false;
+        }
+        
+
+    }
+
+    private IEnumerator ChoiceBuffer()
+    {
+        yield return new WaitForSecondsRealtime(0.1f);
+        choiceBuffer = true;
+    }
+
+    public void Choose(int choice)
+    {
+        if (choiceBuffer)
+        {
+            choiceBuffer = false;
+            currentStory.ChooseChoiceIndex(choice);
+            choiceNeeded = false;
+            ContinueStory();
+        }
     }
 
 
