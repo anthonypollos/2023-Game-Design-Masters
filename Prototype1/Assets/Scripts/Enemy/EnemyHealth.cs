@@ -41,7 +41,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         //Debug.Log("dealt damage");
         health -= dmg;
-        if(dmg>staggerThreshold)
+        if (dmg > staggerThreshold)
+        {
 
             //If there is a blood particle, create it.
             if (bloodParticle != null)
@@ -52,7 +53,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
                 Destroy(vfxobj, 4);
             }
 
-        brain.interaction.Stagger();
+            brain.interaction.Stagger();
+        }
         if (health <= 0) Die();
         //Debug.Log((float)health / maxHealth);
         //Debug.Log(health);
