@@ -109,7 +109,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         {
             transform.forward = _input.ToIso().normalized;
         }
-        else if (attackState == Helpers.LASSOED)
+        else if (attackState == Helpers.PULLING || attackState == Helpers.LASSOED)
         {
             LookAtLasso();
         }

@@ -152,7 +152,10 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 if (lassoRB.isKinematic) { lassoRB.isKinematic = false; }
                 lassoRB.velocity = (lassoOrigin.transform.position - lasso.transform.position).normalized * lassoSpeed;
                 if (Vector3.Distance(lassoOrigin.transform.position, lasso.transform.position) < 1f)
+                {
                     Retracted();
+                    lassoRB.isKinematic = true;
+                }
             }
             else
             {
@@ -201,6 +204,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 tendril.SetActive(true);
                 lb.enabled = true;
                 lasso.transform.parent = null;
+                lassoRB.isKinematic = false;
                 lassoRB.velocity = transform.forward * lassoSpeed;
                 float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
                 //LassoBehavior lb = temp.GetComponent<LassoBehavior>();
