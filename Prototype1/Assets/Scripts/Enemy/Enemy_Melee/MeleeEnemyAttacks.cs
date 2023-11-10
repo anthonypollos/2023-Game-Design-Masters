@@ -50,6 +50,7 @@ public class MeleeEnemyAttacks : EnemyAttackTemplate
 
     private void TriggerAttack(int attack)
     {
+        brain.an.SetFloat("DashTime", 1);
         brain.an.SetBool("Attacking", true);
         //Debug.Log("trigger attack" + attack);
         brain.an.SetTrigger("Attack" + attack.ToString());
@@ -60,6 +61,7 @@ public class MeleeEnemyAttacks : EnemyAttackTemplate
 
     public void Dashing()
     {
+        brain.an.SetFloat("DashTime", 1 / (6 * dashTime));
         brain.moveable.Dash(transform.forward * dashRange, dashTime);
     }
 
