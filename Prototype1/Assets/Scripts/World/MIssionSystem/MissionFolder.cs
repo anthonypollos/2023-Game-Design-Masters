@@ -5,7 +5,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class MissionFolder : MonoBehaviour, ISaveable
+public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 {
     [SerializeField] List<MissionBehavior> missions;
     MenuControls controls;
@@ -135,7 +135,8 @@ public class MissionFolder : MonoBehaviour, ISaveable
         {
             currentDisplayedMission = 0;
         }
-        if(missionsStatuses[currentDisplayedMission])
+        UpdateMissionText();
+        if (missionsStatuses[currentDisplayedMission])
         {
             wayFinder.SetActive(false);
         }
@@ -143,15 +144,24 @@ public class MissionFolder : MonoBehaviour, ISaveable
         {
             wayFinder.SetActive(true);
         }
-        string temp = missionsStatuses[currentDisplayedMission] ? 
+        
+    }
+
+    public void UpdateMissionText()
+    {
+        string message = "";
+        string temp = missionsStatuses[currentDisplayedMission] ?
             "<color=green>Completed</color>" : "<color=orange>In Progress</color>";
-        string message = "Current Status: " + temp + "\n" +
-            missions[currentDisplayedMission].GetMissionText();
-        missionTextBox.text = message;
-        if (!missionsStatuses[currentDisplayedMission])
+        if (!missions[currentDisplayedMission].GetMissionText().Item2)
         {
-            wayFinder.SetActive(true);
+            message = "Current Status: " + temp + "\n" +
+                missions[currentDisplayedMission].GetMissionText().Item1;
         }
+        else
+        {
+            message = missions[currentDisplayedMission].GetMissionText().Item1;
+        }
+        missionTextBox.text = message;
     }
 
     public void EnemyRemoved(GameObject enemy)
@@ -166,6 +176,13 @@ public class MissionFolder : MonoBehaviour, ISaveable
                 combatMissionBehavior.RemoveEnemy(enemy.GetComponent<EnemyBrain>());
 
             }
+            MultiMissionBehavior multiMissionBehavior = null;
+            if(mission != null)
+                multiMissionBehavior = mission.GetComponent<MultiMissionBehavior>();
+            if(multiMissionBehavior != null)
+            {
+                multiMissionBehavior.EnemyRemoved(enemy);
+            }
         }
         //currentCombatMissionActive.RemoveEnemy(enemy.GetComponent<EnemyBrain>());
         if (combatMissionActive)
@@ -179,7 +196,7 @@ public class MissionFolder : MonoBehaviour, ISaveable
         if (combatMissionActive)
         {
             string message = "Current Status: <color=red>Active</color>\n" +
-                currentCombatMissionActive.GetMissionText() +
+                currentCombatMissionActive.GetMissionText().Item1 +
                 "\nEnemies Slain: " + currentCombatMissionActive.GetCount();
             missionTextBox.text = message;
         }

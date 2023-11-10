@@ -36,7 +36,7 @@ public class JukeBox
  
         if(idx>tracks.Length-1 || tracks == null)
         {
-            Debug.LogError("Error: That audio clip is not set");
+            //Debug.LogError("Error: That audio clip is not set");
             return;
         }
         else

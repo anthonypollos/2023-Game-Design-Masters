@@ -6,16 +6,17 @@ public class MissionBehavior : MonoBehaviour
 {
     [SerializeField] List<GameObject> toggleOnFinish;
     private List<IToggleable> toggles;
-    [SerializeField] string missionText;
+    [SerializeField] protected string missionText;
     public Vector3 checkPointLocation;
-    protected MissionFolder folder;
+    protected IMissionContainer folder;
     protected bool triggered;
 
     protected void Start()
     {
-        if (toggles == null)
+        toggles = new List<IToggleable>();
+        if (toggles == null && toggleOnFinish.Count>0)
         {
-            toggles = new List<IToggleable>();
+            //toggles = new List<IToggleable>();
             foreach (GameObject temp in toggleOnFinish)
             {
                 IToggleable toggle = temp.GetComponentInChildren<IToggleable>();
@@ -23,14 +24,14 @@ public class MissionBehavior : MonoBehaviour
             }
         }
     }
-    public void SetFolder(MissionFolder folder)
+    public void SetFolder(IMissionContainer folder)
     {
         this.folder = folder;
     }
 
-    public string GetMissionText()
+    public virtual (string, bool) GetMissionText()
     {
-        return missionText;
+        return (missionText, false);
     }
     
     protected virtual void OnTriggered()
@@ -49,7 +50,7 @@ public class MissionBehavior : MonoBehaviour
 
     public void QuickSetToggles()
     {
-        if (toggles == null)
+        if (toggles == null && toggleOnFinish.Count>0)
         {
             toggles = new List<IToggleable>();
             foreach (GameObject temp in toggleOnFinish)
@@ -63,12 +64,19 @@ public class MissionBehavior : MonoBehaviour
     public virtual void OnComplete()
     {
         triggered = true;
-        if(toggles.Count> 0) 
-        foreach(IToggleable toggle in toggles)
+        if (toggles != null)
         {
-            toggle.Toggle();
+            if (toggles.Count > 0)
+            {
+                foreach (IToggleable toggle in toggles)
+                {
+                    toggle.Toggle();
+                }
+            }
         }
         folder.MissionComplete(this);
     }
+
+
 
 }
