@@ -54,6 +54,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     // Start is called before the first frame update
     void Start()
     {
+        
         pulling = false;
         isRetracting = false;
         lr = GetComponent<LineRenderer>();
@@ -126,7 +127,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         {
             if (!pc.moveable.isLaunched)
             {
-                LassoBehavior lb = FindObjectOfType<LassoBehavior>();
+                //LassoBehavior lb = FindObjectOfType<LassoBehavior>();
                 if (!lasso.activeInHierarchy)
                 {
                     currentLassoCharge = 0;
@@ -151,8 +152,9 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 pulling = false;
                 if (lassoRB.isKinematic) { lassoRB.isKinematic = false; }
                 lassoRB.velocity = (lassoOrigin.transform.position - lasso.transform.position).normalized * lassoSpeed;
-                if (Vector3.Distance(lassoOrigin.transform.position, lasso.transform.position) < 1f)
+                if (Vector3.Distance(lassoOrigin.transform.position, lasso.transform.position) <= lassoSpeed * Time.fixedDeltaTime)
                 {
+                    Debug.Log(Time.fixedDeltaTime * lassoSpeed);
                     Retracted();
                     lassoRB.isKinematic = true;
                 }
@@ -165,13 +167,6 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                     Pull(lb);
                 }
             }
-        }
-    }
-
-    private void Update()
-    {
-        if (Time.timeScale != 0)
-        {
             if (isCharging && !pc.moveable.isLaunched)
             {
                 lr.enabled = true;
@@ -184,6 +179,14 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             {
                 lr.enabled = false;
             }
+        }
+    }
+
+    private void Update()
+    {
+        if (Time.timeScale != 0)
+        {
+            
         }
 
         
