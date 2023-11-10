@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731716, g: 0.13414738, b: 0.121078566, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -384,18 +384,26 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3332267905619631055, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_text
-      value: "\u2022 Object aim indicator UI can be inaccurate, especially when moving
-        cursor over walls or ceilings\n\u2022 The first object grabbed in the town
-        level cannot be thrown\n\u2022 Kick direction can be inaccurate\n\u2022 Can
-        tendril and kick enemies/object through walls and props\n\u2022 Can occasionally
-        dash through walls or props, which may cause player to be soft locked in
-        inaccessible areas\n\u2022 Enemies may spawn behind blockades, preventing
-        player from completing objective needed to progress\n\u2022 Enemies may get
-        caught on level geometry\n\u2022 If an object is destroyed while the player
-        is holding it, the game may stop responding to player input, requiring a
-        restart\n\u2022 Exploding barrels will occasionally explode on porches and
-        doorways\n\u2022\_Transparency on walls and ceilings may be inconsistent
-        or glitchy"
+      value: "\u2022 There is currently no way of resetting player progress without
+        manually deleting the save file completely. This was a matter of time and
+        will be fixed soon.\r\n\u2022 \u2022 Save Data can be found in \"AppData\\LocalLow\\BU
+        Masters\\Grimstone Valley\\\"\n\u2022 Restarting during an enemy encounter
+        can skip the encounter entirely.\r\n\u2022 On rare occasions, the player's
+        tendril will break entirely, requiring a level restart. This has been inconsistent.\r\n\u2022
+        Low framerates will frequently cause movement and tendril issues.\r\n\u2022
+        The tendril aim reticle will snap to floors above or below the player. Although
+        this behavior is intended, it can lead to strange aim feeling.\r\n\u2022
+        The kick direction will sometimes not update based on the player's cursor.\r\n\u2022
+        Enemies and objects can be kicked through walls.\r\n\u2022 Dashing against
+        objects and walls can sometimes softlock the player, requiring a restart.\r\n\u2022
+        Enemies will sometimes wander to the other side of an arena blockade, requiring
+        the player to kill them through said blockade.\r\n\u2022 Enemies will sometimes
+        be caught on one another or on world geometry.\r\n\u2022 If an object is
+        destroyed while the player is holding it, the game may stop responding to
+        player input, requiring a restart.\r\n\u2022 Exploding barrels will occasionally
+        explode on porches and doorways.\r\n\u2022 Some objects are small enough
+        that they will go over or under enemies, leading to them not being damaged.\r\n\u2022
+        Fire currently does not appear on burning objects or enemies."
       objectReference: {fileID: 0}
     - target: {fileID: 3332267905619631055, guid: 7649ca9b4fedd4972afe5ee0273c34dd, type: 3}
       propertyPath: m_fontSize
