@@ -32,6 +32,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     [Header("Kick Properties")]
     [SerializeField] [Tooltip("The force of the kick")] float kickForce;
     [SerializeField] [Tooltip("How far a kicked object will go assuming 1 mass")] float kickCarryDistance;
+    [SerializeField] float kickCD = 1.0f;
+    private bool canKick;
     MainControls mc;
 
     [Header("Sound")]
@@ -57,6 +59,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         
         pulling = false;
         isRetracting = false;
+        canKick = true;
         lr = GetComponent<LineRenderer>();
         isCharging = false;
         currentLassoCharge = 0;
@@ -91,13 +94,14 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     {
         if (Time.timeScale != 0)
         {
-            if (!kicking && !isCharging && !pc.moveable.isLaunched)
+            if (canKick && !kicking && !isCharging && !pc.moveable.isLaunched)
             {
                 if (InputChecker.instance.IsController())
                     pc.LookAtAim();
                 else
                     pc.LookAtMouse();
                 kicking = true;
+                canKick = false;
                 pc.attackState = Helpers.ATTACKING;
                 kick.SetActive(true);
                 jukebox.PlaySound(0);
@@ -299,6 +303,19 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             pc.attackState = Helpers.NOTATTACKING;
         kick.SetActive(false);
         kicking = false;
+        StartCoroutine(KickCD());
+    }
+
+    private IEnumerator KickCD()
+    {
+
+        for (float i = 0; i < kickCD; i += 0.01f)
+        {
+            yield return new WaitForSeconds(0.01f);
+            //dashCDIndicator.fillAmount = i / dashCD;
+        }
+        canKick = true;
+        //dashCDIndicator.fillAmount = 1;
     }
 
     IEnumerator WaitForRetraction()
