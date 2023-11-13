@@ -43,7 +43,10 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             Destroy(vfxobj, 4);
         }
         jukebox.PlaySound(0);
-        health -= dmg;
+        if (!DeveloperConsole.instance.godMode)
+        {
+            health -= dmg;
+        }
         hpBar.value = (float)health / (float)maxHealth;
         if (health <= 0) Die();
         else anim.SetTrigger("damage");
