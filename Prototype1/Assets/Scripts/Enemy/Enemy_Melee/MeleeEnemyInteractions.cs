@@ -129,6 +129,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
             if (temp != null)
             {
                 temp.TakeDamage(clashDamage);
+                jukebox.PlaySound(1);
             }
             
             ITrap temp2 = hit.GetComponent<ITrap>();
