@@ -209,7 +209,7 @@ public class LassoBehavior : MonoBehaviour
             }
             if (attached != null)
             {
-                Debug.Log(attached.transform.position);
+                //Debug.Log(attached.transform.position);
                 transform.position = attached.transform.position;
                 if (!attached.activeInHierarchy)
                 {
