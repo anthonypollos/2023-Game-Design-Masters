@@ -19,7 +19,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     //[SerializeField] GameObject victoryMenu;
     int missionsCompleted;
     int currentDisplayedMission = 0;
-    Vector3 checkPoint = Vector3.zero;
+    public Vector3 checkPoint { get; private set; } = Vector3.zero;
 
     bool win = false;
 
@@ -57,6 +57,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
             combatMissionActive = false;
             //currentDisplayedMission = 0;
             SetMission();
+            DeveloperConsole.instance.SetMissionFolder(this);
         }
     }
 
@@ -228,6 +229,25 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         win = true;
         SaveLoadManager.instance.SaveGame();
         //Debug.Log("Victory!");
+    }
+
+    public bool SetComplete(int mission)
+    {
+        if(mission>missions.Count)
+        {
+            return false;
+        }
+        else
+        {
+            for (int i = 0; i<mission; i++)
+            {
+                if(!missionsStatuses[i])
+                {
+                    missions[i].OnComplete();
+                }
+            }
+        }
+        return true;
     }
 
     public void SaveData(ref SavedValues savedValues)

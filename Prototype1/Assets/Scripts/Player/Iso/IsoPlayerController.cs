@@ -49,6 +49,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         Helpers.UpdateMatrix();
         canDash = true;
         gc = FindObjectOfType<GameController>();
+        DeveloperConsole.instance.SetPlayer(gameObject, _rb);
     }
 
     private void OnEnable()
