@@ -33,6 +33,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     [SerializeField] [Tooltip("The force of the kick")] float kickForce;
     [SerializeField] [Tooltip("How far a kicked object will go assuming 1 mass")] float kickCarryDistance;
     [SerializeField] float kickCD;
+    float trueKickCD = 0f;
     [SerializeField] Image kickCDIndicator;
     private bool canKick;
     MainControls mc;
@@ -116,7 +117,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     public void ActivateKick(GameObject target)
     {
-        //Debug.Log("Apply force");
+        Debug.Log("Apply force");
+        trueKickCD = kickCD;
         Moveable moveable = target.GetComponent<Moveable>();
         if(moveable != null)
             moveable.Launched(transform.forward * kickCarryDistance ,kickForce);
@@ -310,12 +312,13 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     private IEnumerator KickCD()
     {
 
-        for (float i = 0; i < kickCD; i += 0.01f)
+        for (float i = 0; i < trueKickCD; i += 0.01f)
         {
             yield return new WaitForSeconds(0.01f);
-            kickCDIndicator.fillAmount = i / kickCD;
+            kickCDIndicator.fillAmount = i / trueKickCD;
         }
         canKick = true;
+        trueKickCD = 0;
         kickCDIndicator.fillAmount = 1;
     }
 
