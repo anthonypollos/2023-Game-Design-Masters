@@ -523,10 +523,28 @@ MonoBehaviour:
   minAttackRange: 3
   attackSpeed: 0.6
   brain: {fileID: 0}
-  dashRange: 10
-  dashTime: 0.6
-  baseDashChance: 0.35
-  multiAttackChance: 0.2
+  attackWindUpSeconds:
+  - 0.5
+  - 1
+  - 1
+  attackSeconds:
+  - 0.5
+  - 1
+  - 1
+  attackWindDownSeconds:
+  - 0.5
+  - 1
+  - 1
+  attackFrames: 050000000900000001000000
+  windUpFrames: 030000000600000006000000
+  windDownFrames: 010000000300000001000000
+  attackFramesPerSecond: 12
+  baseDashChance: 0.25
+  multiAttackChance: 0.5
+  dashRanges:
+  - 2
+  - 6
+  - 10
   jukebox:
     tracks:
     - sound: {fileID: 8300000, guid: b8c2718c52656f24aba5fcf63a7a7040, type: 3}
