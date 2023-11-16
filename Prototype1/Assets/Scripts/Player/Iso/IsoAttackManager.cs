@@ -32,7 +32,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     [Header("Kick Properties")]
     [SerializeField] [Tooltip("The force of the kick")] float kickForce;
     [SerializeField] [Tooltip("How far a kicked object will go assuming 1 mass")] float kickCarryDistance;
-    [SerializeField] float kickCD = 1.0f;
+    [SerializeField] float kickCD;
+    [SerializeField] Image kickCDIndicator;
     private bool canKick;
     MainControls mc;
 
@@ -312,10 +313,10 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         for (float i = 0; i < kickCD; i += 0.01f)
         {
             yield return new WaitForSeconds(0.01f);
-            //dashCDIndicator.fillAmount = i / dashCD;
+            kickCDIndicator.fillAmount = i / kickCD;
         }
         canKick = true;
-        //dashCDIndicator.fillAmount = 1;
+        kickCDIndicator.fillAmount = 1;
     }
 
     IEnumerator WaitForRetraction()
