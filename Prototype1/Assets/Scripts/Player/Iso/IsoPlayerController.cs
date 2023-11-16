@@ -150,6 +150,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
                 canDash = false;
                 jukebox.PlaySound(0);
                 moveable.Dash(transform.forward * dashRange, dashTime);
+                anim.SetFloat("dashSpeed", 32f / (24 * dashTime));
                 anim.SetTrigger("dash");
                 anim.SetTrigger("tendrilRelease");
                 StartCoroutine(DashCD());
