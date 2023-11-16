@@ -33,8 +33,10 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
 
     private void TriggerAttack(int attack)
     {
+        brain.an.SetFloat("AttackMod", 1);
         //Debug.Log("attack triggered");
         brain.an.SetBool("Attacking", true);
+        currentWaitingTime = float.MaxValue;
         //Debug.Log("trigger attack" + attack);
         brain.an.SetTrigger("Attack" + attack.ToString());
         //brain.state = EnemyStates.ATTACKING;
@@ -47,6 +49,7 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
         count = 0;
         brain.state = EnemyStates.NOTHING;
         brain.an.SetBool("Attacking", false);
+        Debug.Log(Time.realtimeSinceStartup - timeTest);
     }
 
     public void ShootProjectile()
@@ -80,6 +83,7 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
     void Start()
     {
         count = 0;
+        animationTimer = float.MinValue;
     }
 
     // Update is called once per frame
