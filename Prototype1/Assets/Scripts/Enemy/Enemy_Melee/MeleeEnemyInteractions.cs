@@ -67,7 +67,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         base.Pulled();
         launched = true;
-        jukebox.PlaySound(0);
+        //jukebox.PlaySound(0);
         //lassoed = false;
         hasCollided = false;
         //brain.an.SetBool("Lassoed", false);
