@@ -73,7 +73,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     {
         if (Time.timeScale != 0)
         {
-            if (!isDead && !moveable.isLaunched)
+            if (!isDead && !moveable.isLaunched && attackState != Helpers.ATTACKING)
                 Look();
 
             if (gameObject.layer == LayerMask.NameToLayer("PlayerDashing") && !moveable.isLaunched)

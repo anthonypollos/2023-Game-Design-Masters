@@ -7,6 +7,7 @@ public class NewMeleeEnemyAttacks : EnemyAttackTemplate
 
     [Header("Dashing variables")]
     [SerializeField] float dashRange;
+    [SerializeField] float dashTime;
     [Header("JukeBox")]
     [SerializeField] private JukeBox jukebox;
     private void Awake()
@@ -50,8 +51,13 @@ public class NewMeleeEnemyAttacks : EnemyAttackTemplate
             Debug.LogError("Attack value for Dash invalid");
             return;
         }
-        brain.moveable.Dash(transform.forward * dashRange, attackSeconds[attack]);
+        brain.moveable.Dash(transform.forward * dashRange, dashTime);
+        currentWaitingTime = dashTime;
+        if (animationTimer < 0)
+            animationTimer = 0;
     }
+
+
 
     public void AttackEnd()
     {

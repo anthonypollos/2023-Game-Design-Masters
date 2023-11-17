@@ -40,17 +40,20 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     }
     public override void Kicked()
     {
-        launched = true;
-        Stunned();
-        hasCollided = false;
-
-        //If there is a kicked particle, create it.
-        if (KickedParticle != null)
+        if (brain.state != EnemyStates.ATTACKING)
         {
-            //create the particle
-            GameObject vfxobj = Instantiate(KickedParticle, gameObject.transform.position, Quaternion.identity);
-            //destroy the particle
-            Destroy(vfxobj, 4);
+            launched = true;
+            Stunned();
+            hasCollided = false;
+
+            //If there is a kicked particle, create it.
+            if (KickedParticle != null)
+            {
+                //create the particle
+                GameObject vfxobj = Instantiate(KickedParticle, gameObject.transform.position, Quaternion.identity);
+                //destroy the particle
+                Destroy(vfxobj, 4);
+            }
         }
 
     }
@@ -60,7 +63,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         lassoed = true;
         base.Lassoed();
         Stunned();
-        brain.an.SetBool("Lassoed", true);
+        brain.an.SetBool("Tendriled", true);
     }
 
     public override void Pulled()
@@ -79,8 +82,13 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         lassoed = false;
         if (!brain.moveable.isLaunched)
         { 
-        brain.an.SetBool("Lassoed", false);
-        UnStunned();
+            brain.an.SetBool("Tendriled", false);
+            brain.an.SetTrigger("TendrilBreak");
+            UnStunned();
+        }
+        else
+        {
+            brain.an.SetTrigger("NextState");
         }
     }
 
@@ -94,7 +102,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         base.Stunned();
         stunned = true;
-        brain.an.SetBool("Stunned", true);
+        //brain.an.SetBool("Stunned", true);
         brain.an.SetBool("Attacking", false);
     }
 
@@ -102,8 +110,8 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         if(!lassoed)
         {
-            brain.an.SetBool("Lassoed", false);
-            brain.an.SetBool("Stunned", false);
+            brain.an.SetBool("Tendriled", false);
+            //brain.an.SetBool("Stunned", false);
             stunned = false;
             brain.PackAggro();
         }
@@ -111,11 +119,17 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     private IEnumerator Staggered()
     {
+        brain.an.SetTrigger("Damaged");
         Stunned();
         yield return new WaitForSeconds(stunTime);
         if (!brain.moveable.isLaunched)
             UnStunned();
 
+    }
+
+    public override void Death()
+    {
+        brain.an.SetTrigger("Death");
     }
 
     private void OnCollisionEnter(Collision collision)

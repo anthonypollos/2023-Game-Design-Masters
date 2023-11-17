@@ -6,6 +6,7 @@ public static class EnemyStates
 {
     public const int NOTHING = 0;
     public const int ATTACKING = 1;
+    public const int DEAD = 2;
 }
 
 public class EnemyBrain : MonoBehaviour, IEnemy
@@ -45,6 +46,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
         isAggro = false;
         moveable = GetComponent<Moveable>();
         an = GetComponent<Animator>();
+        an.logWarnings = false;
         health = GetComponent<EnemyHealth>();
         health.brain = this;
         interaction = GetComponent<EnemyInteractionBehaviorTemplate>();
@@ -61,19 +63,22 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(state);
-        if (!interaction.stunned && state == EnemyStates.NOTHING)
+        if (state != EnemyStates.DEAD)
         {
-            CheckMovement();
-            CheckRotation();
-            CheckAttack();
-            CheckArea();
-        }
-        else if(interaction.stunned && moveable !=null)
-        {
-            if(!moveable.isLaunched)
+            //Debug.Log(state);
+            if (!interaction.stunned && state == EnemyStates.NOTHING)
+            {
+                CheckMovement();
+                CheckRotation();
+                CheckAttack();
+                CheckArea();
+            }
+            else if (interaction.stunned && moveable != null)
+            {
+                if (!moveable.isLaunched)
 
-                movement.Stop();
+                    movement.Stop();
+            }
         }
     }
 

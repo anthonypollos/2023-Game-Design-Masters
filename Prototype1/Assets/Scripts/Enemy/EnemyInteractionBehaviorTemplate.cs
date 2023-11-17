@@ -42,6 +42,12 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     {
         brain.state = EnemyStates.NOTHING;
     }
+
+    public virtual void Death()
+    {
+        //Stunned();
+        brain.health.Death();
+    }
     protected abstract void UnStunned();
 
     protected IEnumerator BreakOut()

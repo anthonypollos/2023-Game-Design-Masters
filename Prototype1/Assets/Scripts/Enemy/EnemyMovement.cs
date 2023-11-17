@@ -109,7 +109,12 @@ public class EnemyMovement : MonoBehaviour
     {
         dir.y = 0;
         rb.velocity = movementSpeed * (dir) + Vector3.up * rb.velocity.y;
-
+        if (isMoving && brain.an!=null)
+        {
+            if (rb.velocity == Vector3.zero) brain.an.SetFloat("MoveState", 0);
+            else if (!brain.isAggro) brain.an.SetFloat("MoveState", 1);
+            else brain.an.SetFloat("MoveState", 2);
+        }
     }
 
     private void MovementCalc()

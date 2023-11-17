@@ -64,11 +64,19 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     private void Die()
     {
+        brain.state = EnemyStates.DEAD;
+        //brain.interaction.Stagger();
+        brain.interaction.Death();
+    }
+
+    public void Death()
+    {
         jukebox.PlaySound(1);
         ec.RemoveEnemy(gameObject);
         ec.RemoveAggro(gameObject);
         Destroy(gameObject);
     }
+
 
     private void OnDisable()
     {

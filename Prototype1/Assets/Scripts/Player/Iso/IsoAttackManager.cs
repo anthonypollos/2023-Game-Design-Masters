@@ -98,13 +98,14 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         {
             if (canKick && !kicking && !isCharging && !pc.moveable.isLaunched)
             {
+                pc.attackState = Helpers.ATTACKING;
                 if (InputChecker.instance.IsController())
                     pc.LookAtAim();
                 else
                     pc.LookAtMouse();
                 kicking = true;
                 canKick = false;
-                pc.attackState = Helpers.ATTACKING;
+                
                 kick.SetActive(true);
                 jukebox.PlaySound(0);
                 //Debug.Log("I kick em!");
