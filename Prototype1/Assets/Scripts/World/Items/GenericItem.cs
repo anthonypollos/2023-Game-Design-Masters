@@ -9,6 +9,13 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     [SerializeField] int clashDamage;
     [SerializeField] GameObject DestructionParticle;
     [SerializeField] GameObject KickedParticle;
+
+    [SerializeField] private JukeBox jukebox;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +52,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     public void TakeDamage(int dmg)
     {
         health -= dmg;
+        jukebox.PlaySound(0);
         if (health <= 0)
         {
             //If there is a destruction particle, create it.
@@ -55,6 +63,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
                 //destroy the particle
                 Destroy(vfxobj, 4);
             }
+            jukebox.PlaySound(1);
             Destroy(gameObject);
         }
     }

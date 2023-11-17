@@ -22,8 +22,8 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
     [SerializeField] protected float[] attackWindDownSeconds;
     [Header("Attack frame data")]
     [SerializeField] protected int[] attackFrames;
-    [SerializeField] protected int[] windUpFrames;
-    [SerializeField] protected int[] windDownFrames;
+    //[SerializeField] protected int[] windUpFrames;
+    //[SerializeField] protected int[] windDownFrames;
     [SerializeField] protected int attackFramesPerSecond;
     
 
@@ -54,10 +54,15 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
             if(animationTimer >= currentWaitingTime)
             {
                 animationTimer = float.MinValue;
-                //ToDo add animation stuff here
+                brain.an.SetTrigger("NextState");
             }
         }
         
+    }
+
+    public void SetTrigger()
+    {
+        brain.an.SetTrigger("NextState");
     }
 
     public void WindUpTrigger(int attack)
@@ -99,38 +104,4 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
         brain.an.SetFloat("AttackMod", (float)attackFrames[attack] / (attackFramesPerSecond * attackSeconds[attack]));
     }
 
-
-
-    public void SetWindUpSpeed(int attack)
-    {
-        attack = attack - 1;
-        if (attack<0 && attack>=attackWindUpSeconds.Length)
-        {
-            Debug.LogError("Attack value for SetWindUpSpeed invalid");
-            return;
-        }
-        brain.an.SetFloat("AttackMod", (float)windUpFrames[attack] / (attackFramesPerSecond * attackWindUpSeconds[attack]));
-    }
-
-    public void SetAttackSpeed(int attack)
-    {
-        attack = attack - 1;
-        if (attack < 0 && attack >= attackSeconds.Length)
-        {
-            Debug.LogError("Attack value for SetAttackSpeed invalid");
-            return;
-        }
-        brain.an.SetFloat("AttackMod", (float)attackFrames[attack] / (attackFramesPerSecond * attackSeconds[attack]));
-    }
-
-    public void SetWindDownSpeed(int attack)
-    {
-        attack = attack - 1;
-        if (attack < 0 && attack >= attackWindDownSeconds.Length)
-        {
-            Debug.LogError("Attack value for SetWindDownSpeed invalid");
-            return;
-        }
-        brain.an.SetFloat("AttackMod", (float)windDownFrames[attack] / (attackFramesPerSecond * attackWindDownSeconds[attack]));
-    }
 }

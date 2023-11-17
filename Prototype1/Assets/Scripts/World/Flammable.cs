@@ -19,33 +19,31 @@ public class Flammable : IStatus
         if(an != null) 
             an.SetBool("Burning", false);
         */
+        effectOn = false;
         StopCoroutine(onFire);
         onFire = null;
-        if (fireEffect != null)
-        {
-            Debug.Log("stop now");
-            fireEffect.Stop(true);
-        }
         //throw new System.NotImplementedException();
     }
 
     protected override void Effect()
     {
         //Debug.Log("be on fire now");
+        if(fireEffect != null)
+        {
+            fireEffect.Play(true);
+        }
         if(an != null)
             an.SetBool("Burning", true);
-        if(onFire==null)
+        if (onFire == null)
+        {
+            effectOn = true;
             onFire = StartCoroutine(Damage());
+        }
     }
 
     protected IEnumerator Damage()
     {
-        if (fireEffect != null)
-        {
-            Debug.Log("Has fire");
-            fireEffect.Play(true);
-        }
-        while (true)
+        while (effectOn)
         {
             yield return new WaitForSeconds(tickInterval);
             //Debug.Log("Tick Damage");

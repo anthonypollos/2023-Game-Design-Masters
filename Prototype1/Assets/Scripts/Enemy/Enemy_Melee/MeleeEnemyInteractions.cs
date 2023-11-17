@@ -14,7 +14,13 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     [SerializeField]
     [Tooltip("Stun time when taking damage")]
     float stunTime = 0.5f;
-     void Start()
+    [SerializeField] private JukeBox jukebox;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
+    void Start()
     {
         lassoed = false;
         stunned = false;
@@ -61,6 +67,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         base.Pulled();
         launched = true;
+        jukebox.PlaySound(0);
         //lassoed = false;
         hasCollided = false;
         //brain.an.SetBool("Lassoed", false);
@@ -122,6 +129,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
             if (temp != null)
             {
                 temp.TakeDamage(clashDamage);
+                jukebox.PlaySound(1);
             }
             
             ITrap temp2 = hit.GetComponent<ITrap>();

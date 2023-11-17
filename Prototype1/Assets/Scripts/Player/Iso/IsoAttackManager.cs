@@ -225,6 +225,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             if (lasso.activeInHierarchy && lb.GetAttachment().Item2 != null)
             {
                 ForceRelease();
+                jukebox.PlaySound(Random.Range(1,4));
             }
         }
 

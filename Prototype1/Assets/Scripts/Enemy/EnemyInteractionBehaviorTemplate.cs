@@ -34,7 +34,8 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     public virtual void Break()
     {
         lassoImage.gameObject.SetActive(false);
-        if (lassoOwner != null) lassoOwner.ForceRelease();
+        if (brain.moveable.tendrilOwner != null) brain.moveable.tendrilOwner.ForceRelease();
+        else Debug.Log("LassoOwner = null");
     }
     public abstract void Stagger();
     protected virtual void Stunned()
