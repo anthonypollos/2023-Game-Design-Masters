@@ -21,16 +21,17 @@ public class Flammable : IStatus
         */
         StopCoroutine(onFire);
         onFire = null;
+        if (fireEffect != null)
+        {
+            Debug.Log("stop now");
+            fireEffect.Stop(true);
+        }
         //throw new System.NotImplementedException();
     }
 
     protected override void Effect()
     {
         //Debug.Log("be on fire now");
-        if(fireEffect != null)
-        {
-            fireEffect.Play(true);
-        }
         if(an != null)
             an.SetBool("Burning", true);
         if(onFire==null)
@@ -39,6 +40,11 @@ public class Flammable : IStatus
 
     protected IEnumerator Damage()
     {
+        if (fireEffect != null)
+        {
+            Debug.Log("Has fire");
+            fireEffect.Play(true);
+        }
         while (true)
         {
             yield return new WaitForSeconds(tickInterval);
