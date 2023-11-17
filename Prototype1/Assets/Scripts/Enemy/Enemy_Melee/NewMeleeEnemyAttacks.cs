@@ -2,20 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeEnemyAttacks : EnemyAttackTemplate
+public class NewMeleeEnemyAttacks : EnemyAttackTemplate
 {
-   // [SerializeField] float dashRange;
-    //[SerializeField] float dashTime;
-    [Header("Attack Chances")]
-    [SerializeField] [Tooltip("Chance at max dash range to trigger a dash")] 
-    [Range(0, 1)]
-    float baseDashChance;
-    [SerializeField]
-    [Tooltip("Chance to chose multi attack over single attack")]
-    [Range(0, 1)]
-    float multiAttackChance;
+
     [Header("Dashing variables")]
-    [SerializeField] float[] dashRanges;
+    [SerializeField] float dashRange;
     [Header("JukeBox")]
     [SerializeField] private JukeBox jukebox;
     private void Awake()
@@ -33,23 +24,8 @@ public class MeleeEnemyAttacks : EnemyAttackTemplate
 
     private void AttackAI()
     {
-        float distance = Vector3.Distance(transform.position, brain.player.position);
-        float chanceForDash = (distance / dashRanges[2]) * baseDashChance;
-        if(distance>minAttackRange)
-        {
-            float roll = Random.Range(0f, 1f);
-            if (roll <= chanceForDash)
-                TriggerAttack(3);
-        }
-        else
-        {
-            float roll = Random.Range(0f, 1f);
-            if (roll > multiAttackChance)
-                TriggerAttack(1);
-            else
-                TriggerAttack(2);
-        }
-        
+        TriggerAttack(1);
+
     }
 
     private void TriggerAttack(int attack)
@@ -74,8 +50,7 @@ public class MeleeEnemyAttacks : EnemyAttackTemplate
             Debug.LogError("Attack value for Dash invalid");
             return;
         }
-        float mod = attack == 1 ? (1f / 3) : 1;
-        brain.moveable.Dash(transform.forward * dashRanges[attack] * mod, attackSeconds[attack] * mod);
+        brain.moveable.Dash(transform.forward * dashRange, attackSeconds[attack]);
     }
 
     public void AttackEnd()
