@@ -21,6 +21,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     public bool isDead;
     private bool canDash;
     private GameController gc;
+    private int previousLayer;
     [SerializeField] GameObject lasso;
 
     [SerializeField] float dashRange, dashTime, dashCD;
@@ -71,7 +72,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
             if (gameObject.layer == LayerMask.NameToLayer("PlayerDashing") && !moveable.isLaunched)
             {
-                gameObject.layer = LayerMask.NameToLayer("Player");
+                gameObject.layer = previousLayer;
             }
         }
     }
@@ -146,6 +147,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         {
             if( attackState == Helpers.NOTATTACKING || _input == Vector3.zero)
             {   
+                previousLayer = gameObject.layer;
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
                 jukebox.PlaySound(0);
