@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 3515326834807181872}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7137939, y: -0.70034236, z: 0.003098398, w: -0.0030720825}
-  m_LocalPosition: {x: -0.21626978, y: 0.61289746, z: -0.022557376}
+  m_LocalPosition: {x: -0.0008, y: -0.00754, z: 0}
   m_LocalScale: {x: 0.0060282713, y: 0.008031161, z: 0.008032126}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4855,7 +4855,7 @@ Transform:
   m_GameObject: {fileID: 5000538321263595610}
   serializedVersion: 2
   m_LocalRotation: {x: 0.54901755, y: -0.83579946, z: 0.0023763773, w: -0.0036593522}
-  m_LocalPosition: {x: -0.21592957, y: 0.60569245, z: -0.016225439}
+  m_LocalPosition: {x: -0.0008, y: -0.00754, z: -0}
   m_LocalScale: {x: 0.006454409, y: 0.007444485, z: 0.008032128}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9741,7 +9741,7 @@ Transform:
   m_GameObject: {fileID: 6107154565361578684}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5025562, y: -0.4930259, z: 0.49740773, w: -0.5069008}
-  m_LocalPosition: {x: -0.21493912, y: 0.61293393, z: -0.017364992}
+  m_LocalPosition: {x: -0.0008, y: -0.00754, z: 0}
   m_LocalScale: {x: 0.006028271, y: 0.008032126, z: 0.00803116}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9919,20 +9919,64 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a97e44629dc222943be33a4e52b91c9c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2351482600112744745}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a97e44629dc222943be33a4e52b91c9c, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1619472055875598959}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a97e44629dc222943be33a4e52b91c9c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1699800723873379898}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a97e44629dc222943be33a4e52b91c9c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8627905240300907939}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a97e44629dc222943be33a4e52b91c9c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5323521546963556845}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a97e44629dc222943be33a4e52b91c9c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6637837739175315604}
   m_SourcePrefab: {fileID: 100100000, guid: a97e44629dc222943be33a4e52b91c9c, type: 3}
 --- !u!1 &7036644949870123907 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a97e44629dc222943be33a4e52b91c9c, type: 3}
   m_PrefabInstance: {fileID: 7883065838746674898}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &2351482600112744745
+--- !u!114 &1619472055875598959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7036644949870123907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41c6abad749d3f645b6bdb822862d427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectDuration: 10
+  damagePerTick: 4
+  tickInterval: 0.5
+  startOnFire: 0
+  an: {fileID: 0}
+--- !u!65 &1699800723873379898
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7036644949870123907}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.037883706, y: 0.029252501, z: 0.00092450564}
+  m_Center: {x: -0.0024910932, y: -0.00933474, z: -0.00041059882}
+--- !u!95 &8627905240300907939
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -9953,7 +9997,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1619472055875598959
+--- !u!114 &5323521546963556845
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9970,7 +10014,7 @@ MonoBehaviour:
   tickInterval: 0.5
   startOnFire: 0
   an: {fileID: 0}
---- !u!65 &1699800723873379898
+--- !u!65 &6637837739175315604
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
