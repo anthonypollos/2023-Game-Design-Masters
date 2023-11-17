@@ -98,7 +98,6 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     private void LateUpdate()
     {
         ears.transform.Rotate(0, 0, 0);
-        Debug.Log(ears.transform.rotation);
     }
 
 
