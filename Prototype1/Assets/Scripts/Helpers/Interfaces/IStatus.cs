@@ -8,6 +8,7 @@ public abstract class IStatus : MonoBehaviour
     [SerializeField] protected float effectDuration;
     protected float currentTime;
     protected Coroutine timerCoroutine;
+    protected bool effectOn = false;
 
 
     public virtual void Activate()
@@ -30,7 +31,7 @@ public abstract class IStatus : MonoBehaviour
         while (currentTime <= effectDuration)
         {
             currentTime += Time.deltaTime;
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
         Deactivate();
     }
