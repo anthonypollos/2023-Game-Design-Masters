@@ -30,6 +30,12 @@ public class Flammable : IStatus
             {
                 glow.enabled = false;
             }
+            //Check if the fire particle gameobject has an AudioSource and stop it if it does.
+            //This code may be messy and have extra steps than needed. Please double check it when you can, Josh. -Sean
+            if (fireEffect.gameObject.GetComponent<AudioSource>() != null)
+            {
+                fireEffect.gameObject.GetComponent<AudioSource>().Stop();
+            }
         }
         StopCoroutine(onFire);
         onFire = null;
@@ -42,6 +48,12 @@ public class Flammable : IStatus
         if(fireEffect != null)
         {
             fireEffect.Play(true);
+            //Check if the fire particle gameobject has an AudioSource and play it if it does.
+            //This code may be messy and have extra steps than needed. Please double check it when you can, Josh. -Sean
+            if (fireEffect.gameObject.GetComponent<AudioSource>() != null)
+            {
+                fireEffect.gameObject.GetComponent<AudioSource>().Play();
+            }
             em.enabled = true;
             if (glow != null)
             {
