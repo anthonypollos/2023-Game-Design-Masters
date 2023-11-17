@@ -32,6 +32,10 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     [Header("Kick Properties")]
     [SerializeField] [Tooltip("The force of the kick")] float kickForce;
     [SerializeField] [Tooltip("How far a kicked object will go assuming 1 mass")] float kickCarryDistance;
+    [SerializeField] float kickCD;
+    float trueKickCD = 0f;
+    [SerializeField] Image kickCDIndicator;
+    private bool canKick;
     MainControls mc;
 
     [Header("Sound")]
@@ -57,6 +61,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         
         pulling = false;
         isRetracting = false;
+        canKick = true;
         lr = GetComponent<LineRenderer>();
         isCharging = false;
         currentLassoCharge = 0;
@@ -91,13 +96,14 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     {
         if (Time.timeScale != 0)
         {
-            if (!kicking && !isCharging && !pc.moveable.isLaunched)
+            if (canKick && !kicking && !isCharging && !pc.moveable.isLaunched)
             {
                 if (InputChecker.instance.IsController())
                     pc.LookAtAim();
                 else
                     pc.LookAtMouse();
                 kicking = true;
+                canKick = false;
                 pc.attackState = Helpers.ATTACKING;
                 kick.SetActive(true);
                 jukebox.PlaySound(0);
@@ -111,7 +117,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     public void ActivateKick(GameObject target)
     {
-        //Debug.Log("Apply force");
+        Debug.Log("Apply force");
+        trueKickCD = kickCD;
         Moveable moveable = target.GetComponent<Moveable>();
         if(moveable != null)
             moveable.Launched(transform.forward * kickCarryDistance ,kickForce);
@@ -300,6 +307,20 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             pc.attackState = Helpers.NOTATTACKING;
         kick.SetActive(false);
         kicking = false;
+        StartCoroutine(KickCD());
+    }
+
+    private IEnumerator KickCD()
+    {
+
+        for (float i = 0; i < trueKickCD; i += 0.01f)
+        {
+            yield return new WaitForSeconds(0.01f);
+            kickCDIndicator.fillAmount = i / trueKickCD;
+        }
+        canKick = true;
+        trueKickCD = 0;
+        kickCDIndicator.fillAmount = 1;
     }
 
     IEnumerator WaitForRetraction()
