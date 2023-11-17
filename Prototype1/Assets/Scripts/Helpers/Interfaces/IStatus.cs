@@ -34,6 +34,7 @@ public abstract class IStatus : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         Deactivate();
+        timerCoroutine = null;
     }
     
     
