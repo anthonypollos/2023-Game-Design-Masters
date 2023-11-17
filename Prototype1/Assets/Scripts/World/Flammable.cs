@@ -19,6 +19,7 @@ public class Flammable : IStatus
         if(an != null) 
             an.SetBool("Burning", false);
         */
+        effectOn = false;
         StopCoroutine(onFire);
         onFire = null;
         //throw new System.NotImplementedException();
@@ -33,13 +34,16 @@ public class Flammable : IStatus
         }
         if(an != null)
             an.SetBool("Burning", true);
-        if(onFire==null)
+        if (onFire == null)
+        {
+            effectOn = true;
             onFire = StartCoroutine(Damage());
+        }
     }
 
     protected IEnumerator Damage()
     {
-        while (true)
+        while (effectOn)
         {
             yield return new WaitForSeconds(tickInterval);
             //Debug.Log("Tick Damage");
