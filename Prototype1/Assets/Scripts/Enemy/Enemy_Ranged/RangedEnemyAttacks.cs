@@ -17,6 +17,13 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
     [SerializeField]
     [Tooltip("Spread angle")]
     float spreadAngle = 10f;
+
+    [SerializeField] private JukeBox jukebox;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
     public override void Attack()
     {
         if (count >= attackSpeed)
@@ -56,11 +63,12 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
     {
         currentShot++;
         int projectilesToSpawn = (currentShot%multiShotInterval)==0 ? 3 : 1;
+        jukebox.PlaySound(1);
         //if (currentShot%multiShotInterval == 0) Debug.Log("trigger multi");
         for (int i = 0; i < projectilesToSpawn; i++)
         { 
             IProjectile shot = Instantiate(projectile, shootLocation.position, Quaternion.identity).GetComponent<IProjectile>();
-            switch(i)
+            switch (i)
             {
                 case 0:
                     shot.Shoot(transform.forward, brain.player.position);
