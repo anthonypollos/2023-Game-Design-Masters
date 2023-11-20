@@ -7,7 +7,10 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     private Moveable moveable;
     [SerializeField] private int health = 20;
     [SerializeField] int clashDamage;
+    [Tooltip("The object that's created when this item is destroyed.\nDoes not need to be a particle.")]
     [SerializeField] GameObject DestructionParticle;
+    [Tooltip("The amount of time the Destruction Particle Object is alive for.\n0 means it lives forever.")]
+    [SerializeField] float DestructionParticleLifetime = 4f;
     [SerializeField] GameObject KickedParticle;
 
     [SerializeField] private JukeBox jukebox;
@@ -60,8 +63,12 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
             {
                 //create the particle
                 GameObject vfxobj = Instantiate(DestructionParticle, gameObject.transform.position, Quaternion.identity);
-                //destroy the particle
-                Destroy(vfxobj, 4);
+                //Check to see if the particle has a lifetime.
+                if (DestructionParticleLifetime != 0f)
+                {
+                    //destroy the particle
+                    Destroy(vfxobj, DestructionParticleLifetime);
+                }
             }
             jukebox.PlaySound(1);
             Destroy(gameObject);
