@@ -23,6 +23,7 @@ public class TrapBehavior : MonoBehaviour
         if (temp != null)
         {
             temp.TakeDamage(dmg);
+            collision.gameObject.GetComponent<EnemyInteractionBehaviorTemplate>().stunned = true;
         }
     }
 }
