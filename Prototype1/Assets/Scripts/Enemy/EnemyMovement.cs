@@ -32,13 +32,13 @@ public class EnemyMovement : MonoBehaviour
     [HideInInspector]
     public Rigidbody rb;
 
-    [SerializeField]
-    [Tooltip("What range does the enemy want to be")]
-    float optimalRange;
+
 
     [SerializeField]
     [Tooltip("How close player has to be for the enemy to try and retreat")]
     float tooCloseRange;
+
+    int lastValue;
     // Start is called before the first frame update
     void Start()
     {
@@ -62,8 +62,15 @@ public class EnemyMovement : MonoBehaviour
     void Update()
     {
         count += Time.deltaTime;
-        refreshTime += Time.deltaTime;
-        if(!brain.isAggro && !isPatrolling)
+        if (brain.state == EnemyStates.ATTACKING)
+        {
+            refreshTime = 0;
+        }
+        else
+        {
+            refreshTime += Time.deltaTime;
+        }
+        if (!brain.isAggro && !isPatrolling)
         {
             if(refreshTime > 2f)
             {
@@ -141,10 +148,8 @@ public class EnemyMovement : MonoBehaviour
         Movement(dir);
         if (brain.isAggro)
         {
-            //Debug.Log("hunt");
-            targetPosition = brain.player.position;
-            //Debug.Log(Vector3.Distance(player.position, transform.position) + " + " + CanSee());
-            
+            CalculateAggroMovement();
+
         }
         else
         {
@@ -188,6 +193,58 @@ public class EnemyMovement : MonoBehaviour
             }
         }
 
+    }
+
+    private void CalculateAggroMovement()
+    {
+
+        float distance = Vector3.Distance(brain.player.position, transform.position);
+        if (distance <= brain.optimalRange && brain.CanSee(brain.player))
+        {
+            Vector3 dir = (brain.player.position - transform.position).normalized;
+            //if too close
+            if (distance < tooCloseRange)
+            {
+                Debug.Log("too close");
+                dir *= -1;
+            }
+            //if at optimal range
+            else
+            {
+                Debug.Log("Just Right");
+                if (refreshTime >= 1f)
+                {
+                    lastValue = Random.Range(0, 2);
+                }
+                switch (lastValue)
+                {
+                    case 0:
+                        dir = Quaternion.Euler(0, 60, 0) * dir;
+                        break;
+                    case 1:
+                        dir = Quaternion.Euler(0, -60, 0) * dir;
+                        break;
+                    default:
+                        dir = Vector3.zero;
+                        break;
+                }
+            }
+
+            targetPosition = transform.position + dir * movementSpeed;
+        }
+
+        else
+        {
+            targetPosition = brain.player.position;
+        }
+        if (!NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path))
+        {
+
+        }
+        else
+        {
+            corner = 0;
+        }
     }
 
     private bool RandomPoint(out Vector3 output)
