@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrapBehavior : MonoBehaviour
+public class BearTrapBehavior : MonoBehaviour
 {
     [SerializeField] int dmg = 20;
     // Start is called before the first frame update
@@ -17,6 +17,7 @@ public class TrapBehavior : MonoBehaviour
         
     }
 
+    /*
     private void OnCollisionEnter(Collision collision)
     {
         IDamageable temp = collision.gameObject.GetComponent<IDamageable>();
@@ -24,6 +25,17 @@ public class TrapBehavior : MonoBehaviour
         {
             temp.TakeDamage(dmg);
             collision.gameObject.GetComponent<EnemyInteractionBehaviorTemplate>().stunned = true;
+        }
+    }
+    */
+
+    private void OnTriggerEnter(Collider other)
+    {
+        IDamageable temp = other.gameObject.GetComponent<IDamageable>();
+        if (temp != null)
+        {
+            temp.TakeDamage(dmg);
+           
         }
     }
 }
