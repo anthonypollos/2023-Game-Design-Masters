@@ -31,6 +31,14 @@ public class EnemyMovement : MonoBehaviour
     private int corner;
     [HideInInspector]
     public Rigidbody rb;
+
+    [SerializeField]
+    [Tooltip("What range does the enemy want to be")]
+    float optimalRange;
+
+    [SerializeField]
+    [Tooltip("How close player has to be for the enemy to try and retreat")]
+    float tooCloseRange;
     // Start is called before the first frame update
     void Start()
     {

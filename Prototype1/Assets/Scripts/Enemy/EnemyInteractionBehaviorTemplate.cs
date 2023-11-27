@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullable, IKickable
 {
     [HideInInspector]
@@ -43,8 +44,11 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     }
     public virtual void Stagger()
     {
-        StopCoroutine(Staggered());
-        StartCoroutine(Staggered());
+        if (stunned)
+        {
+            StopCoroutine(Staggered());
+            StartCoroutine(Staggered());
+        }
     }
     protected virtual void Stunned()
     {
@@ -90,9 +94,13 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
 
     protected virtual IEnumerator Staggered()
     {
-        Stunned();
-        yield return new WaitForSeconds(staggerTime);
-        UnStunned();
+        if (!stunned)
+        {
+            Stunned();
+            yield return new WaitForSeconds(staggerTime);
+            UnStunned();
+        }
+        yield break;
     }
 
 }
