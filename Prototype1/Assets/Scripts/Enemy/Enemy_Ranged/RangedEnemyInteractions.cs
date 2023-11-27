@@ -6,9 +6,6 @@ using UnityEngine.UI;
 public class RangedEnemyInteractions : EnemyInteractionBehaviorTemplate
 {
     [SerializeField]
-    [Tooltip("Stun time when taking damage")]
-    float stunTime = 1.5f;
-    [SerializeField]
     float pullTimeToKill = 2f;
     [SerializeField] Slider pullSlider;
     float currentTime;
@@ -18,6 +15,7 @@ public class RangedEnemyInteractions : EnemyInteractionBehaviorTemplate
         pullSlider.gameObject.SetActive(false);
         lassoed = false;
         stunned = false;
+        launched = false;
     }
 
     // Update is called once per frame
@@ -65,8 +63,7 @@ public class RangedEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     public override void Stagger()
     {
-        StopCoroutine(Staggered());
-        StartCoroutine(Staggered());
+        base.Stagger();
     }
 
     protected override void Stunned()
@@ -79,20 +76,30 @@ public class RangedEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     protected override void UnStunned()
     {
-        if (!lassoed)
+        if (!lassoed && !launched && !brain.moveable.isLaunched)
         {
             brain.an.SetBool("Stunned", false);
-            stunned = false;
-            brain.PackAggro();
+            base.UnStunned();
         }
     }
 
-    private IEnumerator Staggered()
+    protected override IEnumerator Staggered()
     {
-        Stunned();
-        yield return new WaitForSeconds(stunTime);
-        UnStunned();
+        StopCoroutine(base.Staggered());
+        StartCoroutine(base.Staggered());
+        yield break;
 
     }
 
+    protected override void Stun(float time)
+    {
+        base.Stun(time);
+    }
+
+    protected override IEnumerator StunTimer(float seconds)
+    {
+        StopCoroutine(base.StunTimer(seconds));
+        StartCoroutine(base.StunTimer(seconds));
+        yield break;
+    }
 }

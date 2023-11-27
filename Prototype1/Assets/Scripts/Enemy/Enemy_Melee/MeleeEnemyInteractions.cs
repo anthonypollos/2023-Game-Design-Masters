@@ -7,13 +7,9 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     [SerializeField]
     [Tooltip("Damage dealt and taken when colliding with someone then launched")]
     int clashDamage = 20;
-    bool launched;
 
     [SerializeField] GameObject KickedParticle;
 
-    [SerializeField]
-    [Tooltip("Stun time when taking damage")]
-    float stunTime = 0.5f;
     [SerializeField] private JukeBox jukebox;
 
     private void Awake()
@@ -60,6 +56,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     public override void Lassoed()
     {
+        StopAllCoroutines();
         lassoed = true;
         base.Lassoed();
         Stunned();
@@ -94,8 +91,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     public override void Stagger()
     {
-        StopCoroutine(Staggered());
-        StartCoroutine(Staggered());
+        base.Stagger();
     }
 
     protected override void Stunned()
@@ -108,22 +104,20 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     protected override void UnStunned()
     {
-        if(!lassoed)
+        if(!lassoed && !launched && !brain.moveable.isLaunched)
         {
             brain.an.SetBool("Tendriled", false);
             //brain.an.SetBool("Stunned", false);
-            stunned = false;
-            brain.PackAggro();
+            base.UnStunned();
         }
     }
 
-    private IEnumerator Staggered()
+    protected override IEnumerator Staggered()
     {
         brain.an.SetTrigger("Damaged");
-        Stunned();
-        yield return new WaitForSeconds(stunTime);
-        if (!brain.moveable.isLaunched)
-            UnStunned();
+        StopCoroutine(base.Staggered());
+        StartCoroutine(base.Staggered());
+        yield break;
 
     }
 
@@ -155,5 +149,15 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         }
     }
 
+    protected override void Stun(float time)
+    {
+        base.Stun(time);
+    }
 
+    protected override IEnumerator StunTimer(float seconds)
+    {
+        StopCoroutine(base.StunTimer(seconds));
+        StartCoroutine(base.StunTimer(seconds));
+        yield break;
+    }
 }

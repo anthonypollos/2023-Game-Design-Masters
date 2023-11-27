@@ -8,6 +8,8 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     [HideInInspector]
     protected bool lassoed;
     [HideInInspector]
+    protected bool launched;
+    [HideInInspector]
     protected bool hasCollided;
     [HideInInspector]
     public bool stunned;
@@ -17,8 +19,10 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     [SerializeField] Image lassoImage;
     [HideInInspector]
     public IsoAttackManager lassoOwner;
-    
-    
+    [Tooltip("Stun time when taking damage")]
+    [SerializeField] float staggerTime = 0.5f;
+
+
 
     public abstract void Kicked();
     public virtual void Lassoed()
@@ -37,10 +41,20 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
         if (brain.moveable.tendrilOwner != null) brain.moveable.tendrilOwner.ForceRelease();
         else Debug.Log("LassoOwner = null");
     }
-    public abstract void Stagger();
+    public virtual void Stagger()
+    {
+        StopCoroutine(Staggered());
+        StartCoroutine(Staggered());
+    }
     protected virtual void Stunned()
     {
         brain.state = EnemyStates.NOTHING;
+    }
+
+    protected virtual void Stun(float time)
+    {
+        StopCoroutine(StunTimer(time));
+        StartCoroutine(StunTimer(time));
     }
 
     public virtual void Death()
@@ -48,18 +62,37 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
         //Stunned();
         brain.health.Death();
     }
-    protected abstract void UnStunned();
+    protected virtual void UnStunned()
+    {
+        stunned = false;
+        brain.PackAggro();
+    }
 
     protected IEnumerator BreakOut()
     {
         float timer = 0;
-        while(lassoed)
+        while (lassoed)
         {
             timer += Time.deltaTime;
             lassoImage.fillAmount = timer / breakOutTime;
             if (timer >= breakOutTime) Break();
             yield return null;
         }
+    }
+
+    protected virtual IEnumerator StunTimer(float seconds)
+    {
+        Stunned();
+        yield return new WaitForSeconds(seconds);
+        UnStunned();
+    }
+
+
+    protected virtual IEnumerator Staggered()
+    {
+        Stunned();
+        yield return new WaitForSeconds(staggerTime);
+        UnStunned();
     }
 
 }
