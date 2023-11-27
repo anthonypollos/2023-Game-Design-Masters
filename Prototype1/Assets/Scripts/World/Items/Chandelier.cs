@@ -5,6 +5,7 @@ using UnityEngine;
 public class Chandelier : MonoBehaviour, IToggleable, ITrap
 {
     Rigidbody rb;
+    private Moveable moveable;
     [SerializeField] int dmg = 20;
 
     // Start is called before the first frame update
@@ -12,6 +13,7 @@ public class Chandelier : MonoBehaviour, IToggleable, ITrap
     {
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
+        moveable = GetComponent<Moveable>();
     }
 
     // Update is called once per frame
