@@ -35,7 +35,9 @@ public class BearTrapBehavior : MonoBehaviour
         if (temp != null)
         {
             temp.TakeDamage(dmg);
-           
+            other.gameObject.GetComponent<EnemyInteractionBehaviorTemplate>().Stun(5);
         }
     }
+
+    
 }
