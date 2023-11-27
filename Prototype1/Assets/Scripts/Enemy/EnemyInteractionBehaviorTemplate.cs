@@ -51,7 +51,7 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
         brain.state = EnemyStates.NOTHING;
     }
 
-    protected virtual void Stun(float time)
+    public virtual void Stun(float time)
     {
         StopCoroutine(StunTimer(time));
         StartCoroutine(StunTimer(time));

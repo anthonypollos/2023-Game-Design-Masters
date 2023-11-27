@@ -91,7 +91,7 @@ public class RangedEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     }
 
-    protected override void Stun(float time)
+    public override void Stun(float time)
     {
         base.Stun(time);
     }
