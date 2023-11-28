@@ -11,6 +11,9 @@ public class KickBehavior : MonoBehaviour
     [Header("Sound")]
     [SerializeField] private JukeBox jukebox;
 
+    [Header("Animator Variables")]
+    [SerializeField] Animator anim; //assigned in inspector for now; can change
+
     private void Awake()
     {
         jukebox.SetTransform(transform);   
@@ -25,6 +28,8 @@ public class KickBehavior : MonoBehaviour
     {
         if(an != null) 
             an.SetTrigger("Kick");
+
+        anim.SetTrigger("Kick"); //calls player's kick animation; ^anim call not needed
     }
 
     private void OnTriggerEnter(Collider other)
