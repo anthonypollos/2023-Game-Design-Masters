@@ -48,6 +48,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     GameController gc;
     Coroutine returnCall;
 
+    [Header("Animator Variables")]
+    [SerializeField] Animator anim; //assigned in inspector for now; can change
 
     private void Awake()
     {
@@ -109,6 +111,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 kick.SetActive(true);
                 jukebox.PlaySound(0);
                 //Debug.Log("I kick em!");
+                // could move kick anim trigger here?
             }
         }
 
@@ -221,6 +224,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 //LassoBehavior lb = temp.GetComponent<LassoBehavior>();
                 lb.SetValues(pullCarryDistance, minPullForceModifier, currentDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
                 lb.Launched();
+
+                anim.SetTrigger("TendrilThrow");
             }
 
             if (lasso.activeInHierarchy && lb.GetAttachment().Item2 != null)
@@ -354,6 +359,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         tendril.SetActive(false);
         if(pc.attackState!=Helpers.ATTACKING)
             pc.attackState = Helpers.NOTATTACKING;
+
+        anim.SetTrigger("NextState");
     }
 
     
