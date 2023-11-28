@@ -164,7 +164,6 @@ public class IsoPlayerController : MonoBehaviour, IKickable
                 moveable.Dash(transform.forward * dashRange, dashTime);
                 anim.SetFloat("DashSpeed", 32f / (24 * dashTime));
                 anim.SetTrigger("Dash");
-                anim.SetTrigger("NextState");
                 StartCoroutine(DashCD());
             }
             else if (attackState == Helpers.LASSOING || attackState == Helpers.LASSOED || attackState == Helpers.PULLING)
