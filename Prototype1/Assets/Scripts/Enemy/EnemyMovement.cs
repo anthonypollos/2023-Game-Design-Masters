@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -98,6 +99,7 @@ public class EnemyMovement : MonoBehaviour
                 }
                 else
                 {
+                    corner = 0;
                     if (path.status != NavMeshPathStatus.PathComplete)
                     {
                         RandomPoint(out targetPosition);
@@ -205,24 +207,27 @@ public class EnemyMovement : MonoBehaviour
             //if too close
             if (distance < tooCloseRange)
             {
-                Debug.Log("too close");
+                //Debug.Log("too close");
                 dir *= -1;
             }
             //if at optimal range
             else
             {
-                Debug.Log("Just Right");
+                float angle =
+                Mathf.Lerp(90f, 50f, (distance - tooCloseRange) / (brain.optimalRange - tooCloseRange));
+                //Debug.Log("Just Right");
                 if (refreshTime >= 1f)
                 {
                     lastValue = Random.Range(0, 2);
+                    refreshTime = 0;
                 }
                 switch (lastValue)
                 {
                     case 0:
-                        dir = Quaternion.Euler(0, 60, 0) * dir;
+                        dir = Quaternion.Euler(0, angle, 0) * dir;
                         break;
                     case 1:
-                        dir = Quaternion.Euler(0, -60, 0) * dir;
+                        dir = Quaternion.Euler(0, -angle, 0) * dir;
                         break;
                     default:
                         dir = Vector3.zero;

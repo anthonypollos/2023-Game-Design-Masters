@@ -40,6 +40,7 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
 
     private void TriggerAttack(int attack)
     {
+        brain.state = EnemyStates.ATTACKING;
         brain.an.SetFloat("AttackMod", 1);
         //Debug.Log("attack triggered");
         brain.an.SetBool("Attacking", true);

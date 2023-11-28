@@ -37,6 +37,8 @@ public class SaveLoadManager : MonoBehaviour
     {
         Debug.Log("New game");
         savedValues = new SavedValues();
+        SaveGame();
+        LoadGame();
     }
 
     public void LoadGame()

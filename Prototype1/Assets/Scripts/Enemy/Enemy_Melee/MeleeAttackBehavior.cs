@@ -11,6 +11,10 @@ public class MeleeAttackBehavior : MonoBehaviour
 
     private void OnEnable()
     {
+        if (hasHit == null)
+        {
+            hasHit = new List<GameObject>();
+        }
         hasHit.Clear();
     }
 

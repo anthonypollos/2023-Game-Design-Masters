@@ -27,10 +27,8 @@ public class TendrilTest : MonoBehaviour
         dir = dir.normalized;
         if (dir != Vector3.zero)
         {
-            if (isStart)
-                transform.forward = (target.position - transform.position).normalized;
-            else
-                transform.up = -(target.position - transform.position).normalized;
+            transform.forward = Quaternion.Euler(rotateOffset) * (target.position - transform.position).normalized;
+          
         }
     }
 }
