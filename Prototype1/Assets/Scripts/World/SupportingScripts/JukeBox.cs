@@ -12,6 +12,10 @@ public class JukeBox
     {
         public AudioClip sound;
         [Tooltip("The audio mixer group this sound should output to")] public AudioMixerGroup outputGroup;
+        // Don't need the above, can use mixerParam enum below, just need to be sure to add new parameters if we ever create more mixers
+        public enum mixerParameter { AmbientVol, SFXVol, EnemyVol, MasterVol, MusicVol, PlayerVol, VoiceVol, WorldVol }
+        [Tooltip("The volume paramater of desired audio mixer group")] public mixerParameter outputMixerGroup;
+
         [Tooltip("On a scale of 0.0 to 1.0")] public float volume;
         [Tooltip("Does the sound play from the object or not")] public bool isLocalized;
         [Tooltip("How the AudioSource attenuates over distance")] public AudioRolloffMode rolloffMode;
@@ -45,7 +49,10 @@ public class JukeBox
             Vector3 location = track.isLocalized ? transform.position : Camera.main.transform.position;
             if (track.sound != null)
             {
-                AudioSource.PlayClipAtPoint(track.sound, location, track.volume);
+                bool value = track.outputGroup.audioMixer.GetFloat(track.outputMixerGroup.ToString(), out float adjustVol);
+                adjustVol = Mathf.Pow(10f, adjustVol / 20) * track.volume; 
+
+                AudioSource.PlayClipAtPoint(track.sound, location, adjustVol /*track.volume*/);
                 //source.Play();
                 //Debug.Log("Should play");
             }
