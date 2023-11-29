@@ -36,8 +36,14 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     [SerializeField] 
     [Tooltip("What distance does the creature want to stay in from the player")]
     public float optimalRange;
-    
 
+    [SerializeField] private JukeBox jukebox;
+
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -58,6 +64,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
             attack.brain = this;
         
         state = EnemyStates.NOTHING;
+        StartCoroutine(Ambiance());
     }
 
     // Update is called once per frame
@@ -206,6 +213,13 @@ public class EnemyBrain : MonoBehaviour, IEnemy
         throw new System.NotImplementedException();
     }
 
-
+    IEnumerator Ambiance()
+    {
+        while(!isAggro)
+        {
+            jukebox.PlaySound(0);
+            yield return new WaitForSeconds(10f);
+        }
+    }
 
 }
