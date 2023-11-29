@@ -35,7 +35,6 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
     [Header("Animator Variables")]
     [SerializeField] Animator anim; //assigned in inspector for now; can change
-    [SerializeField] float kickSpeed, dashSpeed, tendrilThrowSpeed;
 
     private void Awake()
     {
@@ -163,9 +162,8 @@ public class IsoPlayerController : MonoBehaviour, IKickable
                 canDash = false;
                 jukebox.PlaySound(0);
                 moveable.Dash(transform.forward * dashRange, dashTime);
-                anim.SetFloat("dashSpeed", 32f / (24 * dashTime));
-                anim.SetTrigger("dash");
-                anim.SetTrigger("tendrilRelease");
+                anim.SetFloat("DashSpeed", 32f / (24 * dashTime));
+                anim.SetTrigger("Dash");
                 StartCoroutine(DashCD());
             }
             else if (attackState == Helpers.LASSOING || attackState == Helpers.LASSOED || attackState == Helpers.PULLING)
@@ -220,9 +218,9 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
         // Set forward/back movement float; will have to change
         if (_rb.velocity.magnitude > 0.1)
-            anim.SetFloat("yMov", 1);
+            anim.SetFloat("YMov", 1);
         else
-            anim.SetFloat("yMov", 0);
+            anim.SetFloat("YMov", 0);
 
     }
 

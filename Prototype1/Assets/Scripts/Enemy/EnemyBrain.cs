@@ -35,7 +35,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     public int state;
     [SerializeField] 
     [Tooltip("What distance does the creature want to stay in from the player")]
-    float optimalRange;
+    public float optimalRange;
     
 
     // Start is called before the first frame update
@@ -86,7 +86,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     {
         if (InRange(optimalRange))
         {
-            movement.Stop();
+            movement.Move();
         }
         else
         {

@@ -49,7 +49,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         }
         hpBar.value = (float)health / (float)maxHealth;
         if (health <= 0) Die();
-        else anim.SetTrigger("damage");
+        else anim.SetTrigger("Damage");
 
     }
 
