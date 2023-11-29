@@ -16,7 +16,13 @@ using UnityEditor;
 [ExecuteInEditMode]
 public class ObjectColor : MonoBehaviour
 {
+    [Tooltip("OPAQUE ONLY!\nThis boolean makes the object glow.")]
+    public bool _emissiveObject = false;
+    [Tooltip("Make the object unlit.\nThis should really only be used for translucent materials that we want to glow, but should be fine for anything, theoretically.")]
+    public bool _unlit = false;
     public Color _myColor = new Color(255, 255, 255, 255);
+    [Tooltip("OPAQUE ONLY!\nIf you want the object to be emissive this is the color it will emit.")]
+    public Color _emissiveColor = new Color(0, 0, 0, 0);
     [Tooltip("The number (Found under Mesh Renderer's ''Material'' section) of the Material we want to color.")]
     public int MaterialNumber = 0;
 
@@ -34,8 +40,29 @@ public class ObjectColor : MonoBehaviour
             //This extra stuff is to keep Unity from yelling at me in the editor.
             var tempMaterial = new Material(GetComponent<MeshRenderer>().sharedMaterial);
             tempMaterial.color = _myColor;
+            if (_emissiveObject)
+            {
+                //This enables Emission on the material.
+                tempMaterial.EnableKeyword("_EMISSION");
+                //This sets the Emission color to our serialized color.
+                tempMaterial.SetColor("_EmissionColor", _emissiveColor);
+                //This sets the Emission map to our material's texture.
+                tempMaterial.SetTexture("_EmissionMap", tempMaterial.GetTexture("_BaseMap"));
+            }
+            else
+            {
+                tempMaterial.DisableKeyword("_EMISSION");
+                tempMaterial.SetTexture("_EmissionMap", null);
+            }
+            if (_unlit)
+            {
+                tempMaterial.shader = Shader.Find("Universal Render Pipeline/Unlit");
+            }
+            else
+            {
+                tempMaterial.shader = Shader.Find("Universal Render Pipeline/Lit");
+            }
             GetComponent<MeshRenderer>().sharedMaterial = tempMaterial;
-
             //Debug text. Seems to work
             //print("Object " + this.name + " has been detected as only having one material.");
         }
@@ -44,6 +71,28 @@ public class ObjectColor : MonoBehaviour
         {
             var tempMaterial = new Material(GetComponent<MeshRenderer>().sharedMaterials[MaterialNumber]);
             tempMaterial.color = _myColor;
+            if (_emissiveObject)
+            {
+                //This enables Emission on the material.
+                tempMaterial.EnableKeyword("_EMISSION");
+                //This sets the Emission color to our serialized color.
+                tempMaterial.SetColor("_EmissionColor", _emissiveColor);
+                //This sets the Emission map to our material's texture.
+                tempMaterial.SetTexture("_EmissionMap", tempMaterial.GetTexture("_BaseMap")); 
+            }
+            else
+            {
+                tempMaterial.DisableKeyword("_EMISSION");
+                tempMaterial.SetTexture("_EmissionMap", null);
+            }
+            if (_unlit)
+            {
+                tempMaterial.shader = Shader.Find("Universal Render Pipeline/Unlit");
+            }
+            else
+            {
+                tempMaterial.shader = Shader.Find("Universal Render Pipeline/Lit");
+            }
             GetComponent<MeshRenderer>().sharedMaterials[MaterialNumber] = tempMaterial;
 
             //Debug text. Seems to work
