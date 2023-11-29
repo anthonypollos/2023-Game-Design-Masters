@@ -180,7 +180,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 52f9743b700cd314094932a273bb36d5, type: 2}
     - target: {fileID: 919132149155446097, guid: b0b43e2a948b86f43bcc95e46caf0dad, type: 3}
       propertyPath: m_Name
-      value: lantern (1)
+      value: Lantern_Flammable
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b0b43e2a948b86f43bcc95e46caf0dad, type: 3}
       propertyPath: m_Layer
@@ -215,6 +215,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b0b43e2a948b86f43bcc95e46caf0dad, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8518088258726964017}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b0b43e2a948b86f43bcc95e46caf0dad, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1584892461852145671}
   m_SourcePrefab: {fileID: 100100000, guid: b0b43e2a948b86f43bcc95e46caf0dad, type: 3}
 --- !u!1 &6052285884606542682 stripped
 GameObject:
@@ -235,6 +238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLaunched: 0
   timeToStop: 1
+  isDashing: 0
   tendrilOwner: {fileID: 0}
 --- !u!114 &-2980969239082223904
 MonoBehaviour:
@@ -251,11 +255,14 @@ MonoBehaviour:
   health: 5
   clashDamage: 5
   DestructionParticle: {fileID: 4902614723868296185, guid: 145011e46478daf48aac562017f0e90b, type: 3}
+  DestructionParticleLifetime: 4
   KickedParticle: {fileID: 0}
   jukebox:
     tracks:
     - sound: {fileID: 8300000, guid: 7959056ae15c7eb4d873407522f2a063, type: 3}
+      masterOutputGroup: {fileID: 0}
       outputGroup: {fileID: 5853289452479768643, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputVolParameter: 0
       volume: 0
       isLocalized: 0
       rolloffMode: 0
@@ -263,7 +270,9 @@ MonoBehaviour:
       maxDistance: 0
       spatialBlend: 0
     - sound: {fileID: 8300000, guid: ee0cbdfffdd145a4e853026ae65fdb5b, type: 3}
+      masterOutputGroup: {fileID: 0}
       outputGroup: {fileID: 5853289452479768643, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputVolParameter: 0
       volume: 1
       isLocalized: 0
       rolloffMode: 0
@@ -352,6 +361,24 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0.005}
   m_TimeToStationary: 0.5
+--- !u!114 &1584892461852145671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6052285884606542682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0.71257484, b: 0, a: 0.29803923}
+  outlineWidth: 1.5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!4 &6392254246248851936 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b0b43e2a948b86f43bcc95e46caf0dad, type: 3}

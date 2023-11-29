@@ -50,18 +50,21 @@ public class JukeBox
             if (track.sound != null)
             {
                 // get volume of desired output mixer
-                bool value = track.outputGroup.audioMixer.GetFloat(track.outputVolParameter.ToString(), out float trackVol);
+                if (track.masterOutputGroup != null)
+                {
+                    bool value = track.outputGroup.audioMixer.GetFloat(track.outputVolParameter.ToString(), out float trackVol);
 
-                // get volume of master volume mixer; NEED THIS to make sounds adjust with master volume
-                bool masterValue = track.masterOutputGroup.audioMixer.GetFloat("MasterVol", out float masterVol);
-                masterVol = Mathf.Pow(10f, masterVol / 20);
+                    // get volume of master volume mixer; NEED THIS to make sounds adjust with master volume
+                    bool masterValue = track.masterOutputGroup.audioMixer.GetFloat("MasterVol", out float masterVol);
+                    masterVol = Mathf.Pow(10f, masterVol / 20);
 
-                // adjusts volume of clip; output mixer vol * track vol * master mixer vol
-                float adjustVol = Mathf.Pow(10f, trackVol / 20) * track.volume * masterVol;
+                    // adjusts volume of clip; output mixer vol * track vol * master mixer vol
+                    float adjustVol = Mathf.Pow(10f, trackVol / 20) * track.volume * masterVol;
 
-                AudioSource.PlayClipAtPoint(track.sound, location, adjustVol /*track.volume*/);
-                //source.Play();
-                //Debug.Log("Should play");
+                    AudioSource.PlayClipAtPoint(track.sound, location, adjustVol /*track.volume*/);
+                    //source.Play();
+                    //Debug.Log("Should play");
+                }
             }
             else
             {
