@@ -193,6 +193,7 @@ public class LassoBehavior : MonoBehaviour
                     moveable.ForceRelease();
                 moveable = null;
                 attached = null;
+                jukebox.PlaySound(1);
             }
 
             if (moveable != null && !gc.toggleLasso)
@@ -315,6 +316,7 @@ public class LassoBehavior : MonoBehaviour
         if(attached!=null)
         {
             attached.GetComponent<IPullable>().Break();
+            jukebox.PlaySound(1);
         }
         if(moveable!=null)
         {
