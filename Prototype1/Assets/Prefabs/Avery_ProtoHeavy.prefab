@@ -856,6 +856,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLaunched: 0
   timeToStop: 0.5
+  isDashing: 0
   tendrilOwner: {fileID: 0}
 --- !u!114 &391642854790931613
 MonoBehaviour:
@@ -901,6 +902,7 @@ MonoBehaviour:
   wanderRadius: 3
   brain: {fileID: 0}
   rb: {fileID: 0}
+  tooCloseRange: 0
 --- !u!114 &4272214785605020046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -918,9 +920,12 @@ MonoBehaviour:
   breakOutTime: 0.1
   lassoImage: {fileID: 3581792273512288139}
   lassoOwner: {fileID: 0}
+  staggerTime: 0.5
   clashDamage: 10
   KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
-  stunTime: 0.1
+  jukebox:
+    tracks: []
+    transform: {fileID: 0}
 --- !u!95 &6742550138416423384
 Animator:
   serializedVersion: 5
@@ -958,14 +963,20 @@ MonoBehaviour:
   minAttackRange: 3
   attackSpeed: 0.2
   brain: {fileID: 391642854790931613}
-  dashRange: 25
-  dashTime: 0.85
+  attackWindUpSeconds: []
+  attackSeconds: []
+  attackWindDownSeconds: []
+  attackFrames: 
+  attackFramesPerSecond: 0
   baseDashChance: 1
   multiAttackChance: 0
+  dashRanges: []
   jukebox:
     tracks:
     - sound: {fileID: 8300000, guid: b8c2718c52656f24aba5fcf63a7a7040, type: 3}
-      outputGroup: {fileID: -4828692957543937038, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputVolParameter: 1
       volume: 0.7
       isLocalized: 1
       rolloffMode: 0
