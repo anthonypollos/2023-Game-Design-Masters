@@ -39,7 +39,15 @@ public class EnemyMovement : MonoBehaviour
     [Tooltip("How close player has to be for the enemy to try and retreat")]
     float tooCloseRange;
 
+    [SerializeField] private JukeBox jukebox;
+
     int lastValue;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -113,6 +121,8 @@ public class EnemyMovement : MonoBehaviour
             }
 
             MovementCalc();
+
+            jukebox.PlaySound(0);
         }
     }
 
