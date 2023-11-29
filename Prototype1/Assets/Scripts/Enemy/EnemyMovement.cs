@@ -39,7 +39,9 @@ public class EnemyMovement : MonoBehaviour
     [Tooltip("How close player has to be for the enemy to try and retreat")]
     float tooCloseRange;
 
+
     int lastValue;
+
     // Start is called before the first frame update
     void Start()
     {
