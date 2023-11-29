@@ -74,6 +74,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ff45ea9f28da74244a5545196260ec70, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5126442812806076799}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ff45ea9f28da74244a5545196260ec70, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4461535176612231049}
   m_SourcePrefab: {fileID: 100100000, guid: ff45ea9f28da74244a5545196260ec70, type: 3}
 --- !u!1 &2792339629928243326 stripped
 GameObject:
@@ -142,6 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLaunched: 0
   timeToStop: 1
+  isDashing: 0
   tendrilOwner: {fileID: 0}
 --- !u!114 &6940830587091552585
 MonoBehaviour:
@@ -171,7 +175,11 @@ MonoBehaviour:
   health: 15
   clashDamage: 10
   DestructionParticle: {fileID: 7141866554852115599, guid: eb4485787cd10004da588128fe280f63, type: 3}
+  DestructionParticleLifetime: 4
   KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
+  jukebox:
+    tracks: []
+    transform: {fileID: 0}
 --- !u!208 &5126442812806076799
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -188,3 +196,21 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0.009000001}
   m_TimeToStationary: 0.5
+--- !u!114 &4461535176612231049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2792339629928243326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0.71257484, b: 0, a: 0.14901961}
+  outlineWidth: 1
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
