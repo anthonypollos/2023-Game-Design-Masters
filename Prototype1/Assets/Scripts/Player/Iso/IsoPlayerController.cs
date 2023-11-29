@@ -155,8 +155,23 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     {
         if(canDash && !moveable.isLaunched && !isDead && Time.timeScale != 0)
         {
-            if( attackState == Helpers.NOTATTACKING || _input == Vector3.zero)
-            {   
+            
+            if (attackState == Helpers.LASSOING || attackState == Helpers.LASSOED || attackState == Helpers.PULLING)
+            {
+                attackManager.ForceRelease();
+                gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
+                canDash = false;
+                jukebox.PlaySound(0);
+                if(_input == Vector3.zero)
+                    moveable.Dash(transform.forward * dashRange, dashTime);
+                else
+                    moveable.Dash(_input.ToIso().normalized * dashRange, dashTime);
+                anim.SetFloat("DashSpeed", 32f / (24 * dashTime));
+                anim.SetTrigger("Dash");
+                StartCoroutine(DashCD());
+            }
+            else if (attackState == Helpers.NOTATTACKING || _input == Vector3.zero)
+            {
                 previousLayer = gameObject.layer;
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
@@ -164,15 +179,6 @@ public class IsoPlayerController : MonoBehaviour, IKickable
                 moveable.Dash(transform.forward * dashRange, dashTime);
                 anim.SetFloat("DashSpeed", 32f / (24 * dashTime));
                 anim.SetTrigger("Dash");
-                StartCoroutine(DashCD());
-            }
-            else if (attackState == Helpers.LASSOING || attackState == Helpers.LASSOED || attackState == Helpers.PULLING)
-            {
-                attackManager.ForceRelease();
-                gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
-                canDash = false;
-                jukebox.PlaySound(0);
-                moveable.Dash(_input.ToIso().normalized * dashRange, dashTime);
                 StartCoroutine(DashCD());
             }
         }

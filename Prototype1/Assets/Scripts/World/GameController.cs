@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour
     public bool toggleLasso = false;
     private TextMeshProUGUI text;
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject[] menus;
     [SerializeField] GameObject deathMenu;
     [SerializeField] Button topButtonPause;
     [SerializeField] Button topButtonDead;
@@ -87,6 +88,8 @@ public class GameController : MonoBehaviour
             {
                 Cursor.lockState = CursorLockMode.Confined;
                 pauseMenu.SetActive(false);
+                foreach (GameObject menu in menus)
+                    menu.SetActive(false);
                 Time.timeScale = 1;
             }
             else if (Time.timeScale != 0)
