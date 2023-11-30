@@ -204,6 +204,8 @@ public class EnemyBrain : MonoBehaviour, IEnemy
         {
             isAggro = true;
             health.ec.AddAggro(gameObject);
+            StopCoroutine(Ambiance());
+            jukebox.PlaySound(1);
         }
         
     }
