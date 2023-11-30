@@ -108,7 +108,7 @@ public class Moveable : MonoBehaviour
     {
         if (!collision.transform.CompareTag("Ground") && isLaunched)
         {
-            //Debug.Log("collide enter");
+            Debug.Log("collide enter");
             if (tendrilOwner != null)
             {
                 //Debug.Log("Force release");
@@ -118,7 +118,14 @@ public class Moveable : MonoBehaviour
             //Debug.Log(collision.gameObject.name);
             //Debug.Log("Hit object");
             if (!isStopping)
+            {
+                EnemyAttackTemplate at = transform.GetComponent<EnemyAttackTemplate>();
+                if(at != null)
+                {
+                    at.ForceAnimationChange();
+                }
                 stopping = StartCoroutine(Stop());
+            }
         }
     }
 

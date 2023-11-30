@@ -121,7 +121,7 @@ public class Flammable : IStatus
         }
         if (startOnFire)
         {
-            effectDuration = Mathf.Infinity;
+            defaultEffectDuration = Mathf.Infinity;
             Activate();
         }
     }

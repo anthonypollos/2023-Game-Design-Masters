@@ -57,10 +57,23 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         if (!pc.isDead)
         {
-            anim.SetTrigger("death");
+            anim.SetTrigger("Death");
             jukebox.PlaySound(1);
             pc.isDead = true;
-            GameController.instance.Lose();
+            //GameController.instance.Lose();
+            StartCoroutine(Death());
         }
+    }
+
+    private bool IsAnimationFinished()
+    {
+        return anim.GetCurrentAnimatorClipInfo(4).Length >= 1;
+    }
+
+    public IEnumerator Death()
+    {
+        yield return new WaitUntil(IsAnimationFinished);
+        yield return new WaitForSeconds(2);
+        GameController.instance.Lose();
     }
 }
