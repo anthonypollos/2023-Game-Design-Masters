@@ -7,7 +7,6 @@ public class BruteEnemyAttacks : EnemyAttackTemplate
 {
     [Header("Quick Melee variables")]
     [SerializeField] float quickMeleeRange;
-    [SerializeField] float quickMeleeTime;
     [Header("Dashing variables")]
     [SerializeField] float dashRange;
     [SerializeField] float dashTime;
@@ -28,7 +27,7 @@ public class BruteEnemyAttacks : EnemyAttackTemplate
 
     private void AttackAI()
     {
-        if (Vector3.Distance(brain.player.position, transform.position) > quickMeleeRange)
+        if (Vector3.Distance(brain.player.position, transform.position) < quickMeleeRange)
             TriggerAttack(1);
         else
             TriggerAttack(2);

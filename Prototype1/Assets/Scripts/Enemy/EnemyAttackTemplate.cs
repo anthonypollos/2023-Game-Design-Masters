@@ -104,4 +104,9 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
         brain.an.SetFloat("AttackMod", (float)attackFrames[attack] / (attackFramesPerSecond * attackSeconds[attack]));
     }
 
+    public void ForceAnimationChange()
+    {
+        animationTimer = float.MaxValue;
+    }
+
 }

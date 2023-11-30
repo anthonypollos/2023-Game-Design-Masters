@@ -5,7 +5,7 @@ using UnityEngine;
 public class WallSpikes : MonoBehaviour, ITrap
 {
     [SerializeField] int dmg = 20;
-
+    [SerializeField] float bleedTime = 3f;
 
     public void ActivateTrap(GameObject target)
     {
@@ -13,6 +13,11 @@ public class WallSpikes : MonoBehaviour, ITrap
         if(temp!= null)
         {
             temp.TakeDamage(dmg);
+        }
+        Bleedable bleedable = target.GetComponent<Bleedable>();
+        if(bleedable!=null)
+        {
+            bleedable.Activate(bleedTime);
         }
     }
 }

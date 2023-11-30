@@ -127,7 +127,7 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     public override void Death()
     {
-        brain.an.SetTrigger("Death");
+        brain.health.Death();
     }
 
     private void OnCollisionEnter(Collision collision)

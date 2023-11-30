@@ -5,7 +5,8 @@ using UnityEngine;
 
 public abstract class IStatus : MonoBehaviour
 {
-    [SerializeField] protected float effectDuration;
+    [SerializeField] protected float defaultEffectDuration;
+    protected float adjustedEffectDuration = 0;
     protected float currentTime;
     protected Coroutine timerCoroutine;
     protected bool effectOn = false;
@@ -22,16 +23,38 @@ public abstract class IStatus : MonoBehaviour
         Debug.Log("Activate Status On " + name);
     }    
 
+    public virtual void Activate(float time)
+    {
+        Effect();
+        currentTime = 0;
+        adjustedEffectDuration = time;
+        if (timerCoroutine == null)
+        {
+            timerCoroutine = StartCoroutine(Timer());
+        }
+    }
+
     protected abstract void Deactivate();
 
     protected abstract void Effect();
 
     protected IEnumerator Timer()
     {
-        while (currentTime <= effectDuration)
+        if (adjustedEffectDuration <= 0)
         {
-            currentTime += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
+            while (currentTime <= defaultEffectDuration)
+            {
+                currentTime += Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        else
+        {
+            while (currentTime <= adjustedEffectDuration)
+            {
+                currentTime += Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+            }
         }
         Deactivate();
         timerCoroutine = null;
