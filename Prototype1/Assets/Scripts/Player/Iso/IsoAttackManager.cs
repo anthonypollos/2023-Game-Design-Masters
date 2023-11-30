@@ -51,6 +51,9 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     [Header("Animator Variables")]
     [SerializeField] Animator anim; //assigned in inspector for now; can change
 
+    [Header("TEMP Outlines")]
+    [SerializeField] OutlineToggle outlineToggle;
+
     private void Awake()
     {
         mc = new MainControls();
@@ -145,6 +148,9 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                     lr.enabled = true;
                     pc.attackState = Helpers.LASSOING;
                     isCharging = true;
+
+                    if (outlineToggle != null)
+                        outlineToggle.ToggleOutline(true);
                 }
                 else
                 {
@@ -361,6 +367,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             pc.attackState = Helpers.NOTATTACKING;
 
         anim.SetTrigger("NextState");
+        if(outlineToggle != null)
+            outlineToggle.ToggleOutline(false);
     }
 
     
