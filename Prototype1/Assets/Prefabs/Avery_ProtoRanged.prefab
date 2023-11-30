@@ -1256,6 +1256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLaunched: 0
   timeToStop: 0.5
+  isDashing: 0
   tendrilOwner: {fileID: 0}
 --- !u!114 &8731073866730257392
 MonoBehaviour:
@@ -1281,6 +1282,9 @@ MonoBehaviour:
     m_Bits: 265
   state: 0
   optimalRange: 1.5
+  jukebox:
+    tracks: []
+    transform: {fileID: 0}
 --- !u!114 &1327725587703009202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1301,6 +1305,7 @@ MonoBehaviour:
   wanderRadius: 10
   brain: {fileID: 0}
   rb: {fileID: 0}
+  tooCloseRange: 0
 --- !u!114 &1098116863332846036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1318,9 +1323,12 @@ MonoBehaviour:
   breakOutTime: 5
   lassoImage: {fileID: 8313579716938998205}
   lassoOwner: {fileID: 0}
+  staggerTime: 0.5
   clashDamage: 10
   KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
-  stunTime: 0.5
+  jukebox:
+    tracks: []
+    transform: {fileID: 0}
 --- !u!114 &7133213294477808064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1333,14 +1341,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93dc6b8f77c49ba488131ec6333ca2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAttackRange: 50
+  maxAttackRange: 48.4
   minAttackRange: 0
   attackSpeed: 0.6
   brain: {fileID: 0}
+  attackWindUpSeconds: []
+  attackSeconds: []
+  attackWindDownSeconds: []
+  attackFrames: 
+  attackFramesPerSecond: 0
   multiShotInterval: 2147483647
   projectile: {fileID: 5597029714246309807, guid: 13c1186b0d99c0144ad449c13e8d12d8, type: 3}
   shootLocation: {fileID: 122676850669370244}
   spreadAngle: 20
+  jukebox:
+    tracks: []
+    transform: {fileID: 0}
 --- !u!95 &5328437572855551486
 Animator:
   serializedVersion: 5
