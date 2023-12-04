@@ -25,6 +25,10 @@ public class ObjectColor : MonoBehaviour
     public Color _emissiveColor = new Color(0, 0, 0, 0);
     [Tooltip("The number (Found under Mesh Renderer's ''Material'' section) of the Material we want to color.")]
     public int MaterialNumber = 0;
+    public float UScale = 1f;
+    public float VScale = 1f;
+    public float UOffset = 0f;
+    public float VOffset = 0f;
 
     //set the color
     private void OnEnable()
@@ -62,6 +66,10 @@ public class ObjectColor : MonoBehaviour
             {
                 tempMaterial.shader = Shader.Find("Universal Render Pipeline/Lit");
             }
+
+            tempMaterial.mainTextureScale = new Vector2(UScale, VScale);
+            tempMaterial.mainTextureOffset = new Vector2(UOffset, VOffset);
+
             GetComponent<MeshRenderer>().sharedMaterial = tempMaterial;
             //Debug text. Seems to work
             //print("Object " + this.name + " has been detected as only having one material.");
