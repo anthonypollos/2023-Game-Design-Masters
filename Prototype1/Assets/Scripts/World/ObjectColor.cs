@@ -101,6 +101,10 @@ public class ObjectColor : MonoBehaviour
             {
                 tempMaterial.shader = Shader.Find("Universal Render Pipeline/Lit");
             }
+
+            tempMaterial.mainTextureScale = new Vector2(UScale, VScale);
+            tempMaterial.mainTextureOffset = new Vector2(UOffset, VOffset);
+
             GetComponent<MeshRenderer>().sharedMaterials[MaterialNumber] = tempMaterial;
 
             //Debug text. Seems to work
