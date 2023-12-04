@@ -5,6 +5,10 @@ using UnityEngine;
 public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 {
     private Moveable moveable;
+    //this is a private internal var for constraints that we need if the object is frozen before being tendrilled
+    private RigidbodyConstraints rbconstraints;
+    [Tooltip("Enable if this object should stay in place before being grabbed.")]
+    [SerializeField] bool _frozenBeforeTendril = false;
     [SerializeField] private int health = 20;
     [SerializeField] int clashDamage;
     [Tooltip("The object that's created when this item is destroyed.\nDoes not need to be a particle.")]
@@ -23,6 +27,15 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     void Start()
     {
         moveable = GetComponent<Moveable>();
+        //If set to be frozen, freeze.
+        if (_frozenBeforeTendril)
+        {
+            //Get the constraints and assign them to rbconstraints
+            //We will NEED this if we ever want to have objects that only move along single axes (like the minecart)
+            rbconstraints = GetComponent<Rigidbody>().constraints;
+            //Now freeze.
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        }
     }
 
     public void Kicked()
@@ -35,16 +48,25 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
             //destroy the particle
             Destroy(vfxobj, 4);
         }
+        //unfreeze, then disable frozenbeforetendril so this isn't called every time.
+        if (_frozenBeforeTendril)
+        {
+            Unfreeze();
+        }
     }
 
     public void Pulled()
     {
-
+        //unfreeze, then disable frozenbeforetendril so this isn't called every time.
+        if (_frozenBeforeTendril)
+        {
+            Unfreeze();
+        }
     }
 
     public void Lassoed()
     {
-
+        
     }
 
     public void Break()
@@ -98,6 +120,14 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
             }
         }
 
+    }
+
+    private void Unfreeze()
+    {
+        //1. return to non-frozen constraints taken from start
+        GetComponent<Rigidbody>().constraints = rbconstraints;
+        //2. turn the boolean off so this is only called once.
+        _frozenBeforeTendril = false;
     }
 
 }
