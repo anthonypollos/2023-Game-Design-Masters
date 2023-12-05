@@ -20,6 +20,14 @@ public class DialogueManager : MonoBehaviour
     private bool choiceBuffer;
     MainControls mc;
 
+    [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] Animator imageAnimator;
+    [SerializeField] Animator portraitAnimator;
+    
+    private const string IMAGE_TAG = "i";
+    private const string PORTRAIT_TAG = "p";
+    private const string NAME_TAG = "n";
+
     private void Awake()
     {
         if (instance != null)
@@ -52,6 +60,9 @@ public class DialogueManager : MonoBehaviour
         choiceBuffer = false;
         choiceNeeded = false;
         currentStory = null;
+        nameText.text = "";
+        imageAnimator.Play("Default");
+        portraitAnimator.Play("Default");
         buttonText = new List<TextMeshProUGUI>();
         if (choiceButtons.Count != 0)
         {
@@ -69,6 +80,9 @@ public class DialogueManager : MonoBehaviour
     public void EnterDialogMode(TextAsset inkJSON)
     {
         Debug.Log("Starting Dialog");
+        nameText.text = "";
+        imageAnimator.Play("Default");
+        portraitAnimator.Play("Default");
         currentStory = new Story(inkJSON.text);
         Time.timeScale = 0f;
         dialogBox.SetActive(true);
@@ -91,6 +105,7 @@ public class DialogueManager : MonoBehaviour
             {
                 storyStarted = true;
                 mainText.text = currentStory.Continue();
+                HandleTags();
                 DisplayChoices();
             }
             else
@@ -99,6 +114,31 @@ public class DialogueManager : MonoBehaviour
                 currentStory = null;
                 mainText.text = "";
                 StartCoroutine(EndStory());
+            }
+        }
+    }
+
+    private void HandleTags()
+    {
+        List<string> tags = currentStory.currentTags;
+        foreach (string tag in tags)
+        {
+            string[] splitTags = tag.Split(":");
+
+            switch(splitTags[0])
+            {
+                case IMAGE_TAG:
+                    imageAnimator.Play(splitTags[1]);
+                    break;
+                case PORTRAIT_TAG:
+                    portraitAnimator.Play(splitTags[1]);
+                    break;
+                case NAME_TAG:
+                    nameText.text = splitTags[1];
+                    break;
+                default: 
+                    Debug.LogError("Tag not recognized");
+                    break;
             }
         }
     }

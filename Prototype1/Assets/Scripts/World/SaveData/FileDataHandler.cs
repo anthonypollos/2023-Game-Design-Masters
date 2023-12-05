@@ -16,6 +16,16 @@ public class FileDataHandler
         Debug.Log(Path.Combine(dataDirPath, dataFileName));
     }
 
+    public void Delete()
+    {
+        string fullPath = Path.Combine(dataDirPath, dataFileName);
+        if (File.Exists(fullPath))
+        {
+            File.Delete(fullPath);
+        }
+
+    }
+
     public SavedValues Load()
     {
         //Debug.Log("Loading files");

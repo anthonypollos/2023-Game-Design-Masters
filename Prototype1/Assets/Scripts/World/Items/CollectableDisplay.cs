@@ -8,9 +8,11 @@ public class CollectableDisplay : InteractableBehaviorTemplate, ISaveable
     [SerializeField] [Tooltip("Copy from corresponding CollectableInstance script")]string id;
     //[SerializeField] GameObject displayUI;
 
+    [SerializeField] TextAsset dialogText;
+
     public override bool Interact()
     {
-        //displayUI.SetActive(true);
+        DialogueManager.instance.EnterDialogMode(dialogText);
         return false;
     }
 
