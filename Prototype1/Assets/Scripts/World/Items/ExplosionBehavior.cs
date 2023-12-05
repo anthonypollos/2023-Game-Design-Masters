@@ -13,13 +13,17 @@ public class ExplosionBehavior : MonoBehaviour
 
     [Header("Sound")]
     [SerializeField] private JukeBox jukebox;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
     private void Start()
     {
+        jukebox.PlaySound(0);
         StartCoroutine(DestroySelf());
         hit = new List<GameObject>();
         particleSystems = GetComponentsInChildren<ParticleSystem>();
-        jukebox.SetTransform(transform);
-        jukebox.PlaySound(0);
     }
     IEnumerator DestroySelf()
     {
