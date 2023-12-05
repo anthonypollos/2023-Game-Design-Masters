@@ -45,6 +45,8 @@ public class EnemyMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //If we don't change the center point from 0 0 0, assume we want the center point to be the spawn location.
+        if (centerPoint == Vector3.zero) centerPoint = transform.position;
         previousPosition = transform.position;
         refreshTime = 0;
         rb = GetComponent<Rigidbody>();
