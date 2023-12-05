@@ -56,6 +56,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         {
             Debug.Log("i'm listening");
         }
+        StartCoroutine(Footsteps());
     }
 
     private void OnEnable()
@@ -236,7 +237,14 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     }
 
 
-
+    IEnumerator Footsteps()
+    {
+        yield return new WaitForSeconds(1f);
+        if (_input != Vector3.zero)
+        {
+            jukebox.PlaySound(1);
+        }
+    }
 
 
 }
