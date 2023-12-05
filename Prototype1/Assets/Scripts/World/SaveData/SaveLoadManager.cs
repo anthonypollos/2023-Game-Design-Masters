@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 
+
 public class SaveLoadManager : MonoBehaviour
 {
     private SavedValues savedValues;
@@ -32,7 +33,12 @@ public class SaveLoadManager : MonoBehaviour
         
     }
 
-
+    [ContextMenu("Delete Save Data")]
+    private void DeleteSaveData()
+    {
+        dataHandler = new FileDataHandler(Application.persistentDataPath);
+        dataHandler.Delete();
+    }
     public void NewGame()
     {
         Debug.Log("New game");
