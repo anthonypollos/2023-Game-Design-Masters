@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class MissionBehavior : MonoBehaviour
 {
+    [Tooltip("Objects with a toggleable to be toggled when finished on it or its children")]
     [SerializeField] List<GameObject> toggleOnFinish;
     private List<IToggleable> toggles;
+    [Tooltip("Game Objects you want to be toggled on or off completely when finished")]
+    [SerializeField] List<GameObject> toggleIfActiveOnFinish;
     [SerializeField] protected string missionText;
     public Vector3 checkPointLocation;
     protected IMissionContainer folder;
@@ -63,6 +66,7 @@ public class MissionBehavior : MonoBehaviour
 
     public virtual void OnComplete()
     {
+        QuickSetToggles();
         triggered = true;
         if (toggles != null)
         {
@@ -71,6 +75,16 @@ public class MissionBehavior : MonoBehaviour
                 foreach (IToggleable toggle in toggles)
                 {
                     toggle.Toggle();
+                }
+            }
+        }
+        if(toggleIfActiveOnFinish != null)
+        {
+            if(toggleIfActiveOnFinish.Count>0)
+            {
+                foreach(GameObject go in toggleIfActiveOnFinish)
+                {
+                    go.SetActive(!go.activeInHierarchy);
                 }
             }
         }
