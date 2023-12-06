@@ -236,7 +236,12 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     }
 
 
-
+    public void Footsteps()
+    {
+       
+       jukebox.PlaySound(1);
+        
+    }
 
 
 }
