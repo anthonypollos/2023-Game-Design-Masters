@@ -94,6 +94,12 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
+    public void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(1, 0, 0, .125f);
+        Gizmos.DrawWireSphere(transform.position, tooCloseRange);
+    }
+
     public void Move()
     {
 
