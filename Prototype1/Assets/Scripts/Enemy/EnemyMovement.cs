@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class EnemyMovement : MonoBehaviour
 {
     public bool isMoving = true;
@@ -20,7 +24,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField]
     Vector3 centerPoint;
     [SerializeField]
-    float wanderRadius;
+    public float wanderRadius;
     [HideInInspector]
     public EnemyBrain brain;
 
@@ -274,3 +278,36 @@ public class EnemyMovement : MonoBehaviour
         return false;
     }
 }
+
+//Visualizer for changing the Enemy's wander radius.
+//Tutorial followed: https://www.youtube.com/watch?v=ABuXRbJDdXs
+//Sean did this. If this screws things up, blame me.
+#if UNITY_EDITOR
+[CustomEditor(typeof(EnemyMovement))]
+public class EnemyMovementEditor : Editor
+{
+    public void OnSceneGUI()
+    {
+        //Link the EnemyMovement script into this editor class
+        var linkedObject = target as EnemyMovement;
+
+        //set the handle colors.
+        Handles.color = Color.green;
+
+        //begin a check to see if we've changed anything.
+        EditorGUI.BeginChangeCheck();
+
+        //create a new float based on where we've dragged the radius sphere
+        float newWanderRadius = Handles.RadiusHandle(Quaternion.identity, linkedObject.transform.position, linkedObject.wanderRadius, false);
+       
+        //check to see if the range has been changed
+        if (EditorGUI.EndChangeCheck())
+        {
+            //if the range has been changed, we record that.
+            Undo.RecordObject(target, "Update Range");
+            //Now, we replace our wander radius with the new wander radius made by dragging the wander radius sphere. Yippeeeeee!!!!!!
+            linkedObject.wanderRadius = newWanderRadius;
+        }
+    }
+}
+#endif
