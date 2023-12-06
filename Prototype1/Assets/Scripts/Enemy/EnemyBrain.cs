@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public static class EnemyStates
 {
     public const int NOTHING = 0;
@@ -23,7 +27,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     public Transform player;
     [SerializeField] 
     [Tooltip("Range in which the enemy can see the player or any other enemy getting aggroed")]
-    float sightDistance;
+    public float sightDistance;
     [HideInInspector]
     public bool isAggro;
     [HideInInspector]
@@ -225,3 +229,36 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     }
 
 }
+
+//Visualizer for changing the Enemy's sight.
+//Tutorial followed: https://www.youtube.com/watch?v=ABuXRbJDdXs
+//Sean did this. If this screws things up, blame me.
+#if UNITY_EDITOR
+[CustomEditor(typeof(EnemyBrain))]
+public class EnemyBrainEditor : Editor
+{
+    public void OnSceneGUI()
+    {
+        //Link the EnemyMovement script into this editor class
+        var linkedObject = target as EnemyBrain;
+
+        //set the handle colors.
+        Handles.color = Color.blue;
+
+        //begin a check to see if we've changed anything.
+        EditorGUI.BeginChangeCheck();
+
+        //create a new float based on where we've dragged the radius sphere
+        float newSightDistance = Handles.RadiusHandle(Quaternion.identity, linkedObject.transform.position, linkedObject.sightDistance, false);
+
+        //check to see if the range has been changed
+        if (EditorGUI.EndChangeCheck())
+        {
+            //if the range has been changed, we record that.
+            Undo.RecordObject(target, "Update Range");
+            //Now, we replace our wander radius with the new wander radius made by dragging the wander radius sphere. Yippeeeeee!!!!!!
+            linkedObject.sightDistance = newSightDistance;
+        }
+    }
+}
+#endif
