@@ -26,6 +26,7 @@ public class DialogueTrigger: InteractableBehaviorTemplate
                 DialogueManager.instance.EnterDialogMode(dialogText);
             else
                 Debug.Log("First Dialogue");
+            interacted = true; 
         }
         return false;
     }
