@@ -28,7 +28,12 @@ public class InteractBehavior : MonoBehaviour
         }
         Changed();
     }
-    
+
+    private void Start()
+    {
+        DialogueManager.instance.SetPlayerInteractionText(textBox.gameObject);
+    }
+
     private void LateUpdate()
     {
         Vector3 pos = cam.position;
@@ -56,8 +61,8 @@ public class InteractBehavior : MonoBehaviour
                     currentInteractables[0].gameObject.SetActive(false);
                 }
                 currentInteractables.RemoveAt(0);
-
-                Changed();
+                if(textBox.gameObject.activeInHierarchy)
+                    Changed();
             }
         }
     }

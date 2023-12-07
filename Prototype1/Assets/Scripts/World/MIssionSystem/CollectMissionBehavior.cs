@@ -57,6 +57,7 @@ public class CollectMissionBehavior : MissionBehavior
 
     public override void OnComplete()
     {
+        QuickSetCollectables();
         foreach(GameObject item in items)
         {
             item.SetActive(false);
