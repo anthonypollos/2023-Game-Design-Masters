@@ -93,6 +93,7 @@ public class DialogueManager : MonoBehaviour
 
     private void AttemptContinue()
     {
+        Debug.Log(storyStarted);
         if (storyStarted && !choiceNeeded)
             ContinueStory();
     }
@@ -103,19 +104,28 @@ public class DialogueManager : MonoBehaviour
         {
             if (currentStory.canContinue)
             {
-                storyStarted = true;
+                StartCoroutine(Buffer());
                 mainText.text = currentStory.Continue();
                 HandleTags();
                 DisplayChoices();
             }
             else
             {
+                //Debug.Log("Set to false");
                 storyStarted = false;
                 currentStory = null;
                 mainText.text = "";
                 StartCoroutine(EndStory());
             }
         }
+    }
+
+    IEnumerator Buffer()
+    {
+        //Debug.Log("Coroutine Started");
+        yield return new WaitForSecondsRealtime(0.1f);
+        storyStarted = true;
+        //Debug.Log("Set to true");
     }
 
     private void HandleTags()

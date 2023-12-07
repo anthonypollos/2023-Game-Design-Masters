@@ -1994,6 +1994,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: npcTemp_bar
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b1c9ad22e3ef4494aa1a327ee2283111, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b1c9ad22e3ef4494aa1a327ee2283111, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2001,6 +2009,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b1c9ad22e3ef4494aa1a327ee2283111, type: 3}
       insertIndex: -1
       addedObject: {fileID: 150647328}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b1c9ad22e3ef4494aa1a327ee2283111, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 150647329}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b1c9ad22e3ef4494aa1a327ee2283111, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 150647331}
   m_SourcePrefab: {fileID: 100100000, guid: b1c9ad22e3ef4494aa1a327ee2283111, type: 3}
 --- !u!1 &150647327 stripped
 GameObject:
@@ -2025,6 +2039,41 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &150647329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150647327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8388d07ed65a8214aa3f01955f94cfb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionText: Talk to Beth
+  dialogText: {fileID: 4900000, guid: 8698e269abbff164abd862888907c7a7, type: 3}
+--- !u!65 &150647331
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150647327}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 3, z: 3}
+  m_Center: {x: 0, y: 1.45, z: 1.89}
 --- !u!1001 &156041657
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11146,7 +11195,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1353726317117583887, guid: 736948e83d5bf2b47b1c3c97eaa9f6f0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.71
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1353726317117583887, guid: 736948e83d5bf2b47b1c3c97eaa9f6f0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -11154,7 +11203,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1353726317117583887, guid: 736948e83d5bf2b47b1c3c97eaa9f6f0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.32
+      value: 2.93
       objectReference: {fileID: 0}
     - target: {fileID: 1529815706291631692, guid: 736948e83d5bf2b47b1c3c97eaa9f6f0, type: 3}
       propertyPath: m_Size.x
@@ -32229,10 +32278,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 284519003259021117, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
-      propertyPath: m_Avatar
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 327724318248541152, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
       propertyPath: m_Name
       value: GameController
@@ -32327,6 +32372,10 @@ PrefabInstance:
       propertyPath: m_isRightToLeft
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3504490782251207891, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -50
+      objectReference: {fileID: 0}
     - target: {fileID: 4314136358777077499, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -32349,6 +32398,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5392811285926606392, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325385305698455670, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 960
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325385305698455670, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6494325415913030014, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
@@ -32527,7 +32584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6121201307198569581, guid: f842a43d67554be40a9a06e1152c1464, type: 3}
       propertyPath: m_Name
-      value: TestText
+      value: Bishop Micah
       objectReference: {fileID: 0}
     - target: {fileID: 6121201307198569581, guid: f842a43d67554be40a9a06e1152c1464, type: 3}
       propertyPath: m_IsActive
@@ -32536,7 +32593,11 @@ PrefabInstance:
     - target: {fileID: 7642049926519088395, guid: f842a43d67554be40a9a06e1152c1464, type: 3}
       propertyPath: dialogText
       value: 
-      objectReference: {fileID: 4900000, guid: 8fd13f317a25afc45a82b5922a9aa788, type: 3}
+      objectReference: {fileID: 4900000, guid: 17c79fc6ac38cb945bc467020f3809cf, type: 3}
+    - target: {fileID: 7642049926519088395, guid: f842a43d67554be40a9a06e1152c1464, type: 3}
+      propertyPath: interactionText
+      value: Talk to Bishop Micah
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
