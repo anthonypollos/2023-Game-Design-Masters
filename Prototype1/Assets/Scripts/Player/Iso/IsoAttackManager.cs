@@ -86,9 +86,9 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     private void OnEnable()
     {
         mc.Enable();
-        mc.Main.Primary.performed += _ => Kick();
-        mc.Main.Secondary.performed += _ => LassoCharge();
-        mc.Main.Secondary.canceled += _ => Lasso();
+        mc.Main.Secondary.performed += _ => Kick();
+        mc.Main.Primary.performed += _ => LassoCharge();
+        mc.Main.Primary.canceled += _ => Lasso();
         mc.Main.Release.performed += _ => ForceRelease();
     }
 
@@ -279,9 +279,16 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 Vector3 dir;
                 float calculatedDistance;
                 (dir, calculatedDistance) = lb.GetValues();
-                //Debug.Log(calculatedDistance);
-                //Debug.Log(dir.magnitude);
-                moveable.Launched(dir * calculatedDistance, pullSpeed);
+                if (dir != Vector3.zero)
+                {
+                    //Debug.Log(calculatedDistance);
+                    //Debug.Log(dir.magnitude);
+                    moveable.Launched(dir * calculatedDistance, pullSpeed);
+                }
+                else
+                {
+                    moveable.Hold();
+                }
                 //lb.transform.position = moveable.transform.position;
                 //Rigidbody rb = target.GetComponent<Rigidbody>();
                 //var (success, position) = pc.GetMousePosition();

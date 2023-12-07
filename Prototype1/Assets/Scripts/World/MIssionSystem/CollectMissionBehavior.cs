@@ -10,17 +10,26 @@ public class CollectMissionBehavior : MissionBehavior
 
     new private void Start()
     {
+        
+        if (missionCollectables == null)
+        {
+            QuickSetCollectables();
+        }
+        base.Start();
+    }
+
+    private void QuickSetCollectables()
+    {
         collected = 0;
         missionCollectables = new List<MissionCollectable>();
-        foreach(GameObject item in items)
+        foreach (GameObject item in items)
         {
             missionCollectables.Add(item.GetComponent<MissionCollectable>());
         }
-        foreach(MissionCollectable missionCollectable in missionCollectables)
+        foreach (MissionCollectable missionCollectable in missionCollectables)
         {
             missionCollectable.SetMission(this);
         }
-        base.Start();
     }
 
     public void Collected()
@@ -34,6 +43,10 @@ public class CollectMissionBehavior : MissionBehavior
 
     public override (string, bool) GetMissionText()
     {
+        if(missionCollectables == null)
+        {
+            QuickSetCollectables();
+        }
         string editedMissionText = missionText;
         if(!triggered)
         {

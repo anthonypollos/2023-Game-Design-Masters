@@ -65,6 +65,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         mc.Main.Move.performed += ctx => _input = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
         mc.Main.Move.canceled += _ => _input = Vector3.zero;
         mc.Main.Aim.performed += ctx => _aimInput = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue <Vector2>().y);
+        mc.Main.Aim.canceled += ctx => _aimInput = Vector3.zero;
         mc.Main.Dash.performed += _ => Dash();
     }
 
