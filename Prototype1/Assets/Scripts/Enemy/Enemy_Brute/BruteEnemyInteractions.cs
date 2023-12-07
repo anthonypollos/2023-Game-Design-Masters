@@ -81,6 +81,7 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         base.Break();
         lassoed = false;
+        jukebox.PlaySound(0);
         if (!brain.moveable.isLaunched)
         {
             brain.an.SetBool("Tendriled", false);
