@@ -64,7 +64,14 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     public override void Lassoed()
     {
-        return;
+        if(brain.moveable.isDashing)
+            Break();
+        else
+        {
+            brain.an.SetBool("Tendriled", true);
+            Stunned();
+            base.Lassoed();
+        }
     }
 
     public override void Pulled()
@@ -103,6 +110,7 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         base.Stunned();
         stunned = true;
+        
         //brain.an.SetBool("Stunned", true);
         brain.an.SetBool("Attacking", false);
     }
@@ -125,6 +133,16 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
         yield break;
 
     }
+    public void DashCollide()
+    {
+        StartCoroutine(Buffer());
+    }
+
+    public IEnumerator Buffer()
+    {
+        yield return new WaitForSeconds(0.1f);
+        hasCollided = false;
+    }
 
     public override void Death()
     {
@@ -133,10 +151,14 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (brain.moveable.isLaunched && !collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Lasso") && !hasCollided)
+        Debug.Log(brain.moveable.isLaunched);
+        Debug.Log(brain.moveable.isDashing);
+        Debug.Log(collision.gameObject.name);
+        if ((brain.moveable.isLaunched || brain.moveable.isDashing) && !collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Lasso") && !hasCollided)
         {
             hasCollided = true;
             GameObject hit = collision.gameObject;
+            Debug.Log("Take clash damage");
             brain.health.TakeDamage(clashDamage);
             IDamageable temp = hit.GetComponent<IDamageable>();
             if (temp != null)
@@ -148,6 +170,7 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
             ITrap temp2 = hit.GetComponent<ITrap>();
             if (temp2 != null)
             {
+                Debug.Log("Take trap damage");
                 temp2.ActivateTrap(gameObject);
             }
 

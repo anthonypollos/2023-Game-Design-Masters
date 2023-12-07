@@ -70,7 +70,7 @@ public class BruteEnemyAttacks : EnemyAttackTemplate
         brain.state = EnemyStates.NOTHING;
 
         brain.an.SetBool("Attacking", false);
-        Debug.Log(Time.realtimeSinceStartup - timeTest);
+        //Debug.Log(Time.realtimeSinceStartup - timeTest);
     }
 
     // Start is called before the first frame update

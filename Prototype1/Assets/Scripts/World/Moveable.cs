@@ -13,6 +13,7 @@ public class Moveable : MonoBehaviour
     Coroutine stopping;
     float buffer;
     [SerializeField] float timeToStop = 1f;
+    [HideInInspector]
     public bool isDashing;
     LayerMask groundLayers;
     //[SerializeField] float groundCheckBuffer = 0.1f;

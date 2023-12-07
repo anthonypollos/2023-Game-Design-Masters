@@ -28,6 +28,7 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     public abstract void Kicked();
     public virtual void Lassoed()
     {
+        lassoed = true;
         lassoImage.fillAmount = 0;
         lassoImage.gameObject.SetActive(true);
         StartCoroutine(BreakOut());

@@ -125,7 +125,7 @@ public class LassoBehavior : MonoBehaviour
             {
                 attached = temp;
                 forwardVector = (player.position - attached.transform.position).normalized;
-                attached.GetComponentInParent<IPullable>().Lassoed();
+                
                 //Physics.IgnoreCollision(GetComponent<Collider>(), temp.GetComponent<Collider>(), true);
                 //gameObject.transform.parent = temp.transform;
                 //transform.localPosition = Vector3.zero;
@@ -143,6 +143,7 @@ public class LassoBehavior : MonoBehaviour
 
                     adjustedPullRange = maxPullDistance / attachedRB.mass;
                 }
+                attached.GetComponentInParent<IPullable>().Lassoed();
                 if (gc.toggleLasso)
                 {
                     dir = forwardVector;
