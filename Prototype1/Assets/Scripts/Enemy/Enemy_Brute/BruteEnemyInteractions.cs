@@ -9,6 +9,9 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
     [Tooltip("Damage dealt and taken when colliding with someone then launched")]
     int clashDamage = 20;
 
+    [Tooltip("A modifier for the amount of clash damage the brute will take when it runs into objects.\nDefault is 1. Below 1 makes it take less damage, above 1 makes it take more.")]
+    [SerializeField] float dashClashModifier = 1;
+
     [Tooltip("Stun Modifier")]
     [SerializeField] float stunMod = 1;
 
@@ -159,7 +162,12 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
             hasCollided = true;
             GameObject hit = collision.gameObject;
             Debug.Log("Take clash damage");
-            brain.health.TakeDamage(clashDamage);
+
+            //If we were dashing, multiply the clash damage by the dash modifier and take that damage.
+            if (brain.moveable.isDashing) brain.health.TakeDamage( (int)(clashDamage * dashClashModifier) );
+            //otherwise, take the full clash damage.
+            else brain.health.TakeDamage(clashDamage);
+
             IDamageable temp = hit.GetComponent<IDamageable>();
             if (temp != null)
             {
