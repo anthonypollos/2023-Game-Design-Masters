@@ -85,7 +85,7 @@ public class GameController : MonoBehaviour
 
     public void TogglePauseMenu()
     {
-        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name))
+        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
         {
             if (paused)
             {
