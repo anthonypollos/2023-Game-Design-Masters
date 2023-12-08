@@ -25,6 +25,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     public Moveable moveable;
     [HideInInspector]
     public Transform player;
+    Vector3 lastKnownLocation;
     [SerializeField] 
     [Tooltip("Range in which the enemy can see the player or any other enemy getting aggroed")]
     public float sightDistance;
@@ -129,9 +130,18 @@ public class EnemyBrain : MonoBehaviour, IEnemy
 
     public void LookAtPlayer()
     {
-        Vector3 dir = (player.transform.position - transform.position).normalized;
-        dir.y = 0;
-        transform.forward = dir.normalized;
+        if (CanSeePlayer())
+        {
+            Vector3 dir = (player.transform.position - transform.position).normalized;
+            dir.y = 0;
+            transform.forward = dir.normalized;
+        }
+        else
+        {
+            Vector3 dir = (lastKnownLocation - transform.position).normalized;
+            dir.y = 0;
+            transform.forward = dir.normalized;
+        }
     }
 
     void CheckAttack()
@@ -149,7 +159,10 @@ public class EnemyBrain : MonoBehaviour, IEnemy
 
     private bool CanSeePlayer()
     {
-        if (Vector3.Distance(player.position, transform.position) > sightDistance) return false;
+        if (Vector3.Distance(player.position, transform.position) > sightDistance)
+        {
+            return false;
+        }
         RaycastHit hit;
         //Debug.DrawRay(transform.position, player.position - transform.position, Color.red);
         if (Physics.Raycast(transform.position, player.position - transform.position, out hit, Mathf.Infinity, layermask))
@@ -157,6 +170,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
             //Debug.Log(hit.transform.name);
             if (hit.transform.gameObject.CompareTag("Player"))
             {
+                lastKnownLocation = hit.transform.position;
                 return true;
             }
             else
@@ -171,6 +185,10 @@ public class EnemyBrain : MonoBehaviour, IEnemy
 
     public bool CanSee(Transform target)
     {
+        if(target == player)
+        {
+            return CanSeePlayer();
+        }
         if (Vector3.Distance(target.position, transform.position) > sightDistance) return false;
         RaycastHit hit;
         //Debug.DrawRay(transform.position, player.position - transform.position, Color.red);
