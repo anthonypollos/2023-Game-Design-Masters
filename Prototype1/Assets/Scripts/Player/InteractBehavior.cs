@@ -31,7 +31,7 @@ public class InteractBehavior : MonoBehaviour
 
     private void Start()
     {
-        DialogueManager.instance.SetPlayerInteractionText(textBox.gameObject);
+        DialogueManager.instance.SetPlayerInteraction(this);
     }
 
     private void LateUpdate()
@@ -89,6 +89,18 @@ public class InteractBehavior : MonoBehaviour
                     currentInteractables.Remove(temp);
         }
         Changed();
+    }
+
+    public void Toggle()
+    {
+        if(textBox.gameObject.activeInHierarchy)
+        {
+            textBox.gameObject.SetActive(false);
+        }
+        else
+        {
+            Changed();
+        }
     }
 
     private void Changed()

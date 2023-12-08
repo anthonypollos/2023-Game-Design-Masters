@@ -19,7 +19,7 @@ public class DialogueManager : MonoBehaviour
     private bool choiceNeeded;
     private bool choiceBuffer;
     MainControls mc;
-    GameObject playerInteractionText;
+    InteractBehavior playerInteraction;
 
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] Animator imageAnimator;
@@ -78,10 +78,10 @@ public class DialogueManager : MonoBehaviour
         dialogBox.gameObject.SetActive(false);
     }
 
-    public void SetPlayerInteractionText(GameObject temp)
+    public void SetPlayerInteraction(InteractBehavior temp)
     {
         //Debug.Log(temp.name);
-        playerInteractionText = temp;
+        playerInteraction = temp;
     }
     public void EnterDialogMode(TextAsset inkJSON)
     {
@@ -92,7 +92,7 @@ public class DialogueManager : MonoBehaviour
         portraitAnimator.Play("Default");
         currentStory = new Story(inkJSON.text);
         Time.timeScale = 0f;
-        playerInteractionText.SetActive(false);
+        playerInteraction.Toggle();
         dialogBox.SetActive(true);
         ContinueStory();
 
@@ -163,7 +163,7 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator EndStory()
     {
-        playerInteractionText.SetActive(true);
+        playerInteraction.Toggle();
         Debug.Log("Ending Dialog");
         yield return new WaitForSecondsRealtime(0.05f);
         foreach (GameObject button in choiceButtons)

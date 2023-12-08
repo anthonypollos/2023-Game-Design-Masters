@@ -5,6 +5,7 @@ using UnityEngine;
 public class MissionCollectable : InteractableBehaviorTemplate
 {
     CollectMissionBehavior mission;
+    [SerializeField] TextAsset textToDisplay;
 
     public void SetMission(CollectMissionBehavior mission)
     {
@@ -13,6 +14,14 @@ public class MissionCollectable : InteractableBehaviorTemplate
 
     public override bool Interact()
     {
+        if (textToDisplay != null)
+        {
+            DialogueManager.instance.EnterDialogMode(textToDisplay);
+        }
+        else
+        {
+            Debug.Log("Play text here");
+        }
         mission.Collected();
         return true;
     }
