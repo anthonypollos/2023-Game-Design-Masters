@@ -60,14 +60,7 @@ public class NewMeleeEnemyAttacks : EnemyAttackTemplate
 
 
 
-    public void AttackEnd()
-    {
-        count = 0;
-        brain.state = EnemyStates.NOTHING;
-
-        brain.an.SetBool("Attacking", false);
-        Debug.Log(Time.realtimeSinceStartup - timeTest);
-    }
+    
 
     // Start is called before the first frame update
     void Start()
