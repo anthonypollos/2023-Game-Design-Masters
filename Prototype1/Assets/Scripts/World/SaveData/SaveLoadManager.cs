@@ -147,5 +147,10 @@ public class SaveLoadManager : MonoBehaviour
         LoadGame();
     }
 
+    public SavedValues GetCopy()
+    {
+        return savedValues;
+    }
+
 
 }

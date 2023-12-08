@@ -252,11 +252,11 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 
     public void SaveData(ref SavedValues savedValues)
     {
-        if(savedValues.levelsCompleted.ContainsKey(SceneManager.GetActiveScene().name))
+        if(savedValues.levels.ContainsKey(SceneManager.GetActiveScene().name))
         {
-            savedValues.levelsCompleted.Remove(SceneManager.GetActiveScene().name);
+            savedValues.levels.Remove(SceneManager.GetActiveScene().name);
         }
-        savedValues.levelsCompleted.Add(SceneManager.GetActiveScene().name, win);
+        savedValues.levels.Add(SceneManager.GetActiveScene().name, win);
 
         savedValues.currentLevelMissionStatuses = missionsStatuses;
 
@@ -264,7 +264,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 
     public void LoadData(SavedValues savedValues)
     {
-        savedValues.levelsCompleted.TryGetValue(SceneManager.GetActiveScene().name, out win);
+        savedValues.levels.TryGetValue(SceneManager.GetActiveScene().name, out win);
         missionsCompleted = 0;
         if(savedValues.currentLevelMissionStatuses.Count == 0)
         {

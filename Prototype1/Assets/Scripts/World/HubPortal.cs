@@ -14,7 +14,7 @@ public class HubPortal : InteractableBehaviorTemplate, ISaveable
     public void LoadData(SavedValues savedValues)
     {
         bool temp = false;
-        savedValues.levelsCompleted.TryGetValue(worldName, out temp);
+        savedValues.levels.TryGetValue(worldName, out temp);
         if (savedValues.currentLevel == "HubScene")
         {
             if (temp)
@@ -35,12 +35,12 @@ public class HubPortal : InteractableBehaviorTemplate, ISaveable
     public void SaveData(ref SavedValues savedValues)
     {
         bool temp = false;
-        if(savedValues.levelsCompleted.ContainsKey(worldName))
+        if(savedValues.levels.ContainsKey(worldName))
         {
-            temp = savedValues.levelsCompleted[worldName];
-            savedValues.levelsCompleted.Remove(worldName);
+            temp = savedValues.levels[worldName];
+            savedValues.levels.Remove(worldName);
         }
-        savedValues.levelsCompleted.Add(worldName, temp);
+        savedValues.levels.Add(worldName, temp);
 
     }
 }
