@@ -6,17 +6,20 @@ public class CutsceneManager : MonoBehaviour
 {
     public MenuBehavior mb;
     public string sceneToLoad;
+    MainControls mainControls;
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
-        
+        mainControls = new MainControls();
+        mainControls.Main.Interact.Enable();
+        mainControls.Main.Interact.performed += _ => Skip();
+
     }
 
     // Update is called once per frame
-    void Update()
+    void Skip()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-            mb.LoadScene(sceneToLoad);
+        mb.LoadScene(sceneToLoad);
     }
 }
