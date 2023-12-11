@@ -13,9 +13,11 @@ public class MissionBehavior : MonoBehaviour
     public Vector3 checkPointLocation;
     protected IMissionContainer folder;
     protected bool triggered;
+    protected bool completed;
 
     protected void Start()
     {
+        completed = false;
         toggles = new List<IToggleable>();
         if (toggles == null && toggleOnFinish.Count>0)
         {
@@ -66,10 +68,11 @@ public class MissionBehavior : MonoBehaviour
 
     public virtual void OnComplete()
     {
-        if (!triggered)
+        if (!completed)
         {
             QuickSetToggles();
             triggered = true;
+            completed = true;
             if (toggles != null)
             {
                 if (toggles.Count > 0)
