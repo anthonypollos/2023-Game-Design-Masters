@@ -66,29 +66,32 @@ public class MissionBehavior : MonoBehaviour
 
     public virtual void OnComplete()
     {
-        QuickSetToggles();
-        triggered = true;
-        if (toggles != null)
+        if (!triggered)
         {
-            if (toggles.Count > 0)
+            QuickSetToggles();
+            triggered = true;
+            if (toggles != null)
             {
-                foreach (IToggleable toggle in toggles)
+                if (toggles.Count > 0)
                 {
-                    toggle.Toggle();
+                    foreach (IToggleable toggle in toggles)
+                    {
+                        toggle.Toggle();
+                    }
                 }
             }
-        }
-        if(toggleIfActiveOnFinish != null)
-        {
-            if(toggleIfActiveOnFinish.Count>0)
+            if (toggleIfActiveOnFinish != null)
             {
-                foreach(GameObject go in toggleIfActiveOnFinish)
+                if (toggleIfActiveOnFinish.Count > 0)
                 {
-                    go.SetActive(!go.activeInHierarchy);
+                    foreach (GameObject go in toggleIfActiveOnFinish)
+                    {
+                        go.SetActive(!go.activeInHierarchy);
+                    }
                 }
             }
+            folder.MissionComplete(this);
         }
-        folder.MissionComplete(this);
     }
 
 

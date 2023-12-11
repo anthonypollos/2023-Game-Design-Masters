@@ -77,9 +77,15 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         Destroy(gameObject);
     }
 
+    private void OnEnable()
+    {
+        
+    }
+
 
     private void OnDisable()
     {
+        //Debug.Log("Disabled");
         if (ec != null && !quitting)
         {
             ec.RemoveEnemy(gameObject, false);
