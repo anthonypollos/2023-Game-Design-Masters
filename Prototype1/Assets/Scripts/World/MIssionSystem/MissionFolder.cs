@@ -262,6 +262,8 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 
     }
 
+    
+
     public void LoadData(SavedValues savedValues)
     {
         savedValues.levels.TryGetValue(SceneManager.GetActiveScene().name, out win);
@@ -281,7 +283,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
             for (int temp = 0; temp<missionsStatuses.Count; temp++)
             {
                 //Debug.Log("Mission " + (temp+1).ToString() + " is completed: " + missionsStatuses[temp]);
-                if (missionsStatuses[temp] & missions.Count>0)
+                if (missionsStatuses[temp] && missions.Count>0)
                 {
                     missions[temp].SetFolder(this);
                     missions[temp].QuickSetToggles();

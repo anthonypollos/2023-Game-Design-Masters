@@ -61,10 +61,7 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
     {
         if (!collision.gameObject.CompareTag("Player") && moveable.isLaunched)
         {
-            if (primed)
-            {
-                Explode();
-            }
+
             ITrap trap = collision.gameObject.GetComponent<ITrap>();
             if(trap!=null)
             {

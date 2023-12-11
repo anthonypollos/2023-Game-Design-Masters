@@ -54,7 +54,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         DeveloperConsole.instance.SetPlayer(gameObject, _rb);
         if (ears != null)
         {
-            Debug.Log("i'm listening");
+            //Debug.Log("i'm listening");
         }
     }
 
@@ -156,17 +156,20 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     {
         if(canDash && !moveable.isLaunched && !isDead && Time.timeScale != 0)
         {
-            
+            Debug.Log("Transform.forward: " + transform.forward);
             if (attackState == Helpers.LASSOING || attackState == Helpers.LASSOED || attackState == Helpers.PULLING)
             {
                 attackManager.ForceRelease();
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
                 jukebox.PlaySound(0);
-                if(_input == Vector3.zero)
+                if (_input == Vector3.zero)
                     moveable.Dash(transform.forward * dashRange, dashTime);
                 else
+                {
+                    Debug.Log(_input.ToIso());
                     moveable.Dash(_input.ToIso().normalized * dashRange, dashTime);
+                }
                 anim.SetFloat("DashSpeed", 32f / (24 * dashTime));
                 anim.SetTrigger("Dash");
                 StartCoroutine(DashCD());

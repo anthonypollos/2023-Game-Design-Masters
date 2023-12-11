@@ -13,6 +13,7 @@ public class EnemyContainer : MonoBehaviour
     {
         aggroList = new List<GameObject>();
         enemyList = new List<GameObject>();
+
     }
     // Start is called before the first frame update
     void Start()
@@ -35,14 +36,14 @@ public class EnemyContainer : MonoBehaviour
         }
     }
 
-    public void RemoveEnemy(GameObject enemy)
+    public void RemoveEnemy(GameObject enemy, bool killed = true)
     {
         if (enemyList != null)
         {
             if (enemyList.Contains(enemy))
             {
                 enemyList.Remove(enemy);
-                if (missionFolder != null)
+                if (missionFolder != null && killed)
                     missionFolder.EnemyRemoved(enemy);
             }
         }

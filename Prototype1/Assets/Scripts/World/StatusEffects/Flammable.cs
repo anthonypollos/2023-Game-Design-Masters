@@ -110,7 +110,7 @@ public class Flammable : IStatus
         fireEffect = GetComponentInChildren<ParticleSystem>(true);
         if (fireEffect != null)
         {
-            Debug.Log("got fire on" + name);
+            //Debug.Log("got fire on" + name);
             em = fireEffect.emission;
             em.enabled = false;
             glow = fireEffect.gameObject.GetComponentInChildren<Light>(true);

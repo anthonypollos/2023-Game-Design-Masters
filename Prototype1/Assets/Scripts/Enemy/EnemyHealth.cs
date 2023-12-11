@@ -82,7 +82,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         if (ec != null && !quitting)
         {
-            ec.RemoveEnemy(gameObject);
+            ec.RemoveEnemy(gameObject, false);
             ec.RemoveAggro(gameObject);
         }
         Destroy(gameObject);

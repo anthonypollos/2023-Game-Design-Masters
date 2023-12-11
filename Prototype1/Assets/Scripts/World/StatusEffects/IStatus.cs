@@ -20,7 +20,7 @@ public abstract class IStatus : MonoBehaviour
         {
             timerCoroutine = StartCoroutine(Timer());
         }
-        Debug.Log("Activate Status On " + name);
+        //Debug.Log("Activate Status On " + name);
     }    
 
     public virtual void Activate(float time)
