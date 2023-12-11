@@ -17,6 +17,11 @@ public class CutsceneManager : MonoBehaviour
 
     }
 
+    private void OnDisable()
+    {
+        mainControls.Disable();
+    }
+
     // Update is called once per frame
     void Skip()
     {
