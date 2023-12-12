@@ -16,16 +16,21 @@ public class SaveLoadManager : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        if(instance!=null)
+        if (SaveLoadManager.instance != null)
         {
+            Debug.Log("Second instance, destroying");
             Destroy(gameObject);
         }
-        instance = this;
-        dataHandler = new FileDataHandler(Application.persistentDataPath);
-        transform.parent = null;
-        DontDestroyOnLoad(gameObject);
-        SceneManager.sceneLoaded += NewScene;
-        SceneManager.sceneUnloaded += LeaveScene;
+        else
+        {
+            Debug.Log("first instance, setting");
+            instance = this;
+            dataHandler = new FileDataHandler(Application.persistentDataPath);
+            transform.parent = null;
+            DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += NewScene;
+            SceneManager.sceneUnloaded += LeaveScene;
+        }
     }
 
     private void Start()

@@ -10,8 +10,25 @@ public class MenuBehavior : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
     }
+
+    public void NewGame()
+    {
+        SaveLoadManager.instance.NewGame();
+    }
     public void LoadScene(string sceneName)
     {
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void LoadSceneDelay(string sceneName)
+    {
+        StopCoroutine(Delay(sceneName));
+        StartCoroutine(Delay(sceneName));
+    }
+
+    private IEnumerator Delay(string sceneName)
+    {
+        yield return new WaitForSeconds(0.1f);
         SceneManager.LoadScene(sceneName);
     }
 
