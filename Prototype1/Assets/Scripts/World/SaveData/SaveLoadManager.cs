@@ -41,6 +41,7 @@ public class SaveLoadManager : MonoBehaviour
     }
     public void NewGame()
     {
+        DeleteSaveData();
         Debug.Log("New game");
         savedValues = new SavedValues();
         SaveGame();
