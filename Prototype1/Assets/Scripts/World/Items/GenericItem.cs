@@ -59,6 +59,11 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         }
     }
 
+    public bool WillBreak(int dmg)
+    {
+        return (dmg >= health);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (moveable != null)

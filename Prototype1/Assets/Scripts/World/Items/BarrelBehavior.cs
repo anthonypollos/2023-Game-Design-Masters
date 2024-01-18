@@ -52,6 +52,11 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
         }
     }
 
+    public bool WillBreak(int dmg)
+    {
+        return (dmg >= health);
+    }
+
     private IEnumerator Timer()
     {
         yield return new WaitForSeconds(fuse);

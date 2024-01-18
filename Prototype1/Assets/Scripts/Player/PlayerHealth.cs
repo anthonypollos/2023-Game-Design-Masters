@@ -36,6 +36,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if (health <= 0) Die();
     }
 
+    public bool WillBreak(int dmg)
+    {
+        return (dmg >= health);
+    }
+
     private void Die()
     {
         jukebox.PlaySound(1);

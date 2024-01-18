@@ -45,6 +45,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         jukebox.PlaySound(0);
     }
 
+    public bool WillBreak(int dmg)
+    {
+        return (dmg >= health);
+    }
+
     private void Die()
     {
         jukebox.PlaySound(1);

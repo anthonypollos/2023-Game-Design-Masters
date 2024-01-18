@@ -11,4 +11,9 @@ public class GenericDestructable : MonoBehaviour, IDamageable
         health-= damage; 
         if (health <= 0) Destroy(gameObject);
     }
+
+    public bool WillBreak(int dmg)
+    {
+        return (dmg >= health);
+    }
 }

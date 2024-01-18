@@ -8,12 +8,14 @@ public class Moveable : MonoBehaviour
 {
     Rigidbody rb;
     Vector3 targetLocation;
-    float speed;
+    [SerializeField ] float speed;
     [HideInInspector] public bool isLaunched;
     Coroutine stopping;
     float buffer;
-    [SerializeField] float timeToStop = 1f;
-    bool isDashing;
+    //[SerializeField] float timeToStop = 1f;
+    [SerializeField] float slowPerSecond = 10f;
+    [HideInInspector]
+    public bool isDashing;
     LayerMask groundLayers;
     [SerializeField] float groundCheckBuffer = 0.1f;
     float boundsY;
@@ -123,25 +125,24 @@ public class Moveable : MonoBehaviour
 
     private IEnumerator Tumbling()
     {
-        float time = 0;
-        Vector3 startingVelocity = rb.velocity;
-        startingVelocity.y = 0;
-        while(time < timeToStop)
+        //Vector3 startingVelocity = rb.velocity;
+        Vector3 dir = new Vector3(rb.velocity.x, 0, rb.velocity.z).normalized;
+        //startingVelocity.y = 0;
+        while (speed > 0)
         {
-            yield return new WaitForSeconds(0.05f);
-            //yield return new WaitUntil(IsGrounded);
-            time += 0.05f;
-            //Debug.Log("Starting Vel:" + startingVelocity);
-            //Debug.Log("Calculated subtraction: " + -startingVelocity * time / timeToStop);
-            //Debug.Log("Calculated Vel:"+ (startingVelocity - startingVelocity * time / timeToStop));
-            //Debug.DrawRay(transform.position, (startingVelocity - startingVelocity * time / timeToStop));
-            rb.velocity = startingVelocity - (startingVelocity * time / timeToStop) + Vector3.up * rb.velocity.y;
+            yield return new WaitForSeconds(0.01f);
+            speed = Mathf.Clamp(speed - (slowPerSecond * 0.01f), 0, speed);
+            //Debug.Log(speed + "-" + slowPerSecond * 0.01f + "=" + (speed - (slowPerSecond * 0.01f)));
+            //Debug.Log("Speed = " + speed);
+            rb.velocity = dir * speed + Vector3.up * rb.velocity.y;
         }
+
         stopping = StartCoroutine (Stop());
     }
 
     private IEnumerator Stop()
     {
+        speed = 0;
         isStopping = true;
         rb.velocity = Vector3.zero + Vector3.up * rb.velocity.y;
         yield return new WaitForSeconds(0.01f);
@@ -166,6 +167,23 @@ public class Moveable : MonoBehaviour
         speed = force/rb.mass;
         isLaunched = true;
 
+    }
+
+    public void Tossed(float force)
+    {
+        speed += force / rb.mass;
+    }
+
+    public void Hold()
+    {
+        hold = true;
+        isStopping = false;
+        isDashing = false;
+        buffer = 0;
+        targetLocation = transform.position;
+        dir = Vector3.zero;
+        speed = 0;
+        isLaunched = true;
     }
 
     public void Dash(Vector3 target, float time)
