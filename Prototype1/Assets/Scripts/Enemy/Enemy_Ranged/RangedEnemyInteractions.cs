@@ -1,16 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(Animator))]
 public class RangedEnemyInteractions : EnemyInteractionBehaviorTemplate
 {
     [SerializeField]
-    [Tooltip("Stun time when taking damage")]
-    float stunTime = 1.5f;
+    float pullTimeToKill = 2f;
+    [SerializeField] Slider pullSlider;
+    float currentTime;
     void Start()
     {
+        currentTime = 0f;
+        pullSlider.gameObject.SetActive(false);
         lassoed = false;
         stunned = false;
+        launched = false;
     }
 
     // Update is called once per frame
@@ -35,12 +41,22 @@ public class RangedEnemyInteractions : EnemyInteractionBehaviorTemplate
     public override void Pulled()
     {
         base.Pulled();
+        pullSlider.gameObject.SetActive(true);
+        currentTime += Time.fixedDeltaTime;
+        pullSlider.value = currentTime / pullTimeToKill;
+        if (currentTime >= pullTimeToKill) { PulledOut(); }
+    }
+
+    private void PulledOut()
+    {
         brain.health.TakeDamage(9999999);
     }
 
     public override void Break()
     {
         base.Break();
+        currentTime = 0;
+        pullSlider.gameObject.SetActive(false);
         lassoed = false;
         brain.an.SetBool("Lassoed", false);
         UnStunned();
@@ -48,8 +64,7 @@ public class RangedEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     public override void Stagger()
     {
-        StopCoroutine(Staggered());
-        StartCoroutine(Staggered());
+        base.Stagger();
     }
 
     protected override void Stunned()
@@ -62,20 +77,30 @@ public class RangedEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     protected override void UnStunned()
     {
-        if (!lassoed)
+        if (!lassoed && !launched && !brain.moveable.isLaunched)
         {
             brain.an.SetBool("Stunned", false);
-            stunned = false;
-            brain.PackAggro();
+            base.UnStunned();
         }
     }
 
-    private IEnumerator Staggered()
+    protected override IEnumerator Staggered()
     {
-        Stunned();
-        yield return new WaitForSeconds(stunTime);
-        UnStunned();
+        StopCoroutine(base.Staggered());
+        StartCoroutine(base.Staggered());
+        yield break;
 
     }
 
+    public override void Stun(float time)
+    {
+        base.Stun(time);
+    }
+
+    protected override IEnumerator StunTimer(float seconds)
+    {
+        StopCoroutine(base.StunTimer(seconds));
+        StartCoroutine(base.StunTimer(seconds));
+        yield break;
+    }
 }

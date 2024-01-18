@@ -13,6 +13,7 @@ public class EnemyContainer : MonoBehaviour
     {
         aggroList = new List<GameObject>();
         enemyList = new List<GameObject>();
+
     }
     // Start is called before the first frame update
     void Start()
@@ -27,34 +28,45 @@ public class EnemyContainer : MonoBehaviour
 
     public void AddEnemy(GameObject enemy)
     {
-        if(!enemyList.Contains(enemy))
-            enemyList.Add(enemy);
-        //Debug.Log("Total Enemy Count: " + enemyList.Count);
+        if (enemyList != null)
+        {
+            if (!enemyList.Contains(enemy))
+                enemyList.Add(enemy);
+            //Debug.Log("Total Enemy Count: " + enemyList.Count);
+        }
     }
 
-    public void RemoveEnemy(GameObject enemy)
+    public void RemoveEnemy(GameObject enemy, bool killed = true)
     {
-        if (enemyList.Contains(enemy))
+        if (enemyList != null)
         {
-            enemyList.Remove(enemy);
-            if(missionFolder!=null)
-                missionFolder.EnemyRemoved(enemy);
+            if (enemyList.Contains(enemy))
+            {
+                enemyList.Remove(enemy);
+                if (missionFolder != null && killed)
+                    missionFolder.EnemyRemoved(enemy);
+            }
         }
-        
     }
 
     public void AddAggro(GameObject enemy)
     {
-        if(!aggroList.Contains(enemy))
-            aggroList.Add(enemy);
-        GameController.instance.CombatState(true);
+        if (aggroList != null)
+        {
+            if (!aggroList.Contains(enemy))
+                aggroList.Add(enemy);
+            GameController.instance.CombatState(true);
+        }
     }
 
     public void RemoveAggro(GameObject enemy)
     {
-        if(aggroList.Contains(enemy))
-            aggroList.Remove(enemy);
-        if (aggroList.Count == 0)
-            GameController.instance.CombatState(false);
+        if (aggroList != null)
+        {
+            if (aggroList.Contains(enemy))
+                aggroList.Remove(enemy);
+            if (aggroList.Count == 0)
+                GameController.instance.CombatState(false);
+        }
     }
 }

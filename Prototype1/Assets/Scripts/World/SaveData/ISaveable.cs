@@ -2,17 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ISaveable : MonoBehaviour
+public interface ISaveable 
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public void SaveData(ref SavedValues savedValues);
+    public void LoadData(SavedValues savedValues);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

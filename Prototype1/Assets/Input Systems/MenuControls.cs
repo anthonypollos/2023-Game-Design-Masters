@@ -71,6 +71,15 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Console"",
+                    ""type"": ""Button"",
+                    ""id"": ""ad41e45c-aa44-45d7-b14b-ce95cec8a8cc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -172,6 +181,17 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
                     ""action"": ""PreviousMission"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9882855a-49fa-4f0b-9194-f5c23e7d6500"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Console"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -185,6 +205,7 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
         m_Main_ToggleLasso = m_Main.FindAction("ToggleLasso", throwIfNotFound: true);
         m_Main_NextMission = m_Main.FindAction("NextMission", throwIfNotFound: true);
         m_Main_PreviousMission = m_Main.FindAction("PreviousMission", throwIfNotFound: true);
+        m_Main_Console = m_Main.FindAction("Console", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -251,6 +272,7 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_ToggleLasso;
     private readonly InputAction m_Main_NextMission;
     private readonly InputAction m_Main_PreviousMission;
+    private readonly InputAction m_Main_Console;
     public struct MainActions
     {
         private @MenuControls m_Wrapper;
@@ -260,6 +282,7 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
         public InputAction @ToggleLasso => m_Wrapper.m_Main_ToggleLasso;
         public InputAction @NextMission => m_Wrapper.m_Main_NextMission;
         public InputAction @PreviousMission => m_Wrapper.m_Main_PreviousMission;
+        public InputAction @Console => m_Wrapper.m_Main_Console;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -284,6 +307,9 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
             @PreviousMission.started += instance.OnPreviousMission;
             @PreviousMission.performed += instance.OnPreviousMission;
             @PreviousMission.canceled += instance.OnPreviousMission;
+            @Console.started += instance.OnConsole;
+            @Console.performed += instance.OnConsole;
+            @Console.canceled += instance.OnConsole;
         }
 
         private void UnregisterCallbacks(IMainActions instance)
@@ -303,6 +329,9 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
             @PreviousMission.started -= instance.OnPreviousMission;
             @PreviousMission.performed -= instance.OnPreviousMission;
             @PreviousMission.canceled -= instance.OnPreviousMission;
+            @Console.started -= instance.OnConsole;
+            @Console.performed -= instance.OnConsole;
+            @Console.canceled -= instance.OnConsole;
         }
 
         public void RemoveCallbacks(IMainActions instance)
@@ -327,5 +356,6 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
         void OnToggleLasso(InputAction.CallbackContext context);
         void OnNextMission(InputAction.CallbackContext context);
         void OnPreviousMission(InputAction.CallbackContext context);
+        void OnConsole(InputAction.CallbackContext context);
     }
 }

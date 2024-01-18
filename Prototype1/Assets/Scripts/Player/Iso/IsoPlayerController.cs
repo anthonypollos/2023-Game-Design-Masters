@@ -11,6 +11,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     private Vector3 _input;
     public Vector3 _aimInput;
     private Camera cam;
+    private AudioListener ears;
     MainControls mc;
     [SerializeField] LayerMask groundMask;
     bool canUnstun;
@@ -21,20 +22,40 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     public bool isDead;
     private bool canDash;
     private GameController gc;
+    private int previousLayer;
     [SerializeField] GameObject lasso;
 
     [SerializeField] float dashRange, dashTime, dashCD;
     [SerializeField] Image dashCDIndicator;
-    
+    [SerializeField] private JukeBox jukebox;
+
+    [SerializeField] float speedModWhenLassoOut;
+    [SerializeField] float speedModWhenPulling;
+    IsoAttackManager attackManager;
+
+    [Header("Animator Variables")]
+    [SerializeField] Animator anim; //assigned in inspector for now; can change
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
     private void Start()
     {
+        attackManager = GetComponent<IsoAttackManager>();
         moveable = GetComponent<Moveable>();
         attackState = 0;
         isDead = false;
         cam = Camera.main;
+        ears = GetComponentInChildren<AudioListener>();
         Helpers.UpdateMatrix();
         canDash = true;
         gc = FindObjectOfType<GameController>();
+        DeveloperConsole.instance.SetPlayer(gameObject, _rb);
+        if (ears != null)
+        {
+            //Debug.Log("i'm listening");
+        }
     }
 
     private void OnEnable()
@@ -44,32 +65,44 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         mc.Main.Move.performed += ctx => _input = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
         mc.Main.Move.canceled += _ => _input = Vector3.zero;
         mc.Main.Aim.performed += ctx => _aimInput = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue <Vector2>().y);
+        mc.Main.Aim.canceled += ctx => _aimInput = Vector3.zero;
         mc.Main.Dash.performed += _ => Dash();
     }
 
     private void Update()
     {
-        if(!isDead && !moveable.isLaunched)
-            Look();
-
-        if(gameObject.layer == LayerMask.NameToLayer("PlayerDashing") && !moveable.isLaunched)
+        if (Time.timeScale != 0)
         {
-            gameObject.layer = LayerMask.NameToLayer("Player");
+            if (!isDead && !moveable.isLaunched && attackState != Helpers.ATTACKING)
+                Look();
+
+            if (gameObject.layer == LayerMask.NameToLayer("PlayerDashing") && !moveable.isLaunched)
+            {
+                gameObject.layer = previousLayer;
+            }
         }
     }
 
     private void FixedUpdate()
     {
-        if (!moveable.isLaunched && !isDead && attackState != Helpers.ATTACKING)
-            Move();
-        else
-            if(!moveable.isLaunched)
+        if (Time.timeScale != 0)
+        {
+            if (!moveable.isLaunched && !isDead && attackState != Helpers.ATTACKING)
+                Move();
+            else
+                if (!moveable.isLaunched)
                 _rb.velocity = Vector3.zero + Vector3.up * _rb.velocity.y;
+        }
+    }
+
+    private void LateUpdate()
+    {
+        ears.transform.Rotate(0, 0, 0);
     }
 
 
 
-  // The character rotates to move in the direction of the player's input
+    // The character rotates to move in the direction of the player's input
     private void Look()
     {
         //if (_input == Vector3.zero) return;
@@ -89,7 +122,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         {
             transform.forward = _input.ToIso().normalized;
         }
-        else if (attackState == Helpers.LASSOED)
+        else if (attackState == Helpers.PULLING || attackState == Helpers.LASSOED)
         {
             LookAtLasso();
         }
@@ -121,20 +154,35 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
     private void Dash()
     {
-        if(canDash && !moveable.isLaunched && !isDead)
+        if(canDash && !moveable.isLaunched && !isDead && Time.timeScale != 0)
         {
-            if( attackState == Helpers.NOTATTACKING || _input == Vector3.zero)
-            {   
+            Debug.Log("Transform.forward: " + transform.forward);
+            if (attackState == Helpers.LASSOING || attackState == Helpers.LASSOED || attackState == Helpers.PULLING)
+            {
+                attackManager.ForceRelease();
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
-                moveable.Dash(transform.forward * dashRange, dashTime);
+                jukebox.PlaySound(0);
+                if (_input == Vector3.zero)
+                    moveable.Dash(transform.forward * dashRange, dashTime);
+                else
+                {
+                    Debug.Log(_input.ToIso());
+                    moveable.Dash(_input.ToIso().normalized * dashRange, dashTime);
+                }
+                anim.SetFloat("DashSpeed", 32f / (24 * dashTime));
+                anim.SetTrigger("Dash");
                 StartCoroutine(DashCD());
             }
-            else if (attackState == Helpers.LASSOING)
+            else if (attackState == Helpers.NOTATTACKING || _input == Vector3.zero)
             {
+                previousLayer = gameObject.layer;
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
-                moveable.Dash(_input.ToIso().normalized * dashRange, dashTime);
+                jukebox.PlaySound(0);
+                moveable.Dash(transform.forward * dashRange, dashTime);
+                anim.SetFloat("DashSpeed", 32f / (24 * dashTime));
+                anim.SetTrigger("Dash");
                 StartCoroutine(DashCD());
             }
         }
@@ -172,9 +220,18 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     private void Move()
     {
         float adjustedSpeed = _speed;
-        if (attackState != Helpers.NOTATTACKING)
-            adjustedSpeed *= 0.75f;
+        if (attackState == Helpers.LASSOING || attackState == Helpers.LASSOED)
+            adjustedSpeed *= speedModWhenLassoOut;
+        if (attackState == Helpers.PULLING)
+            adjustedSpeed *= speedModWhenPulling;
         _rb.velocity = _input.ToIso().normalized * adjustedSpeed + (Vector3.up * Mathf.Clamp(_rb.velocity.y, Mathf.NegativeInfinity, 0));
+
+        // Set forward/back movement float; will have to change
+        if (_rb.velocity.magnitude > 0.1)
+            anim.SetFloat("YMov", 1);
+        else
+            anim.SetFloat("YMov", 0);
+
     }
 
     public void Kicked()
@@ -183,7 +240,12 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     }
 
 
-
+    public void Footsteps()
+    {
+       
+       jukebox.PlaySound(1);
+        
+    }
 
 
 }
@@ -203,5 +265,6 @@ public static class Helpers
     public const int LASSOING = 1;
     public const int ATTACKING = 2;
     public const int LASSOED = 3;
+    public const int PULLING = 4;
     
 }

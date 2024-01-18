@@ -20,10 +20,13 @@ public class GameController : MonoBehaviour
     public bool toggleLasso = false;
     private TextMeshProUGUI text;
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject[] menus;
     [SerializeField] GameObject deathMenu;
     [SerializeField] Button topButtonPause;
     [SerializeField] Button topButtonDead;
     [SerializeField] List<string> nonGameScenes;
+
+    bool paused;
 
     static GameObject player;
 
@@ -31,6 +34,7 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
+        paused = false;
         Cursor.lockState = CursorLockMode.Confined;
         if (instance != null && instance != this)
         {
@@ -81,16 +85,20 @@ public class GameController : MonoBehaviour
 
     public void TogglePauseMenu()
     {
-        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name))
+        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
         {
-            if (pauseMenu.activeInHierarchy)
+            if (paused)
             {
+                paused = false;
                 Cursor.lockState = CursorLockMode.Confined;
                 pauseMenu.SetActive(false);
+                foreach (GameObject menu in menus)
+                    menu.SetActive(false);
                 Time.timeScale = 1;
             }
             else if (Time.timeScale != 0)
             {
+                paused = true;
                 Cursor.lockState = CursorLockMode.None;
                 pauseMenu.SetActive(true);
                 topButtonPause.Select();
@@ -151,6 +159,11 @@ public class GameController : MonoBehaviour
     private void ToggleLasso()
     {
         toggleLasso = !toggleLasso;
+    }
+
+    public void ButtonSelect(Button select)
+    {
+        select.Select();
     }
 
 }

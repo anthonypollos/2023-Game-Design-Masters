@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.SceneTemplate;
+//using UnityEditor.SceneTemplate;
 using UnityEngine;
 
 public class Moveable : MonoBehaviour
@@ -17,20 +17,22 @@ public class Moveable : MonoBehaviour
     [HideInInspector]
     public bool isDashing;
     LayerMask groundLayers;
-    [SerializeField] float groundCheckBuffer = 0.1f;
+    //[SerializeField] float groundCheckBuffer = 0.1f;
     float boundsY;
     float boundsX;
     float boundsZ;
     Collider col;
     bool isStopping = false;
-    bool isThrowing = false;
+    bool hold = false;
+    //bool isThrowing = false;
+    [HideInInspector]
     public IsoAttackManager tendrilOwner;
     Vector3 dir;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        hold = false;
         col = GetComponent<Collider>();
         boundsY = col.bounds.size.y / 2;
         boundsX = col.bounds.size.x / 2;
@@ -59,8 +61,15 @@ public class Moveable : MonoBehaviour
     {
         if(isLaunched && stopping==null)
         {
-            
-            rb.velocity = dir.normalized * speed + Vector3.up * Mathf.Clamp(rb.velocity.y, Mathf.NegativeInfinity, 1);
+
+            if (!hold)
+            {
+                rb.velocity = dir.normalized * speed + Vector3.up * Mathf.Clamp(rb.velocity.y, Mathf.NegativeInfinity, 1);
+            }
+            else
+            {
+                rb.velocity = Vector3.zero + Vector3.up * rb.velocity.y;
+            }
             Vector3 positionIgnoreY = transform.position;
             positionIgnoreY.y = 0;
             Vector3 targetIgnoreY = targetLocation;
@@ -69,16 +78,36 @@ public class Moveable : MonoBehaviour
                 targetIgnoreY = tendrilOwner.lb.GetMousePosition().Item2;
             }
                 targetIgnoreY.y = 0;
-            if(Vector3.Distance(positionIgnoreY, targetIgnoreY) < 0.5f)
+            if ((Vector3.Distance(positionIgnoreY, targetIgnoreY) < 0.5f) && tendrilOwner != null)
             {
                 //Debug.Log("Too close");
-                if (tendrilOwner != null)
+
+                hold = true;
+                //Debug.Log("Force release");
+                //tendrilOwner.ForceRelease();
+                //tendrilOwner = null;
+
+                //isThrowing = false;
+                /*if (isDashing)
+                    stopping = StartCoroutine(Stop());
+                else
+                    stopping = StartCoroutine(Tumbling());
+                */
+
+            }
+            else
+            {
+                hold = false;
+            }
+
+            if(!hold && (Vector3.Distance(positionIgnoreY, targetIgnoreY) < 0.5f))
+            {
+                if(tendrilOwner != null)
                 {
-                    //Debug.Log("Force release");
                     tendrilOwner.ForceRelease();
                     tendrilOwner = null;
                 }
-                isThrowing = false;
+
                 if (isDashing)
                     stopping = StartCoroutine(Stop());
                 else
@@ -109,7 +138,7 @@ public class Moveable : MonoBehaviour
     {
         if (!collision.transform.CompareTag("Ground") && isLaunched)
         {
-            //Debug.Log("collide enter");
+            Debug.Log("collide enter");
             if (tendrilOwner != null)
             {
                 //Debug.Log("Force release");
@@ -119,7 +148,14 @@ public class Moveable : MonoBehaviour
             //Debug.Log(collision.gameObject.name);
             //Debug.Log("Hit object");
             if (!isStopping)
+            {
+                EnemyAttackTemplate at = transform.GetComponent<EnemyAttackTemplate>();
+                if(at != null)
+                {
+                    at.ForceAnimationChange();
+                }
                 stopping = StartCoroutine(Stop());
+            }
         }
     }
 
@@ -155,7 +191,7 @@ public class Moveable : MonoBehaviour
 
     public void Launched(Vector3 target, float force)
     {
-        isThrowing = true;
+        //isThrowing = true;
         isStopping = false;
         isDashing = false;
         buffer = 0;
@@ -188,6 +224,7 @@ public class Moveable : MonoBehaviour
 
     public void Dash(Vector3 target, float time)
     {
+        hold = false;
         isStopping = false;
         isDashing = true;
         buffer = 0;
@@ -234,7 +271,7 @@ public class Moveable : MonoBehaviour
     public void ForceRelease()
     {
         tendrilOwner = null;
-        isThrowing = false;
+        //isThrowing = false;
         stopping = StartCoroutine(Tumbling());
     }
 }

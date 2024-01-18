@@ -4,29 +4,39 @@ using UnityEngine;
 
 public class MissionBehavior : MonoBehaviour
 {
+    [Tooltip("Objects with a toggleable to be toggled when finished on it or its children")]
     [SerializeField] List<GameObject> toggleOnFinish;
     private List<IToggleable> toggles;
-    [SerializeField] string missionText;
-    protected MissionFolder folder;
+    [Tooltip("Game Objects you want to be toggled on or off completely when finished")]
+    [SerializeField] List<GameObject> toggleIfActiveOnFinish;
+    [SerializeField] protected string missionText;
+    public Vector3 checkPointLocation;
+    protected IMissionContainer folder;
     protected bool triggered;
+    protected bool completed;
 
     protected void Start()
     {
+        completed = false;
         toggles = new List<IToggleable>();
-        foreach (GameObject temp in toggleOnFinish)
+        if (toggles == null && toggleOnFinish.Count>0)
         {
-            IToggleable toggle = temp.GetComponentInChildren<IToggleable>();
-            if (toggle != null) { toggles.Add(toggle); }
+            //toggles = new List<IToggleable>();
+            foreach (GameObject temp in toggleOnFinish)
+            {
+                IToggleable toggle = temp.GetComponentInChildren<IToggleable>();
+                if (toggle != null) { toggles.Add(toggle); }
+            }
         }
     }
-    public void SetFolder(MissionFolder folder)
+    public void SetFolder(IMissionContainer folder)
     {
         this.folder = folder;
     }
 
-    public string GetMissionText()
+    public virtual (string, bool) GetMissionText()
     {
-        return missionText;
+        return (missionText, false);
     }
     
     protected virtual void OnTriggered()
@@ -43,13 +53,50 @@ public class MissionBehavior : MonoBehaviour
         }
     }
 
-    protected virtual void OnComplete()
+    public void QuickSetToggles()
     {
-        if(toggles.Count> 0) 
-        foreach(IToggleable toggle in toggles)
+        if (toggles == null && toggleOnFinish.Count>0)
         {
-            toggle.Toggle();
+            toggles = new List<IToggleable>();
+            foreach (GameObject temp in toggleOnFinish)
+            {
+                IToggleable toggle = temp.GetComponentInChildren<IToggleable>();
+                if (toggle != null) { toggles.Add(toggle); }
+            }
         }
-        folder.MissionComplete(this);
     }
+
+    public virtual void OnComplete()
+    {
+        if (!completed)
+        {
+            QuickSetToggles();
+            triggered = true;
+            completed = true;
+            if (toggles != null)
+            {
+                if (toggles.Count > 0)
+                {
+                    foreach (IToggleable toggle in toggles)
+                    {
+                        toggle.Toggle();
+                    }
+                }
+            }
+            if (toggleIfActiveOnFinish != null)
+            {
+                if (toggleIfActiveOnFinish.Count > 0)
+                {
+                    foreach (GameObject go in toggleIfActiveOnFinish)
+                    {
+                        go.SetActive(!go.activeInHierarchy);
+                    }
+                }
+            }
+            folder.MissionComplete(this);
+        }
+    }
+
+
+
 }

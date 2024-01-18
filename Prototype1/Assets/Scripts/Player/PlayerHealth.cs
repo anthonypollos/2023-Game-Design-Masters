@@ -8,11 +8,15 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 {
     [SerializeField] JukeBox jukebox;
     [SerializeField] int health = 100;
+    [SerializeField] GameObject bloodParticle;
     int maxHealth;
     IsoPlayerController pc;
     Slider hpBar;
 
-   private void Awake()
+    [Header("Animator Variables")]
+    [SerializeField] Animator anim; //assigned in inspector for now; can change
+
+    private void Awake()
    {
      jukebox.SetTransform(transform);
    }
@@ -30,10 +34,23 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     }
     public void TakeDamage(int dmg)
     {
+        //If there is a blood particle, create it.
+        if (bloodParticle != null)
+        {
+            //create the particle
+            GameObject vfxobj = Instantiate(bloodParticle, gameObject.transform.position, Quaternion.identity);
+            //destroy the particle
+            Destroy(vfxobj, 4);
+        }
         jukebox.PlaySound(0);
-        health -= dmg;
+        if (!DeveloperConsole.instance.godMode)
+        {
+            health -= dmg;
+        }
         hpBar.value = (float)health / (float)maxHealth;
         if (health <= 0) Die();
+        else anim.SetTrigger("Damage");
+
     }
 
     public bool WillBreak(int dmg)
@@ -43,8 +60,25 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void Die()
     {
-        jukebox.PlaySound(1);
-        pc.isDead = true;
+        if (!pc.isDead)
+        {
+            anim.SetTrigger("Death");
+            jukebox.PlaySound(1);
+            pc.isDead = true;
+            //GameController.instance.Lose();
+            StartCoroutine(Death());
+        }
+    }
+
+    private bool IsAnimationFinished()
+    {
+        return anim.GetCurrentAnimatorClipInfo(4).Length >= 1;
+    }
+
+    public IEnumerator Death()
+    {
+        yield return new WaitUntil(IsAnimationFinished);
+        yield return new WaitForSeconds(2);
         GameController.instance.Lose();
     }
 }

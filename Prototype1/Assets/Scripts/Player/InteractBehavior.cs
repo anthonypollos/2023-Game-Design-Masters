@@ -28,7 +28,12 @@ public class InteractBehavior : MonoBehaviour
         }
         Changed();
     }
-    
+
+    private void Start()
+    {
+        DialogueManager.instance.SetPlayerInteraction(this);
+    }
+
     private void LateUpdate()
     {
         Vector3 pos = cam.position;
@@ -43,15 +48,22 @@ public class InteractBehavior : MonoBehaviour
 
     private void Interact()
     {
-        if(currentInteractables.Count>0)
+        if (Time.timeScale != 0)
         {
-            if(!currentInteractables[0].Interact())
+            if (currentInteractables.Count > 0)
             {
-                currentInteractables.Add(currentInteractables[0]);
+                if (!currentInteractables[0].Interact())
+                {
+                    currentInteractables.Add(currentInteractables[0]);
+                }
+                else
+                {
+                    currentInteractables[0].gameObject.SetActive(false);
+                }
+                currentInteractables.RemoveAt(0);
+                if(textBox.gameObject.activeInHierarchy)
+                    Changed();
             }
-            currentInteractables.RemoveAt(0);
-
-            Changed();
         }
     }
 
@@ -77,6 +89,18 @@ public class InteractBehavior : MonoBehaviour
                     currentInteractables.Remove(temp);
         }
         Changed();
+    }
+
+    public void Toggle()
+    {
+        if(textBox.gameObject.activeInHierarchy)
+        {
+            textBox.gameObject.SetActive(false);
+        }
+        else
+        {
+            Changed();
+        }
     }
 
     private void Changed()

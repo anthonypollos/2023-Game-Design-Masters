@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -19,19 +24,35 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField]
     Vector3 centerPoint;
     [SerializeField]
-    float wanderRadius;
+    public float wanderRadius;
     [HideInInspector]
     public EnemyBrain brain;
 
+    private Vector3 previousPosition;
+    private float refreshTime;
     private Vector3 targetPosition;
     private NavMeshPath path;
     private float count;
     private int corner;
     [HideInInspector]
     public Rigidbody rb;
+
+
+
+    [SerializeField]
+    [Tooltip("How close player has to be for the enemy to try and retreat")]
+    float tooCloseRange;
+
+
+    int lastValue;
+
     // Start is called before the first frame update
     void Start()
     {
+        //If we don't change the center point from 0 0 0, assume we want the center point to be the spawn location.
+        if (centerPoint == Vector3.zero) centerPoint = transform.position;
+        previousPosition = transform.position;
+        refreshTime = 0;
         rb = GetComponent<Rigidbody>();
         path = new NavMeshPath();
         targetPosition = transform.position;
@@ -50,6 +71,33 @@ public class EnemyMovement : MonoBehaviour
     void Update()
     {
         count += Time.deltaTime;
+        if (brain.state == EnemyStates.ATTACKING)
+        {
+            refreshTime = 0;
+        }
+        else
+        {
+            refreshTime += Time.deltaTime;
+        }
+        if (!brain.isAggro && !isPatrolling)
+        {
+            if(refreshTime > 2f)
+            {
+                refreshTime = 0;
+                if (Vector3.Distance(previousPosition, transform.position) < 0.5f)
+                {
+                    //Debug.Log("Stuck, resetting");
+                    RandomPoint(out targetPosition);
+                }
+                previousPosition = transform.position;
+            }
+        }
+    }
+
+    public void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(1, 0, 0, .125f);
+        Gizmos.DrawWireSphere(transform.position, tooCloseRange);
     }
 
     public void Move()
@@ -65,6 +113,7 @@ public class EnemyMovement : MonoBehaviour
                 }
                 else
                 {
+                    corner = 0;
                     if (path.status != NavMeshPathStatus.PathComplete)
                     {
                         RandomPoint(out targetPosition);
@@ -91,7 +140,12 @@ public class EnemyMovement : MonoBehaviour
     {
         dir.y = 0;
         rb.velocity = movementSpeed * (dir) + Vector3.up * rb.velocity.y;
-
+        if (isMoving && brain.an!=null)
+        {
+            if (rb.velocity == Vector3.zero) brain.an.SetFloat("MoveState", 0);
+            else if (!brain.isAggro) brain.an.SetFloat("MoveState", 1);
+            else brain.an.SetFloat("MoveState", 2);
+        }
     }
 
     private void MovementCalc()
@@ -110,10 +164,8 @@ public class EnemyMovement : MonoBehaviour
         Movement(dir);
         if (brain.isAggro)
         {
-            //Debug.Log("hunt");
-            targetPosition = brain.player.position;
-            //Debug.Log(Vector3.Distance(player.position, transform.position) + " + " + CanSee());
-            
+            CalculateAggroMovement();
+
         }
         else
         {
@@ -159,8 +211,64 @@ public class EnemyMovement : MonoBehaviour
 
     }
 
+    private void CalculateAggroMovement()
+    {
+
+        float distance = Vector3.Distance(brain.player.position, transform.position);
+        if (distance <= brain.optimalRange && brain.CanSee(brain.player))
+        {
+            Vector3 dir = (brain.player.position - transform.position).normalized;
+            //if too close
+            if (distance < tooCloseRange)
+            {
+                //Debug.Log("too close");
+                dir *= -1;
+            }
+            //if at optimal range
+            else
+            {
+                float angle =
+                Mathf.Lerp(90f, 50f, (distance - tooCloseRange) / (brain.optimalRange - tooCloseRange));
+                //Debug.Log("Just Right");
+                if (refreshTime >= 1f)
+                {
+                    lastValue = Random.Range(0, 2);
+                    refreshTime = 0;
+                }
+                switch (lastValue)
+                {
+                    case 0:
+                        dir = Quaternion.Euler(0, angle, 0) * dir;
+                        break;
+                    case 1:
+                        dir = Quaternion.Euler(0, -angle, 0) * dir;
+                        break;
+                    default:
+                        dir = Vector3.zero;
+                        break;
+                }
+            }
+
+            targetPosition = transform.position + dir * movementSpeed;
+        }
+
+        else
+        {
+            targetPosition = brain.player.position;
+        }
+        if (!NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path))
+        {
+
+        }
+        else
+        {
+            corner = 0;
+        }
+    }
+
     private bool RandomPoint(out Vector3 output)
     {
+        if (isPatrolling) centerPoint = transform.position;
         Vector3 randomPoint = centerPoint + Random.insideUnitSphere * wanderRadius;
         NavMeshHit hit;
         for (int i = 0; i < 100; i++)
@@ -176,3 +284,36 @@ public class EnemyMovement : MonoBehaviour
         return false;
     }
 }
+
+//Visualizer for changing the Enemy's wander radius.
+//Tutorial followed: https://www.youtube.com/watch?v=ABuXRbJDdXs
+//Sean did this. If this screws things up, blame me.
+#if UNITY_EDITOR
+[CustomEditor(typeof(EnemyMovement))]
+public class EnemyMovementEditor : Editor
+{
+    public void OnSceneGUI()
+    {
+        //Link the EnemyMovement script into this editor class
+        var linkedObject = target as EnemyMovement;
+
+        //set the handle colors.
+        Handles.color = Color.green;
+
+        //begin a check to see if we've changed anything.
+        EditorGUI.BeginChangeCheck();
+
+        //create a new float based on where we've dragged the radius sphere
+        float newWanderRadius = Handles.RadiusHandle(Quaternion.identity, linkedObject.transform.position, linkedObject.wanderRadius, false);
+       
+        //check to see if the range has been changed
+        if (EditorGUI.EndChangeCheck())
+        {
+            //if the range has been changed, we record that.
+            Undo.RecordObject(target, "Update Range");
+            //Now, we replace our wander radius with the new wander radius made by dragging the wander radius sphere. Yippeeeeee!!!!!!
+            linkedObject.wanderRadius = newWanderRadius;
+        }
+    }
+}
+#endif

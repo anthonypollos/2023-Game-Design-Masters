@@ -3,21 +3,25 @@ using System.Collections.Generic;
 using System.Runtime;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
-public class MissionFolder : MonoBehaviour
+public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 {
     [SerializeField] List<MissionBehavior> missions;
     MenuControls controls;
     [SerializeField] Transform player;
     [SerializeField] GameObject wayFinder;
     [SerializeField] float wayFinderDistanceFromPlayer;
-    bool[] missionsStatuses;
+    List<bool> missionsStatuses;
     [SerializeField] TextMeshProUGUI missionTextBox;
     bool combatMissionActive;
     CombatMissionBehavior currentCombatMissionActive;
     //[SerializeField] GameObject victoryMenu;
     int missionsCompleted;
-    int currentDisplayedMission;
+    int currentDisplayedMission = 0;
+    public Vector3 checkPoint { get; private set; } = Vector3.zero;
+
+    bool win = false;
 
     private void OnEnable()
     {
@@ -37,19 +41,23 @@ public class MissionFolder : MonoBehaviour
     void Start()
     {
         if (missions.Count == 0)
+        {
+            win = true;
+            SaveLoadManager.instance.SaveGame();
             this.enabled = false;
+        }
         else
         {
-            missionsCompleted = 0;
-            missionsStatuses = new bool[missions.Count];
+
             FindObjectOfType<EnemyContainer>().SetMissionFolder(this);
             foreach (MissionBehavior folder in missions)
             {
                 folder.SetFolder(this);
             }
             combatMissionActive = false;
-            currentDisplayedMission = 0;
+            //currentDisplayedMission = 0;
             SetMission();
+            DeveloperConsole.instance.SetMissionFolder(this);
         }
     }
 
@@ -91,7 +99,7 @@ public class MissionFolder : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Error, game not ending when all missions complete");
+        //Debug.Log("Error, game not ending when all missions complete");
     }
 
     void PreviousMission()
@@ -109,6 +117,8 @@ public class MissionFolder : MonoBehaviour
         int idx = missions.IndexOf(mission);
         missionsStatuses[idx] = true;
         SetMission();
+        checkPoint = mission.checkPointLocation;
+        //SaveLoadManager.instance.SaveGame();
         if (missionsCompleted >= missions.Count)
             Victory();
         else if (currentDisplayedMission == idx)
@@ -126,7 +136,8 @@ public class MissionFolder : MonoBehaviour
         {
             currentDisplayedMission = 0;
         }
-        if(missionsStatuses[currentDisplayedMission])
+        UpdateMissionText();
+        if (missionsStatuses[currentDisplayedMission])
         {
             wayFinder.SetActive(false);
         }
@@ -134,26 +145,44 @@ public class MissionFolder : MonoBehaviour
         {
             wayFinder.SetActive(true);
         }
-        string temp = missionsStatuses[currentDisplayedMission] ? 
+        
+    }
+
+    public void UpdateMissionText()
+    {
+        string message = "";
+        string temp = missionsStatuses[currentDisplayedMission] ?
             "<color=green>Completed</color>" : "<color=orange>In Progress</color>";
-        string message = "Current Status: " + temp + "\n" +
-            missions[currentDisplayedMission].GetMissionText();
-        missionTextBox.text = message;
-        if (!missionsStatuses[currentDisplayedMission])
+        if (!missions[currentDisplayedMission].GetMissionText().Item2)
         {
-            wayFinder.SetActive(true);
+            message = "Current Status: " + temp + "\n" +
+                missions[currentDisplayedMission].GetMissionText().Item1;
         }
+        else
+        {
+            message = missions[currentDisplayedMission].GetMissionText().Item1;
+        }
+        missionTextBox.text = message;
     }
 
     public void EnemyRemoved(GameObject enemy)
     {
         foreach (MissionBehavior mission in missions)
         {
-            CombatMissionBehavior combatMissionBehavior = mission.GetComponent<CombatMissionBehavior>();
+            CombatMissionBehavior combatMissionBehavior = null;
+            if(mission != null) 
+                 combatMissionBehavior = mission.GetComponent<CombatMissionBehavior>();
             if (combatMissionBehavior != null)
             {
                 combatMissionBehavior.RemoveEnemy(enemy.GetComponent<EnemyBrain>());
 
+            }
+            MultiMissionBehavior multiMissionBehavior = null;
+            if(mission != null)
+                multiMissionBehavior = mission.GetComponent<MultiMissionBehavior>();
+            if(multiMissionBehavior != null)
+            {
+                multiMissionBehavior.EnemyRemoved(enemy);
             }
         }
         //currentCombatMissionActive.RemoveEnemy(enemy.GetComponent<EnemyBrain>());
@@ -168,7 +197,7 @@ public class MissionFolder : MonoBehaviour
         if (combatMissionActive)
         {
             string message = "Current Status: <color=red>Active</color>\n" +
-                currentCombatMissionActive.GetMissionText() +
+                currentCombatMissionActive.GetMissionText().Item1 +
                 "\nEnemies Slain: " + currentCombatMissionActive.GetCount();
             missionTextBox.text = message;
         }
@@ -197,7 +226,79 @@ public class MissionFolder : MonoBehaviour
 
     private void Victory()
     {
-        Debug.Log("Victory!");
+        win = true;
+        SaveLoadManager.instance.SaveGame();
+        //Debug.Log("Victory!");
     }
 
+    public bool SetComplete(int mission)
+    {
+        if(mission>missions.Count)
+        {
+            return false;
+        }
+        else
+        {
+            for (int i = 0; i<mission; i++)
+            {
+                if(!missionsStatuses[i])
+                {
+                    missions[i].OnComplete();
+                }
+            }
+        }
+        return true;
+    }
+
+    public void SaveData(ref SavedValues savedValues)
+    {
+        if(savedValues.levels.ContainsKey(SceneManager.GetActiveScene().name))
+        {
+            savedValues.levels.Remove(SceneManager.GetActiveScene().name);
+        }
+        savedValues.levels.Add(SceneManager.GetActiveScene().name, win);
+
+        savedValues.currentLevelMissionStatuses = missionsStatuses;
+
+    }
+
+    
+
+    public void LoadData(SavedValues savedValues)
+    {
+        savedValues.levels.TryGetValue(SceneManager.GetActiveScene().name, out win);
+        missionsCompleted = 0;
+        if(savedValues.currentLevelMissionStatuses.Count == 0)
+        {
+            //Debug.Log("No missions found");
+            bool[] temp = new bool[missions.Count];
+            for (int i = 0; i < temp.Length; i++)
+                temp[i] = false;
+            missionsStatuses = new List<bool>(temp);
+        }
+        else
+        {
+            checkPoint = Vector3.zero;
+            missionsStatuses = savedValues.currentLevelMissionStatuses;
+            for (int temp = 0; temp<missionsStatuses.Count; temp++)
+            {
+                //Debug.Log("Mission " + (temp+1).ToString() + " is completed: " + missionsStatuses[temp]);
+                if (missionsStatuses[temp] && missions.Count>0)
+                {
+                    missions[temp].SetFolder(this);
+                    missions[temp].QuickSetToggles();
+                    missions[temp].OnComplete();
+                }
+            }
+            Debug.Log("Checkpoint location: " + checkPoint);
+            
+            if(checkPoint != Vector3.zero)
+            {
+                IsoPlayerController player = FindObjectOfType<IsoPlayerController>();
+                player.GetComponent<Rigidbody>().position = checkPoint;
+                Debug.Log("Player Position: " + player.transform.position);
+            }
+            
+        }
+    }
 }

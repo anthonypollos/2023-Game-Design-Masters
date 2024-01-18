@@ -17,6 +17,13 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
     [SerializeField]
     [Tooltip("Spread angle")]
     float spreadAngle = 10f;
+
+    [SerializeField] private JukeBox jukebox;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
     public override void Attack()
     {
         if (count >= attackSpeed)
@@ -33,8 +40,11 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
 
     private void TriggerAttack(int attack)
     {
+        brain.state = EnemyStates.ATTACKING;
+        brain.an.SetFloat("AttackMod", 1);
         //Debug.Log("attack triggered");
         brain.an.SetBool("Attacking", true);
+        currentWaitingTime = float.MaxValue;
         //Debug.Log("trigger attack" + attack);
         brain.an.SetTrigger("Attack" + attack.ToString());
         //brain.state = EnemyStates.ATTACKING;
@@ -42,22 +52,18 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
     }
 
 
-    public void AttackEnd()
-    {
-        count = 0;
-        brain.state = EnemyStates.NOTHING;
-        brain.an.SetBool("Attacking", false);
-    }
+  
 
     public void ShootProjectile()
     {
         currentShot++;
         int projectilesToSpawn = (currentShot%multiShotInterval)==0 ? 3 : 1;
+        jukebox.PlaySound(1);
         //if (currentShot%multiShotInterval == 0) Debug.Log("trigger multi");
         for (int i = 0; i < projectilesToSpawn; i++)
         { 
             IProjectile shot = Instantiate(projectile, shootLocation.position, Quaternion.identity).GetComponent<IProjectile>();
-            switch(i)
+            switch (i)
             {
                 case 0:
                     shot.Shoot(transform.forward, brain.player.position);
@@ -80,6 +86,7 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
     void Start()
     {
         count = 0;
+        animationTimer = float.MinValue;
     }
 
     // Update is called once per frame

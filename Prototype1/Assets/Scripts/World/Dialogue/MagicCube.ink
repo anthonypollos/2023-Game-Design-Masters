@@ -1,0 +1,1 @@
+The cube feels heavy in your hand, as if the magic inside is weighing it down

@@ -2,16 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
 {
     [SerializeField]
     [Tooltip("Damage dealt and taken when colliding with someone then launched")]
     int clashDamage = 20;
-    bool launched;
-    [SerializeField]
-    [Tooltip("Stun time when taking damage")]
-    float stunTime = 0.5f;
-     void Start()
+
+    [SerializeField] GameObject KickedParticle;
+
+    [SerializeField] private JukeBox jukebox;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
+    void Start()
     {
         lassoed = false;
         stunned = false;
@@ -25,30 +31,44 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         if (launched && !brain.moveable.isLaunched)
         {
             hasCollided = true;
-            UnStunned();
             launched = false;
+            UnStunned();
         }
     }
     public override void Kicked()
     {
-        launched = true;
-        Stunned();
-        hasCollided = false;
-        
+        if (brain.state != EnemyStates.ATTACKING)
+        {
+            launched = true;
+            Stunned();
+            hasCollided = false;
+
+            //If there is a kicked particle, create it.
+            if (KickedParticle != null)
+            {
+                //create the particle
+                GameObject vfxobj = Instantiate(KickedParticle, gameObject.transform.position, Quaternion.identity);
+                //destroy the particle
+                Destroy(vfxobj, 4);
+            }
+        }
+
     }
 
     public override void Lassoed()
     {
+        StopAllCoroutines();
         lassoed = true;
         base.Lassoed();
         Stunned();
-        brain.an.SetBool("Lassoed", true);
+        brain.an.SetBool("Tendriled", true);
     }
 
     public override void Pulled()
     {
         base.Pulled();
         launched = true;
+        //jukebox.PlaySound(0);
         //lassoed = false;
         hasCollided = false;
         //brain.an.SetBool("Lassoed", false);
@@ -60,43 +80,51 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         lassoed = false;
         if (!brain.moveable.isLaunched)
         { 
-        brain.an.SetBool("Lassoed", false);
-        UnStunned();
+            brain.an.SetBool("Tendriled", false);
+            brain.an.SetTrigger("TendrilBreak");
+            UnStunned();
+        }
+        else
+        {
+            brain.an.SetTrigger("NextState");
         }
     }
 
     public override void Stagger()
     {
-        StopCoroutine(Staggered());
-        StartCoroutine(Staggered());
+        base.Stagger();
     }
 
     protected override void Stunned()
     {
         base.Stunned();
         stunned = true;
-        brain.an.SetBool("Stunned", true);
+        //brain.an.SetBool("Stunned", true);
         brain.an.SetBool("Attacking", false);
     }
 
     protected override void UnStunned()
     {
-        if(!lassoed)
+        if(!lassoed && !launched && !brain.moveable.isLaunched)
         {
-            brain.an.SetBool("Lassoed", false);
-            brain.an.SetBool("Stunned", false);
-            stunned = false;
-            brain.PackAggro();
+            brain.an.SetBool("Tendriled", false);
+            //brain.an.SetBool("Stunned", false);
+            base.UnStunned();
         }
     }
 
-    private IEnumerator Staggered()
+    protected override IEnumerator Staggered()
     {
-        Stunned();
-        yield return new WaitForSeconds(stunTime);
-        if (!brain.moveable.isLaunched)
-            UnStunned();
+        brain.an.SetTrigger("Damaged");
+        StopCoroutine(base.Staggered());
+        StartCoroutine(base.Staggered());
+        yield break;
 
+    }
+
+    public override void Death()
+    {
+        brain.an.SetTrigger("Death");
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -110,6 +138,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
             if (temp != null)
             {
                 temp.TakeDamage(clashDamage);
+                jukebox.PlaySound(1);
             }
             
             ITrap temp2 = hit.GetComponent<ITrap>();
@@ -121,5 +150,15 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         }
     }
 
+    public override void Stun(float time)
+    {
+        base.Stun(time);
+    }
 
+    protected override IEnumerator StunTimer(float seconds)
+    {
+        StopCoroutine(base.StunTimer(seconds));
+        StartCoroutine(base.StunTimer(seconds));
+        yield break;
+    }
 }

@@ -11,7 +11,11 @@ public class MeleeAttackBehavior : MonoBehaviour
 
     private void OnEnable()
     {
-        hasHit = new List<GameObject>();
+        if (hasHit == null)
+        {
+            hasHit = new List<GameObject>();
+        }
+        hasHit.Clear();
     }
 
     private void OnTriggerEnter(Collider other)

@@ -5,13 +5,23 @@ using UnityEngine;
 public class ExplosionBehavior : MonoBehaviour
 {
     [SerializeField] int dmg;
+    [SerializeField] int Playerdmg;
     [SerializeField] float explosiveForce;
     [SerializeField] float explosiveCarryDistance;
     [SerializeField] LayerMask layerMask;
     List<GameObject> hit;
     ParticleSystem[] particleSystems;
+
+    [Header("Sound")]
+    [SerializeField] private JukeBox jukebox;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
     private void Start()
     {
+        jukebox.PlaySound(0);
         StartCoroutine(DestroySelf());
         hit = new List<GameObject>();
         particleSystems = GetComponentsInChildren<ParticleSystem>();
@@ -44,7 +54,19 @@ public class ExplosionBehavior : MonoBehaviour
         {
             hit.Add(entity);
             IDamageable damaged = entity.GetComponent<IDamageable>();
-            if (damaged != null) damaged.TakeDamage(dmg);
+            if (damaged != null)
+            {
+                if (entity.gameObject.CompareTag("Player"))
+                {
+                    damaged.TakeDamage(Playerdmg);
+                }
+
+                else
+                {
+                    damaged.TakeDamage(dmg);
+                }
+
+            }
             Moveable moveable = entity.GetComponent<Moveable>();
             if (moveable != null)
             {

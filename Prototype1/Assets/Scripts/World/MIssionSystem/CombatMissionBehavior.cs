@@ -7,10 +7,12 @@ public class CombatMissionBehavior : MissionBehavior
     [SerializeField] List<EnemyBrain> enemies;
     int startingCount;
     [SerializeField] List<GameObject> arenaBarriers;
+    bool completed;
 
     private void Awake()
     {
         startingCount = enemies.Count;
+        completed = false;
 
     }
     protected override void OnTriggered()
@@ -40,7 +42,7 @@ public class CombatMissionBehavior : MissionBehavior
 
     public void RemoveEnemy(EnemyBrain enemy)
     {
-        if(enemies.Contains(enemy))
+        if(enemies.Contains(enemy) && !completed)
         {
             enemies.Remove(enemy);
             if (enemies.Count <= 0)
@@ -48,8 +50,17 @@ public class CombatMissionBehavior : MissionBehavior
         }
     }
 
-    protected override void OnComplete()
+    public override void OnComplete()
     {
+        completed = true;
+        if(enemies.Count>0)
+        {
+            foreach(EnemyBrain enemy in enemies)
+            {
+                enemy.gameObject.SetActive(false);
+            }
+        }
+        enemies.Clear();
         foreach (GameObject barrier in arenaBarriers)
         {
             barrier.SetActive(false);

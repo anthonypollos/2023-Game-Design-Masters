@@ -8,7 +8,7 @@ public class LassoBehavior : MonoBehaviour
 {
     private GameController gc;
     public IsoAttackManager attackManager;
-    private Collider collider;
+    //private Collider collider;
 
     private float maxThrowDistance = 999;
     private float maxDistance = 999;
@@ -36,12 +36,17 @@ public class LassoBehavior : MonoBehaviour
     private Camera cam;
     private LineRenderer lr;
     [SerializeField] private LayerMask groundMask;
-
+    [SerializeField] private JukeBox jukebox;
     LassoLine line;
+    bool thrown;
+
+
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
-        collider = GetComponent<Collider>();
+        jukebox.SetTransform(transform);
+        thrown = false;
+        //collider = GetComponent<Collider>();
         attackManager = FindObjectOfType<IsoAttackManager>();
         //lassoRange = GetComponentInChildren<LassoRange>();
         grounded = false;
@@ -63,6 +68,14 @@ public class LassoBehavior : MonoBehaviour
 
     public void SetValues(float maxPullDistance, float minModifier, float maxThrowRange, float breakRange, Slider slider, Image sliderFill)
     {
+        if(lr ==null)
+        {
+            lr = GetComponent<LineRenderer>();
+        }
+        if (lr != null)
+        {
+            lr.enabled = false;
+        }
         moveable = null;
         attached = null;
         startingPos = transform.position;
@@ -72,8 +85,11 @@ public class LassoBehavior : MonoBehaviour
         //this.player = playerPos;
         this.slider = slider;
         this.maxDistance = breakRange;
-        line.SetValues(player, maxDistance);
-        line.gameObject.SetActive(true);
+        if (line != null)
+        {
+            line.SetValues(player, maxDistance);
+            line.gameObject.SetActive(true);
+        }
         this.sliderFill = sliderFill;
 
     }
@@ -85,10 +101,15 @@ public class LassoBehavior : MonoBehaviour
 
     public void Launched()
     {
-        line.gameObject.SetActive(true);
+        if (line == null)
+            line = GetComponentInChildren<LassoLine>();
+        if(line!= null)
+            line.gameObject.SetActive(true);
         slider.value = 0f;
         slider.gameObject.SetActive(true);
-        collider.enabled = true;
+        GetComponent<Collider>().enabled = true;
+        jukebox.PlaySound(0);
+        thrown = true;
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -104,10 +125,10 @@ public class LassoBehavior : MonoBehaviour
             {
                 attached = temp;
                 forwardVector = (player.position - attached.transform.position).normalized;
-                attached.GetComponentInParent<IPullable>().Lassoed();
+                
                 //Physics.IgnoreCollision(GetComponent<Collider>(), temp.GetComponent<Collider>(), true);
-                gameObject.transform.parent = temp.transform;
-                transform.localPosition = Vector3.zero;
+                //gameObject.transform.parent = temp.transform;
+                //transform.localPosition = Vector3.zero;
                 gameObject.GetComponent<Rigidbody>().isKinematic = true;
                 slider.value = 0;
                 slider.gameObject.SetActive(true);
@@ -122,6 +143,7 @@ public class LassoBehavior : MonoBehaviour
 
                     adjustedPullRange = maxPullDistance / attachedRB.mass;
                 }
+                attached.GetComponentInParent<IPullable>().Lassoed();
                 if (gc.toggleLasso)
                 {
                     dir = forwardVector;
@@ -150,41 +172,52 @@ public class LassoBehavior : MonoBehaviour
         }
     } */
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (Vector3.Distance(startingPos, transform.position) >= maxThrowDistance && attached == null) attackManager.Release();
-        float distance = Vector3.Distance(transform.position, player.position);
-        slider.value = distance / maxDistance;
-        sliderFill.color = line.GetGradient().Evaluate(distance / maxDistance);
-
-        if (distance > maxDistance)
+        if (thrown)
         {
-            slider.gameObject.SetActive(false);
+            if (Vector3.Distance(startingPos, transform.position) >= maxThrowDistance && attached == null) attackManager.Release();
+            float distance = Vector3.Distance(transform.position, player.position);
+            if (slider != null)
+            {
+                slider.value = distance / maxDistance;
+                sliderFill.color = line.GetGradient().Evaluate(distance / maxDistance);
+            }
+
+            if (distance > maxDistance)
+            {
+                slider.gameObject.SetActive(false);
+                if (attached != null)
+                    attached.GetComponent<IPullable>().Break();
+                attackManager.ForceRelease();
+                if (moveable != null)
+                    moveable.ForceRelease();
+                moveable = null;
+                attached = null;
+                jukebox.PlaySound(1);
+            }
+
+            if (moveable != null && !gc.toggleLasso)
+            {
+
+                float angle = CheckAngle();
+                calculatedDistance = trajectoryArrowDistance == 0f ? Mathf.Lerp(maxPullDistance, minPullDistance, angle / 180) / attachedRB.mass : trajectoryArrowDistance;
+                //(maxPullDistance - ((maxPullDistance - minPullDistance) / 180) * Mathf.Abs(angle)) / attachedRB.mass
+                dir.y = 0;
+                Vector3[] positions = { attached.transform.position, attached.transform.position + dir * calculatedDistance };
+                //lassoRange.SetRangeArc(forwardVector, maxPullDistance, minPullDistance);
+                lr.SetPositions(positions);
+                //Debug.Log(calculatedDistance);
+            }
             if (attached != null)
-                attached.GetComponent<IPullable>().Break();
-            attackManager.ForceRelease();
-            if(moveable != null)
-                moveable.ForceRelease();
-            moveable = null;
-            attached = null;
-        }
-
-        if (moveable != null && !gc.toggleLasso)
-        {
-
-            float angle = CheckAngle();
-            calculatedDistance = trajectoryArrowDistance == 0f ? Mathf.Lerp(maxPullDistance, minPullDistance, angle / 180) / attachedRB.mass : trajectoryArrowDistance;
-            //(maxPullDistance - ((maxPullDistance - minPullDistance) / 180) * Mathf.Abs(angle)) / attachedRB.mass
-            dir.y = 0;
-            Vector3[] positions = { attached.transform.position, attached.transform.position + dir * calculatedDistance };
-            //lassoRange.SetRangeArc(forwardVector, maxPullDistance, minPullDistance);
-            lr.SetPositions(positions);
-            //Debug.Log(calculatedDistance);
-        }
-
-        if (attached != null && !attached.activeInHierarchy)
-        {
-            attackManager.ForceRelease();
+            {
+                //Debug.Log(attached.transform.position);
+                transform.position = attached.transform.position;
+                if (!attached.activeInHierarchy)
+                {
+                    attackManager.ForceRelease();
+                }
+            }
         }
     }
 
@@ -250,7 +283,7 @@ public class LassoBehavior : MonoBehaviour
     {
         bool returnValue = true;
         transform.parent = null;
-        lr.enabled = true;
+        //lr.enabled = true;
         line.gameObject.SetActive(true);
         if (moveable != null && moveable.gameObject.activeInHierarchy)
         {
@@ -276,7 +309,7 @@ public class LassoBehavior : MonoBehaviour
         lr.enabled = false;
         line.gameObject.SetActive(false);
         slider.gameObject.SetActive(false);
-
+        thrown = false;
     }
 
     public void StartRetracting()
@@ -284,15 +317,17 @@ public class LassoBehavior : MonoBehaviour
         if(attached!=null)
         {
             attached.GetComponent<IPullable>().Break();
+            jukebox.PlaySound(1);
         }
         if(moveable!=null)
         {
+            moveable.ForceRelease();
             moveable.tendrilOwner = null;
         }
         moveable = null;
         attached = null;
         lr.enabled = false;
-        collider.enabled = false;
+        GetComponent<Collider>().enabled = false;
     }
 
 
