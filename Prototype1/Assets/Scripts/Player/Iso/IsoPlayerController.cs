@@ -21,6 +21,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     [HideInInspector]
     public bool isDead;
     private bool canDash;
+    public bool isStunned;
     private GameController gc;
     private int previousLayer;
     [SerializeField] GameObject lasso;
@@ -42,6 +43,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     }
     private void Start()
     {
+        isStunned = false;
         attackManager = GetComponent<IsoAttackManager>();
         moveable = GetComponent<Moveable>();
         attackState = 0;
@@ -71,7 +73,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
     private void Update()
     {
-        if (Time.timeScale != 0)
+        if (Time.timeScale != 0 && !isStunned)
         {
             if (!isDead && !moveable.isLaunched && attackState != Helpers.ATTACKING)
                 Look();
@@ -81,11 +83,15 @@ public class IsoPlayerController : MonoBehaviour, IKickable
                 gameObject.layer = previousLayer;
             }
         }
+        if(isStunned && !moveable.isLaunched)
+        {
+            isStunned = false;
+        }
     }
 
     private void FixedUpdate()
     {
-        if (Time.timeScale != 0)
+        if (Time.timeScale != 0 && !isStunned)
         {
             if (!moveable.isLaunched && !isDead && attackState != Helpers.ATTACKING)
                 Move();
@@ -236,7 +242,8 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
     public void Kicked()
     {
-
+        isStunned = true;
+        attackState = Helpers.NOTATTACKING;
     }
 
 

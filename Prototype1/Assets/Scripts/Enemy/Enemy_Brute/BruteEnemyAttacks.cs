@@ -56,7 +56,7 @@ public class BruteEnemyAttacks : EnemyAttackTemplate
             Debug.LogError("Attack value for Dash invalid");
             return;
         }
-        brain.moveable.Dash(transform.forward * dashRange, dashTime);
+        brain.moveable.Ram(transform.forward * dashRange, dashTime);
         currentWaitingTime = dashTime;
         if (animationTimer < 0)
             animationTimer = 0;

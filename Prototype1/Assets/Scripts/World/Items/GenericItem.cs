@@ -10,7 +10,6 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     [Tooltip("Enable if this object should stay in place before being grabbed.")]
     [SerializeField] bool _frozenBeforeTendril = false;
     [SerializeField] private int health = 20;
-    [SerializeField] int clashDamage;
     [Tooltip("The object that's created when this item is destroyed.\nDoes not need to be a particle.")]
     [SerializeField] GameObject DestructionParticle;
     [Tooltip("The amount of time the Destruction Particle Object is alive for.\n0 means it lives forever.")]
@@ -102,30 +101,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         return (dmg >= health);
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (moveable != null)
-        {
-            if (!collision.gameObject.CompareTag("Player") && moveable.isLaunched)
-            {
-                ITrap trap = collision.gameObject.GetComponent<ITrap>();
-                if (trap != null)
-                {
-                    trap.ActivateTrap(gameObject);
-                }
 
-                if (!collision.gameObject.CompareTag("Ground"))
-                {
-                    //Debug.Log("Deal damage to hit target");
-                    IDamageable dam = collision.gameObject.GetComponent<IDamageable>();
-                    if (dam != null)
-                        dam.TakeDamage(clashDamage);
-                    TakeDamage(clashDamage);
-                }
-            }
-        }
-
-    }
 
     private void Unfreeze()
     {

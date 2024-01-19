@@ -7,9 +7,6 @@ using UnityEngine.UI;
 public class NewRangedEnemyInteractions : EnemyInteractionBehaviorTemplate
 {
 
-    [SerializeField]
-    [Tooltip("Damage dealt and taken when colliding with someone then launched")]
-    int clashDamage = 20;
 
     [SerializeField] GameObject KickedParticle;
     [SerializeField] private JukeBox jukebox;
@@ -110,28 +107,6 @@ public class NewRangedEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (brain.moveable.isLaunched && !collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Lasso") && !hasCollided)
-        {
-            hasCollided = true;
-            GameObject hit = collision.gameObject;
-            brain.health.TakeDamage(clashDamage);
-            IDamageable temp = hit.GetComponent<IDamageable>();
-            if (temp != null)
-            {
-                temp.TakeDamage(clashDamage);
-                jukebox.PlaySound(1);
-            }
-
-            ITrap temp2 = hit.GetComponent<ITrap>();
-            if (temp2 != null)
-            {
-                temp2.ActivateTrap(gameObject);
-            }
-
-        }
-    }
 
     public override void Stun(float time)
     {

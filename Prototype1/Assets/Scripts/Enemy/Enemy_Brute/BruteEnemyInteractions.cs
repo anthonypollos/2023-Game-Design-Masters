@@ -5,12 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
 {
-    [SerializeField]
-    [Tooltip("Damage dealt and taken when colliding with someone then launched")]
-    int clashDamage = 20;
-
-    [Tooltip("A modifier for the amount of clash damage the brute will take when it runs into objects.\nDefault is 1. Below 1 makes it take less damage, above 1 makes it take more.")]
-    [SerializeField] float dashClashModifier = 1;
 
     [Tooltip("Stun Modifier")]
     [SerializeField] float stunMod = 1;
@@ -19,7 +13,6 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     [SerializeField] private JukeBox jukebox;
 
-    List<GameObject> hasCollidedWith;
 
 
     private void Awake()
@@ -32,7 +25,6 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
         stunned = false;
         launched = false;
         hasCollided = true;
-        hasCollidedWith = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -152,38 +144,7 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
         brain.health.Death();
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log(brain.moveable.isLaunched);
-        Debug.Log(brain.moveable.isDashing);
-        Debug.Log(collision.gameObject.name);
-        if ((brain.moveable.isLaunched || brain.moveable.isDashing) && !collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Lasso") && !hasCollided)
-        {
-            hasCollided = true;
-            GameObject hit = collision.gameObject;
-            Debug.Log("Take clash damage");
 
-            //If we were dashing, multiply the clash damage by the dash modifier and take that damage.
-            if (brain.moveable.isDashing) brain.health.TakeDamage( (int)(clashDamage * dashClashModifier) );
-            //otherwise, take the full clash damage.
-            else brain.health.TakeDamage(clashDamage);
-
-            IDamageable temp = hit.GetComponent<IDamageable>();
-            if (temp != null)
-            {
-                temp.TakeDamage(clashDamage);
-                jukebox.PlaySound(1);
-            }
-
-            ITrap temp2 = hit.GetComponent<ITrap>();
-            if (temp2 != null)
-            {
-                Debug.Log("Take trap damage");
-                temp2.ActivateTrap(gameObject);
-            }
-
-        }
-    }
 
     public override void Stun(float time)
     {

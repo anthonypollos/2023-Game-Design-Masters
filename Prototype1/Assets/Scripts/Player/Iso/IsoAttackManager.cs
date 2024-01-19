@@ -8,7 +8,13 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 {
     [Header("Lasso properties")]
     [SerializeField] [Tooltip("The speed of the lasso")] float lassoSpeed;
-    [SerializeField] [Tooltip("The speed of the pull")] float pullSpeed;
+    [SerializeField] [Tooltip("The speed of the pull")] float minPullSpeed = 9f;
+    [SerializeField] [Tooltip("The max speed of the pull")] float maxPullSpeed = 24f;
+    [SerializeField] [Tooltip("Toss speed")] float tossSpeed = 9f;
+    [SerializeField] [Tooltip("Time it takes to reach max speed")] float timeToMax = 1.5f;
+    [SerializeField] [Tooltip("Time it takes holding to reset speed")] float timeToReset = 0.5f;
+    float currentTime = 0;
+    float restTime = 0;
     [SerializeField] [Range(0f, 1f)] [Tooltip("The % force of the pull if aiming fully away from the player")] float minPullForceModifier = 0.5f;
     [SerializeField] [Tooltip("How far a pulled object will go assuming 1 mass")] float pullCarryDistance;
     [SerializeField] [Tooltip("The time it takes for full charge")] float lassoChargeTime;
@@ -99,7 +105,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     private void Kick()
     {
-        if (Time.timeScale != 0)
+        if (Time.timeScale != 0 && !pc.isStunned)
         {
             if (canKick && !kicking && !isCharging && !pc.moveable.isLaunched)
             {
@@ -137,7 +143,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     private void LassoCharge()
     {
-        if (Time.timeScale != 0)
+        if (Time.timeScale != 0 && !pc.isStunned)
         {
             if (!pc.moveable.isLaunched)
             {
@@ -162,7 +168,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     private void FixedUpdate()
     {
-        if (Time.timeScale != 0)
+        if (Time.timeScale != 0 && !pc.isStunned)
         {
             if (isRetracting)
             {
@@ -214,6 +220,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
         if (Time.timeScale != 0)
         {
+            currentTime = 0;
+            restTime = 0;
             if (!lasso.activeInHierarchy && !kicking && !pc.moveable.isLaunched && isCharging)
             {
 
@@ -236,7 +244,13 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
             if (lasso.activeInHierarchy && lb.GetAttachment().Item2 != null)
             {
+                bool flick = pulling;
+                Moveable moveable = lb.GetAttachment().Item2;
                 ForceRelease();
+                if (flick)
+                {
+                    moveable.Tossed(tossSpeed);
+                }
                 jukebox.PlaySound(Random.Range(1,4));
             }
         }
@@ -266,6 +280,11 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         }
     }
 
+    private float CalculatePullSpeed()
+    {
+        return Mathf.Lerp(minPullSpeed, maxPullSpeed, currentTime / timeToMax);
+    }
+
     public void Pull(LassoBehavior lb)
     {
         GameObject target;
@@ -283,11 +302,19 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 {
                     //Debug.Log(calculatedDistance);
                     //Debug.Log(dir.magnitude);
-                    moveable.Launched(dir * calculatedDistance, pullSpeed);
+                    moveable.Launched(dir * calculatedDistance, CalculatePullSpeed());
+                    currentTime = Mathf.Clamp(currentTime + Time.fixedDeltaTime, 0, timeToMax);
+                    restTime = 0;
                 }
                 else
                 {
                     moveable.Hold();
+                    if (restTime >= timeToReset)
+                    {
+                        currentTime = 0f;
+                    }
+                    else
+                        restTime += Time.fixedDeltaTime;
                 }
                 //lb.transform.position = moveable.transform.position;
                 //Rigidbody rb = target.GetComponent<Rigidbody>();
