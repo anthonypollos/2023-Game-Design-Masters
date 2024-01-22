@@ -177,7 +177,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 lassoRB.velocity = (lassoOrigin.transform.position - lasso.transform.position).normalized * lassoSpeed;
                 if (Vector3.Distance(lassoOrigin.transform.position, lasso.transform.position) <= lassoSpeed * Time.fixedDeltaTime)
                 {
-                    Debug.Log(Time.fixedDeltaTime * lassoSpeed);
+                    //Debug.Log(Time.fixedDeltaTime * lassoSpeed);
                     Retracted();
                     lassoRB.isKinematic = true;
                 }

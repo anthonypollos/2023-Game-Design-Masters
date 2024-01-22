@@ -245,9 +245,9 @@ public class Moveable : MonoBehaviour
 
     int CalculateClashDamage()
     {
-        //Debug.Log("speed: " + speed);
-        //Debug.Log("Damage: " + Mathf.RoundToInt(clashDamage + clashDamage * ((speed - neutralSpeed) / (neutralSpeed * rateOfChange))));
-        return Mathf.RoundToInt(clashDamage + (speed - neutralSpeed) / (neutralSpeed * rateOfChange));
+        Debug.Log("speed: " + speed);
+        Debug.Log("Damage: " + Mathf.RoundToInt(clashDamage + clashDamage * ((speed - neutralSpeed) / (neutralSpeed * rateOfChange))));
+        return Mathf.RoundToInt((float)clashDamage + (float)clashDamage * (speed - neutralSpeed) / (neutralSpeed * rateOfChange));
     }
 
     public bool AlreadyHit(Collider collider)
