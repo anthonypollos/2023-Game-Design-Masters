@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class IsoPlayerController : MonoBehaviour, IKickable
+public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 {
     [SerializeField] [Tooltip("The rigidbody used for movement")] private Rigidbody _rb;
     [SerializeField] [Tooltip("The player's movement speed")] private float _speed = 5;
@@ -37,12 +37,16 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     [Header("Animator Variables")]
     [SerializeField] Animator anim; //assigned in inspector for now; can change
 
+    List<float> slowMods;
+    float[] slowModsArray;
+
     private void Awake()
     {
         jukebox.SetTransform(transform);
     }
     private void Start()
     {
+        EnterSlowArea(0);
         isStunned = false;
         attackManager = GetComponent<IsoAttackManager>();
         moveable = GetComponent<Moveable>();
@@ -226,6 +230,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     private void Move()
     {
         float adjustedSpeed = _speed;
+        adjustedSpeed *= (1 - Mathf.Max(slowModsArray));
         if (attackState == Helpers.LASSOING || attackState == Helpers.LASSOED)
             adjustedSpeed *= speedModWhenLassoOut;
         if (attackState == Helpers.PULLING)
@@ -238,6 +243,25 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         else
             anim.SetFloat("YMov", 0);
 
+    }
+
+    public void EnterSlowArea(float slowPercent)
+    {
+        if (slowMods == null)
+        {
+            slowMods = new List<float>();
+        }
+        slowMods.Add(slowPercent);
+        slowModsArray = slowMods.ToArray();
+    }
+    public void ExitSlowArea(float slowPercent)
+    {
+        if (slowMods != null)
+        {
+            if (slowMods.Contains(slowPercent))
+                slowMods.Remove(slowPercent);
+            slowModsArray = slowMods.ToArray();
+        }
     }
 
     public void Kicked()

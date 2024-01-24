@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 //using UnityEditor.SceneTemplate;
 using UnityEngine;
 
-public class Moveable : MonoBehaviour
+public class Moveable : MonoBehaviour, ISlowable
 {
 
     [SerializeField] int clashDamage = 10;
@@ -39,9 +40,13 @@ public class Moveable : MonoBehaviour
     Collider playerCollider;
     IDamageable myDamageable;
 
+    List<float> slowMods;
+    float[] slowModsArray;
+
     // Start is called before the first frame update
     void Start()
     {
+        EnterSlowArea(0);
         myDamageable = GetComponent<IDamageable>();
         myCollider = GetComponent<Collider>();
         playerCollider = GameController.GetPlayer().GetComponent<Collider>();
@@ -263,13 +268,33 @@ public class Moveable : MonoBehaviour
         while (speed > 0)
         {
             yield return new WaitForSeconds(0.01f);
-            speed = Mathf.Clamp(speed - (slowdownPerSecond * 0.01f), 0, speed);
+            float modified = slowdownPerSecond * (1+Mathf.Max(slowModsArray));
+            speed = Mathf.Clamp(speed - (modified * 0.01f), 0, speed);
             //Debug.Log(speed + "-" + slowPerSecond * 0.01f + "=" + (speed - (slowPerSecond * 0.01f)));
             //Debug.Log("Speed = " + speed);
             rb.velocity = dir * speed + Vector3.up * rb.velocity.y;
         }
 
         stopping = StartCoroutine (Stop());
+    }
+
+    public void EnterSlowArea(float slowPercent)
+    {
+        if (slowMods == null)
+        {
+            slowMods = new List<float>();
+        }
+        slowMods.Add(slowPercent);
+        slowModsArray = slowMods.ToArray();
+    }
+    public void ExitSlowArea(float slowPercent)
+    {
+        if (slowMods != null)
+        {
+            if (slowMods.Contains(slowPercent))
+                slowMods.Remove(slowPercent);
+            slowModsArray = slowMods.ToArray();
+        }
     }
 
     private IEnumerator Stop()
