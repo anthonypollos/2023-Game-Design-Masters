@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 using UnityEditor;
 #endif
 
-public class EnemyMovement : MonoBehaviour
+public class EnemyMovement : MonoBehaviour, ISlowable
 {
     public bool isMoving = true;
     [SerializeField] 
@@ -46,9 +46,13 @@ public class EnemyMovement : MonoBehaviour
 
     int lastValue;
 
+    List<float> slowMods;
+    float[] slowModsArray;
+
     // Start is called before the first frame update
     void Start()
     {
+        EnterSlowArea(0);
         //If we don't change the center point from 0 0 0, assume we want the center point to be the spawn location.
         if (centerPoint == Vector3.zero) centerPoint = transform.position;
         previousPosition = transform.position;
@@ -139,12 +143,32 @@ public class EnemyMovement : MonoBehaviour
     private void Movement(Vector3 dir)
     {
         dir.y = 0;
-        rb.velocity = movementSpeed * (dir) + Vector3.up * rb.velocity.y;
+        float adjustedMS = movementSpeed * (1 - Mathf.Max(slowModsArray));
+        rb.velocity = adjustedMS * (dir) + Vector3.up * rb.velocity.y;
         if (isMoving && brain.an!=null)
         {
             if (rb.velocity == Vector3.zero) brain.an.SetFloat("MoveState", 0);
             else if (!brain.isAggro) brain.an.SetFloat("MoveState", 1);
             else brain.an.SetFloat("MoveState", 2);
+        }
+    }
+
+    public void EnterSlowArea(float slowPercent)
+    {
+        if (slowMods == null)
+        {
+            slowMods = new List<float>();
+        }
+        slowMods.Add(slowPercent);
+        slowModsArray = slowMods.ToArray();
+    }
+    public void ExitSlowArea(float slowPercent)
+    {
+        if (slowMods != null)
+        {
+            if (slowMods.Contains(slowPercent))
+                slowMods.Remove(slowPercent);
+            slowModsArray = slowMods.ToArray();
         }
     }
 
