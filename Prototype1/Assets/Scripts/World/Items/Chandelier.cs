@@ -36,7 +36,10 @@ public class Chandelier : MonoBehaviour, IToggleable, ITrap
         IDamageable temp = target.GetComponent<IDamageable>();
         if (temp != null)
         {
-            temp.TakeDamage(dmg);
+            int mod = 1;
+            if (target.CompareTag("Player"))
+                mod = 2;
+            temp.TakeDamage(dmg/mod);
         }
     }
 }

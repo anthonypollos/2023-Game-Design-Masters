@@ -13,7 +13,8 @@ public class Flammable : IStatus
     private ParticleSystem fireEffect;
     private ParticleSystem.EmissionModule em;
     private Light glow;
-
+    private int mod = 1;
+    Coroutine coroutine = null;
     
     protected override void Deactivate()
     {
@@ -131,4 +132,24 @@ public class Flammable : IStatus
     {
         
     }
+
+    public void FireVulnerable(float duration)
+    {
+        if(coroutine!=null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
+        coroutine = StartCoroutine(Vulnerable(duration));
+    }
+
+    IEnumerator Vulnerable(float duration)
+    {
+        mod = 2;
+        yield return new WaitForSeconds(duration);
+        mod = 1;
+        coroutine = null;
+    }
+
+
 }

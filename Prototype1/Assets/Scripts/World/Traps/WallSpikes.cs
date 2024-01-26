@@ -9,15 +9,18 @@ public class WallSpikes : MonoBehaviour, ITrap
 
     public void ActivateTrap(GameObject target)
     {
+        int mod = 1;
         IDamageable temp = target.GetComponent<IDamageable>();
         if(temp!= null)
         {
-            temp.TakeDamage(dmg);
+            if(target.CompareTag("Player"))
+                mod = 2;
+            temp.TakeDamage(dmg/mod);
         }
         Bleedable bleedable = target.GetComponent<Bleedable>();
         if(bleedable!=null)
         {
-            bleedable.Activate(bleedTime);
+            bleedable.Activate(bleedTime/mod);
         }
     }
 }

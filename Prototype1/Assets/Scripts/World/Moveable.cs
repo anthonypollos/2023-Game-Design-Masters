@@ -11,6 +11,7 @@ public class Moveable : MonoBehaviour, ISlowable
     [SerializeField] int clashDamage = 10;
     [SerializeField] float neutralSpeed = 15f;
     [SerializeField] float rateOfChange = 1f;
+    [SerializeField] float maxDamage = 40f;
 
     Rigidbody rb;
     Vector3 targetLocation;
@@ -250,9 +251,7 @@ public class Moveable : MonoBehaviour, ISlowable
 
     int CalculateClashDamage()
     {
-        Debug.Log("speed: " + speed);
-        Debug.Log("Damage: " + Mathf.RoundToInt(clashDamage + clashDamage * ((speed - neutralSpeed) / (neutralSpeed * rateOfChange))));
-        return Mathf.RoundToInt((float)clashDamage + (float)clashDamage * (speed - neutralSpeed) / (neutralSpeed * rateOfChange));
+        return Mathf.RoundToInt(Mathf.Clamp(((float)clashDamage + (speed - neutralSpeed)*rateOfChange), 0, maxDamage));
     }
 
     public bool AlreadyHit(Collider collider)
