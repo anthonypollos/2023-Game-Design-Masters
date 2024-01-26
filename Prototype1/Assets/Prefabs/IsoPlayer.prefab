@@ -2603,6 +2603,7 @@ MonoBehaviour:
   moveable: {fileID: -2951775800152396056}
   attackState: 0
   isDead: 0
+  isStunned: 0
   lasso: {fileID: 387308811525342433}
   dashRange: 12
   dashTime: 0.5
@@ -2647,7 +2648,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lassoSpeed: 80
-  pullSpeed: 18
+  minPullSpeed: 18
+  maxPullSpeed: 24
+  tossSpeed: 20
+  timeToMax: 1.5
+  timeToReset: 0.5
   minPullForceModifier: 0.5
   pullCarryDistance: 15
   lassoChargeTime: 0.1
@@ -2900,8 +2905,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clashDamage: 10
+  neutralSpeed: 15
+  rateOfChange: 1
+  maxDamage: 40
+  speed: 0
   isLaunched: 0
-  timeToStop: 1
+  slowdownPerSecond: 30
   isDashing: 0
   tendrilOwner: {fileID: 0}
 --- !u!114 &7830389134396124948

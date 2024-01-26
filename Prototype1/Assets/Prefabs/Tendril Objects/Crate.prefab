@@ -105,8 +105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _frozenBeforeTendril: 0
-  health: 20
-  clashDamage: 15
+  health: 5
   DestructionParticle: {fileID: 7141866554852115599, guid: eb4485787cd10004da588128fe280f63, type: 3}
   DestructionParticleLifetime: 4
   KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
@@ -152,8 +151,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.1915761, y: 1.0632914, z: 1.1663579}
+  m_Center: {x: -0.0036622928, y: 0.03164546, z: -0.0025983653}
 --- !u!54 &7919093646065017532
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -193,8 +192,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clashDamage: 10
+  neutralSpeed: 15
+  rateOfChange: 1
+  maxDamage: 40
+  speed: 0
   isLaunched: 0
-  timeToStop: 1
+  slowdownPerSecond: 30
   isDashing: 0
   tendrilOwner: {fileID: 0}
 --- !u!114 &4200893838909149319
