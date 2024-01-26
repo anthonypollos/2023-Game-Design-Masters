@@ -26,7 +26,7 @@ RectTransform:
   m_GameObject: {fileID: 49208820474048926}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalScale: {x: 0.015, y: 0.015, z: 0.015}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1632550116164135374}
@@ -977,7 +977,7 @@ MonoBehaviour:
   interaction: {fileID: 0}
   moveable: {fileID: 0}
   player: {fileID: 0}
-  sightDistance: 25
+  sightDistance: 40
   isAggro: 0
   an: {fileID: 0}
   layermask:
@@ -1021,7 +1021,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMoving: 1
-  movementSpeed: 4.5
+  movementSpeed: 6.5
   isPatrolling: 0
   patrolPoints: []
   centerPoint: {x: 0, y: 0, z: 0}
@@ -1064,7 +1064,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxAttackRange: 15
   minAttackRange: 0
-  attackSpeed: 1
+  attackSpeed: 0.75
   brain: {fileID: 0}
   attackWindUpSeconds: []
   attackSeconds: []
@@ -1110,8 +1110,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41c6abad749d3f645b6bdb822862d427, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultEffectDuration: 3
-  damagePerTick: 3
+  defaultEffectDuration: 6
+  damagePerTick: 2
   tickInterval: 0.5
   startOnFire: 0
   an: {fileID: 0}
@@ -1127,8 +1127,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clashDamage: 10
+  neutralSpeed: 15
+  rateOfChange: 1
+  maxDamage: 40
+  speed: 0
   isLaunched: 0
-  timeToStop: 0.5
+  slowdownPerSecond: 30
   isDashing: 0
   tendrilOwner: {fileID: 0}
 --- !u!114 &1708823829666761900
@@ -1145,11 +1150,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stunned: 0
   brain: {fileID: 0}
-  breakOutTime: 5
+  breakOutTime: 1.5
   lassoImage: {fileID: 6589556326145168280}
   lassoOwner: {fileID: 0}
   staggerTime: 0.5
-  clashDamage: 10
   KickedParticle: {fileID: 0}
   jukebox:
     tracks: []
@@ -1166,8 +1170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7db2f61d8655a4a4ca7fd80733d47cbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultEffectDuration: 3
-  damagePerTick: 4
+  defaultEffectDuration: 6
+  damagePerTick: 2
   tickInterval: 0.5
   an: {fileID: 0}
 --- !u!1001 &330612495815308458
