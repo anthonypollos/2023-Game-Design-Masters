@@ -86,7 +86,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         lb.enabled = false;
         tendril.SetActive(false);
         lassoRB = lasso.GetComponent<Rigidbody>();
-        lb.SetValues(pullCarryDistance, minPullForceModifier, maxThrowLassoDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
+        lb.SetValues(maxThrowLassoDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
     }
 
     private void OnEnable()
@@ -236,7 +236,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 lassoRB.velocity = transform.forward * lassoSpeed;
                 float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
                 //LassoBehavior lb = temp.GetComponent<LassoBehavior>();
-                lb.SetValues(pullCarryDistance, minPullForceModifier, currentDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
+                lb.SetValues(currentDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
                 lb.Launched();
 
                 anim.SetTrigger("TendrilThrow");

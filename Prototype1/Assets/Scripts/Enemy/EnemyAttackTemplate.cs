@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Josh Bonovich
+//This is the abstrac template for all enemy attacks
+
 public abstract class EnemyAttackTemplate : MonoBehaviour
 {
+    //Data on how an attack call will go
     [Header("Starting attack data")]
     [SerializeField] 
     [Tooltip("Range at which the enemy can start attacking")]
@@ -16,14 +20,16 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
     public float attackSpeed;
     [HideInInspector]
     public EnemyBrain brain;
+
+    //Amount of seconds an attack actually takes to wind up animation wise
     [Header("Attack timing information")]
     [SerializeField] protected float[] attackWindUpSeconds;
     [SerializeField] protected float[] attackSeconds;
     [SerializeField] protected float[] attackWindDownSeconds;
+
+    //frame data for attacks
     [Header("Attack frame data")]
     [SerializeField] protected int[] attackFrames;
-    //[SerializeField] protected int[] windUpFrames;
-    //[SerializeField] protected int[] windDownFrames;
     [SerializeField] protected int attackFramesPerSecond;
     bool windUp = false;
     
@@ -37,6 +43,7 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
 
     protected float currentWaitingTime = float.MaxValue;
 
+    //Timers getting updated through the parents update method
     protected virtual void UpdateCounter()
     {
         if (brain.interaction.stunned)
@@ -70,11 +77,13 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
         }
     }
 
+    //Set the universal trigger for animations to go to the next stage
     public void SetTrigger()
     {
         brain.an.SetTrigger("NextState");
     }
 
+    //Set the windup time for the animation and begins the windup
     public void WindUpTrigger(int attack)
     {
         
@@ -98,6 +107,7 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
         windUp = true;
     }
 
+    //Sets the wind down time for the animation and begins the winddown
     public void WindDownTrigger(int attack)
     {
         brain.an.SetFloat("AttackMod", 1);
@@ -112,6 +122,7 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
             animationTimer = 0;
     }
 
+    //triggers the attack and sets the speed of the animation to match
     public void AttackTrigger(int attack)
     {
         attack = attack - 1;
@@ -123,11 +134,13 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
         brain.an.SetFloat("AttackMod", (float)attackFrames[attack] / (attackFramesPerSecond * attackSeconds[attack]));
     }
 
+    //when needed, the animation will skip ahead to keep consistent with the world events
     public void ForceAnimationChange()
     {
         animationTimer = float.MaxValue;
     }
 
+    //attack has ended and resets enemy states to default
     public void AttackEnd()
     {
         count = 0;
