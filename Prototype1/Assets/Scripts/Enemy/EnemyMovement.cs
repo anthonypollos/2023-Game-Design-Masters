@@ -49,6 +49,8 @@ public class EnemyMovement : MonoBehaviour, ISlowable
     List<float> slowMods;
     float[] slowModsArray;
 
+    [SerializeField] bool debug = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -113,13 +115,19 @@ public class EnemyMovement : MonoBehaviour, ISlowable
             {
                 if (!NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path))
                 {
+                    if (debug)
+                        Debug.Log("Path failed");
                     RandomPoint(out targetPosition);
                 }
                 else
                 {
+                    if(debug) 
+                        Debug.Log("Path written");
                     corner = 0;
                     if (path.status != NavMeshPathStatus.PathComplete)
                     {
+                        if (debug)
+                            Debug.Log("Path incomplete");
                         RandomPoint(out targetPosition);
                     }
                 }
@@ -143,6 +151,12 @@ public class EnemyMovement : MonoBehaviour, ISlowable
     private void Movement(Vector3 dir)
     {
         dir.y = 0;
+        dir = dir.normalized;
+        if (debug)
+        {
+            Debug.Log(dir);
+            Debug.DrawLine(rb.position, rb.position + dir * 6, Color.red);
+        }
         float adjustedMS = movementSpeed * (1 - Mathf.Max(slowModsArray));
         rb.velocity = adjustedMS * (dir) + Vector3.up * rb.velocity.y;
         if (isMoving && brain.an!=null)
@@ -294,16 +308,18 @@ public class EnemyMovement : MonoBehaviour, ISlowable
     {
         if (isPatrolling) centerPoint = transform.position;
         Vector3 randomPoint = centerPoint + Random.insideUnitSphere * wanderRadius;
+        randomPoint.y = centerPoint.y;
         NavMeshHit hit;
         for (int i = 0; i < 100; i++)
         {
-            if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(randomPoint, out hit, 2.0f, NavMesh.AllAreas))
             {
                 output = hit.position;
                 return true;
             }
         }
-        //Debug.Log("fail");
+        if(debug)
+            Debug.Log("fail");
         output = Vector3.zero;
         return false;
     }
