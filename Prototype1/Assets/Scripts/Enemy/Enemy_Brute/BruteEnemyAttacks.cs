@@ -38,7 +38,6 @@ public class BruteEnemyAttacks : EnemyAttackTemplate
     {
         brain.an.SetFloat("AttackMod", 1);
         brain.an.SetBool("Attacking", true);
-        //Debug.Log("trigger attack" + attack);
         currentWaitingTime = float.MaxValue;
         brain.state = EnemyStates.ATTACKING;
         brain.an.SetTrigger("Attack" + attack.ToString());

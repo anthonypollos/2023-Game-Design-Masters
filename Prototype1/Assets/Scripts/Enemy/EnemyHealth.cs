@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+//Josh Bonovich
+//Controls and contains the enemies hp
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
     [SerializeField] private JukeBox jukebox;
@@ -12,6 +14,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [SerializeField] GameObject bloodParticle;
     int maxHealth;
     [SerializeField] Slider healthSlider;
+    //enemy container for controlling how many enemies are in the scene
     [HideInInspector]
     public EnemyContainer ec;
     [HideInInspector]
@@ -29,7 +32,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         ec = FindObjectOfType<EnemyContainer>();
         ec.AddEnemy(gameObject);
         maxHealth = health;
-        //slider = GetComponentInChildren<Slider>();
         healthSlider.value = health / maxHealth;
     }
     private void Update()
@@ -39,7 +41,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     }
     public void TakeDamage(int dmg)
     {
-        //Debug.Log("dealt damage");
         health -= dmg;
         if (dmg > staggerThreshold)
         {
@@ -56,8 +57,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable
             brain.interaction.Stagger();
         }
         if (health <= 0) Die();
-        //Debug.Log((float)health / maxHealth);
-        //Debug.Log(health);
         healthSlider.value = (float)health/ maxHealth;
         jukebox.PlaySound(0);
     }
@@ -70,7 +69,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     private void Die()
     {
         brain.state = EnemyStates.DEAD;
-        //brain.interaction.Stagger();
         brain.interaction.Death();
     }
 
@@ -90,7 +88,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     private void OnDisable()
     {
-        //Debug.Log("Disabled");
         if (ec != null && !quitting)
         {
             ec.RemoveEnemy(gameObject, false);
@@ -99,6 +96,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         Destroy(gameObject);
     }
 
+    //checks if the unit is being destroyed via the scene unloading, this helps avoid problems with the save system
     private void OnApplicationQuit()
     {
         quitting = true;
