@@ -6,8 +6,6 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-//Josh Bonovich
-//The brain of all enemies that is the core for movement and attacking
 public static class EnemyStates
 {
     public const int NOTHING = 0;
@@ -17,7 +15,6 @@ public static class EnemyStates
 
 public class EnemyBrain : MonoBehaviour, IEnemy
 {
-    //The references to the other parts of the enemy
     [HideInInspector]
     public EnemyHealth health;
     [HideInInspector]
@@ -26,11 +23,9 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     EnemyAttackTemplate attack;
     [HideInInspector]
     public Moveable moveable;
-    //player information
     [HideInInspector]
     public Transform player;
     Vector3 lastKnownLocation;
-    //detecting values
     [SerializeField] 
     [Tooltip("Range in which the enemy can see the player or any other enemy getting aggroed")]
     public float sightDistance;
@@ -82,7 +77,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     {
         if (state != EnemyStates.DEAD)
         {
-            //if not stunned and not attacking
+            //Debug.Log(state);
             if (!interaction.stunned && state == EnemyStates.NOTHING)
             {
                 CheckMovement();
@@ -90,7 +85,6 @@ public class EnemyBrain : MonoBehaviour, IEnemy
                 CheckAttack();
                 CheckArea();
             }
-            //if stunned stop all movement calculations
             else if (interaction.stunned && moveable != null)
             {
                 if (!moveable.isLaunched)
@@ -170,8 +164,10 @@ public class EnemyBrain : MonoBehaviour, IEnemy
             return false;
         }
         RaycastHit hit;
+        //Debug.DrawRay(transform.position, player.position - transform.position, Color.red);
         if (Physics.Raycast(transform.position, player.position - transform.position, out hit, Mathf.Infinity, layermask))
         {
+            //Debug.Log(hit.transform.name);
             if (hit.transform.gameObject.CompareTag("Player"))
             {
                 lastKnownLocation = hit.transform.position;
@@ -179,9 +175,11 @@ public class EnemyBrain : MonoBehaviour, IEnemy
             }
             else
             {
+                //Debug.Log(hit.transform.name);
                 return false;
             }
         }
+        //Debug.Log("no hit");
         return false;
     }
 
@@ -193,17 +191,21 @@ public class EnemyBrain : MonoBehaviour, IEnemy
         }
         if (Vector3.Distance(target.position, transform.position) > sightDistance) return false;
         RaycastHit hit;
+        //Debug.DrawRay(transform.position, player.position - transform.position, Color.red);
         if (Physics.Raycast(transform.position, target.position - transform.position, out hit, Mathf.Infinity, layermask))
         {
+            //Debug.Log(hit.transform.name);
             if (hit.transform == target)
             {
                 return true;
             }
             else
             {
+                //Debug.Log(hit.transform.name);
                 return false;
             }
         }
+        //Debug.Log("no hit");
         return false;
     }
 

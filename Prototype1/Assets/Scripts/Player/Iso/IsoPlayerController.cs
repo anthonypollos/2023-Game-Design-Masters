@@ -98,10 +98,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
         if (Time.timeScale != 0 && !isStunned)
         {
             if (!moveable.isLaunched && !isDead && attackState != Helpers.ATTACKING)
-            {
-                Look();
                 Move();
-            }
             else
                 if (!moveable.isLaunched)
                 _rb.velocity = Vector3.zero + Vector3.up * _rb.velocity.y;
