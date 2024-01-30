@@ -227,7 +227,7 @@ public class LassoBehavior : MonoBehaviour
 
         if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
         {
-            Debug.DrawRay(hitInfo.point, Vector3.down * 10, Color.red, 10f);
+            //Debug.DrawRay(hitInfo.point, Vector3.down * 10, Color.red, 10f);
             return (success: true, position: hitInfo.point);
 
         }

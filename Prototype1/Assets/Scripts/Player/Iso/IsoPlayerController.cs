@@ -217,7 +217,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 
         if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
         {
-            Debug.DrawRay(hitInfo.point, Vector3.down, Color.red);
+            //Debug.DrawRay(hitInfo.point, Vector3.down, Color.red);
             return (success: true, position: hitInfo.point);
 
         }
