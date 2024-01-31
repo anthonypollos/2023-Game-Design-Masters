@@ -218,7 +218,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     private void Lasso()
     {
 
-        if (Time.timeScale != 0)
+        if (Time.timeScale != 0 && !pc.isStunned && !pc.isDead)
         {
             currentTime = 0;
             restTime = 0;

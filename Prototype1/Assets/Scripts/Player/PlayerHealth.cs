@@ -65,6 +65,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             anim.SetTrigger("Death");
             jukebox.PlaySound(1);
             pc.isDead = true;
+            pc.isStunned = true;
+            pc.attackState = Helpers.NOTATTACKING;
             //GameController.instance.Lose();
             StartCoroutine(Death());
         }

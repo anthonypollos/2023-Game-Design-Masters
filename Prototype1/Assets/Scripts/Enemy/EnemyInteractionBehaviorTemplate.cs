@@ -53,7 +53,8 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     }
     protected virtual void Stunned()
     {
-        brain.state = EnemyStates.NOTHING;
+        if(brain.state!=EnemyStates.DEAD)
+            brain.state = EnemyStates.NOTHING;
     }
 
     public virtual void Stun(float time)
