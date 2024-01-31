@@ -16,6 +16,8 @@ public class MenuManager : MonoBehaviour
 
     private Animator anim;
 
+    private bool canContinue = false;
+
     void Start()
     {
         inputChecker = GetComponent<InputChecker>();
@@ -32,6 +34,10 @@ public class MenuManager : MonoBehaviour
     private void Update()
     {
         // if input changes, update start text to show right prompt
+        if (canContinue && (Input.anyKeyDown || Input.GetButtonDown("Submit")))
+            anim.SetTrigger("NextState");
+
+        LookAtButtons();
     }
 
     private void ToggleText()
@@ -53,6 +59,8 @@ public class MenuManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
 
+        canContinue = true;
+
         ToggleParallax();
     }
 
@@ -69,5 +77,23 @@ public class MenuManager : MonoBehaviour
         {
             po.enabled = !po.enabled;
         }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private float lookIndex = 0;
+
+    public void SetLookIndex(float lookIndex)
+    {
+        this.lookIndex = lookIndex;
+    }
+
+    private void LookAtButtons()
+    {
+        float currentIndex = anim.GetFloat("LookAtIndex");
+        float targetIndex = Mathf.Lerp(currentIndex, lookIndex, 5.0f * Time.deltaTime);
+
+        anim.SetFloat("LookAtIndex", targetIndex);
     }
 }
