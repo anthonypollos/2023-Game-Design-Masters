@@ -18,6 +18,9 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 
     [SerializeField] private JukeBox jukebox;
 
+    //Keeps track of if this object is alive or not. This is to prevent it from double dying.
+    private bool isAlive = true;
+
     private void Awake()
     {
         jukebox.SetTransform(transform);
@@ -79,20 +82,41 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         jukebox.PlaySound(0);
         if (health <= 0)
         {
-            //If there is a destruction particle, create it.
-            if (DestructionParticle != null)
+            //Bool to prevent double death
+            if (isAlive)
             {
-                //create the particle
-                GameObject vfxobj = Instantiate(DestructionParticle, gameObject.transform.position, Quaternion.identity);
-                //Check to see if the particle has a lifetime.
-                if (DestructionParticleLifetime != 0f)
+                //First thing's first, turn isAlive off so this can't run again
+                isAlive = false;
+                //If there is a destruction particle, create it.
+                if (DestructionParticle != null)
                 {
-                    //destroy the particle
-                    Destroy(vfxobj, DestructionParticleLifetime);
+                    //create the particle, gib, etc.
+                    GameObject vfxobj = Instantiate(DestructionParticle, gameObject.transform.position, Quaternion.identity);
+                    //Check to see if the particle has a lifetime.
+                    if (DestructionParticleLifetime != 0f)
+                    {
+                        //destroy the particle
+                        Destroy(vfxobj, DestructionParticleLifetime);
+                    }
+
+                    //This code makes gibs inherit their parent's angles and velocity
+                    foreach (Transform child in vfxobj.transform)
+                    {
+                        //check every child in the instantiated object to see if they have rigidbodies.
+                        if (child.gameObject.GetComponent<Rigidbody>() != null)
+                        {
+                            //If the child has a rigidbody, set its angles to the object that's breaking's angles
+                            child.eulerAngles = GetComponent<Transform>().eulerAngles;
+                            //print(this + "'s gib, " + child + ", has angles of " + child.eulerAngles);
+                            //Now set the velocity to the object that's breaking's velocity
+                            child.gameObject.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity;
+                            //print(this + "'s gib, " + child + ", has a velocity of " + child.gameObject.GetComponent<Rigidbody>().velocity);
+                        }
+                    }
                 }
+                jukebox.PlaySound(1);
+                Destroy(gameObject);
             }
-            jukebox.PlaySound(1);
-            Destroy(gameObject);
         }
     }
 

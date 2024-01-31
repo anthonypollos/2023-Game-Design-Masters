@@ -315,7 +315,8 @@ public class Moveable : MonoBehaviour, ISlowable
     {
         foreach(Collider collider in collidersHit)
         {
-            Physics.IgnoreCollision(myCollider, collider, false);
+            if(collider!=null)
+                Physics.IgnoreCollision(myCollider, collider, false);
         }
         collidersHit.Clear();
     }
@@ -382,6 +383,24 @@ public class Moveable : MonoBehaviour, ISlowable
         dir = Vector3.zero;
         speed = 0;
         isLaunched = true;
+        IgnorePlayer();
+    }
+
+    public void Grabbed()
+    {
+        if (stopping != null)
+        {
+            StopCoroutine(stopping);
+            stopping = null;
+        }
+        hold = true;
+        isStopping = false;
+        isDashing = false;
+        buffer = 0;
+        targetLocation = transform.position;
+        dir = Vector3.zero;
+        speed = 0;
+        isLaunched = false;
         IgnorePlayer();
     }
 
