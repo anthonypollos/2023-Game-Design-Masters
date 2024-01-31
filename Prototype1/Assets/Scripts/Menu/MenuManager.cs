@@ -23,12 +23,27 @@ public class MenuManager : MonoBehaviour
         inputChecker = GetComponent<InputChecker>();
         anim = GetComponent<Animator>();
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        // change this eventually; 0 false, 1 true
+        int skip = PlayerPrefs.GetInt("SkipIntro", 0);
 
-        SetText();
+        switch (skip)
+        {
+            case 0:
+                anim.SetBool("SkipIntro", false);
 
-        Invoke("ToggleText", textDelay);
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+
+                SetText();
+                Invoke("ToggleText", textDelay);
+
+                break;
+            case 1:
+                anim.SetBool("SkipIntro", true);
+                break;
+            default:
+                break;
+        }
     }
 
     private void Update()
@@ -40,6 +55,9 @@ public class MenuManager : MonoBehaviour
         LookAtButtons();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void ToggleText()
     {
         anim.SetTrigger("ToggleText");
@@ -54,12 +72,18 @@ public class MenuManager : MonoBehaviour
             startText.GetComponent<TextMeshProUGUI>().text = mouseText;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void IntroEnd()
     {
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
 
         canContinue = true;
+
+        // change this
+        PlayerPrefs.SetInt("SkipIntro", 1);
 
         ToggleParallax();
     }
@@ -96,4 +120,13 @@ public class MenuManager : MonoBehaviour
 
         anim.SetFloat("LookAtIndex", targetIndex);
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void ResetIntroPref()
+    {
+        PlayerPrefs.SetInt("SkipIntro", 0);
+    }
+
 }
