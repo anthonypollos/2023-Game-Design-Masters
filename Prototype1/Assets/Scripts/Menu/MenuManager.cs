@@ -12,6 +12,8 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] [Tooltip("")] private float textDelay;
 
+    [SerializeField] [Tooltip("")] private GameObject mainMenuPanel;
+
     private Animator anim;
 
     void Start()
@@ -22,7 +24,9 @@ public class MenuManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        Invoke("EnableText", textDelay);
+        SetText();
+
+        Invoke("ToggleText", textDelay);
     }
 
     private void Update()
@@ -30,11 +34,9 @@ public class MenuManager : MonoBehaviour
         // if input changes, update start text to show right prompt
     }
 
-    private void EnableText()
+    private void ToggleText()
     {
-        SetText();
-
-        anim.SetTrigger("NextState");
+        anim.SetTrigger("ToggleText");
     }
 
     private void SetText()
@@ -51,11 +53,21 @@ public class MenuManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
 
+        ToggleParallax();
+    }
+
+    public void ToggleMainMenu()
+    {
+        mainMenuPanel.SetActive(!mainMenuPanel.activeSelf);
+    }
+
+    public void ToggleParallax()
+    {
         ParallaxObject[] parallaxObjects = FindObjectsOfType<ParallaxObject>();
 
         foreach (ParallaxObject po in parallaxObjects)
         {
-            po.enabled = true;
+            po.enabled = !po.enabled;
         }
     }
 }
