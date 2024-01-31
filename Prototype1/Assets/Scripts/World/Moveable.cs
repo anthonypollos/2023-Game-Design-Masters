@@ -315,7 +315,8 @@ public class Moveable : MonoBehaviour, ISlowable
     {
         foreach(Collider collider in collidersHit)
         {
-            Physics.IgnoreCollision(myCollider, collider, false);
+            if(collider!=null)
+                Physics.IgnoreCollision(myCollider, collider, false);
         }
         collidersHit.Clear();
     }
