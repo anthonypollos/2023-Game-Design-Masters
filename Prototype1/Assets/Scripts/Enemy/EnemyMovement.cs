@@ -77,7 +77,7 @@ public class EnemyMovement : MonoBehaviour, ISlowable
     void Update()
     {
         count += Time.deltaTime;
-        if (brain.state == EnemyStates.ATTACKING)
+        if (brain.state == EnemyStates.ATTACKING || brain.state == EnemyStates.DEAD)
         {
             refreshTime = 0;
         }
@@ -109,7 +109,7 @@ public class EnemyMovement : MonoBehaviour, ISlowable
     public void Move()
     {
 
-        if (isMoving)
+        if (isMoving && brain.state != EnemyStates.DEAD)
         {
             if (count >= 1f || corner >= path.corners.Length)
             {

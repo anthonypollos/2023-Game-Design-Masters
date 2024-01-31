@@ -385,6 +385,24 @@ public class Moveable : MonoBehaviour, ISlowable
         IgnorePlayer();
     }
 
+    public void Grabbed()
+    {
+        if (stopping != null)
+        {
+            StopCoroutine(stopping);
+            stopping = null;
+        }
+        hold = true;
+        isStopping = false;
+        isDashing = false;
+        buffer = 0;
+        targetLocation = transform.position;
+        dir = Vector3.zero;
+        speed = 0;
+        isLaunched = false;
+        IgnorePlayer();
+    }
+
     public void Dash(Vector3 target, float time)
     {
         hold = false;

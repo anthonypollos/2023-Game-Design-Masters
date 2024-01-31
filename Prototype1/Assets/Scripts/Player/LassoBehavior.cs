@@ -136,7 +136,7 @@ public class LassoBehavior : MonoBehaviour
                 if (moveable != null)
                 {
                     moveable.tendrilOwner = attackManager;
-                    moveable.Hold();
+                    moveable.Grabbed();
                     attachedRB = temp.GetComponent<Rigidbody>();
                     //lassoRange.SetAttached(attached.transform, attachedRB);
                     lr.enabled = true;
