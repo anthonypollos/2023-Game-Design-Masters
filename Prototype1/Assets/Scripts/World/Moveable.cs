@@ -308,6 +308,7 @@ public class Moveable : MonoBehaviour, ISlowable
         stopping = null;
         isStopping = false;
         unstoppable = false;
+        isDashing = false;
         ResetCollisions();
     }
 
