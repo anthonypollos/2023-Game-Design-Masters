@@ -419,6 +419,14 @@ public class Moveable : MonoBehaviour, ISlowable
         isLaunched = true;
     }
 
+    public void ForceStop()
+    {
+        if(stopping ==null)
+        {
+            stopping = StartCoroutine(Stop());
+        }
+    }
+
     public void Ram(Vector3 target, float time)
     {
         hold = false;
