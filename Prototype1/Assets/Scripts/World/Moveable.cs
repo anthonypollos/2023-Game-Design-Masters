@@ -365,11 +365,17 @@ public class Moveable : MonoBehaviour, ISlowable
 
     public void Tossed(float force)
     {
-        speed += force / rb.mass;
+        if(speed!=0)
+            speed += force / rb.mass;
     }
 
     public void Hold()
     {
+        if(stopping!=null)
+        {
+            StopCoroutine(stopping);
+            stopping = null;
+        }
         hold = true;
         isStopping = false;
         isDashing = false;

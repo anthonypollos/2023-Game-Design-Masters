@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
+//Josh Bonovich
+//This abstract class holds all the necessary "interacton" behaviors. Such as if it gets hit or pulled
 public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullable, IKickable
 {
     [HideInInspector]
@@ -22,7 +23,6 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     public IsoAttackManager lassoOwner;
     [Tooltip("Stun time when taking damage")]
     [SerializeField] float staggerTime = 0.5f;
-
 
 
     public abstract void Kicked();
@@ -74,6 +74,7 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
         brain.PackAggro();
     }
 
+    //the enemy gets itself out of a tendril
     protected IEnumerator BreakOut()
     {
         float timer = 0;
