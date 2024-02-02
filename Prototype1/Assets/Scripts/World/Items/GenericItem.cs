@@ -20,6 +20,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 
     //Keeps track of if this object is alive or not. This is to prevent it from double dying.
     private bool isAlive = true;
+    private int maxHealth;
 
     private void Awake()
     {
@@ -38,6 +39,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
             //Now freeze.
             GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         }
+        maxHealth = health;
     }
 
     public void Kicked()
@@ -79,7 +81,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     public void TakeDamage(int dmg)
     {
         health -= dmg;
-        jukebox.PlaySound(0);
+        if (dmg > 0) jukebox.PlaySound(0);
         if (health <= 0)
         {
             //Bool to prevent double death
@@ -118,6 +120,8 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
                 Destroy(gameObject);
             }
         }
+        //Prevent overheal
+        if (health > maxHealth) health = maxHealth;
     }
 
     public bool WillBreak(int dmg)
@@ -133,6 +137,11 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         GetComponent<Rigidbody>().constraints = rbconstraints;
         //2. turn the boolean off so this is only called once.
         _frozenBeforeTendril = false;
+    }
+
+    public int GetHealth()
+    {
+        return health;
     }
 
 }

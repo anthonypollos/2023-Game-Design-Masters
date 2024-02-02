@@ -59,7 +59,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         //Debug.Log((float)health / maxHealth);
         //Debug.Log(health);
         healthSlider.value = (float)health/ maxHealth;
-        jukebox.PlaySound(0);
+        if (dmg > 0) jukebox.PlaySound(0);
+
+        //Prevent overheal
+        if (health > maxHealth) health = maxHealth;
     }
 
     public bool WillBreak(int dmg)
@@ -107,5 +110,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     private void OnSceneChange(Scene scene)
     {
         quitting = true;
+    }
+
+    public int GetHealth()
+    {
+        return health;
     }
 }
