@@ -15,6 +15,15 @@ public class MissionBehavior : MonoBehaviour
     protected bool triggered;
     protected bool completed;
 
+    [Header("Dialogue on completion (LEAVE EMPTY IF NO DIALOGUE)")]
+    [Header("Default Texts (no levels beaten)")]
+    [SerializeField] TextAsset dialogueText1;
+    [Header("Text based on level(s) completed")]
+    [Tooltip("Prioritized from top down")]
+    [SerializeField] List<TextAssets2> dialogueTexts;
+    TextAsset initialDialogue;
+
+
     protected void Start()
     {
         completed = false;
@@ -27,6 +36,24 @@ public class MissionBehavior : MonoBehaviour
                 IToggleable toggle = temp.GetComponentInChildren<IToggleable>();
                 if (toggle != null) { toggles.Add(toggle); }
             }
+        }
+        SavedValues savedValues = SaveLoadManager.instance.GetCopy();
+        foreach (TextAssets2 asset in dialogueTexts)
+        {
+            bool levelFinished;
+            if (savedValues.levels.TryGetValue(asset.levelName, out levelFinished))
+            {
+                if (levelFinished)
+                {
+                    initialDialogue = asset.initialDialogue;
+                    break;
+                }
+
+            }
+        }
+        if (initialDialogue == null)
+        {
+            initialDialogue = dialogueText1;
         }
     }
     public void SetFolder(IMissionContainer folder)
@@ -94,6 +121,8 @@ public class MissionBehavior : MonoBehaviour
                 }
             }
             folder.MissionComplete(this);
+            if (initialDialogue != null)
+                DialogueManager.instance.EnterDialogMode(initialDialogue);
         }
     }
 
