@@ -72,6 +72,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     private void Die()
     {
         brain.state = EnemyStates.DEAD;
+        brain.moveable.Hold();
         brain.interaction.Death();
     }
 

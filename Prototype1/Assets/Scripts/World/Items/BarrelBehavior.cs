@@ -14,8 +14,10 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
     // Start is called before the first frame update
     void Start()
     {
+        primed = false;
         health = 10;
         moveable = GetComponent<Moveable>();
+        primed = false;
         jukebox.SetTransform(transform);
     }
 
@@ -82,8 +84,5 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
             Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
-        jukebox.PlaySound(0);
-        Instantiate(explosion, transform.position, Quaternion.identity);
-        Destroy(gameObject);
     }
 }
