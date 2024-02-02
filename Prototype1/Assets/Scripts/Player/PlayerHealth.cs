@@ -83,4 +83,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(2);
         GameController.instance.Lose();
     }
+
+    public int GetHealth()
+    {
+        return health;
+    }
 }

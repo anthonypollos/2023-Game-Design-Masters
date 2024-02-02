@@ -135,4 +135,9 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         _frozenBeforeTendril = false;
     }
 
+    public int GetHealth()
+    {
+        return health;
+    }
+
 }
