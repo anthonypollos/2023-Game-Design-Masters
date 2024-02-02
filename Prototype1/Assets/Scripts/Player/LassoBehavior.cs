@@ -262,7 +262,7 @@ public class LassoBehavior : MonoBehaviour
                 mouseAdjust.y = 0;
                 Vector3 attachedAdjust = attached.transform.position;
                 attachedAdjust.y = 0;
-                if (Vector3.Distance(mouseAdjust, attachedAdjust) < 1)
+                if(Vector3.Distance(mouseAdjust, attachedAdjust) < 1)
                 {
                     dir = Vector3.zero;
                     return 0;
