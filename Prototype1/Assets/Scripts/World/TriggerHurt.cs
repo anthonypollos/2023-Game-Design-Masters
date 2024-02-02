@@ -16,6 +16,8 @@ public class TriggerHurt : MonoBehaviour
     public bool hurtPlayer = true;
     [Tooltip("Hurt objects with 'Generic Item'")]
     public bool hurtItem = true;
+    [Tooltip("Hurt enemies")]
+    public bool hurtEnemy = true;
     [Space(10)]
     [Header("Damage Options")]
     [Tooltip("Take a wild guess what this does")]
@@ -45,6 +47,7 @@ public class TriggerHurt : MonoBehaviour
         Hurt(other.gameObject);
     }
 
+    //Main Hurting Function
     private void Hurt(GameObject HurtObject)
     {
         //If the object is the player and is valid, hurt the player!
@@ -52,6 +55,13 @@ public class TriggerHurt : MonoBehaviour
         {
             hurtable = true;
             HurtPlayer(HurtObject);
+        }
+
+        //If the object is the player and is valid, hurt the player!
+        if (HurtObject.CompareTag("Enemy") && hurtEnemy)
+        {
+            hurtable = true;
+            HurtEnemy(HurtObject);
         }
 
         //If the object has a GenericItem script and is valid, hurt the item!
@@ -89,6 +99,12 @@ public class TriggerHurt : MonoBehaviour
         if (Player.GetComponent<PlayerHealth>().GetHealth() > 0)  Player.GetComponent<PlayerHealth>().TakeDamage(damageAmount);
     }
 
+    private void HurtEnemy(GameObject Enemy)
+    {
+        //Only hurt if the health is above 0 (prevents damage during death anim)
+        if (Enemy.GetComponent<EnemyHealth>().GetHealth() > 0) Enemy.GetComponent<EnemyHealth>().TakeDamage(damageAmount);
+    }
+
     //Hurt the item
     private void HurtItem(GameObject Item)
     {
@@ -96,6 +112,7 @@ public class TriggerHurt : MonoBehaviour
         if (Item.GetComponent<GenericItem>().GetHealth() > 0) Item.GetComponent<GenericItem>().TakeDamage(damageAmount);
     }
 
+    //turn the collider for the trigger back on. Needed for tick damage
     private void turnBackOn()
     {
         GetComponent<Collider>().enabled = true;
