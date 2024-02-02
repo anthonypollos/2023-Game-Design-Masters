@@ -16,7 +16,6 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
     {
         health = 10;
         moveable = GetComponent<Moveable>();
-        primed = false;
         jukebox.SetTransform(transform);
     }
 
@@ -76,6 +75,13 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
 
     private void Explode()
     {
+        if (!primed)
+        {
+            primed = true;
+            jukebox.PlaySound(0);
+            Instantiate(explosion, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
         jukebox.PlaySound(0);
         Instantiate(explosion, transform.position, Quaternion.identity);
         Destroy(gameObject);
