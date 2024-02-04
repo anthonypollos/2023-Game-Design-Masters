@@ -430,9 +430,9 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4995769579088533739}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -0.87, y: -0.87, z: -0.87}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6582657868709856554}
@@ -440,9 +440,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.081}
-  m_SizeDelta: {x: 1428, y: 718}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!223 &886691413840406854
 Canvas:
   m_ObjectHideFlags: 0
@@ -452,7 +452,7 @@ Canvas:
   m_GameObject: {fileID: 4995769579088533739}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 2
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -488,7 +488,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &2325738274800935284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -608,7 +608,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -801,7 +801,7 @@ RectTransform:
   m_Father: {fileID: 2944117823603639231}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0.0000012218952, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -826,7 +826,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.018116832, g: 1, b: 0, a: 1}
+  m_Color: {r: 0.6037736, g: 0.0704308, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -870,7 +870,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4534373808377237439
 Transform:
   m_ObjectHideFlags: 0
@@ -884,8 +884,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 2427940373659193743}
   - {fileID: 5790362442285712973}
+  - {fileID: 2427940373659193743}
   - {fileID: 1125327180713566607}
   - {fileID: 3114157026764390791}
   - {fileID: 1570160351503532292}
@@ -920,10 +920,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.93092024
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 1.5110525
+  m_Height: 6.562476
+  m_Direction: 2
+  m_Center: {x: 0.024986029, y: 0.5541364, z: 0.51895094}
 --- !u!54 &6142036028151922199
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -986,7 +986,7 @@ MonoBehaviour:
       maxDistance: 0
       spatialBlend: 0
     transform: {fileID: 0}
-  health: 350
+  health: 700
   staggerThreshold: 5
   bloodParticle: {fileID: 3819351497248801758, guid: 825a543a483823647818e91c51585d77, type: 3}
   healthSlider: {fileID: 8835219585292491107}
@@ -1004,8 +1004,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clashDamage: 10
+  neutralSpeed: 15
+  rateOfChange: 1
+  maxDamage: 40
+  speed: 0
   isLaunched: 0
-  timeToStop: 0.1
+  slowdownPerSecond: 30
   isDashing: 0
   tendrilOwner: {fileID: 0}
 --- !u!114 &2886914740218223384
@@ -1024,14 +1029,14 @@ MonoBehaviour:
   interaction: {fileID: 0}
   moveable: {fileID: 0}
   player: {fileID: 0}
-  sightDistance: 30
+  sightDistance: 40
   isAggro: 0
   an: {fileID: 0}
   layermask:
     serializedVersion: 2
     m_Bits: 1073417
   state: 0
-  optimalRange: 1.5
+  optimalRange: 3
   jukebox:
     tracks:
     - sound: {fileID: 0}
@@ -1068,7 +1073,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMoving: 1
-  movementSpeed: 5
+  movementSpeed: 6.5
   isPatrolling: 0
   patrolPoints: []
   centerPoint: {x: 0, y: 0, z: 0}
@@ -1076,6 +1081,7 @@ MonoBehaviour:
   brain: {fileID: 0}
   rb: {fileID: 0}
   tooCloseRange: 0
+  debug: 0
 --- !u!95 &2938013358553278094
 Animator:
   serializedVersion: 5
@@ -1128,10 +1134,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxAttackRange: 15
   minAttackRange: 3
-  attackSpeed: 0.6
+  attackSpeed: 0.35
   brain: {fileID: 0}
   attackWindUpSeconds:
-  - 1
+  - 0.5
   attackSeconds:
   - 0.25
   attackWindDownSeconds:
@@ -1140,7 +1146,7 @@ MonoBehaviour:
   attackFramesPerSecond: 24
   quickMeleeRange: 1.5
   dashRange: 40
-  dashTime: 2
+  dashTime: 1
   jukebox:
     tracks:
     - sound: {fileID: 8300000, guid: 1ca501e57ee3f1d478acaebff61a4bb1, type: 3}
@@ -1172,8 +1178,6 @@ MonoBehaviour:
   lassoImage: {fileID: 6638408004567519884}
   lassoOwner: {fileID: 0}
   staggerTime: 0.5
-  clashDamage: 30
-  dashClashModifier: 0.5
   stunMod: 1
   kickedPartical: {fileID: 0}
   jukebox:
@@ -1201,8 +1205,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7db2f61d8655a4a4ca7fd80733d47cbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultEffectDuration: 3
-  damagePerTick: 15
+  defaultEffectDuration: 2
+  damagePerTick: 20
   tickInterval: 0.5
   an: {fileID: 0}
 --- !u!1 &8549886139183679838
@@ -1306,7 +1310,7 @@ RectTransform:
   m_GameObject: {fileID: 9052292515051252565}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalScale: {x: 3.4289255, y: 3.4289255, z: 3.4289255}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5519228099601289607}
@@ -1316,7 +1320,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -2.42}
+  m_AnchoredPosition: {x: 237, y: -270}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8835219585292491107
