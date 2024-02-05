@@ -16,13 +16,15 @@ public class InstantiateVolume : MonoBehaviour
     [SerializeField] private float InstantiatedObjectLifetime = 0f;
     [Tooltip("The place where the object spawns.")]
     [SerializeField] Vector3 SpawnLocation;
+    [Tooltip("Spawns objects on top of the spawner\nOverrides Spawn Location")]
+    [SerializeField] bool SpawnOnSpawner = false;
 
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (SpawnOnSpawner) SpawnLocation = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
     }
 
     // Update is called once per frame
