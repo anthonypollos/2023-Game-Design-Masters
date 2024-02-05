@@ -308,6 +308,7 @@ public class Moveable : MonoBehaviour, ISlowable
         stopping = null;
         isStopping = false;
         unstoppable = false;
+        isDashing = false;
         ResetCollisions();
     }
 
@@ -416,6 +417,14 @@ public class Moveable : MonoBehaviour, ISlowable
         dir.y = 0;
         speed = Vector3.Distance(transform.position, targetLocation) / time;
         isLaunched = true;
+    }
+
+    public void ForceStop()
+    {
+        if(stopping ==null)
+        {
+            stopping = StartCoroutine(Stop());
+        }
     }
 
     public void Ram(Vector3 target, float time)
