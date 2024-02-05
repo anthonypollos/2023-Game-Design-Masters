@@ -15,6 +15,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     [Tooltip("The amount of time the Destruction Particle Object is alive for.\n0 means it lives forever.")]
     [SerializeField] float DestructionParticleLifetime = 4f;
     [SerializeField] GameObject KickedParticle;
+    [SerializeField][Tooltip("Add the name of the status you want to invoke when this object hits a target")] string[] effectsOnHit;
 
     [SerializeField] private JukeBox jukebox;
 
@@ -22,13 +23,26 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     private bool isAlive = true;
     private int maxHealth;
 
+    bool wasOn = false;
+    [SerializeField] bool respawning = false;
+    [SerializeField] float respawnDelay = 5f;
+    Vector3 initialPos;
+    Quaternion initialRot;
+
+
     private void Awake()
     {
         jukebox.SetTransform(transform);
     }
+    private void OnEnable()
+    {
+        wasOn = true;
+    }
     // Start is called before the first frame update
     void Start()
     {
+        initialPos = transform.position;
+        initialRot = transform.rotation;
         moveable = GetComponent<Moveable>();
         //If set to be frozen, freeze.
         if (_frozenBeforeTendril)
@@ -117,7 +131,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
                     }
                 }
                 jukebox.PlaySound(1);
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
         }
         //Prevent overheal
@@ -144,6 +158,44 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         return health;
     }
 
+    private void OnDisable()
+    {
+        if (wasOn)
+        {
+            wasOn = false;
+            if (respawning)
+            {
+                GameController.instance.Respawn(gameObject, respawnDelay, initialPos, initialRot);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
+
+    public void OnHitModifier(GameObject target)
+    {
+        foreach (string effect in effectsOnHit)
+        {
+            switch (effect)
+            {
+                case "Flammable":
+                    Flammable flammable;
+                    if (target.TryGetComponent<Flammable>(out flammable))
+                        flammable.Activate();
+                    break;
+                case "Bleedable":
+                    Bleedable bleedable;
+                    if (target.TryGetComponent<Bleedable>(out bleedable))
+                        bleedable.Activate();
+                    break;
+                default:
+                    Debug.Log("Effect " + effect + " isn't implemented or is spelled wrong");
+                    break;
+            }
+        }
+    }
     public int GetMaxHealth()
     {
         return maxHealth;

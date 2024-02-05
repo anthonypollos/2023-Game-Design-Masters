@@ -44,9 +44,12 @@ public class Moveable : MonoBehaviour, ISlowable
     List<float> slowMods;
     float[] slowModsArray;
 
+    GenericItem gi;
+
     // Start is called before the first frame update
     void Start()
     {
+        gi = GetComponent<GenericItem>();
         EnterSlowArea(0);
         myDamageable = GetComponent<IDamageable>();
         myCollider = GetComponent<Collider>();
@@ -229,6 +232,7 @@ public class Moveable : MonoBehaviour, ISlowable
                     
                 }
             }
+            
             //if wall, hard stop
             else if (!isStopping)
             {
@@ -237,7 +241,8 @@ public class Moveable : MonoBehaviour, ISlowable
                 {
                     at.ForceAnimationChange();
                 }
-                stopping = StartCoroutine(Stop());
+                if(gameObject.activeInHierarchy)
+                    stopping = StartCoroutine(Stop());
             }
             
             //Check for Trap
@@ -245,6 +250,10 @@ public class Moveable : MonoBehaviour, ISlowable
             if(trap != null)
             {
                 trap.ActivateTrap(gameObject);
+            }
+            if (gi != null)
+            {
+                gi.OnHitModifier(collision.gameObject);
             }
         }
     }
@@ -483,7 +492,8 @@ public class Moveable : MonoBehaviour, ISlowable
 
     public void ForceReleaseDelayed()
     {
-        StartCoroutine(ReleaseDelayed());
+        if(gameObject.activeInHierarchy)
+            StartCoroutine(ReleaseDelayed());
     }
 
     IEnumerator ReleaseDelayed()

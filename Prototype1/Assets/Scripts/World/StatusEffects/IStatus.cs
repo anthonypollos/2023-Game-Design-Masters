@@ -16,6 +16,7 @@ public abstract class IStatus : MonoBehaviour
     {
         Effect();
         currentTime = 0;
+        adjustedEffectDuration = 0;
         if (timerCoroutine == null)
         {
             timerCoroutine = StartCoroutine(Timer());

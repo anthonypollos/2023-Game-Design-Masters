@@ -166,4 +166,20 @@ public class GameController : MonoBehaviour
         select.Select();
     }
 
+
+    public void Respawn(GameObject go, float delay, Vector3 pos, Quaternion rot)
+    {
+        if (!go.gameObject.scene.isLoaded)
+            return;
+        GameObject temp = Instantiate(go, pos, rot);
+        Destroy(go);
+        StartCoroutine(DelayedRespawn(temp, delay));
+    }
+
+    private IEnumerator DelayedRespawn(GameObject go, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        go.SetActive(true);
+    }
+
 }
