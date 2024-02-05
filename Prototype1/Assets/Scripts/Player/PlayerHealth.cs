@@ -90,4 +90,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         return health;
     }
+
+    public int GetMaxHealth()
+    {
+        return maxHealth;
+    }
 }

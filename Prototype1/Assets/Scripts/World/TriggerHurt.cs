@@ -9,6 +9,10 @@ using UnityEngine;
 /// CAVEAT: At the moment, this will only damage one thing inside it at a time if tick damage is on
 /// </summary>
 
+///Known issues:
+///If you are inside a hurt trigger with a negative value (a trigger that HEALS instead of HURTS) and
+///you have full health and then you take damage WHILE STILL INSIDE THE TRIGGER, it will not check you
+///a second time, and you will instead have to exit and re-enter the trigger to heal.
 public class TriggerHurt : MonoBehaviour
 {
     [Header("Activator Options")]
@@ -57,7 +61,7 @@ public class TriggerHurt : MonoBehaviour
             HurtPlayer(HurtObject);
         }
 
-        //If the object is the player and is valid, hurt the player!
+        //If the object is an enemy and is valid, hurt the enemy!
         if (HurtObject.CompareTag("Enemy") && hurtEnemy)
         {
             hurtable = true;
@@ -96,20 +100,47 @@ public class TriggerHurt : MonoBehaviour
     private void HurtPlayer(GameObject Player)
     {
         //Only hurt if the health is above 0 (prevents damage during death anim)
-        if (Player.GetComponent<PlayerHealth>().GetHealth() > 0)  Player.GetComponent<PlayerHealth>().TakeDamage(damageAmount);
+        if (Player.GetComponent<PlayerHealth>().GetHealth() > 0)
+        {
+            //Do not run "Take Damage" if this is a healing trigger and the player's HP is max
+            if (!((damageAmount < 0) && (Player.GetComponent<PlayerHealth>().GetHealth() == Player.GetComponent<PlayerHealth>().GetMaxHealth())))
+            {
+                Player.GetComponent<PlayerHealth>().TakeDamage(damageAmount);
+            }
+            //if the trigger heals and health IS max, turn off hurtable so other functions don't run.
+            else hurtable = false;
+        }
     }
 
     private void HurtEnemy(GameObject Enemy)
     {
         //Only hurt if the health is above 0 (prevents damage during death anim)
-        if (Enemy.GetComponent<EnemyHealth>().GetHealth() > 0) Enemy.GetComponent<EnemyHealth>().TakeDamage(damageAmount);
+        if (Enemy.GetComponent<EnemyHealth>().GetHealth() > 0)
+        {
+            //Do not run "Take Damage" if this is a healing trigger and the player's HP is max
+            if (!((damageAmount < 0) && (Enemy.GetComponent<EnemyHealth>().GetHealth() == Enemy.GetComponent<EnemyHealth>().GetMaxHealth())))
+            {
+                Enemy.GetComponent<EnemyHealth>().TakeDamage(damageAmount);
+            }
+            //if the trigger heals and health IS max, turn off hurtable so other functions don't run.
+            else hurtable = false;
+        }
     }
 
     //Hurt the item
     private void HurtItem(GameObject Item)
     {
         //Only hurt if the health is above 0 (prevents damage during death anim)
-        if (Item.GetComponent<GenericItem>().GetHealth() > 0) Item.GetComponent<GenericItem>().TakeDamage(damageAmount);
+        if (Item.GetComponent<GenericItem>().GetHealth() > 0)
+        {
+            //Do not run "Take Damage" if this is a healing trigger and the player's HP is max
+            if (!((damageAmount < 0) && (Item.GetComponent<GenericItem>().GetHealth() == Item.GetComponent<GenericItem>().GetMaxHealth())))
+            {
+                Item.GetComponent<GenericItem>().TakeDamage(damageAmount);
+            }
+            //if the trigger heals and health IS max, turn off hurtable so other functions don't run.
+            else hurtable = false;
+        }
     }
 
     //turn the collider for the trigger back on. Needed for tick damage

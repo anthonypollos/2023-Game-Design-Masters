@@ -115,4 +115,9 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         return health;
     }
+
+    public int GetMaxHealth()
+    {
+        return maxHealth;
+    }
 }

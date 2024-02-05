@@ -144,4 +144,8 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         return health;
     }
 
+    public int GetMaxHealth()
+    {
+        return maxHealth;
+    }
 }
