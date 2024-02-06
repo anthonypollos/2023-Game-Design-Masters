@@ -109,7 +109,7 @@ public class Flammable : IStatus
         Flammable flammable = collision.gameObject.GetComponent<Flammable>();
         if (flammable != null && onFire!=null)
         {
-            Debug.Log("Collision Fire");
+            //Debug.Log("Collision Fire");
             flammable.Activate();
         }
     }

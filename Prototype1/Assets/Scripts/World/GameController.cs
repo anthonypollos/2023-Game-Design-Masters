@@ -32,8 +32,11 @@ public class GameController : MonoBehaviour
 
     public static GameController instance;
 
+    private OutlineToggle outlineManager;
+
     private void Awake()
     {
+        outlineManager = FindObjectOfType<OutlineToggle>();
         paused = false;
         Cursor.lockState = CursorLockMode.Confined;
         if (instance != null && instance != this)
@@ -180,6 +183,13 @@ public class GameController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         go.SetActive(true);
+        //Add the respawned object to the outline manager
+        foreach (Transform child in go.transform)
+        {
+            //Check the children of the respawned object. Find whatever child has the outline and add it
+            if (child.GetComponent<Outline>() != null) outlineManager.AddOutline(child.gameObject);
+        }
+            
     }
 
 }
