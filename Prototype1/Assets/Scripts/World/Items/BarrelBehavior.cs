@@ -11,9 +11,21 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
     [SerializeField] float fuse = 5f;
     [SerializeField] JukeBox jukebox;
 
+    bool wasOn = false;
+    [SerializeField] bool respawning = false;
+    [SerializeField] float respawnDelay = 5f;
+    Vector3 initialPos;
+    Quaternion initialRot;
+
+    private void OnEnable()
+    {
+        wasOn = true;
+    }
     // Start is called before the first frame update
     void Start()
     {
+        initialPos = transform.position;
+        initialRot = transform.rotation;
         primed = false;
         health = 10;
         moveable = GetComponent<Moveable>();
@@ -82,7 +94,23 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
             primed = true;
             jukebox.PlaySound(0);
             Instantiate(explosion, transform.position, Quaternion.identity);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (wasOn)
+        {
+            wasOn = false;
+            if (respawning)
+            {
+                GameController.instance.Respawn(gameObject, respawnDelay, initialPos, initialRot);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

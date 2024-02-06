@@ -61,6 +61,8 @@ public class Bleedable : IStatus
             if (iDamageable != null)
             {
                 iDamageable.TakeDamage(damagePerTick);
+                //Force blood to spawn specifically on enemies
+                if (GetComponent<EnemyHealth>() != null) GetComponent<EnemyHealth>().ForceSpawnBlood();
             }
         }
     }

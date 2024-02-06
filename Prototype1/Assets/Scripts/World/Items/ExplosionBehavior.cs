@@ -8,6 +8,7 @@ public class ExplosionBehavior : MonoBehaviour
     [SerializeField] int Playerdmg;
     [SerializeField] float explosiveForce;
     [SerializeField] float explosiveCarryDistance;
+    [SerializeField] float fireTime = 4f;
     [SerializeField] LayerMask layerMask;
     List<GameObject> hit;
     ParticleSystem[] particleSystems;
@@ -78,6 +79,12 @@ public class ExplosionBehavior : MonoBehaviour
             }
             IKickable kicked = entity.GetComponent<IKickable>();
             if (kicked != null) kicked.Kicked();
+
+            Flammable flammable = entity.GetComponent<Flammable>();
+            if(flammable != null)
+            {
+                flammable.Activate(fireTime);
+            }
         }
     }
 

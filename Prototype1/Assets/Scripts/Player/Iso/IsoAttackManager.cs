@@ -205,17 +205,13 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 lr.enabled = false;
             }
         }
-    }
-
-    private void Update()
-    {
-        if (Time.timeScale != 0)
+        if (Time.timeScale == 0 && isCharging)
         {
-            
+            isCharging = false;
+            lr.enabled = false;
         }
-
-        
     }
+
 
     private void Lasso()
     {
