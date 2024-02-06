@@ -123,10 +123,12 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
                         {
                             //If the child has a rigidbody, set its angles to the object that's breaking's angles
                             child.eulerAngles = GetComponent<Transform>().eulerAngles;
-                            //print(this + "'s gib, " + child + ", has angles of " + child.eulerAngles);
+
                             //Now set the velocity to the object that's breaking's velocity
                             child.gameObject.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity;
-                            //print(this + "'s gib, " + child + ", has a velocity of " + child.gameObject.GetComponent<Rigidbody>().velocity);
+
+                            //If this is an explosion, increase the velocity ten-fold
+                            if (vfxobj.CompareTag("Explosion")) child.gameObject.GetComponent<Rigidbody>().velocity *= 10;
                         }
                     }
                 }
