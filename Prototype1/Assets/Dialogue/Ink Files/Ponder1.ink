@@ -1,0 +1,1 @@
+You ponder the orb, it shows you wonders

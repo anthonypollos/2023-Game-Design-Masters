@@ -1,1 +1,0 @@
-This is a camo hat

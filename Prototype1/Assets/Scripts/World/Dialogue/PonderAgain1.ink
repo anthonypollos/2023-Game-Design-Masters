@@ -1,1 +1,0 @@
-Its the same orb as the last time you visited this place
