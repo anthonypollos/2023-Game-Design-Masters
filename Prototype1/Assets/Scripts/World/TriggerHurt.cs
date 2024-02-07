@@ -144,7 +144,7 @@ public class TriggerHurt : MonoBehaviour
     }
 
     //turn the collider for the trigger back on. Needed for tick damage
-    private void turnBackOn()
+    private void TurnBackOn()
     {
         GetComponent<Collider>().enabled = true;
     }

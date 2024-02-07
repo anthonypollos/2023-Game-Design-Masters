@@ -116,15 +116,21 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     {
         if(state == EnemyStates.NOTHING)
         {
-            if(CanSeePlayer() && isAggro)
+            if (CanSeePlayer() && isAggro)
             {
                 Vector3 dir = (player.position - transform.position);
                 dir.y = 0;
-                transform.forward = dir.normalized;
+                Vector3 velocityNoY = dir.normalized;
+                velocityNoY.y = 0;
+                transform.forward = velocityNoY.normalized;
             }
             else if (movement.rb.velocity.x != 0 || movement.rb.velocity.z != 0)
-                if(movement.isMoving)
-                    transform.forward = movement.rb.velocity.normalized;
+                if (movement.isMoving)
+                {
+                    Vector3 velocityNoY = movement.rb.velocity.normalized;
+                    velocityNoY.y = 0;
+                    transform.forward = velocityNoY.normalized;
+                }
         }
     }
 
@@ -138,15 +144,19 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     {
         if (CanSeePlayer())
         {
-            Vector3 dir = (player.transform.position - transform.position).normalized;
+            Vector3 dir = (player.position - transform.position);
             dir.y = 0;
-            transform.forward = dir.normalized;
+            Vector3 velocityNoY = dir.normalized;
+            velocityNoY.y = 0;
+            transform.forward = velocityNoY.normalized;
         }
         else
         {
             Vector3 dir = (lastKnownLocation - transform.position).normalized;
             dir.y = 0;
-            transform.forward = dir.normalized;
+            Vector3 velocityNoY = dir.normalized;
+            velocityNoY.y = 0;
+            transform.forward = velocityNoY.normalized;
         }
     }
 

@@ -120,4 +120,18 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         return maxHealth;
     }
+
+    //forces a blood particle to spawn even if the stagger amount was not reached
+    //BUG: If we force bleeding at the same time as regular bleed, this may result in a double-spawn!
+    public void ForceSpawnBlood()
+    {
+        //If there is a blood particle, create it.
+        if (bloodParticle != null)
+        {
+            //create the particle
+            GameObject vfxobj = Instantiate(bloodParticle, gameObject.transform.position, Quaternion.identity);
+            //destroy the particle
+            Destroy(vfxobj, 4);
+        }
+    }
 }
