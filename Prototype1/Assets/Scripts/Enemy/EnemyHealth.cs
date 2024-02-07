@@ -21,8 +21,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public EnemyBrain brain;
     bool quitting = false;
 
+    private OutlineToggle outlineManager;
+
     private void Awake()
     {
+        outlineManager = FindObjectOfType<OutlineToggle>();
         quitting = false;
         jukebox.SetTransform(transform);
         SceneManager.sceneUnloaded += OnSceneChange;
@@ -132,6 +135,18 @@ public class EnemyHealth : MonoBehaviour, IDamageable
             GameObject vfxobj = Instantiate(bloodParticle, gameObject.transform.position, Quaternion.identity);
             //destroy the particle
             Destroy(vfxobj, 4);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        foreach (Transform child in transform)
+        {
+            //If we have an outline, remove from the list on death
+            if (child.GetComponent<Outline>() != null)
+            {
+                outlineManager.RemoveOutline(child.gameObject);
+            }
         }
     }
 }

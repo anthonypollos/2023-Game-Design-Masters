@@ -19,11 +19,13 @@ public class InstantiateVolume : MonoBehaviour
     [Tooltip("Spawns objects on top of the spawner\nOverrides Spawn Location")]
     [SerializeField] bool SpawnOnSpawner = false;
 
+    private OutlineToggle outlineManager;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        outlineManager = FindObjectOfType<OutlineToggle>();
         if (SpawnOnSpawner) SpawnLocation = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
     }
 
@@ -39,6 +41,20 @@ public class InstantiateVolume : MonoBehaviour
         {
             //not bothering with the rotation. This can be changed to a serialized value if we REALLY want it.
             GameObject Insantiated = Instantiate(InstantiatedObject, SpawnLocation, Quaternion.Euler(transform.forward));
+
+            //If the instantiated object has an outline, add it to the manager
+            foreach (Transform child in Insantiated.transform)
+            {
+                //Check the children of the respawned object. Find whatever child has the outline and add it
+                if (child.GetComponent<Outline>() != null)
+                {
+                    outlineManager.AddOutline(child.gameObject);
+                    //de-activate the outline
+                    child.GetComponent<Outline>().enabled = false;
+                }
+            }
+
+            //If the instantiated object has a lifetime setting, kill it after its lifetime has ended.
             if (InstantiatedObjectLifetime != 0f) Destroy(Insantiated, InstantiatedObjectLifetime);
         }
     }

@@ -187,7 +187,12 @@ public class GameController : MonoBehaviour
         foreach (Transform child in go.transform)
         {
             //Check the children of the respawned object. Find whatever child has the outline and add it
-            if (child.GetComponent<Outline>() != null) outlineManager.AddOutline(child.gameObject);
+            if (child.GetComponent<Outline>() != null)
+            {
+                outlineManager.AddOutline(child.gameObject);
+                //de-activate the outline
+                child.GetComponent<Outline>().enabled = false;
+            }
         }
             
     }
