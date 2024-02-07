@@ -29,10 +29,13 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     Vector3 initialPos;
     Quaternion initialRot;
 
+    private OutlineToggle outlineManager;
+
 
     private void Awake()
     {
         jukebox.SetTransform(transform);
+        outlineManager = FindObjectOfType<OutlineToggle>();
     }
     private void OnEnable()
     {
@@ -201,5 +204,17 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     public int GetMaxHealth()
     {
         return maxHealth;
+    }
+
+    private void OnDestroy()
+    {
+        foreach (Transform child in transform)
+        {
+            //If we have an outline, remove from the list on death
+            if (child.GetComponent<Outline>() != null)
+            {
+                outlineManager.RemoveOutline(child.gameObject);
+            }
+        }
     }
 }
