@@ -41,8 +41,19 @@ public class InstantiateVolume : MonoBehaviour
         {
             //not bothering with the rotation. This can be changed to a serialized value if we REALLY want it.
             GameObject Insantiated = Instantiate(InstantiatedObject, SpawnLocation, Quaternion.Euler(transform.forward));
+
             //If the instantiated object has an outline, add it to the manager
-            if (Insantiated.GetComponent<Outline>() != null) outlineManager.AddOutline(Insantiated.gameObject);
+            foreach (Transform child in Insantiated.transform)
+            {
+                //Check the children of the respawned object. Find whatever child has the outline and add it
+                if (child.GetComponent<Outline>() != null)
+                {
+                    outlineManager.AddOutline(child.gameObject);
+                    //de-activate the outline
+                    child.GetComponent<Outline>().enabled = false;
+                }
+            }
+
             //If the instantiated object has a lifetime setting, kill it after its lifetime has ended.
             if (InstantiatedObjectLifetime != 0f) Destroy(Insantiated, InstantiatedObjectLifetime);
         }
