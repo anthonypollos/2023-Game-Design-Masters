@@ -5,7 +5,7 @@ using UnityEngine;
 public class FallingGroundSound : MonoBehaviour
 {
     
-    public AudioSource asource;
+    AudioSource asource;
     
     // Start is called before the first frame update
     void Start()
