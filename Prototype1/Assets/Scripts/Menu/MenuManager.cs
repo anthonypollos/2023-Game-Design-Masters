@@ -55,9 +55,10 @@ public class MenuManager : MonoBehaviour
 
     IEnumerator IntroStart()
     {
+        SetText();
+
         yield return new WaitForSeconds(textDelay);
 
-        SetText();
         ToggleText("on");
     }
 
