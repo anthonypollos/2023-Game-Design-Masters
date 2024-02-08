@@ -21,8 +21,18 @@ public class TestAudioLevel : MonoBehaviour, IPointerUpHandler
     /// <param name="eventData"></param>
     public void OnPointerUp(PointerEventData eventData)
     {
+        PlaySound();
+    }
+
+    public void PlaySound()
+    {
         if (audioSource != null)
+        {
+            if (audioSource.isPlaying)
+                audioSource.Stop();
+
             audioSource.PlayOneShot(testClip);
+        }
     }
 
 }
