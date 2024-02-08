@@ -26,7 +26,12 @@ public class OutlineToggle : MonoBehaviour
     //Add a new object to the outline list
     public void AddOutline(GameObject NewOutline)
     {
-        Debug.Log("Attempting to add " + NewOutline + " to the outline list.");
+        //Debug.Log("Attempting to add " + NewOutline + " to the outline list.");
         outlines.Add(NewOutline.GetComponent<Outline>());
+    }
+
+    public void RemoveOutline(GameObject RemoveMe)
+    {
+        outlines.Remove(RemoveMe.GetComponent<Outline>());
     }
 }
