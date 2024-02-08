@@ -44,6 +44,7 @@ public class BruteEnemyAttacks : EnemyAttackTemplate
         brain.LookAtPlayer();
         jukebox.PlaySound(0);
         timeTest = Time.realtimeSinceStartup;
+        jukebox.PlaySound(1);
     }
 
 
