@@ -15,16 +15,37 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     [Tooltip("The amount of time the Destruction Particle Object is alive for.\n0 means it lives forever.")]
     [SerializeField] float DestructionParticleLifetime = 4f;
     [SerializeField] GameObject KickedParticle;
+    [SerializeField][Tooltip("Add the name of the status you want to invoke when this object hits a target")] string[] effectsOnHit;
 
     [SerializeField] private JukeBox jukebox;
+
+    //Keeps track of if this object is alive or not. This is to prevent it from double dying.
+    private bool isAlive = true;
+    private int maxHealth;
+
+    bool wasOn = false;
+    [SerializeField] bool respawning = false;
+    [SerializeField] float respawnDelay = 5f;
+    Vector3 initialPos;
+    Quaternion initialRot;
+
+    private OutlineToggle outlineManager;
+
 
     private void Awake()
     {
         jukebox.SetTransform(transform);
+        outlineManager = FindObjectOfType<OutlineToggle>();
+    }
+    private void OnEnable()
+    {
+        wasOn = true;
     }
     // Start is called before the first frame update
     void Start()
     {
+        initialPos = transform.position;
+        initialRot = transform.rotation;
         moveable = GetComponent<Moveable>();
         //If set to be frozen, freeze.
         if (_frozenBeforeTendril)
@@ -35,6 +56,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
             //Now freeze.
             GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         }
+        maxHealth = health;
     }
 
     public void Kicked()
@@ -76,24 +98,49 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     public void TakeDamage(int dmg)
     {
         health -= dmg;
-        jukebox.PlaySound(0);
+        if (dmg > 0) jukebox.PlaySound(0);
         if (health <= 0)
         {
-            //If there is a destruction particle, create it.
-            if (DestructionParticle != null)
+            //Bool to prevent double death
+            if (isAlive)
             {
-                //create the particle
-                GameObject vfxobj = Instantiate(DestructionParticle, gameObject.transform.position, Quaternion.identity);
-                //Check to see if the particle has a lifetime.
-                if (DestructionParticleLifetime != 0f)
+                //First thing's first, turn isAlive off so this can't run again
+                isAlive = false;
+                //If there is a destruction particle, create it.
+                if (DestructionParticle != null)
                 {
-                    //destroy the particle
-                    Destroy(vfxobj, DestructionParticleLifetime);
+                    //create the particle, gib, etc.
+                    GameObject vfxobj = Instantiate(DestructionParticle, gameObject.transform.position, Quaternion.identity);
+                    //Check to see if the particle has a lifetime.
+                    if (DestructionParticleLifetime != 0f)
+                    {
+                        //destroy the particle
+                        Destroy(vfxobj, DestructionParticleLifetime);
+                    }
+
+                    //This code makes gibs inherit their parent's angles and velocity
+                    foreach (Transform child in vfxobj.transform)
+                    {
+                        //check every child in the instantiated object to see if they have rigidbodies.
+                        if (child.gameObject.GetComponent<Rigidbody>() != null)
+                        {
+                            //If the child has a rigidbody, set its angles to the object that's breaking's angles
+                            child.eulerAngles = GetComponent<Transform>().eulerAngles;
+
+                            //Now set the velocity to the object that's breaking's velocity
+                            child.gameObject.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity;
+
+                            //If this is an explosion, increase the velocity ten-fold
+                            if (vfxobj.CompareTag("Explosion")) child.gameObject.GetComponent<Rigidbody>().velocity *= 10;
+                        }
+                    }
                 }
+                jukebox.PlaySound(1);
+                gameObject.SetActive(false);
             }
-            jukebox.PlaySound(1);
-            Destroy(gameObject);
         }
+        //Prevent overheal
+        if (health > maxHealth) health = maxHealth;
     }
 
     public bool WillBreak(int dmg)
@@ -111,4 +158,63 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         _frozenBeforeTendril = false;
     }
 
+    public int GetHealth()
+    {
+        return health;
+    }
+
+    private void OnDisable()
+    {
+        if (wasOn)
+        {
+            wasOn = false;
+            if (respawning)
+            {
+                GameController.instance.Respawn(gameObject, respawnDelay, initialPos, initialRot);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
+
+    public void OnHitModifier(GameObject target)
+    {
+        foreach (string effect in effectsOnHit)
+        {
+            switch (effect)
+            {
+                case "Flammable":
+                    Flammable flammable;
+                    if (target.TryGetComponent<Flammable>(out flammable))
+                        flammable.Activate();
+                    break;
+                case "Bleedable":
+                    Bleedable bleedable;
+                    if (target.TryGetComponent<Bleedable>(out bleedable))
+                        bleedable.Activate();
+                    break;
+                default:
+                    Debug.Log("Effect " + effect + " isn't implemented or is spelled wrong");
+                    break;
+            }
+        }
+    }
+    public int GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    private void OnDestroy()
+    {
+        foreach (Transform child in transform)
+        {
+            //If we have an outline, remove from the list on death
+            if (child.GetComponent<Outline>() != null)
+            {
+                outlineManager.RemoveOutline(child.gameObject);
+            }
+        }
+    }
 }

@@ -59,8 +59,9 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     [Header("Animator Variables")]
     [SerializeField] Animator anim; //assigned in inspector for now; can change
 
-    [Header("TEMP Outlines")]
-    [SerializeField] OutlineToggle outlineToggle;
+    //[Header("TEMP Outlines")]
+    //[SerializeField] OutlineToggle outlineToggle;
+    private OutlineToggle outlineToggle;
 
     private void Awake()
     {
@@ -89,6 +90,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         tendril.SetActive(false);
         lassoRB = lasso.GetComponent<Rigidbody>();
         lb.SetValues(maxThrowLassoDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
+        outlineToggle = FindObjectOfType<OutlineToggle>();
     }
 
     private void OnEnable()
@@ -205,22 +207,18 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 lr.enabled = false;
             }
         }
-    }
-
-    private void Update()
-    {
-        if (Time.timeScale != 0)
+        if (Time.timeScale == 0 && isCharging)
         {
-            
+            isCharging = false;
+            lr.enabled = false;
         }
-
-        
     }
+
 
     private void Lasso()
     {
 
-        if (Time.timeScale != 0)
+        if (Time.timeScale != 0 && !pc.isStunned && !pc.isDead)
         {
             currentTime = 0;
             restTime = 0;

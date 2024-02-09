@@ -83,11 +83,33 @@ public class Flammable : IStatus
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+
+        Flammable flammable = collision.gameObject.GetComponent<Flammable>();
+        if (flammable != null && onFire != null)
+        {
+            Debug.Log("Collision Fire");
+            flammable.Activate();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Flammable flammable = other.gameObject.GetComponent<Flammable>();
+        if (flammable != null && onFire != null)
+        {
+            flammable.Activate();
+        }
+    }
+
     private void OnCollisionStay(Collision collision)
     {
+        
         Flammable flammable = collision.gameObject.GetComponent<Flammable>();
         if (flammable != null && onFire!=null)
         {
+            //Debug.Log("Collision Fire");
             flammable.Activate();
         }
     }

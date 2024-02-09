@@ -21,8 +21,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public EnemyBrain brain;
     bool quitting = false;
 
+    private OutlineToggle outlineManager;
+
     private void Awake()
     {
+        outlineManager = FindObjectOfType<OutlineToggle>();
         quitting = false;
         jukebox.SetTransform(transform);
         SceneManager.sceneUnloaded += OnSceneChange;
@@ -58,7 +61,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         }
         if (health <= 0) Die();
         healthSlider.value = (float)health/ maxHealth;
-        jukebox.PlaySound(0);
+        if (dmg > 0) jukebox.PlaySound(0);
+
+        //Prevent overheal
+        if (health > maxHealth) health = maxHealth;
     }
 
     public bool WillBreak(int dmg)
@@ -69,6 +75,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     private void Die()
     {
         brain.state = EnemyStates.DEAD;
+        brain.moveable.Hold();
         brain.interaction.Death();
     }
 
@@ -105,5 +112,41 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     private void OnSceneChange(Scene scene)
     {
         quitting = true;
+    }
+
+    public int GetHealth()
+    {
+        return health;
+    }
+
+    public int GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    //forces a blood particle to spawn even if the stagger amount was not reached
+    //BUG: If we force bleeding at the same time as regular bleed, this may result in a double-spawn!
+    public void ForceSpawnBlood()
+    {
+        //If there is a blood particle, create it.
+        if (bloodParticle != null)
+        {
+            //create the particle
+            GameObject vfxobj = Instantiate(bloodParticle, gameObject.transform.position, Quaternion.identity);
+            //destroy the particle
+            Destroy(vfxobj, 4);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        foreach (Transform child in transform)
+        {
+            //If we have an outline, remove from the list on death
+            if (child.GetComponent<Outline>() != null)
+            {
+                outlineManager.RemoveOutline(child.gameObject);
+            }
+        }
     }
 }

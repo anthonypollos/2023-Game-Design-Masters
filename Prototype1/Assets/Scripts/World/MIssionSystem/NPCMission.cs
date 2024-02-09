@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [Serializable]
 public struct TextAssets
@@ -10,12 +11,19 @@ public struct TextAssets
     public TextAsset initialDialogue;
     public TextAsset talkToAgain;
 }
+
+[Serializable]
+public struct TextAssets2
+{
+    public string levelName;
+    public TextAsset initialDialogue;
+}
 public class NPCMission : InteractableBehaviorTemplate
 {
     [Header("Default")]
     [SerializeField] TextAsset dialogueText1;
     [SerializeField] TextAsset dialogueText2;
-    [Header("Text for each level")]
+    [Header("Text based on level(s) completed")]
     [Tooltip("Prioritized from top down")]
     [SerializeField] List<TextAssets> dialogueTexts;
 

@@ -44,9 +44,12 @@ public class Moveable : MonoBehaviour, ISlowable
     List<float> slowMods;
     float[] slowModsArray;
 
+    GenericItem gi;
+
     // Start is called before the first frame update
     void Start()
     {
+        gi = GetComponent<GenericItem>();
         EnterSlowArea(0);
         myDamageable = GetComponent<IDamageable>();
         myCollider = GetComponent<Collider>();
@@ -229,6 +232,7 @@ public class Moveable : MonoBehaviour, ISlowable
                     
                 }
             }
+            
             //if wall, hard stop
             else if (!isStopping)
             {
@@ -237,7 +241,8 @@ public class Moveable : MonoBehaviour, ISlowable
                 {
                     at.ForceAnimationChange();
                 }
-                stopping = StartCoroutine(Stop());
+                if(gameObject.activeInHierarchy)
+                    stopping = StartCoroutine(Stop());
             }
             
             //Check for Trap
@@ -245,6 +250,10 @@ public class Moveable : MonoBehaviour, ISlowable
             if(trap != null)
             {
                 trap.ActivateTrap(gameObject);
+            }
+            if (gi != null)
+            {
+                gi.OnHitModifier(collision.gameObject);
             }
         }
     }
@@ -308,6 +317,7 @@ public class Moveable : MonoBehaviour, ISlowable
         stopping = null;
         isStopping = false;
         unstoppable = false;
+        isDashing = false;
         ResetCollisions();
     }
 
@@ -315,7 +325,8 @@ public class Moveable : MonoBehaviour, ISlowable
     {
         foreach(Collider collider in collidersHit)
         {
-            Physics.IgnoreCollision(myCollider, collider, false);
+            if(collider!=null)
+                Physics.IgnoreCollision(myCollider, collider, false);
         }
         collidersHit.Clear();
     }
@@ -385,6 +396,24 @@ public class Moveable : MonoBehaviour, ISlowable
         IgnorePlayer();
     }
 
+    public void Grabbed()
+    {
+        if (stopping != null)
+        {
+            StopCoroutine(stopping);
+            stopping = null;
+        }
+        hold = true;
+        isStopping = false;
+        isDashing = false;
+        buffer = 0;
+        targetLocation = transform.position;
+        dir = Vector3.zero;
+        speed = 0;
+        isLaunched = false;
+        IgnorePlayer();
+    }
+
     public void Dash(Vector3 target, float time)
     {
         hold = false;
@@ -397,6 +426,14 @@ public class Moveable : MonoBehaviour, ISlowable
         dir.y = 0;
         speed = Vector3.Distance(transform.position, targetLocation) / time;
         isLaunched = true;
+    }
+
+    public void ForceStop()
+    {
+        if(stopping ==null)
+        {
+            stopping = StartCoroutine(Stop());
+        }
     }
 
     public void Ram(Vector3 target, float time)
@@ -455,7 +492,8 @@ public class Moveable : MonoBehaviour, ISlowable
 
     public void ForceReleaseDelayed()
     {
-        StartCoroutine(ReleaseDelayed());
+        if(gameObject.activeInHierarchy)
+            StartCoroutine(ReleaseDelayed());
     }
 
     IEnumerator ReleaseDelayed()

@@ -144,7 +144,8 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
     public void AttackEnd()
     {
         count = 0;
-        brain.state = EnemyStates.NOTHING;
+        if(brain.state != EnemyStates.DEAD)
+            brain.state = EnemyStates.NOTHING;
         windUp = false;
         brain.an.SetBool("Attacking", false);
         //Debug.Log(Time.realtimeSinceStartup - timeTest);

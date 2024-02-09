@@ -68,4 +68,10 @@ public class IsoCamera : MonoBehaviour
         Vector3 targetCamPos = player.position + _offset;
         transform.position = Vector3.Lerp(transform.position, targetCamPos, _smoothing * Time.deltaTime);
     }
+
+    //Get the offset from the player
+    public Vector3 GetOffset()
+    {
+        return _offset;
+    }
 }

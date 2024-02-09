@@ -72,6 +72,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: tombstone_throwable_06
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b9f5e9c11a0f3a2438b8e7d697bb834d, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b9f5e9c11a0f3a2438b8e7d697bb834d, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -163,8 +171,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clashDamage: 10
+  neutralSpeed: 15
+  rateOfChange: 1
+  maxDamage: 40
+  speed: 0
   isLaunched: 0
-  timeToStop: 1
+  slowdownPerSecond: 30
   isDashing: 0
   tendrilOwner: {fileID: 0}
 --- !u!114 &5935252942748970104
@@ -193,8 +206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _frozenBeforeTendril: 1
-  health: 30
-  clashDamage: 25
+  health: 15
   DestructionParticle: {fileID: 7141866554852115599, guid: eb4485787cd10004da588128fe280f63, type: 3}
   DestructionParticleLifetime: 4
   KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}

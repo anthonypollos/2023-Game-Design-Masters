@@ -12,6 +12,8 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] [Tooltip("")] private float textDelay;
 
+    [SerializeField] [Tooltip("")] private GameObject mainMenuPanel;
+
     private Animator anim;
 
     void Start()
@@ -19,22 +21,27 @@ public class MenuManager : MonoBehaviour
         inputChecker = GetComponent<InputChecker>();
         anim = GetComponent<Animator>();
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        Invoke("EnableText", textDelay);
+        StartCoroutine(IntroStart());
     }
 
     private void Update()
     {
         // if input changes, update start text to show right prompt
+        if ((Input.anyKeyDown || Input.GetButtonDown("Submit")))
+            anim.SetTrigger("NextState");
+
+        LookAtButtons();
     }
 
-    private void EnableText()
+    /// <summary>
+    /// 
+    /// </summary>
+    public void ToggleText(string toggle)
     {
-        SetText();
-
-        anim.SetTrigger("NextState");
+        if (toggle == "off")
+            anim.SetTrigger("TextOff");
+        else if (toggle == "on")
+            anim.SetTrigger("TextOn");
     }
 
     private void SetText()
@@ -46,16 +53,57 @@ public class MenuManager : MonoBehaviour
             startText.GetComponent<TextMeshProUGUI>().text = mouseText;
     }
 
+    IEnumerator IntroStart()
+    {
+        SetText();
+
+        yield return new WaitForSeconds(textDelay);
+
+        ToggleText("on");
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
     public void IntroEnd()
     {
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = true;
+        ToggleParallax("on");
+    }
 
+    public void ToggleMainMenu()
+    {
+        mainMenuPanel.SetActive(!mainMenuPanel.activeSelf);
+    }
+
+    public void ToggleParallax(string toggle)
+    {
         ParallaxObject[] parallaxObjects = FindObjectsOfType<ParallaxObject>();
 
         foreach (ParallaxObject po in parallaxObjects)
         {
-            po.enabled = true;
+            if (toggle == "on")
+                po.enabled = true;
+            else if (toggle == "off")
+                po.enabled = false;
         }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private float lookIndex = 0;
+
+    public void SetLookIndex(float lookIndex)
+    {
+        this.lookIndex = lookIndex;
+    }
+
+    private void LookAtButtons()
+    {
+        float currentIndex = anim.GetFloat("LookAtIndex");
+        float targetIndex = Mathf.Lerp(currentIndex, lookIndex, 5.0f * Time.deltaTime);
+
+        anim.SetFloat("LookAtIndex", targetIndex);
     }
 }
