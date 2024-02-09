@@ -106,10 +106,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _frozenBeforeTendril: 0
-  health: 5
+  maxHealth: 10
   DestructionParticle: {fileID: 7141866554852115599, guid: e5977c032bfbf7e41831c1d8fd33db15, type: 3}
   DestructionParticleLifetime: 4
   KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
+  effectsOnHit: []
   jukebox:
     tracks:
     - sound: {fileID: 0}
@@ -133,6 +134,8 @@ MonoBehaviour:
       maxDistance: 0
       spatialBlend: 0
     transform: {fileID: 0}
+  respawning: 0
+  respawnDelay: 5
 --- !u!65 &1448451104197299370
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -219,6 +222,9 @@ MonoBehaviour:
   slowdownPerSecond: 30
   isDashing: 0
   tendrilOwner: {fileID: 0}
+  flyingHitBox: {fileID: 0}
+  flyingHitBoxMod: 1.25
+  debug: 0
 --- !u!114 &4200893838909149319
 MonoBehaviour:
   m_ObjectHideFlags: 0

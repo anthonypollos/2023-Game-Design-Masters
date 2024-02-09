@@ -1,9 +1,15 @@
+using Ink.Parsed;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Unity.VisualScripting;
+using UnityEditor.UIElements;
 //using UnityEditor.SceneTemplate;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86.Avx;
+using static UnityEngine.UI.Image;
 
 public class Moveable : MonoBehaviour, ISlowable
 {
@@ -19,16 +25,13 @@ public class Moveable : MonoBehaviour, ISlowable
     [HideInInspector] public bool isLaunched;
     Coroutine stopping;
     float buffer;
+    bool initialPull;
     //[SerializeField] float timeToStop = 1f;
     [SerializeField] float slowdownPerSecond = 30f;
     [HideInInspector]
     public bool isDashing;
     LayerMask groundLayers;
     //[SerializeField] float groundCheckBuffer = 0.1f;
-    float boundsY;
-    float boundsX;
-    float boundsZ;
-    Collider col;
     bool isStopping = false;
     bool hold = false;
     //bool isThrowing = false;
@@ -38,17 +41,22 @@ public class Moveable : MonoBehaviour, ISlowable
     bool unstoppable = false;
     List<Collider> collidersHit;
     Collider myCollider;
+    [SerializeField] GameObject flyingHitBox;
     Collider playerCollider;
     IDamageable myDamageable;
 
     List<float> slowMods;
     float[] slowModsArray;
 
+    [SerializeField] float flyingHitBoxMod = 1.25f;
+    [SerializeField] bool debug = false;
+
     GenericItem gi;
 
     // Start is called before the first frame update
     void Start()
     {
+        initialPull = false;
         gi = GetComponent<GenericItem>();
         EnterSlowArea(0);
         myDamageable = GetComponent<IDamageable>();
@@ -56,10 +64,6 @@ public class Moveable : MonoBehaviour, ISlowable
         playerCollider = GameController.GetPlayer().GetComponent<Collider>();
         collidersHit = new List<Collider>();
         hold = false;
-        col = GetComponent<Collider>();
-        boundsY = col.bounds.size.y / 2;
-        boundsX = col.bounds.size.x / 2;
-        boundsZ = col.bounds.size.z / 2;
         string[] temp = { "Ground", "Ground_Transparent" };
         groundLayers = LayerMask.GetMask(temp);
         stopping = null;
@@ -68,9 +72,29 @@ public class Moveable : MonoBehaviour, ISlowable
         speed = 0;
         isLaunched = false;
         buffer = 0;
-        
+        GenerateHitbox();
        
     }
+
+    void GenerateHitbox()
+    {
+        if (flyingHitBox == null)
+        {
+            System.Type type = myCollider.GetType();
+            flyingHitBox = new GameObject("FlyingHitBox");
+            flyingHitBox.transform.parent = transform;
+            flyingHitBox.transform.localPosition = Vector3.zero;
+            Collider col = flyingHitBox.AddComponent(myCollider);
+            flyingHitBox.name = "FlyingHitbox";
+            flyingHitBox.transform.localRotation = Quaternion.identity;
+            
+            flyingHitBox.transform.localScale = Vector3.one * flyingHitBoxMod;
+            col.isTrigger = true;
+            flyingHitBox.layer = LayerMask.NameToLayer("Thrown");
+            flyingHitBox.SetActive(false);
+        }
+    }
+
 
     private void Update()
     {
@@ -146,8 +170,9 @@ public class Moveable : MonoBehaviour, ISlowable
 
     private void OnCollisionStay(Collision collision)
     {
-        if(!collision.transform.CompareTag("Ground") && isLaunched && buffer>.1f)
+        if (!collision.transform.CompareTags(StoredValues.MovableTagsToIgnore) && isLaunched && buffer>.5f)
         {
+            Debug.Log("Broke on " + collision.gameObject.name);
             //Debug.Log("collide stay");
             if (tendrilOwner != null)
             {
@@ -164,10 +189,15 @@ public class Moveable : MonoBehaviour, ISlowable
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!collision.transform.CompareTag("Ground") && isLaunched && (!isDashing || unstoppable))
+        if (!collision.transform.CompareTags(StoredValues.MovableTagsToIgnore) && isLaunched && (!isDashing || unstoppable) && 
+            (stopping != null || buffer>0.2f))
         {
-            collidersHit.Add(collision.collider);
-            Physics.IgnoreCollision(myCollider, collision.collider, true);
+            Collider[] colliders = collision.gameObject.GetComponentsInChildren<Collider>();
+            foreach (Collider collider in colliders)
+            {
+                collidersHit.Add(collider);
+                Physics.IgnoreCollision(myCollider, collider, true);
+            }
 
             //tendril lets go
             if (tendrilOwner != null)
@@ -210,7 +240,7 @@ public class Moveable : MonoBehaviour, ISlowable
                     {
                         Vector3 dir = transform.forward;
                         dir.y = 0;
-                        int coin = Random.Range(0, 2);
+                        int coin = UnityEngine.Random.Range(0, 2);
                         int mod;
                         if(coin == 0)
                         {
@@ -248,6 +278,113 @@ public class Moveable : MonoBehaviour, ISlowable
             //Check for Trap
             ITrap trap = collision.transform.GetComponent<ITrap>();
             if(trap != null)
+            {
+                trap.ActivateTrap(gameObject);
+            }
+            if (gi != null)
+            {
+                gi.OnHitModifier(collision.gameObject);
+            }
+        }
+    }
+
+    private void OnTriggerStay(Collider collision)
+    {
+        if (!collision.transform.CompareTags(StoredValues.MovableTagsToIgnore) && isLaunched && buffer > .5f)
+        {
+            Debug.Log("Broke on" +  collision.gameObject.name);
+            //Debug.Log("collide stay");
+            if (tendrilOwner != null)
+            {
+                //Debug.Log("Force release");
+                tendrilOwner.ForceRelease();
+                tendrilOwner = null;
+            }
+            //Debug.Log(collision.gameObject.name);
+            //Debug.Log("Hit object");
+            if (!isStopping)
+                stopping = StartCoroutine(Stop());
+        }
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        //Debug.Log("trigger activated on " + collision.name);
+        //Debug.Log("boolean checks: " + (stopping != null) + " "  + (buffer > 0.2f));
+        if (!collision.transform.CompareTags(StoredValues.MovableTagsToIgnore) && isLaunched && (!isDashing || unstoppable) && 
+            (stopping !=null || buffer > 0.2f))
+        {
+            //Debug.Log("trigger calculations going on " + collision.name);
+            Collider[] colliders = collision.gameObject.GetComponentsInChildren<Collider>();
+            foreach (Collider collider in colliders)
+            {
+                collidersHit.Add(collider);
+                Physics.IgnoreCollision(myCollider, collider, true);
+            }
+
+            //tendril lets go
+            if (tendrilOwner != null)
+            {
+                //Debug.Log("Force release");
+                tendrilOwner.ForceRelease();
+                tendrilOwner = null;
+            }
+            Moveable moveable = collision.transform.GetComponent<Moveable>();
+            //calculate clash damage
+            if (!unstoppable)
+            {
+                if (moveable == null)
+                    myDamageable.TakeDamage(CalculateClashDamage());
+                else if (!moveable.AlreadyHit(myCollider))
+                {
+                    myDamageable.TakeDamage(CalculateClashDamage());
+                }
+            }
+            IDamageable damageable = collision.transform.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.TakeDamage(CalculateClashDamage());
+            }
+            if (moveable != null)
+            {
+                if (!moveable.AlreadyHit(myCollider))
+                {
+                    //Launching
+                    if (!unstoppable)
+                    {
+                        Vector3 dir = collision.transform.position - collision.ClosestPointOnBounds(transform.position);
+                        dir.y = 0;
+                        dir = dir.normalized;
+                        moveable.Slammed(dir, rb.mass * speed / 2, myCollider);
+                        speed /= 2;
+                        ForceRelease();
+                    }
+             
+                    IKickable kickable = collision.transform.GetComponent<IKickable>();
+                    if (kickable != null)
+                    {
+                        kickable.Kicked();
+                    }
+                    moveable.ForceReleaseDelayed();
+
+                }
+            }
+
+            //if wall, hard stop
+            else if (!isStopping)
+            {
+                EnemyAttackTemplate at = transform.GetComponent<EnemyAttackTemplate>();
+                if (at != null)
+                {
+                    at.ForceAnimationChange();
+                }
+                if (gameObject.activeInHierarchy)
+                    stopping = StartCoroutine(Stop());
+            }
+
+            //Check for Trap
+            ITrap trap = collision.transform.GetComponent<ITrap>();
+            if (trap != null)
             {
                 trap.ActivateTrap(gameObject);
             }
@@ -307,6 +444,9 @@ public class Moveable : MonoBehaviour, ISlowable
 
     private IEnumerator Stop()
     {
+        buffer = 0;
+        initialPull = false;
+        flyingHitBox.SetActive(false);
         speed = 0;
         isStopping = true;
         rb.velocity = Vector3.zero + Vector3.up * rb.velocity.y;
@@ -334,9 +474,14 @@ public class Moveable : MonoBehaviour, ISlowable
     public void Launched(Vector3 target, float force)
     {
         //isThrowing = true;
+        flyingHitBox.SetActive(true);
         isStopping = false;
         isDashing = false;
-        buffer = 0;
+        if (!initialPull)
+        {
+            initialPull = true;
+            buffer = 0;
+        }
         targetLocation = transform.position + (target/rb.mass);
         targetLocation.y = transform.position.y;
         //Debug.DrawRay(transform.position, target / rb.mass, Color.gray, 5f);
@@ -349,6 +494,7 @@ public class Moveable : MonoBehaviour, ISlowable
 
     public void Slammed(Vector3 target, float force, Collider collider)
     {
+        flyingHitBox.SetActive(true);
         isStopping = false;
         isDashing = false;
         buffer = 0;
@@ -385,10 +531,14 @@ public class Moveable : MonoBehaviour, ISlowable
             StopCoroutine(stopping);
             stopping = null;
         }
+        flyingHitBox.SetActive(false);
         hold = true;
         isStopping = false;
         isDashing = false;
-        buffer = 0;
+        if (!initialPull)
+        {
+            buffer = 0;
+        }
         targetLocation = transform.position;
         dir = Vector3.zero;
         speed = 0;
@@ -403,6 +553,7 @@ public class Moveable : MonoBehaviour, ISlowable
             StopCoroutine(stopping);
             stopping = null;
         }
+        flyingHitBox.SetActive(false);
         hold = true;
         isStopping = false;
         isDashing = false;
@@ -451,27 +602,7 @@ public class Moveable : MonoBehaviour, ISlowable
         unstoppable = true;
     }
 
-    private bool IsGrounded()
-    {
-        Debug.DrawRay(col.bounds.center, Vector3.down * CalculateDown(), Color.green, 2f);
-        return Physics.Raycast(col.bounds.center, Vector3.down, CalculateDown(), groundLayers);
-    }
 
-    private float CalculateDown()
-    {
-        float angle1 = Vector3.Angle(Vector3.down, transform.up)%90;
-        float angle2 = Vector3.Angle(Vector3.down, transform.right)%90;
-        float angle3 = Vector3.Angle(Vector3.down, transform.forward)%90;
-
-        float y = Mathf.Cos(angle1) * boundsY;
-        float x = Mathf.Cos(angle2) * boundsX;
-        float z = Mathf.Cos(angle3) * boundsZ;
-
-        //Debug.Log(x);
-        //Debug.Log(y);
-        //Debug.Log(z);
-        return Vector3.Magnitude(new Vector3(x,y,z)); 
-    }
 
     public bool TriggerRelease()
     {
@@ -487,7 +618,10 @@ public class Moveable : MonoBehaviour, ISlowable
     {
         tendrilOwner = null;
         //isThrowing = false;
-        stopping = StartCoroutine(Tumbling());
+        if (gameObject.activeInHierarchy)
+        { 
+            stopping = StartCoroutine(Tumbling());
+        }
     }
 
     public void ForceReleaseDelayed()
