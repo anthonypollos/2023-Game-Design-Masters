@@ -38,6 +38,13 @@ public class TriggerHurt : MonoBehaviour
     //We use this to determine whether or not we can run the code for tick damage, destroyAfterUse, etc.
     private bool hurtable;
 
+    [SerializeField] private JukeBox jukebox;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -106,6 +113,7 @@ public class TriggerHurt : MonoBehaviour
             if (!((damageAmount < 0) && (Player.GetComponent<PlayerHealth>().GetHealth() == Player.GetComponent<PlayerHealth>().GetMaxHealth())))
             {
                 Player.GetComponent<PlayerHealth>().TakeDamage(damageAmount);
+                jukebox.PlaySound(0);
             }
             //if the trigger heals and health IS max, turn off hurtable so other functions don't run.
             else hurtable = false;
