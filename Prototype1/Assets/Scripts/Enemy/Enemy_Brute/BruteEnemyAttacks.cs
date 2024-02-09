@@ -44,7 +44,6 @@ public class BruteEnemyAttacks : EnemyAttackTemplate
         brain.LookAtPlayer();
         jukebox.PlaySound(0);
         timeTest = Time.realtimeSinceStartup;
-        jukebox.PlaySound(1);
     }
 
 
@@ -57,6 +56,7 @@ public class BruteEnemyAttacks : EnemyAttackTemplate
             return;
         }
         brain.moveable.Ram(transform.forward * dashRange, dashTime);
+        jukebox.PlaySound(1);
         currentWaitingTime = dashTime;
         if (animationTimer < 0)
             animationTimer = 0;
