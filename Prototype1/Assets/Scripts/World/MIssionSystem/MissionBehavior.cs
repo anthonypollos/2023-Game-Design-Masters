@@ -23,6 +23,12 @@ public class MissionBehavior : MonoBehaviour
     [SerializeField] List<TextAssets2> dialogueTexts;
     TextAsset initialDialogue;
 
+    [SerializeField] private JukeBox jukebox;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
 
     protected void Start()
     {
@@ -121,6 +127,7 @@ public class MissionBehavior : MonoBehaviour
                 }
             }
             folder.MissionComplete(this);
+            jukebox.PlaySound(0);
             if (initialDialogue != null)
                 DialogueManager.instance.EnterDialogMode(initialDialogue);
         }
