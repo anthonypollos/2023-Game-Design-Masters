@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -179,9 +180,12 @@ public class GameController : MonoBehaviour
         StartCoroutine(DelayedRespawn(temp, delay));
     }
 
+
+
     private IEnumerator DelayedRespawn(GameObject go, float delay)
     {
         yield return new WaitForSeconds(delay);
+        
         go.SetActive(true);
         //Add the respawned object to the outline manager
         foreach (Transform child in go.transform)
@@ -189,7 +193,8 @@ public class GameController : MonoBehaviour
             //Check the children of the respawned object. Find whatever child has the outline and add it
             if (child.GetComponent<Outline>() != null)
             {
-                outlineManager.AddOutline(child.gameObject);
+                if(outlineManager != null)
+                    outlineManager.AddOutline(child.gameObject);
                 //de-activate the outline
                 child.GetComponent<Outline>().enabled = false;
             }

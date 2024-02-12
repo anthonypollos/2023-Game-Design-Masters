@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.09542843, g: 0.007982363, b: 0.014354501, a: 1}
+  m_IndirectSpecularColor: {r: 0.09542838, g: 0.007982344, b: 0.014354468, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1537,7 +1537,7 @@ GameObject:
   - component: {fileID: 495003235}
   m_Layer: 0
   m_Name: Caltrops
-  m_TagString: Untagged
+  m_TagString: FloorHazard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1814,7 +1814,7 @@ GameObject:
   - component: {fileID: 570719713}
   m_Layer: 0
   m_Name: Glue
-  m_TagString: Untagged
+  m_TagString: FloorHazard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2181,13 +2181,45 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2266552512651239512, guid: 1e87d67d7d13268438f4297621c596b0, type: 3}
+      propertyPath: maxDamage
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2266552512651239512, guid: 1e87d67d7d13268438f4297621c596b0, type: 3}
+      propertyPath: clashDamage
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2266552512651239512, guid: 1e87d67d7d13268438f4297621c596b0, type: 3}
+      propertyPath: flyingHitBoxMod
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999733074985937957, guid: 1e87d67d7d13268438f4297621c596b0, type: 3}
+      propertyPath: health
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999733074985937957, guid: 1e87d67d7d13268438f4297621c596b0, type: 3}
+      propertyPath: respawning
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999733074985937957, guid: 1e87d67d7d13268438f4297621c596b0, type: 3}
+      propertyPath: respawnDelay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999733074985937957, guid: 1e87d67d7d13268438f4297621c596b0, type: 3}
+      propertyPath: effectsOnHit.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999733074985937957, guid: 1e87d67d7d13268438f4297621c596b0, type: 3}
+      propertyPath: effectsOnHit.Array.data[0]
+      value: Bleedable
+      objectReference: {fileID: 0}
     - target: {fileID: 5826427390582154150, guid: 1e87d67d7d13268438f4297621c596b0, type: 3}
       propertyPath: m_Name
       value: Crate
       objectReference: {fileID: 0}
     - target: {fileID: 6037863132568808646, guid: 1e87d67d7d13268438f4297621c596b0, type: 3}
       propertyPath: startOnFire
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6037863132568808646, guid: 1e87d67d7d13268438f4297621c596b0, type: 3}
       propertyPath: damagePerTick
@@ -3605,6 +3637,10 @@ PrefabInstance:
       propertyPath: centerPoint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6997160088716126099, guid: 33a92115ef7ed6a43bff2a2d3b8248a1, type: 3}
+      propertyPath: sightDistance
+      value: 10.116476
+      objectReference: {fileID: 0}
     - target: {fileID: 7192911182151594712, guid: 33a92115ef7ed6a43bff2a2d3b8248a1, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -4456,6 +4492,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4422501304482018579, guid: a1ba28174b6f7bc43a6cbaec688ec3f2, type: 3}
+      propertyPath: respawning
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4422501304482018579, guid: a1ba28174b6f7bc43a6cbaec688ec3f2, type: 3}
+      propertyPath: respawnDelay
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7372802092149789337, guid: a1ba28174b6f7bc43a6cbaec688ec3f2, type: 3}
       propertyPath: m_LocalPosition.x
       value: -21.84
@@ -6540,11 +6584,11 @@ PrefabInstance:
     - target: {fileID: 9086011362253862728, guid: b2c82ce0127b6c248a70ebf30dbe85a1, type: 3}
       propertyPath: dialogueText1
       value: 
-      objectReference: {fileID: 4900000, guid: 44d08d54239808b4892024987cb5dc5c, type: 3}
+      objectReference: {fileID: 4900000, guid: 7ee80d8031940c649921ef34fb0e9055, type: 3}
     - target: {fileID: 9086011362253862728, guid: b2c82ce0127b6c248a70ebf30dbe85a1, type: 3}
       propertyPath: dialogueText2
       value: 
-      objectReference: {fileID: 4900000, guid: 135c0a670d544e54e9533d4d22751ac9, type: 3}
+      objectReference: {fileID: 4900000, guid: 39234a5a5a696f54792bed52eba0a49f, type: 3}
     - target: {fileID: 9086011362253862728, guid: b2c82ce0127b6c248a70ebf30dbe85a1, type: 3}
       propertyPath: dialogueTexts.Array.size
       value: 1
@@ -6556,11 +6600,11 @@ PrefabInstance:
     - target: {fileID: 9086011362253862728, guid: b2c82ce0127b6c248a70ebf30dbe85a1, type: 3}
       propertyPath: dialogueTexts.Array.data[0].talkToAgain
       value: 
-      objectReference: {fileID: 4900000, guid: 337b7d3ac892bb246b6932399dfecd2d, type: 3}
+      objectReference: {fileID: 4900000, guid: 795eb4fccf776124b8912e8d101eeec8, type: 3}
     - target: {fileID: 9086011362253862728, guid: b2c82ce0127b6c248a70ebf30dbe85a1, type: 3}
       propertyPath: dialogueTexts.Array.data[0].initialDialogue
       value: 
-      objectReference: {fileID: 4900000, guid: 595d7c9add6f0c446a15254653d65097, type: 3}
+      objectReference: {fileID: 4900000, guid: 87588d3738db53d468b4977620fdfa34, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

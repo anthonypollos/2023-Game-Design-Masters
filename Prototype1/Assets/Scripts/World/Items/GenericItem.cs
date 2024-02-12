@@ -9,7 +9,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     private RigidbodyConstraints rbconstraints;
     [Tooltip("Enable if this object should stay in place before being grabbed.")]
     [SerializeField] bool _frozenBeforeTendril = false;
-    [SerializeField] private int health = 20;
+    [SerializeField] private int maxHealth = 20;
     [Tooltip("The object that's created when this item is destroyed.\nDoes not need to be a particle.")]
     [SerializeField] GameObject DestructionParticle;
     [Tooltip("The amount of time the Destruction Particle Object is alive for.\n0 means it lives forever.")]
@@ -21,7 +21,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 
     //Keeps track of if this object is alive or not. This is to prevent it from double dying.
     private bool isAlive = true;
-    private int maxHealth;
+    private int health;
 
     bool wasOn = false;
     [SerializeField] bool respawning = false;
@@ -39,6 +39,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     }
     private void OnEnable()
     {
+        health = maxHealth;
         wasOn = true;
     }
     // Start is called before the first frame update
@@ -56,7 +57,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
             //Now freeze.
             GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         }
-        maxHealth = health;
+        //maxHealth = health;
     }
 
     public void Kicked()
@@ -104,6 +105,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
             //Bool to prevent double death
             if (isAlive)
             {
+                DestroyEvent();
                 //First thing's first, turn isAlive off so this can't run again
                 isAlive = false;
                 //If there is a destruction particle, create it.
@@ -206,14 +208,17 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         return maxHealth;
     }
 
-    private void OnDestroy()
+    private void DestroyEvent()
     {
-        foreach (Transform child in transform)
+        if (outlineManager != null)
         {
-            //If we have an outline, remove from the list on death
-            if (child.GetComponent<Outline>() != null)
+            foreach (Transform child in transform)
             {
-                outlineManager.RemoveOutline(child.gameObject);
+                //If we have an outline, remove from the list on death
+                if (child.GetComponent<Outline>() != null)
+                {
+                    outlineManager.RemoveOutline(child.gameObject);
+                }
             }
         }
     }

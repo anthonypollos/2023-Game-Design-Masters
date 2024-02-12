@@ -16,8 +16,7 @@ public class InteractBehavior : MonoBehaviour
     {
         cam = Camera.main.transform;
         currentInteractables = new List<InteractableBehaviorTemplate>();
-        mc = new MainControls();
-        mc.Main.Interact.Enable();
+        mc = ControlsContainer.instance.mainControls;
         mc.Main.Interact.performed += _ => Interact();
         buttons = new List<string>();
         //Debug.Log(mc.Main.Interact.bindings.Count);
@@ -43,7 +42,7 @@ public class InteractBehavior : MonoBehaviour
 
     private void OnDisable()
     {
-        mc.Disable(); 
+        mc.Main.Interact.performed -= _ => Interact();
     }
 
     private void Interact()

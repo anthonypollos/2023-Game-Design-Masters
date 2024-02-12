@@ -145,7 +145,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
             //If we have an outline, remove from the list on death
             if (child.GetComponent<Outline>() != null)
             {
-                outlineManager.RemoveOutline(child.gameObject);
+                if(outlineManager != null)
+                    outlineManager.RemoveOutline(child.gameObject);
             }
         }
     }

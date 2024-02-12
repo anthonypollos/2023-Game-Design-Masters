@@ -11,15 +11,14 @@ public class CutsceneManager : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        mainControls = new MainControls();
-        mainControls.Main.Interact.Enable();
+        mainControls = ControlsContainer.instance.mainControls;
         mainControls.Main.Interact.performed += _ => Skip();
 
     }
 
     private void OnDisable()
     {
-        mainControls.Disable();
+        mainControls.Main.Interact.performed -= _ => Skip();
     }
 
     // Update is called once per frame
