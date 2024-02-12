@@ -14,6 +14,47 @@ public class SetVolume : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
+    private bool muted = false;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private float prevVal = 10;
+
+    //temp
+    public TextMeshProUGUI testMuteText;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void Start()
+    {
+        Invoke("CheckSliderVal", 0.05f);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void CheckSliderVal()
+    {
+        if (slider.value == 0)
+        {
+            testMuteText.text = "muted";
+            muted = true;
+        }
+
+        else
+        {
+            muted = false;
+            testMuteText.text = "unmuted";
+            prevVal = slider.value;
+        }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
     /// <param name="mod"></param>
     public void AdjustVolume(int mod)
     {
@@ -29,7 +70,8 @@ public class SetVolume : MonoBehaviour
                 break;
             default:
                 slider.value = val;
-                SetLevel((float)val);
+                SetLevel(val);
+
                 break;
         }
     }
@@ -43,13 +85,47 @@ public class SetVolume : MonoBehaviour
         float newVal;
 
         if (value == 0)
+        {
+            if (!muted)
+                ToggleMute();
+
             newVal = 0.001f;
+        }
         else
+        {
+            prevVal = value;
             newVal = value / 20;
+
+            if (muted)
+                ToggleMute();
+        }
 
         mixer.SetFloat(mixerVarName, Mathf.Log10(newVal) * 20);
         PlayerPrefs.SetFloat(mixerVarName, value);
 
         volDisplay.text = (value * 5) + "%";
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void ToggleMute()
+    {
+        muted = !muted;
+
+        switch(muted)
+        {
+            case (true):
+                SetLevel(0);
+                slider.value = 0;
+                testMuteText.text = "muted";
+                break;
+
+            case (false):
+                SetLevel(prevVal);
+                slider.value = prevVal;
+                testMuteText.text = "unmuted";
+                break;
+        }
     }
 }

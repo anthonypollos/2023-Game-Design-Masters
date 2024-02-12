@@ -41,19 +41,12 @@ public class DialogueManager : MonoBehaviour
 
     private void OnEnable()
     {
-        if (mc == null)
-        {
-            mc = new MainControls();
-        }
-        mc.Main.Interact.Enable();
+        mc = ControlsContainer.instance.mainControls;
         mc.Main.Interact.performed += _ => AttemptContinue();
     }
     private void OnDisable()
     {
-        if (mc != null)
-        {
-            mc.Main.Interact.Disable();
-        }
+        mc.Main.Interact.performed -= _ => AttemptContinue();
     }
 
     private void Start()

@@ -63,7 +63,6 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     private void Awake()
     {
-        mc = new MainControls();
         jukebox.SetTransform(transform);
     }
 
@@ -93,7 +92,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     private void OnEnable()
     {
-        mc.Enable();
+        mc = ControlsContainer.instance.mainControls;
         mc.Main.Secondary.performed += _ => Kick();
         mc.Main.Primary.performed += _ => LassoCharge();
         mc.Main.Primary.canceled += _ => Lasso();
@@ -102,7 +101,10 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     private void OnDisable()
     {
-        mc.Disable();
+        mc.Main.Secondary.performed -= _ => Kick();
+        mc.Main.Primary.performed -= _ => LassoCharge();
+        mc.Main.Primary.canceled -= _ => Lasso();
+        mc.Main.Release.performed -= _ => ForceRelease();
     }
 
     private void Kick()
