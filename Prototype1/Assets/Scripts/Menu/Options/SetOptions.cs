@@ -3,17 +3,24 @@ using UnityEngine.UI;
 
 public class SetOptions : MonoBehaviour
 {
-    [Header("Controls")]
+    [Header("Control Settings")]
     [SerializeField] [Tooltip("Mouse Sensitivity Slider")] private Slider mouseSensSlider;
 
     [Header("---------------------------")]
-    [Header ("Volume")]
+    [Header("Graphics Settings")]
+    [SerializeField] private GraphicsOptions graphicsOptions;
+
+    [Header("---------------------------")]
+    [Header ("Audio Settings")]
     [SerializeField] [Tooltip("Volume Sliders")] private Slider[] volSliders;
     [SerializeField] [Tooltip("Exposed AudioMixer volume parameter names *IN SAME ORDER AS SLIDERS*")] private string[] mixerVarNames;
 
     void Start()
     {
+        //graphicsOptions = FindObjectOfType<GraphicsOptions>();
+
         SetPlayerPrefs();
+        SetGraphicsSettings();
     }
 
     /// <summary>
@@ -24,6 +31,38 @@ public class SetOptions : MonoBehaviour
         SetVolPrefs();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    private void SetGraphicsSettings()
+    {
+        // 1 = fullscreen, 0 = windowed
+        int displayMode = PlayerPrefs.GetInt("DisplayMode", 1);
+
+        switch(displayMode)
+        {
+            case 1:
+                graphicsOptions.SetFullscreen(true);
+                break;
+            case 0:
+                graphicsOptions.SetFullscreen(false);
+                break;
+        }
+
+        // 1 = vsync on, 0 = vsync off
+        int vsync = PlayerPrefs.GetInt("VSync", 0);
+
+        switch (vsync)
+        {
+            case 1:
+                graphicsOptions.SetVsync(true);
+                break;
+            case 0:
+                graphicsOptions.SetVsync(false);
+                break;
+        }
+    }
+    
     /// <summary>
     /// Updates volume sliders to show PlayerPref volume settings
     /// </summary>
