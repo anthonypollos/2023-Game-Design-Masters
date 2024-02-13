@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class ControlsContainer : MonoBehaviour
+public class ControlsContainer : MonoBehaviour, ISaveable
 {
     public static ControlsContainer instance;
     public MainControls mainControls {get; private set; }
@@ -38,4 +39,17 @@ public class ControlsContainer : MonoBehaviour
             mainControls.Disable();
         }
     }
+
+    public void SaveData(ref SavedValues savedValues)
+    {
+        //mainControls.Disable();
+        //mainControls = new MainControls();
+        //mainControls.Enable();
+    }
+
+    public void LoadData(SavedValues savedValues)
+    {
+        //throw new System.NotImplementedException();
+    }
+
 }

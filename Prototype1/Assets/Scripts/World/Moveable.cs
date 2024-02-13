@@ -41,6 +41,7 @@ public class Moveable : MonoBehaviour, ISlowable
     bool unstoppable = false;
     List<Collider> collidersHit;
     Collider myCollider;
+    Collider[] myColliders;
     [SerializeField] GameObject flyingHitBox;
     Collider playerCollider;
     IDamageable myDamageable;
@@ -61,6 +62,7 @@ public class Moveable : MonoBehaviour, ISlowable
         EnterSlowArea(0);
         myDamageable = GetComponent<IDamageable>();
         myCollider = GetComponent<Collider>();
+        myColliders = GetComponentsInChildren<Collider>();
         playerCollider = GameController.GetPlayer().GetComponent<Collider>();
         collidersHit = new List<Collider>();
         hold = false;
@@ -195,8 +197,11 @@ public class Moveable : MonoBehaviour, ISlowable
             Collider[] colliders = collision.gameObject.GetComponentsInChildren<Collider>();
             foreach (Collider collider in colliders)
             {
-                collidersHit.Add(collider);
-                Physics.IgnoreCollision(myCollider, collider, true);
+                foreach (Collider myCollider in myColliders)
+                {
+                    collidersHit.Add(collider);
+                    Physics.IgnoreCollision(myCollider, collider, true);
+                }
             }
 
             //tendril lets go
@@ -318,8 +323,11 @@ public class Moveable : MonoBehaviour, ISlowable
             Collider[] colliders = collision.gameObject.GetComponentsInChildren<Collider>();
             foreach (Collider collider in colliders)
             {
-                collidersHit.Add(collider);
-                Physics.IgnoreCollision(myCollider, collider, true);
+                foreach (Collider myCollider in myColliders)
+                {
+                    collidersHit.Add(collider);
+                    Physics.IgnoreCollision(myCollider, collider, true);
+                }
             }
 
             //tendril lets go
@@ -465,8 +473,11 @@ public class Moveable : MonoBehaviour, ISlowable
     {
         foreach(Collider collider in collidersHit)
         {
-            if(collider!=null)
-                Physics.IgnoreCollision(myCollider, collider, false);
+            foreach (Collider myCollider in myColliders)
+            {
+                if (collider != null)
+                    Physics.IgnoreCollision(myCollider, collider, false);
+            }
         }
         collidersHit.Clear();
     }
@@ -494,7 +505,7 @@ public class Moveable : MonoBehaviour, ISlowable
 
     public void Slammed(Vector3 target, float force, Collider collider)
     {
-        flyingHitBox.SetActive(true);
+        flyingHitBox.SetActive(false);
         isStopping = false;
         isDashing = false;
         buffer = 0;
@@ -514,7 +525,8 @@ public class Moveable : MonoBehaviour, ISlowable
         if (!collidersHit.Contains(playerCollider))
         {
             collidersHit.Add(playerCollider);
-            Physics.IgnoreCollision(myCollider, playerCollider, true);
+            foreach(Collider myCollider in myColliders)
+                Physics.IgnoreCollision(myCollider, playerCollider, true);
         }
     }
 

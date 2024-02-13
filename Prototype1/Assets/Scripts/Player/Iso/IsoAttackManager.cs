@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class IsoAttackManager : MonoBehaviour, ICanKick
 {
@@ -93,18 +94,38 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     private void OnEnable()
     {
         mc = ControlsContainer.instance.mainControls;
-        mc.Main.Secondary.performed += _ => Kick();
-        mc.Main.Primary.performed += _ => LassoCharge();
-        mc.Main.Primary.canceled += _ => Lasso();
-        mc.Main.Release.performed += _ => ForceRelease();
+        mc.Main.Secondary.performed += Secondary;
+        mc.Main.Primary.performed += Primary;
+        mc.Main.Primary.canceled += Primary;
+        mc.Main.Release.performed += Release;
     }
 
     private void OnDisable()
     {
-        mc.Main.Secondary.performed -= _ => Kick();
-        mc.Main.Primary.performed -= _ => LassoCharge();
-        mc.Main.Primary.canceled -= _ => Lasso();
-        mc.Main.Release.performed -= _ => ForceRelease();
+        mc.Main.Secondary.performed -= Secondary;
+        mc.Main.Primary.performed -= Primary;
+        mc.Main.Primary.canceled -= Primary;
+        mc.Main.Release.performed -= Release;
+    }
+
+    private void Primary(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+            LassoCharge();
+        if (ctx.canceled)
+            Lasso();
+    }
+
+    private void Secondary(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+            Kick();
+    }
+
+    private void Release(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+            ForceRelease();
     }
 
     private void Kick()
