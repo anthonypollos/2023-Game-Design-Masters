@@ -99,7 +99,8 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     public void TakeDamage(int dmg)
     {
         health -= dmg;
-        if (dmg > 0) jukebox.PlaySound(0);
+        jukebox.PlaySound(0);
+        if (dmg > 0)
         if (health <= 0)
         {
             //Bool to prevent double death
@@ -137,6 +138,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
                         }
                     }
                 }
+                jukebox.PlaySound(0);
                 jukebox.PlaySound(1);
                 gameObject.SetActive(false);
             }
