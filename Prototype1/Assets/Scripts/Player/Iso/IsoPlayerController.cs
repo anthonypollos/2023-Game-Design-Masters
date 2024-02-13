@@ -28,7 +28,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
     [SerializeField] GameObject lasso;
 
     [SerializeField] float dashRange, dashTime, dashCD;
-    [SerializeField] Image dashCDIndicator;
+    //[SerializeField] Image dashCDIndicator;
     [SerializeField] private JukeBox jukebox;
 
     [SerializeField] float speedModWhenLassoOut;
@@ -239,19 +239,19 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
             }
         }
     }
-
+    
     private IEnumerator DashCD()
     {
         
         for (float i =0; i<dashCD; i+=0.01f)
         {
             yield return new WaitForSeconds(0.01f);
-            dashCDIndicator.fillAmount = i / dashCD;
+            //dashCDIndicator.fillAmount = i / dashCD;
         }
         canDash = true;
-        dashCDIndicator.fillAmount = 1;
+        //dashCDIndicator.fillAmount = 1;
     }
-
+    
 
     public (bool success, Vector3 position) GetMousePosition()
     {
