@@ -36,9 +36,14 @@ public class SetOptions : MonoBehaviour
     /// </summary>
     private void SetGraphicsSettings()
     {
+        // get screen's default aspect ratio, pick one closes to it?
+
+
+
+        //int resolution = PlayerPrefs.GetInt("Resolution", )
+
         // 1 = fullscreen, 0 = windowed
         int displayMode = PlayerPrefs.GetInt("DisplayMode", 1);
-
         switch(displayMode)
         {
             case 1:
@@ -51,7 +56,6 @@ public class SetOptions : MonoBehaviour
 
         // 1 = vsync on, 0 = vsync off
         int vsync = PlayerPrefs.GetInt("VSync", 0);
-
         switch (vsync)
         {
             case 1:
@@ -61,6 +65,10 @@ public class SetOptions : MonoBehaviour
                 graphicsOptions.SetVsync(false);
                 break;
         }
+
+        // Target FPS
+        int fps = PlayerPrefs.GetInt("TargetFPS", 60);
+        graphicsOptions.SetFPS(fps);
     }
     
     /// <summary>
