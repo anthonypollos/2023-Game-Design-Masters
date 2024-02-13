@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 {
@@ -67,20 +68,50 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
     private void OnEnable()
     {
         mc = ControlsContainer.instance.mainControls;
-        mc.Main.Move.performed += ctx => _input = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
-        mc.Main.Move.canceled += _ => _input = Vector3.zero;
-        mc.Main.Aim.performed += ctx => _aimInput = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue <Vector2>().y);
-        mc.Main.Aim.canceled += ctx => _aimInput = Vector3.zero;
-        mc.Main.Dash.performed += _ => Dash();
+        mc.Main.Move.performed += OnMove;
+        mc.Main.Move.canceled += OnMove;
+        mc.Main.Aim.performed += OnAim;
+        mc.Main.Aim.canceled += OnAim;
+        mc.Main.Dash.performed += OnDash;
     }
 
     private void OnDisable()
     {
-        mc.Main.Move.performed -= ctx => _input = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
-        mc.Main.Move.canceled -= _ => _input = Vector3.zero;
-        mc.Main.Aim.performed -= ctx => _aimInput = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
-        mc.Main.Aim.canceled -= ctx => _aimInput = Vector3.zero;
-        mc.Main.Dash.performed -= _ => Dash();
+        mc.Main.Move.performed -= OnMove;
+        mc.Main.Move.canceled -= OnMove;
+        mc.Main.Aim.performed -= OnAim;
+        mc.Main.Aim.canceled -= OnAim;
+        mc.Main.Dash.performed -= OnDash;
+    }
+
+    private void OnDash(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+            Dash();
+    }
+
+    private void OnMove(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed)
+        {
+            _input = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
+        }
+        if(ctx.canceled)
+        {
+            _input = Vector3.zero;
+        }
+    }
+
+    private void OnAim(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed)
+        {
+            _aimInput = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
+        }
+        if(ctx.canceled)
+        {
+            _aimInput = Vector3.zero;
+        }
     }
 
     private void Update()

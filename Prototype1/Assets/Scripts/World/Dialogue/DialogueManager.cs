@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Ink.Runtime;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -42,11 +43,17 @@ public class DialogueManager : MonoBehaviour
     private void OnEnable()
     {
         mc = ControlsContainer.instance.mainControls;
-        mc.Main.Interact.performed += _ => AttemptContinue();
+        mc.Main.Interact.performed += Interact;
     }
     private void OnDisable()
     {
-        mc.Main.Interact.performed -= _ => AttemptContinue();
+        mc.Main.Interact.performed -= Interact;
+    }
+
+    private void Interact(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+            AttemptContinue();
     }
 
     private void Start()

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CutsceneManager : MonoBehaviour
 {
@@ -12,13 +13,19 @@ public class CutsceneManager : MonoBehaviour
     void OnEnable()
     {
         mainControls = ControlsContainer.instance.mainControls;
-        mainControls.Main.Interact.performed += _ => Skip();
+        mainControls.Main.Interact.performed += Interact;
 
     }
 
     private void OnDisable()
     {
-        mainControls.Main.Interact.performed -= _ => Skip();
+        mainControls.Main.Interact.performed -= Interact;
+    }
+
+    private void Interact(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+            Skip();
     }
 
     // Update is called once per frame

@@ -3,7 +3,7 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 using TMPro;
 
-public class SetVolume : MonoBehaviour
+public class VolumeOptions : MonoBehaviour
 {
     [SerializeField] [Tooltip("")] private Slider slider;
     [SerializeField] [Tooltip("")] private TextMeshProUGUI volDisplay;
