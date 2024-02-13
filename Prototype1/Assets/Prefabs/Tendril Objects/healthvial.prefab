@@ -152,6 +152,19 @@ MonoBehaviour:
   tickDamage: 0
   tickRate: 0.5
   destroyAfterUse: 1
+  jukebox:
+    tracks:
+    - sound: {fileID: 8300000, guid: a94d5e693bc8d224eab20cbc556badaf, type: 3}
+      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputGroup: {fileID: 382787954983629436, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputVolParameter: 1
+      volume: 1
+      isLocalized: 0
+      rolloffMode: 0
+      minDistance: 0
+      maxDistance: 0
+      spatialBlend: 0
+    transform: {fileID: 0}
 --- !u!114 &4090469155634493437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,9 +243,12 @@ MonoBehaviour:
   DestructionParticle: {fileID: 0}
   DestructionParticleLifetime: 0
   KickedParticle: {fileID: 0}
+  effectsOnHit: []
   jukebox:
     tracks: []
     transform: {fileID: 0}
+  respawning: 0
+  respawnDelay: 5
 --- !u!1001 &7895691961261811690
 PrefabInstance:
   m_ObjectHideFlags: 0
