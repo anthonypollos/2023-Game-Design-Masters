@@ -119,7 +119,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     private void Secondary(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
-            Retraction();
+            ForceRelease();
     }
 
     private void Release(InputAction.CallbackContext ctx)
