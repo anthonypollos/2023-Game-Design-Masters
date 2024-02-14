@@ -221,6 +221,11 @@ public class GraphicsOptions : MonoBehaviour
             text.text = (value * 5) + "%";
         }
 
+        foreach (Slider slider in brightnessSliders)
+        {
+            slider.value = value;
+        }
+
         if (globalVolume.TryGet<ColorAdjustments>(out colorAdjustments))
             colorAdjustments.postExposure.value = (value / 13.3f);
     }
@@ -265,8 +270,13 @@ public class GraphicsOptions : MonoBehaviour
             text.text = (value * 5) + "%";
         }
 
+        foreach (Slider slider in contrastSliders)
+        {
+            slider.value = value;
+        }
+
         if (globalVolume.TryGet<ColorAdjustments>(out colorAdjustments))
-            colorAdjustments.contrast.value = (value - 10);
+            colorAdjustments.contrast.value = ((value - 10) * 2);
     }
     #endregion
 }

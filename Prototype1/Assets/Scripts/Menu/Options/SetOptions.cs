@@ -11,8 +11,6 @@ public class SetOptions : MonoBehaviour
     [Header("---------------------------")]
     [Header("Graphics Settings")]
     [SerializeField] private GraphicsOptions graphicsOptions;
-    [SerializeField] private Slider[] brightnessSliders;
-    [SerializeField] private Slider[] contrastSliders;
 
     [Header("---------------------------")]
     [Header("Audio Settings")]
@@ -78,18 +76,9 @@ public class SetOptions : MonoBehaviour
         // Target FPS
         graphicsOptions.SetFPS(PlayerPrefs.GetInt("TargetFPS", 60));
 
-        //foreach (Slider slider in brightnessSliders)
-        //{
-        //    slider.value = PlayerPrefs.GetFloat("Brightness", defaultBrightness);
-        //}
+        graphicsOptions.SetBrightness(PlayerPrefs.GetFloat("Brightness", defaultBrightness));
 
-        graphicsOptions.SetBrightness(10f);
-        graphicsOptions.SetContrast(10f);
-
-        //foreach(Slider slider in contrastSliders)
-        //{
-        //    slider.value = PlayerPrefs.GetFloat("Contrast", defaultContrast);
-        //}
+        graphicsOptions.SetContrast(PlayerPrefs.GetFloat("Contrast", defaultContrast));
     }
 
     #region Resolution Functions
