@@ -11,7 +11,6 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager instance { get; private set; }
     [SerializeField] GameObject dialogBox;
-    [SerializeField] GameObject noteBox;
     [SerializeField] TextMeshProUGUI mainText;
     [SerializeField] List<GameObject> choiceButtons;
     Button topButton;
