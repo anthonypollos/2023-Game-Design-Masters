@@ -7,6 +7,7 @@ public class CollectableInstance : InteractableBehaviorTemplate, ISaveable
     private bool collected = false;
     [SerializeField] string id;
     [SerializeField] TextAsset textToDisplay;
+    [SerializeField] bool isNote;
 
     [ContextMenu("Generate guid for id")]
     private void GenerateGuid()
@@ -15,9 +16,13 @@ public class CollectableInstance : InteractableBehaviorTemplate, ISaveable
     }
     public override bool Interact()
     {
-        if (textToDisplay != null)
+        if (textToDisplay != null && !isNote)
         {
             DialogueManager.instance.EnterDialogMode(textToDisplay);
+        }
+        else if (textToDisplay != null && isNote)
+        {
+            NoteManager.instance.EnterDialogMode(textToDisplay);
         }
         else
         {
