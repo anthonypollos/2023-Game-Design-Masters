@@ -105,7 +105,7 @@ public class RebindUI : MonoBehaviour
 
     private void ResetBinding()
     {
-        Debug.Log("Resetting");
+        //Debug.Log("Resetting");
         ControlsContainer.instance.ResetBinding(actionName, bindingIndex);
         UpdateUI();
     }

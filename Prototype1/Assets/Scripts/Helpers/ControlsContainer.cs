@@ -132,6 +132,8 @@ public class ControlsContainer : MonoBehaviour, ISaveable
         rebind.WithCancelingThrough("<Keyboard>/p");
         rebind.WithControlsExcluding("<Gamepad>/leftstick");
         rebind.WithControlsExcluding("<Gamepad>/rightstick");
+        rebind.WithControlsExcluding("<Pointer>/position");
+        rebind.WithControlsExcluding("<Pointer>/delta");
 
         rebindStarted?.Invoke(actionToRebind, bindingIndex);
         rebind.Start();
@@ -181,7 +183,7 @@ public class ControlsContainer : MonoBehaviour, ISaveable
     public void ResetBinding(string actionName, int bindingIndex)
     {
 
-        Debug.Log("resetting");
+        //Debug.Log("resetting");
         InputAction action = mainControls.asset.FindAction(actionName);
 
         if(action == null || action.bindings.Count <= bindingIndex)
