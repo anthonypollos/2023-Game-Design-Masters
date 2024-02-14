@@ -86,16 +86,23 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         for (int i = 0; i<missions.Count; i++)
         {
             int temp = i + currentDisplayedMission;
-            temp %= missions.Count;
+            temp = temp%missions.Count;
             if (i > missions.Count)
                 i = 0;
             else
             {
-                if(!missionsStatuses[temp])
+                if (temp > 0 && temp < missions.Count)
                 {
-                    currentDisplayedMission = temp;
-                    SetMission();
-                    return;
+                    if (!missionsStatuses[temp])
+                    {
+                        currentDisplayedMission = temp;
+                        SetMission();
+                        return;
+                    }
+                }
+                else
+                {
+                    Debug.Log("Values goes past, possible serialze error");
                 }
             }
         }
