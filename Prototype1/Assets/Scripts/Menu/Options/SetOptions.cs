@@ -11,11 +11,22 @@ public class SetOptions : MonoBehaviour
     [Header("---------------------------")]
     [Header("Graphics Settings")]
     [SerializeField] private GraphicsOptions graphicsOptions;
+    [SerializeField] private Slider[] brightnessSliders;
+    [SerializeField] private Slider[] contrastSliders;
 
     [Header("---------------------------")]
-    [Header ("Audio Settings")]
+    [Header("Audio Settings")]
     [SerializeField] [Tooltip("Volume Sliders")] private Slider[] volSliders;
     [SerializeField] [Tooltip("Exposed AudioMixer volume parameter names *IN SAME ORDER AS SLIDERS*")] private string[] mixerVarNames;
+
+    [Header("---------------------------")]
+    [Header("Default Setting Values")]
+    [SerializeField] private int defaultFPS = 60;
+    [SerializeField] [Range(0, 20)] private float defaultBrightness = 10f;
+    [SerializeField] [Range(0, 20)] private float defaultContrast = 10f;
+    [SerializeField] [Range(0, 20)] private float defaultVolume = 15f;
+    private int defaultResolutionIndex = 0;
+
 
     void Start()
     {
@@ -65,8 +76,20 @@ public class SetOptions : MonoBehaviour
         }
 
         // Target FPS
-        int fps = PlayerPrefs.GetInt("TargetFPS", 60);
-        graphicsOptions.SetFPS(fps);
+        graphicsOptions.SetFPS(PlayerPrefs.GetInt("TargetFPS", 60));
+
+        //foreach (Slider slider in brightnessSliders)
+        //{
+        //    slider.value = PlayerPrefs.GetFloat("Brightness", defaultBrightness);
+        //}
+
+        graphicsOptions.SetBrightness(10f);
+        graphicsOptions.SetContrast(10f);
+
+        //foreach(Slider slider in contrastSliders)
+        //{
+        //    slider.value = PlayerPrefs.GetFloat("Contrast", defaultContrast);
+        //}
     }
 
     #region Resolution Functions
@@ -111,7 +134,8 @@ public class SetOptions : MonoBehaviour
 
         graphicsOptions.SetDefaultResolution(closestResIndex);
 
-        int resIndex = PlayerPrefs.GetInt("Resolution", closestResIndex);
+        defaultResolutionIndex = closestResIndex;
+        int resIndex = PlayerPrefs.GetInt("Resolution", defaultResolutionIndex);
         graphicsOptions.SetResolution(resIndex);
     }
 
@@ -162,7 +186,25 @@ public class SetOptions : MonoBehaviour
     private void SetVolPrefs()
     {
         for (int i = 0; i < volSliders.Length; i++)
-            volSliders[i].value = PlayerPrefs.GetFloat(mixerVarNames[i], 15f);
+            volSliders[i].value = PlayerPrefs.GetFloat(mixerVarNames[i], defaultVolume);
+    }
+    #endregion
+
+    #region Reset to Defaults
+    public void ResetVolume()
+    {
+        for (int i = 0; i < volSliders.Length; i++)
+            volSliders[i].value = PlayerPrefs.GetFloat(mixerVarNames[i], defaultVolume);
+    }
+
+    public void ResetGraphics()
+    {
+        graphicsOptions.SetResolution(defaultResolutionIndex);
+        graphicsOptions.SetFullscreen(true);
+        graphicsOptions.SetVsync(false);
+        graphicsOptions.SetFPS(defaultFPS);
+
+        //default brightness, contrast
     }
     #endregion
 }
