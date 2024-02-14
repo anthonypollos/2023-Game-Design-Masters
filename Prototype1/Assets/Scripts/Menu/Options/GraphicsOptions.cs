@@ -7,8 +7,9 @@ public class GraphicsOptions : MonoBehaviour
 {
     [Header("Resolution Variables")]
     [SerializeField] [Tooltip("")] private TextMeshProUGUI resolutionText;
-    [SerializeField] [Tooltip("")] private ResItem[] resolutions;
+    [SerializeField] [Tooltip("")] public ResItem[] resolutions;
     private int currentResIndex = 0;
+    private int defaultResIndex = 0;
 
     [Header("Display Mode Variables")]
     [SerializeField] private TextMeshProUGUI displayModeText;
@@ -59,13 +60,27 @@ public class GraphicsOptions : MonoBehaviour
     /// <param name="index"></param>
     public void SetResolution(int index)
     {
+        currentResIndex = index;
+
         string ratio = resolutions[index].aspectRatio;
         int hor = resolutions[index].horizontal;
         int vert = resolutions[index].vertical;
+        string defaultText = resolutions[index].defaultText;
 
-        resolutionText.text = ratio + " (" + hor + " x " + vert + ")";
+        resolutionText.text = ratio + " (" + hor + " x " + vert + ") " + defaultText;
 
+        PlayerPrefs.SetInt("Resolution", index);
         Screen.SetResolution(hor, vert, Screen.fullScreen);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
+    public void SetDefaultResolution(int index)
+    {
+        resolutions[index].defaultText = "(Default)";
+        defaultResIndex = index;
     }
 
     /// <summary>
@@ -142,6 +157,16 @@ public class GraphicsOptions : MonoBehaviour
         PlayerPrefs.SetInt("TargetFPS", framerate);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public void ResetGrapics()
+    {
+        SetResolution(defaultResIndex);
+        SetFullscreen(true);
+        SetVsync(false);
+        SetFPS(60);
+    }
 }
 
 [System.Serializable]
@@ -149,4 +174,5 @@ public class ResItem
 {
     public string aspectRatio;
     public int horizontal, vertical;
+    public string defaultText;
 }
