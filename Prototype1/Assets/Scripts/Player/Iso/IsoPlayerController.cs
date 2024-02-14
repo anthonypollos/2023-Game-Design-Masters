@@ -34,6 +34,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
     [SerializeField] float speedModWhenLassoOut;
     [SerializeField] float speedModWhenPulling;
     IsoAttackManager attackManager;
+    Flammable flammable;
 
     [Header("Animator Variables")]
     [SerializeField] Animator anim; //assigned in inspector for now; can change
@@ -50,6 +51,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
         EnterSlowArea(0);
         isStunned = false;
         attackManager = GetComponent<IsoAttackManager>();
+        flammable = GetComponent<Flammable>();
         moveable = GetComponent<Moveable>();
         attackState = 0;
         isDead = false;
@@ -209,6 +211,10 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
         if(canDash && !moveable.isLaunched && !isDead && Time.timeScale != 0)
         {
             Debug.Log("Transform.forward: " + transform.forward);
+            if (flammable.isBurning)
+            {
+                flammable.StopDropAndRoll();
+            }
             if (attackState == Helpers.LASSOING || attackState == Helpers.LASSOED || attackState == Helpers.PULLING)
             {
                 attackManager.ForceRelease();
