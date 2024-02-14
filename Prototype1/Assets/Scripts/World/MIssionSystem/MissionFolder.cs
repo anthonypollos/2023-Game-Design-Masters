@@ -67,8 +67,8 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         {
             Vector3 dir = (missions[currentDisplayedMission].transform.position - player.position).normalized;
             dir.y = 0;
-            wayFinder.transform.position = player.position + dir * wayFinderDistanceFromPlayer + Vector3.up * 2;
-            wayFinder.transform.forward = dir;
+            //wayFinder.transform.position = player.position + dir * wayFinderDistanceFromPlayer + Vector3.up * 2;
+            //wayFinder.transform.forward = dir;
         }
     }
 
@@ -137,6 +137,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
             currentDisplayedMission = 0;
         }
         UpdateMissionText();
+        /*
         if (missionsStatuses[currentDisplayedMission])
         {
             wayFinder.SetActive(false);
@@ -145,7 +146,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         {
             wayFinder.SetActive(true);
         }
-        
+        */
     }
 
     public void UpdateMissionText()
@@ -205,7 +206,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 
     public void StartCombat(CombatMissionBehavior mission)
     {
-        wayFinder.SetActive(false);
+        //wayFinder.SetActive(false);
         currentDisplayedMission = missions.IndexOf(mission);
         combatMissionActive = true;
         currentCombatMissionActive = mission;
