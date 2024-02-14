@@ -87,7 +87,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         {
             int temp = i + currentDisplayedMission;
             temp %= missions.Count;
-            if (i >= missions.Count)
+            if (i > missions.Count)
                 i = 0;
             else
             {
