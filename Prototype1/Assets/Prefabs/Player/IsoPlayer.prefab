@@ -2607,8 +2607,7 @@ MonoBehaviour:
   lasso: {fileID: 387308811525342433}
   dashRange: 12
   dashTime: 0.5
-  dashCD: 0.5
-  dashCDIndicator: {fileID: 3641572029893190079}
+  dashCD: 0.22
   jukebox:
     tracks:
     - sound: {fileID: 8300000, guid: 380a2957595547e4289ca1432f39f72a, type: 3}
@@ -2625,7 +2624,7 @@ MonoBehaviour:
       masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
       outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
       outputVolParameter: 1
-      volume: 0.09
+      volume: 0.07
       isLocalized: 1
       rolloffMode: 0
       minDistance: 0
@@ -3189,6 +3188,7 @@ MonoBehaviour:
   damagePerTick: 2
   tickInterval: 0.5
   startOnFire: 0
+  isBurning: 0
   an: {fileID: 0}
 --- !u!114 &8529491358012224155
 MonoBehaviour:
@@ -4304,7 +4304,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6736241427374074463
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14235,6 +14235,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1928032299044904969, guid: 0bcfef20df7761e4c81f23f063628073, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2511998741226080553, guid: 0bcfef20df7761e4c81f23f063628073, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -1.2662048
@@ -14355,17 +14359,6 @@ PrefabInstance:
       addedObject: {fileID: 6736241427374074463}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bcfef20df7761e4c81f23f063628073, type: 3}
---- !u!114 &3641572029893190079 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4854115973066486625, guid: 0bcfef20df7761e4c81f23f063628073, type: 3}
-  m_PrefabInstance: {fileID: 8202249771694772958}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4341241975638924431 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5614596919790423633, guid: 0bcfef20df7761e4c81f23f063628073, type: 3}

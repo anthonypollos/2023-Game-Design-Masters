@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Unity.VisualScripting;
-using UnityEditor.UIElements;
+//using UnityEditor.UIElements;
 //using UnityEditor.SceneTemplate;
 using UnityEngine;
 using static Unity.Burst.Intrinsics.X86.Avx;
@@ -41,7 +41,7 @@ public class Moveable : MonoBehaviour, ISlowable
     bool unstoppable = false;
     List<Collider> collidersHit;
     Collider myCollider;
-    Collider[] myColliders;
+    List<Collider> myColliders;
     [SerializeField] GameObject flyingHitBox;
     Collider playerCollider;
     IDamageable myDamageable;
@@ -62,7 +62,7 @@ public class Moveable : MonoBehaviour, ISlowable
         EnterSlowArea(0);
         myDamageable = GetComponent<IDamageable>();
         myCollider = GetComponent<Collider>();
-        myColliders = GetComponentsInChildren<Collider>();
+        myColliders = new List<Collider>(GetComponentsInChildren<Collider>());
         playerCollider = GameController.GetPlayer().GetComponent<Collider>();
         collidersHit = new List<Collider>();
         hold = false;
@@ -92,6 +92,7 @@ public class Moveable : MonoBehaviour, ISlowable
             
             flyingHitBox.transform.localScale = Vector3.one * flyingHitBoxMod;
             col.isTrigger = true;
+            myColliders.Add(col);
             flyingHitBox.layer = LayerMask.NameToLayer("Thrown");
             flyingHitBox.SetActive(false);
         }
@@ -174,6 +175,8 @@ public class Moveable : MonoBehaviour, ISlowable
     {
         if (!collision.transform.CompareTags(StoredValues.MovableTagsToIgnore) && isLaunched && buffer>.5f)
         {
+            if (collidersHit.Contains(collision.collider))
+                return;
             Debug.Log("Broke on " + collision.gameObject.name);
             //Debug.Log("collide stay");
             if (tendrilOwner != null)
@@ -197,6 +200,8 @@ public class Moveable : MonoBehaviour, ISlowable
             Collider[] colliders = collision.gameObject.GetComponentsInChildren<Collider>();
             foreach (Collider collider in colliders)
             {
+                if (collidersHit.Contains(collider))
+                    return;
                 foreach (Collider myCollider in myColliders)
                 {
                     collidersHit.Add(collider);
@@ -297,6 +302,8 @@ public class Moveable : MonoBehaviour, ISlowable
     {
         if (!collision.transform.CompareTags(StoredValues.MovableTagsToIgnore) && isLaunched && buffer > .5f)
         {
+            if (collidersHit.Contains(collision))
+                return;
             Debug.Log("Broke on" +  collision.gameObject.name);
             //Debug.Log("collide stay");
             if (tendrilOwner != null)
@@ -323,6 +330,8 @@ public class Moveable : MonoBehaviour, ISlowable
             Collider[] colliders = collision.gameObject.GetComponentsInChildren<Collider>();
             foreach (Collider collider in colliders)
             {
+                if (collidersHit.Contains(collider))
+                    return;
                 foreach (Collider myCollider in myColliders)
                 {
                     collidersHit.Add(collider);
@@ -505,6 +514,8 @@ public class Moveable : MonoBehaviour, ISlowable
 
     public void Slammed(Vector3 target, float force, Collider collider)
     {
+        if (unstoppable)
+            return;
         flyingHitBox.SetActive(false);
         isStopping = false;
         isDashing = false;

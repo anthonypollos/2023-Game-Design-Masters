@@ -67,8 +67,8 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         {
             Vector3 dir = (missions[currentDisplayedMission].transform.position - player.position).normalized;
             dir.y = 0;
-            wayFinder.transform.position = player.position + dir * wayFinderDistanceFromPlayer + Vector3.up * 2;
-            wayFinder.transform.forward = dir;
+            //wayFinder.transform.position = player.position + dir * wayFinderDistanceFromPlayer + Vector3.up * 2;
+            //wayFinder.transform.forward = dir;
         }
     }
 
@@ -86,16 +86,23 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         for (int i = 0; i<missions.Count; i++)
         {
             int temp = i + currentDisplayedMission;
-            temp %= missions.Count;
-            if (i >= missions.Count)
+            temp = temp%missions.Count;
+            if (i > missions.Count)
                 i = 0;
             else
             {
-                if(!missionsStatuses[temp])
+                if (temp > 0 && temp < missions.Count)
                 {
-                    currentDisplayedMission = temp;
-                    SetMission();
-                    return;
+                    if (!missionsStatuses[temp])
+                    {
+                        currentDisplayedMission = temp;
+                        SetMission();
+                        return;
+                    }
+                }
+                else
+                {
+                    Debug.Log("Values goes past, possible serialze error");
                 }
             }
         }
@@ -137,6 +144,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
             currentDisplayedMission = 0;
         }
         UpdateMissionText();
+        /*
         if (missionsStatuses[currentDisplayedMission])
         {
             wayFinder.SetActive(false);
@@ -145,7 +153,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         {
             wayFinder.SetActive(true);
         }
-        
+        */
     }
 
     public void UpdateMissionText()
@@ -205,7 +213,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 
     public void StartCombat(CombatMissionBehavior mission)
     {
-        wayFinder.SetActive(false);
+        //wayFinder.SetActive(false);
         currentDisplayedMission = missions.IndexOf(mission);
         combatMissionActive = true;
         currentCombatMissionActive = mission;

@@ -28,12 +28,13 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
     [SerializeField] GameObject lasso;
 
     [SerializeField] float dashRange, dashTime, dashCD;
-    [SerializeField] Image dashCDIndicator;
+    //[SerializeField] Image dashCDIndicator;
     [SerializeField] private JukeBox jukebox;
 
     [SerializeField] float speedModWhenLassoOut;
     [SerializeField] float speedModWhenPulling;
     IsoAttackManager attackManager;
+    Flammable flammable;
 
     [Header("Animator Variables")]
     [SerializeField] Animator anim; //assigned in inspector for now; can change
@@ -50,6 +51,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
         EnterSlowArea(0);
         isStunned = false;
         attackManager = GetComponent<IsoAttackManager>();
+        flammable = GetComponent<Flammable>();
         moveable = GetComponent<Moveable>();
         attackState = 0;
         isDead = false;
@@ -209,6 +211,10 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
         if(canDash && !moveable.isLaunched && !isDead && Time.timeScale != 0)
         {
             Debug.Log("Transform.forward: " + transform.forward);
+            if (flammable.isBurning)
+            {
+                flammable.StopDropAndRoll();
+            }
             if (attackState == Helpers.LASSOING || attackState == Helpers.LASSOED || attackState == Helpers.PULLING)
             {
                 attackManager.ForceRelease();
@@ -239,19 +245,19 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
             }
         }
     }
-
+    
     private IEnumerator DashCD()
     {
         
         for (float i =0; i<dashCD; i+=0.01f)
         {
             yield return new WaitForSeconds(0.01f);
-            dashCDIndicator.fillAmount = i / dashCD;
+            //dashCDIndicator.fillAmount = i / dashCD;
         }
         canDash = true;
-        dashCDIndicator.fillAmount = 1;
+        //dashCDIndicator.fillAmount = 1;
     }
-
+    
 
     public (bool success, Vector3 position) GetMousePosition()
     {

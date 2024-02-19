@@ -17,7 +17,7 @@ public class InteractBehavior : MonoBehaviour
         cam = Camera.main.transform;
         currentInteractables = new List<InteractableBehaviorTemplate>();
         mc = ControlsContainer.instance.mainControls;
-        mc.Main.Interact.performed += Interactions;
+        mc.Main.Interact.performed+= Interactions;
         buttons = new List<string>();
         //Debug.Log(mc.Main.Interact.bindings.Count);
         foreach (InputBinding action in mc.Main.Interact.bindings)
@@ -31,6 +31,7 @@ public class InteractBehavior : MonoBehaviour
     private void Start()
     {
         DialogueManager.instance.SetPlayerInteraction(this);
+        NoteManager.instance.SetPlayerInteraction(this);
     }
 
     private void LateUpdate()
@@ -47,7 +48,8 @@ public class InteractBehavior : MonoBehaviour
 
     private void Interactions(InputAction.CallbackContext ctx)
     {
-        if (ctx.started)
+        //Debug.Log("interact");
+        if (ctx.performed)
             Interact();
     }
 

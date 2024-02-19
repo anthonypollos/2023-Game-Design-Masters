@@ -76,7 +76,7 @@ public class TriggerHurt : MonoBehaviour
         }
 
         //If the object has a GenericItem script and is valid, hurt the item!
-        if (HurtObject.GetComponent<GenericItem>() != null && hurtItem)
+        if (HurtObject.CompareTag("Interactable") && hurtItem)
         {
             hurtable = true;
             HurtItem(HurtObject);
@@ -138,9 +138,11 @@ public class TriggerHurt : MonoBehaviour
     //Hurt the item
     private void HurtItem(GameObject Item)
     {
+       // Debug.Log("HurtItem called on " + Item + "\n");
         //Only hurt if the health is above 0 (prevents damage during death anim)
         if (Item.GetComponent<GenericItem>().GetHealth() > 0)
         {
+            //Debug.Log(Item + "'s health is " + Item.GetComponent<GenericItem>().GetHealth());
             //Do not run "Take Damage" if this is a healing trigger and the player's HP is max
             if (!((damageAmount < 0) && (Item.GetComponent<GenericItem>().GetHealth() == Item.GetComponent<GenericItem>().GetMaxHealth())))
             {
