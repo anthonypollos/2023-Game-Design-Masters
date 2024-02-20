@@ -514,6 +514,8 @@ public class Moveable : MonoBehaviour, ISlowable
 
     public void Slammed(Vector3 target, float force, Collider collider)
     {
+        if (unstoppable)
+            return;
         flyingHitBox.SetActive(false);
         isStopping = false;
         isDashing = false;
