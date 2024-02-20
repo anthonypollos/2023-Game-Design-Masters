@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IToggleable
 {
-    public void Toggle();
+    public void Toggle(IsoAttackManager player = null);
     public bool GetToggle();
 }

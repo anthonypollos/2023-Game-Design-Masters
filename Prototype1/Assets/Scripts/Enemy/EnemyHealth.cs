@@ -42,7 +42,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         if (transform.position.y < -20f)
             Die();
     }
-    public void TakeDamage(int dmg)
+    public void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
     {
         health -= dmg;
         if (dmg > staggerThreshold)

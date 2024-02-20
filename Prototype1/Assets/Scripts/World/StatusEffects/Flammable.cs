@@ -86,7 +86,7 @@ public class Flammable : IStatus
             //Debug.Log("Tick Damage");
             if (iDamageable != null)
             {
-                iDamageable.TakeDamage(damagePerTick);
+                iDamageable.TakeDamage(damagePerTick, DamageTypes.FIRE);
             }
         }
     }
