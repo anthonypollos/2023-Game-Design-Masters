@@ -11,6 +11,8 @@ public class EnergyGenerator : MonoBehaviour, IPullable
     [Tooltip("Leave 0 to be instant")]
     float timeToRecharge;
     bool charged = false;
+
+    public GameObject chargedVFX;
     public void Break()
     {
 
@@ -28,6 +30,7 @@ public class EnergyGenerator : MonoBehaviour, IPullable
             charged = false;
             player.AquireCharge();
             uses--;
+            chargedVFX.SetActive(false);
             if(uses>0)
                 StartCoroutine(Charging());
         }
@@ -37,6 +40,7 @@ public class EnergyGenerator : MonoBehaviour, IPullable
     {
         yield return new WaitForSeconds(timeToRecharge);
         charged = true;
+        chargedVFX.SetActive(true);
     }
 
     // Start is called before the first frame update
@@ -45,6 +49,7 @@ public class EnergyGenerator : MonoBehaviour, IPullable
         if(uses==0)
         {
             uses = int.MaxValue;
+            chargedVFX.SetActive(true);
         }
         StartCoroutine(Charging());
     }
