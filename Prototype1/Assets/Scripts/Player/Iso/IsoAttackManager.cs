@@ -45,6 +45,13 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     private bool canKick;
     MainControls mc;
 
+    [Header("Charge mechanic")]
+    [SerializeField][Tooltip("Leave at 0 for infinite")]
+    float chargeTime;
+    [SerializeField]
+    GameObject chargeDetonationPrefab;
+
+
     [Header("Sound")]
     [SerializeField] private JukeBox jukebox;
 
@@ -61,6 +68,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     //[Header("TEMP Outlines")]
     //[SerializeField] OutlineToggle outlineToggle;
     private OutlineToggle outlineToggle;
+
+    bool charged = false;
 
     private void Awake()
     {
@@ -128,6 +137,31 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             ForceRelease();
     }
 
+    public (bool, GameObject, float duration) TakeCharge()
+    {
+        if(charged)
+        {
+            charged = false;
+            return (true, chargeDetonationPrefab, chargeTime);
+        }
+        return (false, null, -1);
+    }
+
+    public void AquireCharge()
+    {
+        charged = true;
+        if (chargeTime > 0)
+        {
+            StopCoroutine("ChargeCountdown");
+            StartCoroutine("ChargeCountdown");
+        }
+    }
+
+    private IEnumerator ChargeCountdown()
+    {
+        yield return new WaitForSeconds(chargeTime);
+        charged = false;
+    }
     private void Kick()
     {
         if (Time.timeScale != 0 && !pc.isStunned)

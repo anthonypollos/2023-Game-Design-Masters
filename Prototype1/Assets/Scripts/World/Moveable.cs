@@ -45,6 +45,8 @@ public class Moveable : MonoBehaviour, ISlowable
     [SerializeField] GameObject flyingHitBox;
     Collider playerCollider;
     IDamageable myDamageable;
+    private bool charged = false;
+    private GameObject chargedDetonationPrefab;
 
     List<float> slowMods;
     float[] slowModsArray;
@@ -166,6 +168,15 @@ public class Moveable : MonoBehaviour, ISlowable
         }
     }
 
+    public virtual void OnClash()
+    {
+        if(charged && chargedDetonationPrefab!= null)
+        {
+            Instantiate(chargedDetonationPrefab, transform.position, Quaternion.identity);
+            charged = false;
+        }
+    }
+
     public float GetMass()
     {
         return rb.mass;
@@ -217,6 +228,7 @@ public class Moveable : MonoBehaviour, ISlowable
                 tendrilOwner = null;
             }
             Moveable moveable = collision.transform.GetComponent<Moveable>();
+            OnClash();
             //calculate clash damage
             if (!unstoppable)
             {
@@ -225,6 +237,7 @@ public class Moveable : MonoBehaviour, ISlowable
                 else if (!moveable.AlreadyHit(myCollider))
                 {
                     myDamageable.TakeDamage(CalculateClashDamage());
+                    moveable.OnClash();
                 }
             }
             IDamageable damageable = collision.transform.GetComponent<IDamageable>();
@@ -586,6 +599,24 @@ public class Moveable : MonoBehaviour, ISlowable
         speed = 0;
         isLaunched = false;
         IgnorePlayer();
+        float timer;
+        var temp = tendrilOwner.TakeCharge();
+        if (!charged)
+        {
+            charged = temp.Item1;
+        }
+        chargedDetonationPrefab = temp.Item2;
+        timer = temp.Item3;
+        if(temp.Item1 && timer > 0)
+        {
+            StopCoroutine("ChargeCountdown");
+            StartCoroutine(ChargeCountdown(timer));
+        }
+    }
+    private IEnumerator ChargeCountdown(float timer)
+    {
+        yield return new WaitForSeconds(timer);
+        charged = false;
     }
 
     public void Dash(Vector3 target, float time)

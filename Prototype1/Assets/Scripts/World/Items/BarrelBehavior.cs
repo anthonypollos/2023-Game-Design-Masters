@@ -52,7 +52,7 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
         
     }
 
-    public void TakeDamage(int dmg)
+    public void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
     {
         health -= dmg;
         if (health <= 0)

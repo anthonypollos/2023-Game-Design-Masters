@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 {
+    [SerializeField] DamageTypes[] immuneTypes;
     private Moveable moveable;
     //this is a private internal var for constraints that we need if the object is frozen before being tendrilled
     private RigidbodyConstraints rbconstraints;
@@ -96,55 +98,58 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 
     }
 
-    public void TakeDamage(int dmg)
+    public void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
     {
-        health -= dmg;
-        jukebox.PlaySound(0);
-        if (dmg > 0)
-        if (health <= 0)
+        if (!immuneTypes.Contains(damageType))
         {
-            //Bool to prevent double death
-            if (isAlive)
-            {
-                DestroyEvent();
-                //First thing's first, turn isAlive off so this can't run again
-                isAlive = false;
-                //If there is a destruction particle, create it.
-                if (DestructionParticle != null)
+            health -= dmg;
+            jukebox.PlaySound(0);
+            if (dmg > 0)
+                if (health <= 0)
                 {
-                    //create the particle, gib, etc.
-                    GameObject vfxobj = Instantiate(DestructionParticle, gameObject.transform.position, Quaternion.identity);
-                    //Check to see if the particle has a lifetime.
-                    if (DestructionParticleLifetime != 0f)
+                    //Bool to prevent double death
+                    if (isAlive)
                     {
-                        //destroy the particle
-                        Destroy(vfxobj, DestructionParticleLifetime);
-                    }
-
-                    //This code makes gibs inherit their parent's angles and velocity
-                    foreach (Transform child in vfxobj.transform)
-                    {
-                        //check every child in the instantiated object to see if they have rigidbodies.
-                        if (child.gameObject.GetComponent<Rigidbody>() != null)
+                        DestroyEvent();
+                        //First thing's first, turn isAlive off so this can't run again
+                        isAlive = false;
+                        //If there is a destruction particle, create it.
+                        if (DestructionParticle != null)
                         {
-                            //If the child has a rigidbody, set its angles to the object that's breaking's angles
-                            child.eulerAngles = GetComponent<Transform>().eulerAngles;
+                            //create the particle, gib, etc.
+                            GameObject vfxobj = Instantiate(DestructionParticle, gameObject.transform.position, Quaternion.identity);
+                            //Check to see if the particle has a lifetime.
+                            if (DestructionParticleLifetime != 0f)
+                            {
+                                //destroy the particle
+                                Destroy(vfxobj, DestructionParticleLifetime);
+                            }
 
-                            //Now set the velocity to the object that's breaking's velocity
-                            child.gameObject.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity;
+                            //This code makes gibs inherit their parent's angles and velocity
+                            foreach (Transform child in vfxobj.transform)
+                            {
+                                //check every child in the instantiated object to see if they have rigidbodies.
+                                if (child.gameObject.GetComponent<Rigidbody>() != null)
+                                {
+                                    //If the child has a rigidbody, set its angles to the object that's breaking's angles
+                                    child.eulerAngles = GetComponent<Transform>().eulerAngles;
 
-                            //If this is an explosion, increase the velocity ten-fold
-                            if (vfxobj.CompareTag("Explosion")) child.gameObject.GetComponent<Rigidbody>().velocity *= 10;
+                                    //Now set the velocity to the object that's breaking's velocity
+                                    child.gameObject.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity;
+
+                                    //If this is an explosion, increase the velocity ten-fold
+                                    if (vfxobj.CompareTag("Explosion")) child.gameObject.GetComponent<Rigidbody>().velocity *= 10;
+                                }
+                            }
                         }
+                        jukebox.PlaySound(0);
+                        jukebox.PlaySound(1);
+                        gameObject.SetActive(false);
                     }
                 }
-                jukebox.PlaySound(0);
-                jukebox.PlaySound(1);
-                gameObject.SetActive(false);
-            }
+            //Prevent overheal
+            if (health > maxHealth) health = maxHealth;
         }
-        //Prevent overheal
-        if (health > maxHealth) health = maxHealth;
     }
 
     public bool WillBreak(int dmg)

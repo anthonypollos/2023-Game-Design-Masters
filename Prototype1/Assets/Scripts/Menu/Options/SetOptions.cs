@@ -20,11 +20,11 @@ public class SetOptions : MonoBehaviour
     [Header("---------------------------")]
     [Header("Default Setting Values")]
     [SerializeField] private int defaultFPS = 60;
+    [SerializeField] [Range(0, 4)] private int defaultQuality = 1;
     [SerializeField] [Range(0, 20)] private float defaultBrightness = 10f;
     [SerializeField] [Range(0, 20)] private float defaultContrast = 10f;
     [SerializeField] [Range(0, 20)] private float defaultVolume = 15f;
     private int defaultResolutionIndex = 0;
-
 
     void Start()
     {
@@ -73,12 +73,26 @@ public class SetOptions : MonoBehaviour
                 break;
         }
 
-        // Target FPS
-        graphicsOptions.SetFPS(PlayerPrefs.GetInt("TargetFPS", 60));
+        graphicsOptions.SetFPS(PlayerPrefs.GetInt("TargetFPS", defaultFPS));
+
+        graphicsOptions.SetQuality(PlayerPrefs.GetInt("TargetQuality", defaultQuality));
 
         graphicsOptions.SetBrightness(PlayerPrefs.GetFloat("Brightness", defaultBrightness));
-
         graphicsOptions.SetContrast(PlayerPrefs.GetFloat("Contrast", defaultContrast));
+
+        /* silly settings down here                                                                         */
+
+        // 1 = sepia on, 0 = sepia off
+        int sepia = PlayerPrefs.GetInt("SepiaMode", 0);
+        switch (sepia)
+        {
+            case 1:
+                graphicsOptions.SetSepia(true);
+                break;
+            case 0:
+                graphicsOptions.SetSepia(false);
+                break;
+        }
     }
 
     #region Resolution Functions
@@ -179,6 +193,7 @@ public class SetOptions : MonoBehaviour
     }
     #endregion
 
+
     #region Reset to Defaults
     public void ResetVolume()
     {
@@ -192,8 +207,9 @@ public class SetOptions : MonoBehaviour
         graphicsOptions.SetFullscreen(true);
         graphicsOptions.SetVsync(false);
         graphicsOptions.SetFPS(defaultFPS);
-
-        //default brightness, contrast
+        graphicsOptions.SetQuality(defaultQuality);
+        graphicsOptions.SetBrightness(defaultBrightness);
+        graphicsOptions.SetContrast(defaultContrast);
     }
     #endregion
 }

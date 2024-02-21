@@ -17,7 +17,7 @@ public class Gate : MonoBehaviour, IToggleable
     }
 
     
-    public void Toggle()
+    public void Toggle(IsoAttackManager player = null)
     {
         if(an == null) an = GetComponent<Animator>();
         an.speed = 1;
