@@ -26,7 +26,7 @@ public class NewRangedEnemyInteractions : EnemyInteractionBehaviorTemplate
     // Update is called once per frame
     void Update()
     {
-        if (launched && !brain.moveable.isLaunched)
+        if (launched && !brain.moveable.isLaunched && !coroutineRunning)
         {
             hasCollided = true;
             launched = false;
@@ -61,7 +61,7 @@ public class NewRangedEnemyInteractions : EnemyInteractionBehaviorTemplate
         brain.an.SetBool("Lassoed", true);
     }
 
-    public override void Pulled()
+    public override void Pulled(IsoAttackManager player = null)
     {
         base.Pulled();
         launched = true;

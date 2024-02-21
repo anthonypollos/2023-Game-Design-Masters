@@ -79,7 +79,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         }
     }
 
-    public void Pulled()
+    public void Pulled(IsoAttackManager player = null)
     {
         //unfreeze, then disable frozenbeforetendril so this isn't called every time.
         if (_frozenBeforeTendril)

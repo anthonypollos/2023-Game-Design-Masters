@@ -149,6 +149,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     public void AquireCharge()
     {
+        Debug.Log("Charge gained");
         charged = true;
         if (chargeTime > 0)
         {
@@ -390,7 +391,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             }
             //lassoRangeUIIndicator.gameObject.SetActive(false);
             //lb.transform.parent = null;
-            target.GetComponent<IPullable>().Pulled();
+            target.GetComponent<IPullable>().Pulled(this);
         }
         if(moveable==null)
         {

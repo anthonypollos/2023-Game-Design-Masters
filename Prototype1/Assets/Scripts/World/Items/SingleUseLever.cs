@@ -18,7 +18,7 @@ public class SingleUseLever : MonoBehaviour, IPullable
         return;
     }
 
-    public void Pulled()
+    public void Pulled(IsoAttackManager player = null)
     {
         foreach(GameObject obj in toggleObjects)
         {
