@@ -38,7 +38,7 @@ public class RangedEnemyInteractions : EnemyInteractionBehaviorTemplate
         brain.an.SetBool("Lassoed", true);
     }
 
-    public override void Pulled()
+    public override void Pulled(IsoAttackManager player = null)
     {
         base.Pulled();
         pullSlider.gameObject.SetActive(true);

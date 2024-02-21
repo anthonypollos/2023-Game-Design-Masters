@@ -38,7 +38,7 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
         primed = true;
     }
 
-    public void Pulled()
+    public void Pulled(IsoAttackManager player = null)
     {
     }
 

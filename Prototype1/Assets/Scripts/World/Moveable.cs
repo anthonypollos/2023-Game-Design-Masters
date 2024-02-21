@@ -360,6 +360,7 @@ public class Moveable : MonoBehaviour, ISlowable
                 tendrilOwner = null;
             }
             Moveable moveable = collision.transform.GetComponent<Moveable>();
+            OnClash();
             //calculate clash damage
             if (!unstoppable)
             {
@@ -368,6 +369,7 @@ public class Moveable : MonoBehaviour, ISlowable
                 else if (!moveable.AlreadyHit(myCollider))
                 {
                     myDamageable.TakeDamage(CalculateClashDamage());
+                    moveable.OnClash();
                 }
             }
             IDamageable damageable = collision.transform.GetComponent<IDamageable>();

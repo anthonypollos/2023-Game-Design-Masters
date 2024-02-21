@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4936532240143131715
+--- !u!1 &5010779292541990916
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8166594556947915358}
-  - component: {fileID: 8357992620113780865}
-  - component: {fileID: 4047715815804040031}
+  - component: {fileID: 943126122958870429}
+  - component: {fileID: 5346294907063685822}
+  - component: {fileID: 6407937893815046959}
   m_Layer: 9
-  m_Name: Explosion
+  m_Name: EnergyExplosion
   m_TagString: Explosion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8166594556947915358
+--- !u!4 &943126122958870429
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4936532240143131715}
+  m_GameObject: {fileID: 5010779292541990916}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.11, y: 3.54, z: -21.936052}
+  m_LocalPosition: {x: 1.5684323, y: 1.1256838, z: -26.883945}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 6617520243287590973}
+  - {fileID: 5175675275846914246}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &8357992620113780865
+--- !u!135 &5346294907063685822
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4936532240143131715}
+  m_GameObject: {fileID: 5010779292541990916}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -55,46 +55,33 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 6.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4047715815804040031
+--- !u!114 &6407937893815046959
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4936532240143131715}
+  m_GameObject: {fileID: 5010779292541990916}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bee44618080a38438d400d3a3f34466, type: 3}
+  m_Script: {fileID: 11500000, guid: 86d103d29b8f2f24cafd3d48bdd02293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dmg: 0
-  Playerdmg: 0
-  explosiveForce: 20
-  explosiveCarryDistance: 15
-  fireTime: 0
+  stunTime: 10
   layerMask:
     serializedVersion: 2
     m_Bits: 123721
   jukebox:
-    tracks:
-    - sound: {fileID: 8300000, guid: be12d380247b861468fc199f708bd221, type: 3}
-      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 1
-      volume: 1
-      isLocalized: 1
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
+    tracks: []
     transform: {fileID: 0}
---- !u!1001 &2429089339042516616
+--- !u!1001 &4445137796330215027
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 8166594556947915358}
+    m_TransformParent: {fileID: 943126122958870429}
     m_Modifications:
     - target: {fileID: 3686380192967956395, guid: ca3fef656124dc946b0f6b390027de83, type: 3}
       propertyPath: m_LocalScale.x
@@ -161,8 +148,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca3fef656124dc946b0f6b390027de83, type: 3}
---- !u!4 &6617520243287590973 stripped
+--- !u!4 &5175675275846914246 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8819170104530716341, guid: ca3fef656124dc946b0f6b390027de83, type: 3}
-  m_PrefabInstance: {fileID: 2429089339042516616}
+  m_PrefabInstance: {fileID: 4445137796330215027}
   m_PrefabAsset: {fileID: 0}
