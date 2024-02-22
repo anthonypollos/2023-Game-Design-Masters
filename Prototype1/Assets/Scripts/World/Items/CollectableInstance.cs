@@ -9,10 +9,17 @@ public class CollectableInstance : InteractableBehaviorTemplate, ISaveable
     [SerializeField] TextAsset textToDisplay;
     [SerializeField] bool isNote;
 
+    [SerializeField] private JukeBox jukebox;
+
     [ContextMenu("Generate guid for id")]
     private void GenerateGuid()
     {
         id = System.Guid.NewGuid().ToString();
+    }
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
     }
     public override bool Interact()
     {
@@ -29,6 +36,7 @@ public class CollectableInstance : InteractableBehaviorTemplate, ISaveable
             Debug.Log("Play text here");
         }
         collected = true;
+        jukebox.PlaySound(0);
         SaveLoadManager.instance.SaveGame();
         return true;
     }
