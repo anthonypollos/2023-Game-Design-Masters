@@ -87,6 +87,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         Destroy(gameObject);
     }
 
+    public int GetHealth()
+    {
+        return health;
+    }
+
     private void OnEnable()
     {
         
@@ -112,11 +117,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     private void OnSceneChange(Scene scene)
     {
         quitting = true;
-    }
-
-    public int GetHealth()
-    {
-        return health;
     }
 
     public int GetMaxHealth()

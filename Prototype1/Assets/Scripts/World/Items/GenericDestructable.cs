@@ -16,6 +16,11 @@ public class GenericDestructable : MonoBehaviour, IDamageable
         }
     }
 
+    public int GetHealth()
+    {
+        return 0;
+    }
+
     public bool WillBreak(int dmg)
     {
         return (dmg >= health);

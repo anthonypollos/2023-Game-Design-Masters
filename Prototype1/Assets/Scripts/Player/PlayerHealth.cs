@@ -60,6 +60,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         return (dmg >= health);
     }
 
+
     private void Die()
     {
         if (!pc.isDead)

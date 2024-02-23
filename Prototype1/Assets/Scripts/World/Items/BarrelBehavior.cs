@@ -51,6 +51,10 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
     {
         
     }
+    public int GetHealth()
+    {
+        return 0;
+    }
 
     public void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
     {

@@ -98,6 +98,11 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 
     }
 
+    public int GetHealth()
+    {
+        return maxHealth;
+    }
+
     public void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
     {
         if (!immuneTypes.Contains(damageType))
@@ -165,11 +170,6 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         GetComponent<Rigidbody>().constraints = rbconstraints;
         //2. turn the boolean off so this is only called once.
         _frozenBeforeTendril = false;
-    }
-
-    public int GetHealth()
-    {
-        return health;
     }
 
     private void OnDisable()

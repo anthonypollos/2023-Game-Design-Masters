@@ -51,6 +51,10 @@ public class Moveable : MonoBehaviour, ISlowable
     List<float> slowMods;
     float[] slowModsArray;
 
+    [SerializeField] bool piercing;
+    [SerializeField]
+    [Tooltip("Self Damage when piercing = maxhealth/uses")]
+    int uses;
     [SerializeField] float flyingHitBoxMod = 1.25f;
     [SerializeField] bool debug = false;
 
@@ -233,11 +237,14 @@ public class Moveable : MonoBehaviour, ISlowable
             if (!unstoppable)
             {
                 if (moveable == null)
-                    myDamageable.TakeDamage(CalculateClashDamage());
+                {
+                    myDamageable.TakeDamage(CalculateClashDamage(true));
+                }
                 else if (!moveable.AlreadyHit(myCollider))
                 {
-                    myDamageable.TakeDamage(CalculateClashDamage());
-                    moveable.OnClash();
+                    myDamageable.TakeDamage(CalculateClashDamage(true));
+                    if (!piercing)
+                        moveable.OnClash();
                 }
             }
             IDamageable damageable = collision.transform.GetComponent<IDamageable>();
@@ -248,40 +255,44 @@ public class Moveable : MonoBehaviour, ISlowable
             if (moveable != null)
             {
                 if (!moveable.AlreadyHit(myCollider))
-                { 
+                {
                     //Launching
-                    if(!unstoppable)
+                    if (!piercing)
                     {
-                        Vector3 dir = collision.transform.position - collision.contacts[0].point;
-                        dir.y = 0;
-                        dir = dir.normalized;
-                        moveable.Slammed(dir, rb.mass * speed / 2, myCollider);
-                        speed /= 2;
-                        ForceRelease();
-                    }
-                    else
-                    {
-                        Vector3 dir = transform.forward;
-                        dir.y = 0;
-                        int coin = UnityEngine.Random.Range(0, 2);
-                        int mod;
-                        if(coin == 0)
+                        if (!unstoppable)
                         {
-                            mod = -1;
+                            Vector3 dir = collision.transform.position - collision.contacts[0].point;
+                            dir.y = 0;
+                            dir = dir.normalized;
+                            moveable.Slammed(dir, rb.mass * speed / 2, myCollider);
+                            speed /= 2;
+                            ForceRelease();
                         }
                         else
                         {
-                            mod = 1;
+                            Vector3 dir = transform.forward;
+                            dir.y = 0;
+                            int coin = UnityEngine.Random.Range(0, 2);
+                            int mod;
+                            if (coin == 0)
+                            {
+                                mod = -1;
+                            }
+                            else
+                            {
+                                mod = 1;
+                            }
+                            dir = Quaternion.Euler(0, mod * 45, 0) * dir;
+                            moveable.Slammed(dir, 2 * moveable.GetMass() * speed / 2, myCollider);
                         }
-                        dir = Quaternion.Euler(0, mod * 45, 0) * dir;
-                        moveable.Slammed(dir, 2* moveable.GetMass() * speed / 2, myCollider);
                     }
                     IKickable kickable = collision.transform.GetComponent<IKickable>();
                     if(kickable != null)
                     {
                         kickable.Kicked();
                     }
-                    moveable.ForceReleaseDelayed();
+                    if(!unstoppable)
+                        moveable.ForceReleaseDelayed();
                     
                 }
             }
@@ -365,10 +376,10 @@ public class Moveable : MonoBehaviour, ISlowable
             if (!unstoppable)
             {
                 if (moveable == null)
-                    myDamageable.TakeDamage(CalculateClashDamage());
+                    myDamageable.TakeDamage(CalculateClashDamage(true));
                 else if (!moveable.AlreadyHit(myCollider))
                 {
-                    myDamageable.TakeDamage(CalculateClashDamage());
+                    myDamageable.TakeDamage(CalculateClashDamage(true));
                     moveable.OnClash();
                 }
             }
@@ -381,23 +392,26 @@ public class Moveable : MonoBehaviour, ISlowable
             {
                 if (!moveable.AlreadyHit(myCollider))
                 {
-                    //Launching
-                    if (!unstoppable)
+                    if (!piercing)
                     {
-                        Vector3 dir = collision.transform.position - collision.ClosestPointOnBounds(transform.position);
-                        dir.y = 0;
-                        dir = dir.normalized;
-                        moveable.Slammed(dir, rb.mass * speed / 2, myCollider);
-                        speed /= 2;
-                        ForceRelease();
+                        //Launching
+                        if (!unstoppable)
+                        {
+                            Vector3 dir = collision.transform.position - collision.ClosestPointOnBounds(transform.position);
+                            dir.y = 0;
+                            dir = dir.normalized;
+                            moveable.Slammed(dir, rb.mass * speed / 2, myCollider);
+                            speed /= 2;
+                            ForceRelease();
+                        }
                     }
-             
                     IKickable kickable = collision.transform.GetComponent<IKickable>();
                     if (kickable != null)
                     {
                         kickable.Kicked();
                     }
-                    moveable.ForceReleaseDelayed();
+                    if(!unstoppable)
+                        moveable.ForceReleaseDelayed();
 
                 }
             }
@@ -427,9 +441,17 @@ public class Moveable : MonoBehaviour, ISlowable
         }
     }
 
-    int CalculateClashDamage()
+    int CalculateClashDamage(bool selfDamage = false)
     {
-        return Mathf.RoundToInt(Mathf.Clamp(((float)clashDamage + (speed - neutralSpeed)*rateOfChange), 0, maxDamage));
+        if (piercing && selfDamage)
+            return CalculatePiercingDamage();
+        else
+            return Mathf.RoundToInt(Mathf.Clamp(((float)clashDamage + (speed - neutralSpeed)*rateOfChange), 0, maxDamage));
+    }
+
+    int CalculatePiercingDamage()
+    {
+        return myDamageable.GetHealth() / uses;
     }
 
     public bool AlreadyHit(Collider collider)
@@ -490,6 +512,10 @@ public class Moveable : MonoBehaviour, ISlowable
         isStopping = false;
         unstoppable = false;
         isDashing = false;
+        if (piercing)
+        {
+            gameObject.layer = LayerMask.NameToLayer("Interactables");
+        }
         ResetCollisions();
     }
 
@@ -522,6 +548,13 @@ public class Moveable : MonoBehaviour, ISlowable
         //Debug.DrawRay(transform.position, target / rb.mass, Color.gray, 5f);
         dir = targetLocation - transform.position;
         dir.y = 0;
+        if (piercing)
+        {
+            gameObject.layer = LayerMask.NameToLayer("Piercing");
+            Vector3 direction = dir;
+            direction.y = 0;
+            transform.forward = direction;
+        }
         speed = force/rb.mass;
         isLaunched = true;
         IgnorePlayer();
@@ -560,6 +593,12 @@ public class Moveable : MonoBehaviour, ISlowable
     {
         if(speed!=0)
             speed += force / rb.mass;
+        if (piercing)
+        {
+            Vector3 direction = dir;
+            direction.y = 0;
+            transform.forward = direction;
+        }
     }
 
     public void Hold()
