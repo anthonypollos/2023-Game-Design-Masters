@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 {
+    [SerializeField] DamageTypes[] immuneTypes;
     private Moveable moveable;
     //this is a private internal var for constraints that we need if the object is frozen before being tendrilled
     private RigidbodyConstraints rbconstraints;
     [Tooltip("Enable if this object should stay in place before being grabbed.")]
     [SerializeField] bool _frozenBeforeTendril = false;
-    [SerializeField] private int health = 20;
+    [SerializeField] private int maxHealth = 20;
     [Tooltip("The object that's created when this item is destroyed.\nDoes not need to be a particle.")]
     [SerializeField] GameObject DestructionParticle;
     [Tooltip("The amount of time the Destruction Particle Object is alive for.\n0 means it lives forever.")]
@@ -21,7 +23,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 
     //Keeps track of if this object is alive or not. This is to prevent it from double dying.
     private bool isAlive = true;
-    private int maxHealth;
+    private int health;
 
     bool wasOn = false;
     [SerializeField] bool respawning = false;
@@ -39,6 +41,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     }
     private void OnEnable()
     {
+        health = maxHealth;
         wasOn = true;
     }
     // Start is called before the first frame update
@@ -56,7 +59,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
             //Now freeze.
             GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         }
-        maxHealth = health;
+        //maxHealth = health;
     }
 
     public void Kicked()
@@ -76,7 +79,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         }
     }
 
-    public void Pulled()
+    public void Pulled(IsoAttackManager player = null)
     {
         //unfreeze, then disable frozenbeforetendril so this isn't called every time.
         if (_frozenBeforeTendril)
@@ -95,52 +98,63 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 
     }
 
-    public void TakeDamage(int dmg)
+    public int GetHealth()
     {
-        health -= dmg;
-        if (dmg > 0) jukebox.PlaySound(0);
-        if (health <= 0)
+        return maxHealth;
+    }
+
+    public void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
+    {
+        if (!immuneTypes.Contains(damageType))
         {
-            //Bool to prevent double death
-            if (isAlive)
-            {
-                //First thing's first, turn isAlive off so this can't run again
-                isAlive = false;
-                //If there is a destruction particle, create it.
-                if (DestructionParticle != null)
+            health -= dmg;
+            jukebox.PlaySound(0);
+            if (dmg > 0)
+                if (health <= 0)
                 {
-                    //create the particle, gib, etc.
-                    GameObject vfxobj = Instantiate(DestructionParticle, gameObject.transform.position, Quaternion.identity);
-                    //Check to see if the particle has a lifetime.
-                    if (DestructionParticleLifetime != 0f)
+                    //Bool to prevent double death
+                    if (isAlive)
                     {
-                        //destroy the particle
-                        Destroy(vfxobj, DestructionParticleLifetime);
-                    }
-
-                    //This code makes gibs inherit their parent's angles and velocity
-                    foreach (Transform child in vfxobj.transform)
-                    {
-                        //check every child in the instantiated object to see if they have rigidbodies.
-                        if (child.gameObject.GetComponent<Rigidbody>() != null)
+                        DestroyEvent();
+                        //First thing's first, turn isAlive off so this can't run again
+                        isAlive = false;
+                        //If there is a destruction particle, create it.
+                        if (DestructionParticle != null)
                         {
-                            //If the child has a rigidbody, set its angles to the object that's breaking's angles
-                            child.eulerAngles = GetComponent<Transform>().eulerAngles;
+                            //create the particle, gib, etc.
+                            GameObject vfxobj = Instantiate(DestructionParticle, gameObject.transform.position, Quaternion.identity);
+                            //Check to see if the particle has a lifetime.
+                            if (DestructionParticleLifetime != 0f)
+                            {
+                                //destroy the particle
+                                Destroy(vfxobj, DestructionParticleLifetime);
+                            }
 
-                            //Now set the velocity to the object that's breaking's velocity
-                            child.gameObject.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity;
+                            //This code makes gibs inherit their parent's angles and velocity
+                            foreach (Transform child in vfxobj.transform)
+                            {
+                                //check every child in the instantiated object to see if they have rigidbodies.
+                                if (child.gameObject.GetComponent<Rigidbody>() != null)
+                                {
+                                    //If the child has a rigidbody, set its angles to the object that's breaking's angles
+                                    child.eulerAngles = GetComponent<Transform>().eulerAngles;
 
-                            //If this is an explosion, increase the velocity ten-fold
-                            if (vfxobj.CompareTag("Explosion")) child.gameObject.GetComponent<Rigidbody>().velocity *= 10;
+                                    //Now set the velocity to the object that's breaking's velocity
+                                    child.gameObject.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity;
+
+                                    //If this is an explosion, increase the velocity ten-fold
+                                    if (vfxobj.CompareTag("Explosion")) child.gameObject.GetComponent<Rigidbody>().velocity *= 10;
+                                }
+                            }
                         }
+                        jukebox.PlaySound(0);
+                        jukebox.PlaySound(1);
+                        gameObject.SetActive(false);
                     }
                 }
-                jukebox.PlaySound(1);
-                gameObject.SetActive(false);
-            }
+            //Prevent overheal
+            if (health > maxHealth) health = maxHealth;
         }
-        //Prevent overheal
-        if (health > maxHealth) health = maxHealth;
     }
 
     public bool WillBreak(int dmg)
@@ -156,11 +170,6 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         GetComponent<Rigidbody>().constraints = rbconstraints;
         //2. turn the boolean off so this is only called once.
         _frozenBeforeTendril = false;
-    }
-
-    public int GetHealth()
-    {
-        return health;
     }
 
     private void OnDisable()
@@ -206,14 +215,17 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         return maxHealth;
     }
 
-    private void OnDestroy()
+    private void DestroyEvent()
     {
-        foreach (Transform child in transform)
+        if (outlineManager != null)
         {
-            //If we have an outline, remove from the list on death
-            if (child.GetComponent<Outline>() != null)
+            foreach (Transform child in transform)
             {
-                outlineManager.RemoveOutline(child.gameObject);
+                //If we have an outline, remove from the list on death
+                if (child.GetComponent<Outline>() != null)
+                {
+                    outlineManager.RemoveOutline(child.gameObject);
+                }
             }
         }
     }

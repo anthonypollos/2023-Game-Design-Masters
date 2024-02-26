@@ -20,7 +20,7 @@ public class Chandelier : MonoBehaviour, IToggleable, ITrap
         
     }
 
-    public void Toggle()
+    public void Toggle(IsoAttackManager player = null)
     {
         rb.useGravity = true;
 

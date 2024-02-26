@@ -311,7 +311,7 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
         //Insert lassoed animation
     }
 
-    public void Pulled()
+    public void Pulled(IsoAttackManager player = null)
     {
         //Insert pulled animation
     }

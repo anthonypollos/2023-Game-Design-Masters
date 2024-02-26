@@ -25,7 +25,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     // Update is called once per frame
     void Update()
     {
-        if (launched && !brain.moveable.isLaunched)
+        if (launched && !brain.moveable.isLaunched && !coroutineRunning)
         {
             hasCollided = true;
             launched = false;
@@ -61,7 +61,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         brain.an.SetBool("Tendriled", true);
     }
 
-    public override void Pulled()
+    public override void Pulled(IsoAttackManager player = null)
     {
         base.Pulled();
         launched = true;
@@ -98,6 +98,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         stunned = true;
         //brain.an.SetBool("Stunned", true);
         brain.an.SetBool("Attacking", false);
+        brain.an.SetBool("Tendriled", true);
     }
 
     protected override void UnStunned()
@@ -105,6 +106,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         if(!lassoed && !launched && !brain.moveable.isLaunched)
         {
             brain.an.SetBool("Tendriled", false);
+            brain.an.SetTrigger("NextState");
             //brain.an.SetBool("Stunned", false);
             base.UnStunned();
         }

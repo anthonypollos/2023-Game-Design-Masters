@@ -16,9 +16,8 @@ public class InteractBehavior : MonoBehaviour
     {
         cam = Camera.main.transform;
         currentInteractables = new List<InteractableBehaviorTemplate>();
-        mc = new MainControls();
-        mc.Main.Interact.Enable();
-        mc.Main.Interact.performed += _ => Interact();
+        mc = ControlsContainer.instance.mainControls;
+        mc.Main.Interact.performed+= Interactions;
         buttons = new List<string>();
         //Debug.Log(mc.Main.Interact.bindings.Count);
         foreach (InputBinding action in mc.Main.Interact.bindings)
@@ -32,6 +31,7 @@ public class InteractBehavior : MonoBehaviour
     private void Start()
     {
         DialogueManager.instance.SetPlayerInteraction(this);
+        NoteManager.instance.SetPlayerInteraction(this);
     }
 
     private void LateUpdate()
@@ -43,11 +43,19 @@ public class InteractBehavior : MonoBehaviour
 
     private void OnDisable()
     {
-        mc.Disable(); 
+        mc.Main.Interact.performed -= Interactions;
+    }
+
+    private void Interactions(InputAction.CallbackContext ctx)
+    {
+        //Debug.Log("interact");
+        if (ctx.performed)
+            Interact();
     }
 
     private void Interact()
     {
+        Debug.Log("Interact");
         if (Time.timeScale != 0)
         {
             if (currentInteractables.Count > 0)

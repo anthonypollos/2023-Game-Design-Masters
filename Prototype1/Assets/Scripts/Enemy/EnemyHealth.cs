@@ -42,7 +42,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         if (transform.position.y < -20f)
             Die();
     }
-    public void TakeDamage(int dmg)
+    public void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
     {
         health -= dmg;
         if (dmg > staggerThreshold)
@@ -87,6 +87,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         Destroy(gameObject);
     }
 
+    public int GetHealth()
+    {
+        return health;
+    }
+
     private void OnEnable()
     {
         
@@ -112,11 +117,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     private void OnSceneChange(Scene scene)
     {
         quitting = true;
-    }
-
-    public int GetHealth()
-    {
-        return health;
     }
 
     public int GetMaxHealth()
@@ -145,7 +145,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
             //If we have an outline, remove from the list on death
             if (child.GetComponent<Outline>() != null)
             {
-                outlineManager.RemoveOutline(child.gameObject);
+                if(outlineManager != null)
+                    outlineManager.RemoveOutline(child.gameObject);
             }
         }
     }

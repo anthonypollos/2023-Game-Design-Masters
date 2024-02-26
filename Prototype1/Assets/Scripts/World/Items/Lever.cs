@@ -41,7 +41,7 @@ public class Lever : MonoBehaviour, IPullable
         return;
     }
 
-    public void Pulled()
+    public void Pulled(IsoAttackManager player = null)
     {
         toggle = !toggle;
         it.Toggle();

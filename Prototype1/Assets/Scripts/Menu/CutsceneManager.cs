@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CutsceneManager : MonoBehaviour
 {
@@ -11,15 +12,20 @@ public class CutsceneManager : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        mainControls = new MainControls();
-        mainControls.Main.Interact.Enable();
-        mainControls.Main.Interact.performed += _ => Skip();
+        mainControls = ControlsContainer.instance.mainControls;
+        mainControls.Main.Interact.performed += Interact;
 
     }
 
     private void OnDisable()
     {
-        mainControls.Disable();
+        mainControls.Main.Interact.performed -= Interact;
+    }
+
+    private void Interact(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+            Skip();
     }
 
     // Update is called once per frame

@@ -32,7 +32,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if (transform.position.y < -20f)
             Die();
     }
-    public void TakeDamage(int dmg)
+    public void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
     {
         //If there is a blood particle, create it.
         if (bloodParticle != null && dmg > 0)
@@ -59,6 +59,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         return (dmg >= health);
     }
+
 
     private void Die()
     {

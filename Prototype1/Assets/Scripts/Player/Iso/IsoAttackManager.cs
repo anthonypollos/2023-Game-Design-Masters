@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class IsoAttackManager : MonoBehaviour, ICanKick
 {
@@ -46,6 +47,13 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     private bool canKick;
     MainControls mc;
 
+    [Header("Charge mechanic")]
+    [SerializeField][Tooltip("Leave at 0 for infinite")]
+    float chargeTime;
+    [SerializeField]
+    GameObject chargeDetonationPrefab;
+
+
     [Header("Sound")]
     [SerializeField] private JukeBox jukebox;
 
@@ -63,9 +71,10 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     //[SerializeField] OutlineToggle outlineToggle;
     private OutlineToggle outlineToggle;
 
+    bool charged = false;
+
     private void Awake()
     {
-        mc = new MainControls();
         jukebox.SetTransform(transform);
     }
 
@@ -95,18 +104,67 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     private void OnEnable()
     {
-        mc.Enable();
-        mc.Main.Secondary.performed += _ => Kick();
-        mc.Main.Primary.performed += _ => LassoCharge();
-        mc.Main.Primary.canceled += _ => Lasso();
-        mc.Main.Release.performed += _ => ForceRelease();
+        mc = ControlsContainer.instance.mainControls;
+        mc.Main.Secondary.performed += Secondary;
+        mc.Main.Primary.performed += Primary;
+        mc.Main.Primary.canceled += Primary;
+        mc.Main.Release.performed += Release;
     }
 
     private void OnDisable()
     {
-        mc.Disable();
+        mc.Main.Secondary.performed -= Secondary;
+        mc.Main.Primary.performed -= Primary;
+        mc.Main.Primary.canceled -= Primary;
+        mc.Main.Release.performed -= Release;
     }
 
+    private void Primary(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+            LassoCharge();
+        if (ctx.canceled)
+            Lasso();
+    }
+
+    private void Secondary(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+            ForceRelease();
+    }
+
+    private void Release(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+            ForceRelease();
+    }
+
+    public (bool, GameObject, float duration) TakeCharge()
+    {
+        if(charged)
+        {
+            charged = false;
+            return (true, chargeDetonationPrefab, chargeTime);
+        }
+        return (false, null, -1);
+    }
+
+    public void AquireCharge()
+    {
+        Debug.Log("Charge gained");
+        charged = true;
+        if (chargeTime > 0)
+        {
+            StopCoroutine("ChargeCountdown");
+            StartCoroutine("ChargeCountdown");
+        }
+    }
+
+    private IEnumerator ChargeCountdown()
+    {
+        yield return new WaitForSeconds(chargeTime);
+        charged = false;
+    }
     private void Kick()
     {
         if (Time.timeScale != 0 && !pc.isStunned)
@@ -340,7 +398,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             }
             //lassoRangeUIIndicator.gameObject.SetActive(false);
             //lb.transform.parent = null;
-            target.GetComponent<IPullable>().Pulled();
+            target.GetComponent<IPullable>().Pulled(this);
         }
         if(moveable==null)
         {

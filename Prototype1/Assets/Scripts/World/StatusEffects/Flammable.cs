@@ -9,12 +9,18 @@ public class Flammable : IStatus
     private Coroutine onFire;
     private IDamageable iDamageable;
     [SerializeField] bool startOnFire;
+    public bool isBurning = false;
     [HideInInspector] public Animator an;
     private ParticleSystem fireEffect;
     private ParticleSystem.EmissionModule em;
     private Light glow;
     private int mod = 1;
     Coroutine coroutine = null;
+
+    public void StopDropAndRoll()
+    {
+        Deactivate();
+    }
     
     protected override void Deactivate()
     {
@@ -23,6 +29,7 @@ public class Flammable : IStatus
             an.SetBool("Burning", false);
         */
         effectOn = false;
+        isBurning = false;
         if (fireEffect != null)
         {
             fireEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
@@ -72,13 +79,14 @@ public class Flammable : IStatus
 
     protected IEnumerator Damage()
     {
+        isBurning = true;
         while (effectOn)
         {
             yield return new WaitForSeconds(tickInterval);
             //Debug.Log("Tick Damage");
             if (iDamageable != null)
             {
-                iDamageable.TakeDamage(damagePerTick);
+                iDamageable.TakeDamage(damagePerTick, DamageTypes.FIRE);
             }
         }
     }

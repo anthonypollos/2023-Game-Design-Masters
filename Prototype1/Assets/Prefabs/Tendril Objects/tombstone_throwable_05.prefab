@@ -180,6 +180,9 @@ MonoBehaviour:
   slowdownPerSecond: 30
   isDashing: 0
   tendrilOwner: {fileID: 0}
+  flyingHitBox: {fileID: 0}
+  flyingHitBoxMod: 1.25
+  debug: 0
 --- !u!114 &2031415324556648368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,17 +209,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _frozenBeforeTendril: 1
-  health: 15
+  maxHealth: 20
   DestructionParticle: {fileID: 7141866554852115599, guid: eb4485787cd10004da588128fe280f63, type: 3}
   DestructionParticleLifetime: 4
   KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
+  effectsOnHit: []
   jukebox:
     tracks:
-    - sound: {fileID: 0}
-      masterOutputGroup: {fileID: 0}
-      outputGroup: {fileID: 0}
-      outputVolParameter: 0
-      volume: 0
+    - sound: {fileID: 8300000, guid: 0d8d5bab4d7304d4aa05b66b094cee2b, type: 3}
+      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputVolParameter: 1
+      volume: 1
       isLocalized: 0
       rolloffMode: 0
       minDistance: 0
@@ -233,6 +237,8 @@ MonoBehaviour:
       maxDistance: 0
       spatialBlend: 0
     transform: {fileID: 0}
+  respawning: 0
+  respawnDelay: 5
 --- !u!208 &6093862385078931408
 NavMeshObstacle:
   m_ObjectHideFlags: 0
