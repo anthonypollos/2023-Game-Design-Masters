@@ -7,7 +7,14 @@ public class WallSpikes : MonoBehaviour, ITrap
     [SerializeField] int dmg = 20;
     [SerializeField] float bleedTime = 3f;
 
-    public void ActivateTrap(GameObject target)
+    [SerializeField] private JukeBox jukebox;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
+
+        public void ActivateTrap(GameObject target)
     {
         int mod = 1;
         IDamageable temp = target.GetComponent<IDamageable>();
@@ -22,5 +29,6 @@ public class WallSpikes : MonoBehaviour, ITrap
         {
             bleedable.Activate(bleedTime/mod);
         }
+        jukebox.PlaySound(0);
     }
 }
