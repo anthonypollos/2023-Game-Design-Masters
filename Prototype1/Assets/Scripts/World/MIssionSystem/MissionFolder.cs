@@ -53,6 +53,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
             foreach (MissionBehavior folder in missions)
             {
                 folder.SetFolder(this);
+                Debug.Log(folder.name);
             }
             combatMissionActive = false;
             //currentDisplayedMission = 0;
