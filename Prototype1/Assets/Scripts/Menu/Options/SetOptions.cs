@@ -24,8 +24,8 @@ public class SetOptions : MonoBehaviour
     [Header("Default Setting Values")]
     [SerializeField] private int defaultFPS = 60;
     [SerializeField] [Range(0, 4)] private int defaultQuality = 1;
-    [SerializeField] [Range(0, 20)] private float defaultBrightness = 10f;
-    [SerializeField] [Range(0, 20)] private float defaultContrast = 10f;
+    [SerializeField] [Range(0, 20)] private float defaultBrightness = 6f;
+    [SerializeField] [Range(0, 20)] private float defaultContrast = 6f;
     [SerializeField] [Range(0, 20)] private float defaultVolume = 15f;
     private int defaultResolutionIndex = 0;
 
@@ -201,7 +201,7 @@ public class SetOptions : MonoBehaviour
     public void ResetVolume()
     {
         for (int i = 0; i < volSliders.Length; i++)
-            volSliders[i].value = PlayerPrefs.GetFloat(mixerVarNames[i], defaultVolume);
+            volSliders[i].value = defaultVolume;
     }
 
     public void ResetGraphics()
@@ -213,6 +213,7 @@ public class SetOptions : MonoBehaviour
         graphicsOptions.SetQuality(defaultQuality);
         graphicsOptions.SetBrightness(defaultBrightness);
         graphicsOptions.SetContrast(defaultContrast);
+        graphicsOptions.SetSepia(false);
     }
     #endregion
 }
