@@ -18,7 +18,8 @@ public class WallSpikes : MonoBehaviour, ITrap
     {
         int mod = 1;
         IDamageable temp = target.GetComponent<IDamageable>();
-        if(temp!= null)
+        jukebox.PlaySound(0);
+        if (temp!= null)
         {
             if(target.CompareTag("Player"))
                 mod = 2;
