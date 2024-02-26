@@ -265,7 +265,7 @@ public class GraphicsOptions : MonoBehaviour
         }
 
         if (globalVolume.TryGet<ColorAdjustments>(out colorAdjustments))
-            colorAdjustments.postExposure.value = (value / 13.3f);
+            colorAdjustments.postExposure.value = (value / 5.88f);
     }
     #endregion
 
@@ -313,7 +313,7 @@ public class GraphicsOptions : MonoBehaviour
         }
 
         if (globalVolume.TryGet<ColorAdjustments>(out colorAdjustments))
-            colorAdjustments.contrast.value = ((value - 10) * 2);
+            colorAdjustments.contrast.value = ((value - 10) * 3);
     }
     #endregion
 
