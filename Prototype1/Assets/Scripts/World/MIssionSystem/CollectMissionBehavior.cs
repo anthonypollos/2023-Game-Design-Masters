@@ -39,6 +39,10 @@ public class CollectMissionBehavior : MissionBehavior
         {
             OnComplete();
         }
+        else
+        {
+            folder.UpdateMissionText();
+        }
     }
 
     public override (string, bool) GetMissionText()
