@@ -3083,10 +3083,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.8095374
-  m_Height: 2.585011
+  m_Radius: 1.5031738
+  m_Height: 5.5150313
   m_Direction: 1
-  m_Center: {x: 0.13374496, y: 0.9840126, z: 0}
+  m_Center: {x: 0.24850464, y: 2.4490225, z: 0}
 --- !u!54 &1499575198695368653
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3095,7 +3095,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8192188020838270266}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 2
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -3149,8 +3149,8 @@ MonoBehaviour:
       maxDistance: 0
       spatialBlend: 0
     transform: {fileID: 0}
-  health: 50
-  staggerThreshold: 20
+  health: 200
+  staggerThreshold: 50
   bloodParticle: {fileID: 3819351497248801758, guid: 825a543a483823647818e91c51585d77, type: 3}
   healthSlider: {fileID: 2919006418162000745}
   ec: {fileID: 0}
@@ -3197,14 +3197,14 @@ MonoBehaviour:
   interaction: {fileID: 0}
   moveable: {fileID: 0}
   player: {fileID: 0}
-  sightDistance: 5
+  sightDistance: 10
   isAggro: 0
   an: {fileID: 0}
   layermask:
     serializedVersion: 2
     m_Bits: 24841
   state: 0
-  optimalRange: 1.5
+  optimalRange: 2
   jukebox:
     tracks:
     - sound: {fileID: 8300000, guid: 4de052fdca62d38429f904cc27ef616e, type: 3}
@@ -3241,12 +3241,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMoving: 1
-  movementSpeed: 6.25
+  movementSpeed: 8
   isPatrolling: 0
-  patrolPoints:
-  - {x: 21.362179, y: 1.28, z: -14.2}
-  - {x: 21.362179, y: 1.28, z: 15.1}
-  centerPoint: {x: 0.5, y: 1.28, z: 67.3}
+  patrolPoints: []
+  centerPoint: {x: 0, y: 0, z: 0}
   wanderRadius: 10
   brain: {fileID: 0}
   rb: {fileID: 0}
@@ -3266,7 +3264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stunned: 0
   brain: {fileID: 0}
-  breakOutTime: 1
+  breakOutTime: 0.5
   lassoImage: {fileID: 2690989717351898345}
   lassoOwner: {fileID: 0}
   staggerTime: 0.25
@@ -3345,20 +3343,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae5d9f3a2ac502843b37e988c6c2de7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAttackRange: 15
-  minAttackRange: 3
-  attackSpeed: 0.6
+  maxAttackRange: 20
+  minAttackRange: 0
+  attackSpeed: 0.3
   brain: {fileID: 0}
   attackWindUpSeconds:
-  - 1
+  - 0.5
   attackSeconds:
-  - 0.25
+  - 0.2
   attackWindDownSeconds:
-  - 1.25
-  attackFrames: 02000000
-  attackFramesPerSecond: 4
-  dashRange: 8
-  dashTime: 0.5
+  - 1
+  attackFrames: 04000000
+  attackFramesPerSecond: 8
+  dashRange: 10
+  dashTime: 1
   jukebox:
     tracks:
     - sound: {fileID: 8300000, guid: 8677aa7ddafb59a428eb9ecf59fba1b9, type: 3}
@@ -3385,7 +3383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultEffectDuration: 3
-  damagePerTick: 4
+  damagePerTick: 10
   tickInterval: 0.5
   an: {fileID: 0}
 --- !u!114 &6771764406117488526
