@@ -11,6 +11,7 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager instance { get; private set; }
     [SerializeField] GameObject dialogBox;
+    [SerializeField] GameObject choiceBox;
     [SerializeField] GameObject backgroundPanel;
     [SerializeField] GameObject pcPortrait;
     [SerializeField] GameObject npcPortrait;
@@ -105,6 +106,7 @@ public class DialogueManager : MonoBehaviour
         Time.timeScale = 0f;
         playerInteraction.Toggle();
         dialogBox.SetActive(true);
+        choiceBox.SetActive(false);
         backgroundPanel.SetActive(true);
         pcPortrait.SetActive(true);
         npcPortrait.SetActive(true);
@@ -196,6 +198,10 @@ public class DialogueManager : MonoBehaviour
         foreach (GameObject button in choiceButtons)
             button.SetActive(false);
         dialogBox.SetActive(false);
+        choiceBox.SetActive(false);
+        backgroundPanel.SetActive(false);
+        pcPortrait.SetActive(false);
+        npcPortrait.SetActive(false);
         Time.timeScale = 1f;
 
     }
@@ -221,12 +227,17 @@ public class DialogueManager : MonoBehaviour
         }
         if (currentChoices.Count > 0)
         {
+            portraitAnimator.Play("dialogue_pcChoice");
+            Debug.Log("choice time");
             topButton.Select();
             StartCoroutine(ChoiceBuffer());
             choiceNeeded = true;
         }
         else
         {
+            dialogBox.SetActive(true);
+            choiceBox.SetActive(false);
+            Debug.Log("no choices");
             choiceNeeded = false;
         }
         
@@ -246,6 +257,7 @@ public class DialogueManager : MonoBehaviour
             choiceBuffer = false;
             currentStory.ChooseChoiceIndex(choice);
             choiceNeeded = false;
+            portraitAnimator.Play("dialogue_PCspeak");
             ContinueStory();
         }
     }
