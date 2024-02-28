@@ -12,7 +12,9 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     [SerializeField] [Tooltip("The speed of the pull")] float minPullSpeed = 9f;
     [SerializeField] [Tooltip("The max speed of the pull")] float maxPullSpeed = 24f;
     [SerializeField] [Tooltip("Toss speed")] float tossSpeed = 9f;
-    [SerializeField] [Tooltip("Time it takes to reach max speed")] float timeToMax = 1.5f;
+    [SerializeField] [Tooltip("the minimum toss speed")] float minTossSpeed = 10f;
+    [SerializeField][Tooltip("the maximum toss speed")]  float maxTossSpeed = 20f;
+    [SerializeField][Tooltip("Time it takes to reach max speed")] float timeToMax = 1.5f;
     [SerializeField] [Tooltip("Time it takes holding to reset speed")] float timeToReset = 0.5f;
     float currentTime = 0;
     float restTime = 0;
@@ -305,7 +307,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 ForceRelease();
                 if (flick)
                 {
-                    moveable.Tossed(tossSpeed);
+                    moveable.Tossed(CalculateTossSpeed());
                 }
                 jukebox.PlaySound(Random.Range(1,4));
             }
@@ -339,6 +341,11 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     private float CalculatePullSpeed()
     {
         return Mathf.Lerp(minPullSpeed, maxPullSpeed, currentTime / timeToMax);
+    }
+
+    private float CalculateTossSpeed()
+    {
+        return Mathf.Lerp(minTossSpeed, maxTossSpeed, currentTime / timeToMax);
     }
 
     public void Pull(LassoBehavior lb)

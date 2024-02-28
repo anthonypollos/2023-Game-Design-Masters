@@ -11,6 +11,10 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager instance { get; private set; }
     [SerializeField] GameObject dialogBox;
+    [SerializeField] GameObject choiceBox;
+    [SerializeField] GameObject backgroundPanel;
+    [SerializeField] GameObject pcPortrait;
+    [SerializeField] GameObject npcPortrait;
     [SerializeField] TextMeshProUGUI mainText;
     [SerializeField] List<GameObject> choiceButtons;
     Button topButton;
@@ -22,13 +26,19 @@ public class DialogueManager : MonoBehaviour
     MainControls mc;
     InteractBehavior playerInteraction;
 
-    [SerializeField] TextMeshProUGUI nameText;
-    [SerializeField] Animator imageAnimator;
+    [SerializeField] TextMeshProUGUI pcNameText;
+    [SerializeField] TextMeshProUGUI npcNameText;
+    //[SerializeField] Animator imageAnimator;
     [SerializeField] Animator portraitAnimator;
     
     private const string IMAGE_TAG = "i";
-    private const string PORTRAIT_TAG = "p";
-    private const string NAME_TAG = "n";
+    private const string PC_PORTRAIT = "pp";
+    private const string NPC_PORTRAIT = "np";
+    private const string PC_SPEAKER = "ps";
+    private const string NPC_SPEAKER = "ns";
+    private const string PC_NAME = "pn";
+    private const string NPC_NAME = "nn";
+    private string activeName;
 
     private void Awake()
     {
@@ -61,9 +71,10 @@ public class DialogueManager : MonoBehaviour
         choiceBuffer = false;
         choiceNeeded = false;
         currentStory = null;
-        nameText.text = "";
-        imageAnimator.Play("Default");
-        portraitAnimator.Play("Default");
+        pcNameText.text = "Maria";
+        npcNameText.text = "";
+        //imageAnimator.Play("Default");
+        //portraitAnimator.Play("Default");
         buttonText = new List<TextMeshProUGUI>();
         if (choiceButtons.Count != 0)
         {
@@ -76,6 +87,7 @@ public class DialogueManager : MonoBehaviour
             }
         }
         dialogBox.gameObject.SetActive(false);
+        Debug.Log("disabling db");
     }
 
     public void SetPlayerInteraction(InteractBehavior temp)
@@ -85,15 +97,21 @@ public class DialogueManager : MonoBehaviour
     }
     public void EnterDialogMode(TextAsset inkJSON)
     {
-        
+        Debug.Log(currentStory);
         Debug.Log("Starting Dialog");
-        nameText.text = "";
-        imageAnimator.Play("Default");
-        portraitAnimator.Play("Default");
+        pcNameText.text = "Maria";
+        npcNameText.text = "";
+        //imageAnimator.Play("Default");
+        //portraitAnimator.Play("Default");
         currentStory = new Story(inkJSON.text);
         Time.timeScale = 0f;
         playerInteraction.Toggle();
         dialogBox.SetActive(true);
+        Debug.Log("enabling db");
+        choiceBox.SetActive(false);
+        backgroundPanel.SetActive(true);
+        pcPortrait.SetActive(true);
+        npcPortrait.SetActive(true);
         ContinueStory();
 
 
@@ -142,20 +160,34 @@ public class DialogueManager : MonoBehaviour
         foreach (string tag in tags)
         {
             string[] splitTags = tag.Split(":");
+            Debug.Log(tag);
 
             switch(splitTags[0])
             {
+                /*
                 case IMAGE_TAG:
                     imageAnimator.Play(splitTags[1]);
                     break;
-                case PORTRAIT_TAG:
-                    portraitAnimator.Play(splitTags[1]);
+                */
+                case PC_SPEAKER:
+                    portraitAnimator.Play("dialogue_PCspeak");
                     break;
-                case NAME_TAG:
-                    nameText.text = splitTags[1];
+                case NPC_SPEAKER:
+                    portraitAnimator.Play("dialogue_npcSpeak");
+                    break;
+                case NPC_PORTRAIT:
+                    float index = float.Parse(splitTags[1]);
+                    portraitAnimator.SetFloat("npcIndex", index);
+                    break;
+                case NPC_NAME:
+                    npcNameText.text = splitTags[1];
+                    break;
+                case PC_NAME:
+                    pcNameText.text = splitTags[1];
                     break;
                 default: 
                     Debug.LogError("Tag not recognized");
+                    Debug.LogError(tag);
                     break;
             }
         }
@@ -168,7 +200,13 @@ public class DialogueManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.05f);
         foreach (GameObject button in choiceButtons)
             button.SetActive(false);
+        portraitAnimator.Play("Empty");
         dialogBox.SetActive(false);
+        Debug.Log("disabling db");
+        choiceBox.SetActive(false);
+        backgroundPanel.SetActive(false);
+        pcPortrait.SetActive(false);
+        npcPortrait.SetActive(false);
         Time.timeScale = 1f;
 
     }
@@ -194,6 +232,7 @@ public class DialogueManager : MonoBehaviour
         }
         if (currentChoices.Count > 0)
         {
+            portraitAnimator.Play("dialogue_pcChoice");
             topButton.Select();
             StartCoroutine(ChoiceBuffer());
             choiceNeeded = true;
@@ -219,6 +258,7 @@ public class DialogueManager : MonoBehaviour
             choiceBuffer = false;
             currentStory.ChooseChoiceIndex(choice);
             choiceNeeded = false;
+            portraitAnimator.Play("dialogue_PCspeak");
             ContinueStory();
         }
     }
