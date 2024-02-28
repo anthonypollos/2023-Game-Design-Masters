@@ -87,6 +87,7 @@ public class DialogueManager : MonoBehaviour
             }
         }
         dialogBox.gameObject.SetActive(false);
+        Debug.Log("disabling db");
     }
 
     public void SetPlayerInteraction(InteractBehavior temp)
@@ -106,6 +107,7 @@ public class DialogueManager : MonoBehaviour
         Time.timeScale = 0f;
         playerInteraction.Toggle();
         dialogBox.SetActive(true);
+        Debug.Log("enabling db");
         choiceBox.SetActive(false);
         backgroundPanel.SetActive(true);
         pcPortrait.SetActive(true);
@@ -174,7 +176,8 @@ public class DialogueManager : MonoBehaviour
                     portraitAnimator.Play("dialogue_npcSpeak");
                     break;
                 case NPC_PORTRAIT:
-                    portraitAnimator.Play("NPC Blend Tree");
+                    float index = float.Parse(splitTags[1]);
+                    portraitAnimator.SetFloat("npcIndex", index);
                     break;
                 case NPC_NAME:
                     npcNameText.text = splitTags[1];
@@ -197,7 +200,9 @@ public class DialogueManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.05f);
         foreach (GameObject button in choiceButtons)
             button.SetActive(false);
+        portraitAnimator.Play("Empty");
         dialogBox.SetActive(false);
+        Debug.Log("disabling db");
         choiceBox.SetActive(false);
         backgroundPanel.SetActive(false);
         pcPortrait.SetActive(false);
@@ -228,16 +233,12 @@ public class DialogueManager : MonoBehaviour
         if (currentChoices.Count > 0)
         {
             portraitAnimator.Play("dialogue_pcChoice");
-            Debug.Log("choice time");
             topButton.Select();
             StartCoroutine(ChoiceBuffer());
             choiceNeeded = true;
         }
         else
         {
-            dialogBox.SetActive(true);
-            choiceBox.SetActive(false);
-            Debug.Log("no choices");
             choiceNeeded = false;
         }
         
