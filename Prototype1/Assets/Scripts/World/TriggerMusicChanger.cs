@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Purpose: Changes the music track or ambience track.
@@ -13,8 +14,10 @@ using UnityEngine.Audio;
 
 public class TriggerMusicChanger : MonoBehaviour
 {
+
     [Header("NOTE: INTRO AUDIO WILL NOT MATCH UP ON FIRST LOAD!\nThis is because replaceIntroTrack begins before the scene is fully loaded.\nI am working on a fix but this should be mostly fine as-is for now.")]
 
+    
 
     [SerializeField] private AudioClip newSound;
 
@@ -57,17 +60,24 @@ public class TriggerMusicChanger : MonoBehaviour
     //This should prevent the toggle from happening again if two accepted objects are inside
     private bool inTrigger = false;
 
+    [Space(10)]
+    [Header("Enable logs")]
+    [SerializeField] private bool debug = false;
 
-    // Start is called before the first frame update
-    void Start()
+    //We use Awake instead of Start for 2 reasons:
+    //1. We need to get the audio source as quickly as possible
+    //2. We need to pause the music until the scene is fully loaded
+    void Awake()
     {
         //Get the player, who has the audio sources we're looking for
         player = FindObjectOfType<IsoPlayerController>().gameObject;
-        Debug.Log("Music Changer: Player is set to " + player);
+        //Debug.Log("Music Changer: Player is set to " + player);
         //Make a list of audio sources on the player (since we have multiple)
         tracks = player.GetComponents<AudioSource>();
 
+
         Debug.Log("Music Changer: Length of tracks array: " + tracks.Length);
+
         //Find whichever one is the music track
         foreach (AudioSource i in tracks)
         {
@@ -91,6 +101,18 @@ public class TriggerMusicChanger : MonoBehaviour
 
         Debug.Log("Music Changer: Music length is allegedly " + music.clip.length);
 
+        //Now we stop the music track until the scene is fully loaded. This will prevent desync caused by scene loading.
+        music.Stop();
+
+        
+    }
+
+    //OnEnable *allegedly* only begins AFTER the scene is fully loaded.
+    //We stop the music in Awake and then start it here so that it's consistent between loads.
+    private void OnEnable()
+    {
+        //Start the music
+        music.Play();
         //Now run musicIntro
         if (musicIntro) StartCoroutine(replaceIntroTrack(music.clip.length - timeAdjustment));
     }
