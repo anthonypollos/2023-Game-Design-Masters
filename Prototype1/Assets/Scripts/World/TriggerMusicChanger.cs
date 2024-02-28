@@ -13,6 +13,8 @@ using UnityEngine.Audio;
 
 public class TriggerMusicChanger : MonoBehaviour
 {
+    [Header("NOTE: INTRO AUDIO WILL NOT MATCH UP ON FIRST LOAD!\nThis is because replaceIntroTrack begins before the scene is fully loaded.\nI am working on a fix but this should be mostly fine as-is for now.")]
+
 
     [SerializeField] private AudioClip newSound;
 
@@ -29,6 +31,9 @@ public class TriggerMusicChanger : MonoBehaviour
     //This is utterly fucking absurd, but Unity won't let me just do a comparison on mixer groups with strings, so we need to set the group manually.
     [Tooltip("Set this to Music or Ambience")]
     [SerializeField] AudioMixerGroup desiredGroup;
+
+    [Tooltip("Intro Only: Getting Exact Lengths of some sound formats is difficult and leads to inaccuracies.\nAdd the difference in time between when the intro ends and main track begins here and the number will be subtracted from the wait time.")]
+    [SerializeField] private float timeAdjustment;
 
     [Space(10)]
     [Header("Activator Options")]
@@ -54,7 +59,7 @@ public class TriggerMusicChanger : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         //Get the player, who has the audio sources we're looking for
         player = FindObjectOfType<IsoPlayerController>().gameObject;
@@ -87,7 +92,7 @@ public class TriggerMusicChanger : MonoBehaviour
         Debug.Log("Music Changer: Music length is allegedly " + music.clip.length);
 
         //Now run musicIntro
-        if (musicIntro) StartCoroutine(replaceIntroTrack(music.clip.length));
+        if (musicIntro) StartCoroutine(replaceIntroTrack(music.clip.length - timeAdjustment));
     }
 
     private void OnTriggerEnter(Collider other)
@@ -127,9 +132,9 @@ public class TriggerMusicChanger : MonoBehaviour
     IEnumerator replaceIntroTrack(float waitTime)
     {
         Debug.Log("Music Changer: replaceIntroTrack begun. Should wait for " + waitTime);
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSecondsRealtime(waitTime);
         Debug.Log("Music Changer: Wait time is over. Stopping, setting, starting again.");
-        music.Stop();
+        //music.Stop();
         music.clip = newSound;
         music.Play();
     }
