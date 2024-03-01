@@ -170,10 +170,14 @@ public class DialogueManager : MonoBehaviour
                     break;
                 */
                 case PC_SPEAKER:
-                    portraitAnimator.Play("dialogue_PCspeak");
+                    portraitAnimator.SetTrigger("pcSpeak");
+                    portraitAnimator.ResetTrigger("npcSpeak");
+                    portraitAnimator.ResetTrigger("pcChoice");
                     break;
                 case NPC_SPEAKER:
-                    portraitAnimator.Play("dialogue_npcSpeak");
+                    portraitAnimator.SetTrigger("npcSpeak");
+                    portraitAnimator.ResetTrigger("pcSpeak");
+                    portraitAnimator.ResetTrigger("pcChoice");
                     break;
                 case NPC_PORTRAIT:
                     float index = float.Parse(splitTags[1]);
@@ -232,7 +236,9 @@ public class DialogueManager : MonoBehaviour
         }
         if (currentChoices.Count > 0)
         {
-            portraitAnimator.Play("dialogue_pcChoice");
+            portraitAnimator.SetTrigger("pcChoice");
+            portraitAnimator.ResetTrigger("pcSpeak");
+            portraitAnimator.ResetTrigger("npcSpeak");
             topButton.Select();
             StartCoroutine(ChoiceBuffer());
             choiceNeeded = true;
