@@ -112,6 +112,9 @@ public class DialogueManager : MonoBehaviour
         backgroundPanel.SetActive(true);
         pcPortrait.SetActive(true);
         npcPortrait.SetActive(false);
+        portraitAnimator.SetTrigger("pcSpeak");
+        portraitAnimator.ResetTrigger("npcSpeak");
+        portraitAnimator.ResetTrigger("pcChoice");
         ContinueStory();
 
 
@@ -132,6 +135,7 @@ public class DialogueManager : MonoBehaviour
             {
                 StartCoroutine(Buffer());
                 mainText.text = currentStory.Continue();
+                dialogBox.SetActive(true);
                 HandleTags();
                 DisplayChoices();
             }
