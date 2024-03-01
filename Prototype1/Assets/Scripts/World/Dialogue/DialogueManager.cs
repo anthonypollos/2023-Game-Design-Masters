@@ -175,6 +175,7 @@ public class DialogueManager : MonoBehaviour
                     portraitAnimator.ResetTrigger("pcChoice");
                     break;
                 case NPC_SPEAKER:
+                    npcPortrait.SetActive(true);
                     portraitAnimator.SetTrigger("npcSpeak");
                     portraitAnimator.ResetTrigger("pcSpeak");
                     portraitAnimator.ResetTrigger("pcChoice");
