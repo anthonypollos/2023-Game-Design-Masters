@@ -270,7 +270,9 @@ public class DialogueManager : MonoBehaviour
             choiceBuffer = false;
             currentStory.ChooseChoiceIndex(choice);
             choiceNeeded = false;
-            portraitAnimator.Play("dialogue_PCspeak");
+            portraitAnimator.SetTrigger("pcSpeak");
+            portraitAnimator.ResetTrigger("npcSpeak");
+            portraitAnimator.ResetTrigger("pcChoice");
             ContinueStory();
         }
     }
