@@ -111,7 +111,7 @@ public class DialogueManager : MonoBehaviour
         choiceBox.SetActive(false);
         backgroundPanel.SetActive(true);
         pcPortrait.SetActive(true);
-        npcPortrait.SetActive(true);
+        npcPortrait.SetActive(false);
         ContinueStory();
 
 
@@ -180,6 +180,7 @@ public class DialogueManager : MonoBehaviour
                     portraitAnimator.ResetTrigger("pcChoice");
                     break;
                 case NPC_PORTRAIT:
+                    npcPortrait.SetActive(true);
                     float index = float.Parse(splitTags[1]);
                     portraitAnimator.SetFloat("npcIndex", index);
                     break;
