@@ -1,7 +1,7 @@
 name: Bug Report
 description: Submit a bug
 title: "Bug: <Title>"
-labels: ["Bug"]
+labels: ["bug"]
 body:
   - type: textarea
     attributes:
@@ -14,6 +14,26 @@ body:
     attributes:
       label: Reproduction Steps
       description: Steps to reproduce the Bug
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Bug Frequency
+      description: How common or easily reproduceable is this bug?
+      options:
+        - Rare or cannot be reproduced
+        - Somewhat frequent or repro steps aren't entirely known
+        - Common and Consistent
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Bug Importance
+      description: How important is it that this bug is addressed?
+      options:
+        - Unimportant, graphical or non-major
+        - Somewhat important, bug can hinder gameplay sometimes
+        - Incredibly important, bug greatly hinders gameplay
     validations:
       required: true
   - type: dropdown
@@ -35,15 +55,72 @@ body:
         - Laptop
     validations:
       required: true
+  - type: dropdown
+    attributes:
+      label: If Laptop, was your laptop plugged in?
+      description: Was the laptop plugged in when the bug occurred?
+      options:
+        - Plugged in
+        - Not plugged in
+  - type: dropdown
+    attributes:
+      label: Editor or Build?
+      description: Did this bug occur in the editor or in a build of the game?
+      options:
+        - Editor
+        - Build
+        - Both
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: If Build, What Build?
+      description: What build did this occur in? 
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: If Editor, What Branch?
+      description: What branch did this occur in?
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: If Editor, Most Recent Push
+      description: What was the most recent push when the bug occurred?  
+    validations:
+      required: false
+  - type: dropdown
+    attributes:
+      label: If Editor, Menu or Direct Load?
+      description: When the bug occurred, did you load into the scene from the menu or did you load directly into the scene from the editor?
+      options:
+        - Menu
+        - Editor
+        - Both
+    validations:
+      required: false
+  - type: dropdown
+    attributes:
+      label: Every Time or First Load?
+      description: Did the bug occur every time or only on the first time loading into the game/scene?
+      options:
+        - Every Time
+        - First Load only
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Was the computer under heavy load?
+      description: When the bug occurred, did you have RAM, CPU, or GPU intensive tasks/programs running such as a browser with lots of tabs open, photoshop, etc?
+      options:
+        - Computer was under heavy load
+        - Computer was NOT under heavy load
+    validations:
+      required: false
   - type: textarea
     attributes:
-      label: Relevant log output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
-      render: shell
-  - type: checkboxes
-    attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
-      options:
-        - label: I agree to follow this project's Code of Conduct
-          required: true
+      label: Anything else?
+      description: Use this section to describe anything else that you feel is important to note.
+    validations:
+      required: false
