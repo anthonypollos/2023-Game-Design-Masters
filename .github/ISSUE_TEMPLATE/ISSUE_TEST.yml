@@ -1,15 +1,16 @@
 name: Bug Report
 description: File a bug report
-title: "[Bug]: "
-labels: ["bug", "triage"]
-projects: ["octo-org/1", "octo-org/44"]
-assignees:
-  - octocat
+title: "Bug: <Title>"
+labels: ["Bug"]
 body:
-  - type: markdown
+  - type: textarea
     attributes:
-      value: |
-        Thanks for taking the time to fill out this bug report!
+      label: Bug Description
+	  description: Describe the bug that had occurred
+	  placeholder: |
+      Please be as concise and descriptive as possible.
+	  validations:
+		required: true
   - type: input
     id: contact
     attributes:
