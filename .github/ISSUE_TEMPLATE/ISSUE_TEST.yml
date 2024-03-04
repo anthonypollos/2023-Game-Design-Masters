@@ -1,0 +1,49 @@
+name: Bug Report
+description: Submit a bug
+title: "Bug: <Title>"
+labels: ["Bug"]
+body:
+  - type: textarea
+    attributes:
+      label: Bug Description
+      description: Describe the bug that had occurred
+      placeholder: Please be as concise and descriptive as possible.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Reproduction Steps
+      description: Steps to reproduce the Bug
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Platform
+      description: What platform are you on?
+      options:
+        - Windows
+        - Mac
+        - Linux
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Desktop or Laptop?
+      description: Were you on a Desktop or Laptop when this happened?
+      options:
+        - Desktop
+        - Laptop
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+  - type: checkboxes
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
