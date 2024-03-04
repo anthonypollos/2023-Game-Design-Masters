@@ -52,3 +52,55 @@ body:
         - Both
     validations:
       required: true
+  - type: input
+    attributes:
+      label: If Build, What Build?
+      description: What build did this occur in? 
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: If Editor, What Branch?
+      description: What branch did this occur in?
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: If Editor, Most Recent Push
+      description: What was the most recent push when the bug occurred?  
+    validations:
+      required: false
+  - type: dropdown
+    attributes:
+      label: If Editor, Menu or Direct Load?
+      description: When the bug occurred, did you load into the scene from the menu or did you load directly into the scene from the editor?
+      options:
+        - Menu
+        - Editor
+        - Both
+    validations:
+      required: false
+  - type: dropdown
+    attributes:
+      label: Every Time or First Load?
+      description: Did the bug occur every time or only on the first time loading into the game/scene?
+      options:
+        - Every Time
+        - First Load only
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Was the computer under heavy load?
+      description: When the bug occurred, did you have RAM, CPU, or GPU intensive tasks/programs running such as a browser with lots of tabs open, photoshop, etc?
+      options:
+        - Computer was under heavy load
+        - Computer was NOT under heavy load
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Anything else?
+      description: Use this section to describe anything else that you feel is important to note.
+    validations:
+      required: false
