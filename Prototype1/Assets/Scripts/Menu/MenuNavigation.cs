@@ -6,8 +6,7 @@ using UnityEngine.EventSystems;
 
 public class MenuNavigation : MonoBehaviour
 {
-    [SerializeField] private GameObject firstButton;
-    [SerializeField] private EventSystem eventSystem;
+    [SerializeField] private Button buttonToSelect;
 
     private InputChecker inputChecker;
 
@@ -19,7 +18,7 @@ public class MenuNavigation : MonoBehaviour
         inputChecker = FindObjectOfType<InputChecker>();
 
         if (inputChecker.IsController())
-            SetSelectedButton(firstButton);
+            SetSelectedButton(buttonToSelect);
     }
 
     // Update is called once per frame
@@ -29,26 +28,24 @@ public class MenuNavigation : MonoBehaviour
         {
             isController = inputChecker.IsController();
 
-            if(isController)
-                SetSelectedButton(firstButton);
+            if (isController)
+                SetSelectedButton(buttonToSelect);
 
-            else
-                DeselectButtons();
+            //else
+                //DeselectButtons();
         }
     }
 
-
-    public void SetSelectedButton(GameObject button)
+    public void SetSelectedButton(Button button)
     {
-        EventSystem.current.SetSelectedGameObject(null);
-
-        EventSystem.current.SetSelectedGameObject(button);
+        buttonToSelect = button;
+        buttonToSelect.Select();
     }
 
 
     public void DeselectButtons()
     {
-        EventSystem.current.SetSelectedGameObject(null);
+        //EventSystem.current.SetSelectedGameObject(null);
     }
 
 }
