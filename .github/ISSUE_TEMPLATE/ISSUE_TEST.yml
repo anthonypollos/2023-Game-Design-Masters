@@ -12,31 +12,29 @@ body:
       required: true
   - type: textarea
     attributes:
-      label: What happened?
-      description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you see!
-      value: "A bug happened!"
+      label: Reproduction Steps
+      description: Steps to reproduce the Bug
     validations:
       required: true
   - type: dropdown
     attributes:
-      label: Version
-      description: What version of our software are you running?
+      label: Platform
+      description: What platform are you on?
       options:
-        - 1.0.2 (Default)
-        - 1.0.3 (Edge)
-      default: 0
+        - Windows
+        - Mac
+        - Linux
     validations:
       required: true
   - type: dropdown
     attributes:
-      label: What browsers are you seeing the problem on?
-      multiple: true
+      label: Desktop or Laptop?
+      description: Were you on a Desktop or Laptop when this happened?
       options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
+        - Desktop
+        - Laptop
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: Relevant log output
