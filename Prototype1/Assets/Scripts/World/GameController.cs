@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -26,12 +27,18 @@ public class GameController : MonoBehaviour
     [SerializeField] Button topButtonDead;
     [SerializeField] List<string> nonGameScenes;
 
+    bool paused;
+
     static GameObject player;
 
     public static GameController instance;
 
+    private OutlineToggle outlineManager;
+
     private void Awake()
     {
+        outlineManager = FindObjectOfType<OutlineToggle>();
+        paused = false;
         Cursor.lockState = CursorLockMode.Confined;
         if (instance != null && instance != this)
         {
@@ -82,10 +89,11 @@ public class GameController : MonoBehaviour
 
     public void TogglePauseMenu()
     {
-        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name))
+        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
         {
-            if (pauseMenu.activeInHierarchy)
+            if (paused)
             {
+                paused = false;
                 Cursor.lockState = CursorLockMode.Confined;
                 pauseMenu.SetActive(false);
                 foreach (GameObject menu in menus)
@@ -94,6 +102,7 @@ public class GameController : MonoBehaviour
             }
             else if (Time.timeScale != 0)
             {
+                paused = true;
                 Cursor.lockState = CursorLockMode.None;
                 pauseMenu.SetActive(true);
                 topButtonPause.Select();
@@ -154,6 +163,43 @@ public class GameController : MonoBehaviour
     private void ToggleLasso()
     {
         toggleLasso = !toggleLasso;
+    }
+
+    public void ButtonSelect(Button select)
+    {
+        select.Select();
+    }
+
+
+    public void Respawn(GameObject go, float delay, Vector3 pos, Quaternion rot)
+    {
+        if (!go.gameObject.scene.isLoaded)
+            return;
+        GameObject temp = Instantiate(go, pos, rot);
+        Destroy(go);
+        StartCoroutine(DelayedRespawn(temp, delay));
+    }
+
+
+
+    private IEnumerator DelayedRespawn(GameObject go, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        
+        go.SetActive(true);
+        //Add the respawned object to the outline manager
+        foreach (Transform child in go.transform)
+        {
+            //Check the children of the respawned object. Find whatever child has the outline and add it
+            if (child.GetComponent<Outline>() != null)
+            {
+                if(outlineManager != null)
+                    outlineManager.AddOutline(child.gameObject);
+                //de-activate the outline
+                child.GetComponent<Outline>().enabled = false;
+            }
+        }
+            
     }
 
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 
+
 public class SaveLoadManager : MonoBehaviour
 {
     private SavedValues savedValues;
@@ -15,16 +16,21 @@ public class SaveLoadManager : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        if(instance!=null)
+        if (SaveLoadManager.instance != null)
         {
+            Debug.Log("Second instance, destroying");
             Destroy(gameObject);
         }
-        instance = this;
-        dataHandler = new FileDataHandler(Application.persistentDataPath);
-        transform.parent = null;
-        DontDestroyOnLoad(gameObject);
-        SceneManager.sceneLoaded += NewScene;
-        SceneManager.sceneUnloaded += LeaveScene;
+        else
+        {
+            Debug.Log("first instance, setting");
+            instance = this;
+            dataHandler = new FileDataHandler(Application.persistentDataPath);
+            transform.parent = null;
+            DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += NewScene;
+            SceneManager.sceneUnloaded += LeaveScene;
+        }
     }
 
     private void Start()
@@ -32,9 +38,15 @@ public class SaveLoadManager : MonoBehaviour
         
     }
 
-
+    [ContextMenu("Delete Save Data")]
+    private void DeleteSaveData()
+    {
+        dataHandler = new FileDataHandler(Application.persistentDataPath);
+        dataHandler.Delete();
+    }
     public void NewGame()
     {
+        DeleteSaveData();
         Debug.Log("New game");
         savedValues = new SavedValues();
         SaveGame();
@@ -139,6 +151,11 @@ public class SaveLoadManager : MonoBehaviour
         IEnumerable<ISaveable> saveableObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISaveable>();
         this.saveableObjects = new List<ISaveable>(saveableObjects);
         LoadGame();
+    }
+
+    public SavedValues GetCopy()
+    {
+        return savedValues;
     }
 
 

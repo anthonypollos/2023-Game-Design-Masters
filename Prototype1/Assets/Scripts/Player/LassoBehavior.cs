@@ -66,7 +66,7 @@ public class LassoBehavior : MonoBehaviour
         //Handles.color = Color.cyan;
     }
 
-    public void SetValues(float maxPullDistance, float minModifier, float maxThrowRange, float breakRange, Slider slider, Image sliderFill)
+    public void SetValues(float maxThrowRange, float breakRange, Slider slider, Image sliderFill)
     {
         if(lr ==null)
         {
@@ -79,8 +79,8 @@ public class LassoBehavior : MonoBehaviour
         moveable = null;
         attached = null;
         startingPos = transform.position;
-        this.maxPullDistance = maxPullDistance;
-        this.minPullDistance = maxPullDistance * minModifier;
+        this.maxPullDistance = 10;
+        this.minPullDistance = maxPullDistance * 1;
         this.maxThrowDistance = maxThrowRange;
         //this.player = playerPos;
         this.slider = slider;
@@ -125,7 +125,7 @@ public class LassoBehavior : MonoBehaviour
             {
                 attached = temp;
                 forwardVector = (player.position - attached.transform.position).normalized;
-                attached.GetComponentInParent<IPullable>().Lassoed();
+                
                 //Physics.IgnoreCollision(GetComponent<Collider>(), temp.GetComponent<Collider>(), true);
                 //gameObject.transform.parent = temp.transform;
                 //transform.localPosition = Vector3.zero;
@@ -136,6 +136,7 @@ public class LassoBehavior : MonoBehaviour
                 if (moveable != null)
                 {
                     moveable.tendrilOwner = attackManager;
+                    moveable.Grabbed();
                     attachedRB = temp.GetComponent<Rigidbody>();
                     //lassoRange.SetAttached(attached.transform, attachedRB);
                     lr.enabled = true;
@@ -143,6 +144,7 @@ public class LassoBehavior : MonoBehaviour
 
                     adjustedPullRange = maxPullDistance / attachedRB.mass;
                 }
+                attached.GetComponentInParent<IPullable>().Lassoed();
                 if (gc.toggleLasso)
                 {
                     dir = forwardVector;
@@ -199,8 +201,8 @@ public class LassoBehavior : MonoBehaviour
             if (moveable != null && !gc.toggleLasso)
             {
 
-                float angle = CheckAngle();
-                calculatedDistance = trajectoryArrowDistance == 0f ? Mathf.Lerp(maxPullDistance, minPullDistance, angle / 180) / attachedRB.mass : trajectoryArrowDistance;
+                CheckAngle();
+                calculatedDistance = trajectoryArrowDistance == 0f ? maxPullDistance / attachedRB.mass : trajectoryArrowDistance;
                 //(maxPullDistance - ((maxPullDistance - minPullDistance) / 180) * Mathf.Abs(angle)) / attachedRB.mass
                 dir.y = 0;
                 Vector3[] positions = { attached.transform.position, attached.transform.position + dir * calculatedDistance };
@@ -226,7 +228,7 @@ public class LassoBehavior : MonoBehaviour
 
         if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
         {
-            Debug.DrawRay(hitInfo.point, Vector3.down * 10, Color.red, 10f);
+            //Debug.DrawRay(hitInfo.point, Vector3.down * 10, Color.red, 10f);
             return (success: true, position: hitInfo.point);
 
         }
@@ -256,6 +258,15 @@ public class LassoBehavior : MonoBehaviour
             (check, mouseVector) = GetMousePosition();
             if (check)
             {
+                Vector3 mouseAdjust = mouseVector;
+                mouseAdjust.y = 0;
+                Vector3 attachedAdjust = attached.transform.position;
+                attachedAdjust.y = 0;
+                if(Vector3.Distance(mouseAdjust, attachedAdjust) < 1)
+                {
+                    dir = Vector3.zero;
+                    return 0;
+                }
                 var direction = mouseVector - attached.transform.position;
                 direction.y = 0;
                 dir = direction.normalized;

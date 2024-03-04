@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IPullable
 {
-    public void Pulled();
+    public void Pulled(IsoAttackManager player = null);
     public void Lassoed();
 
     public void Break();

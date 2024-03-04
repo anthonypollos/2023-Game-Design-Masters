@@ -6,7 +6,7 @@ using UnityEngine;
 public class SavedValues
 {
     public SerializeableDictionary<string, bool> collectables;
-    public SerializeableDictionary<string, bool> levelsCompleted;
+    public SerializeableDictionary<string, bool> levels;
     public string currentLevel;
     public List<bool> currentLevelMissionStatuses;
     //public Vector3 checkPointLocation;
@@ -14,7 +14,7 @@ public class SavedValues
     public SavedValues()
     {
         collectables = new SerializeableDictionary<string, bool>();
-        levelsCompleted = new SerializeableDictionary<string, bool>();
+        levels = new SerializeableDictionary<string, bool>();
         //currentLevel = "";
         currentLevelMissionStatuses = new List<bool>();
         //checkPointLocation = Vector3.zero;

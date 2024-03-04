@@ -38,7 +38,6 @@ public class BruteEnemyAttacks : EnemyAttackTemplate
     {
         brain.an.SetFloat("AttackMod", 1);
         brain.an.SetBool("Attacking", true);
-        //Debug.Log("trigger attack" + attack);
         currentWaitingTime = float.MaxValue;
         brain.state = EnemyStates.ATTACKING;
         brain.an.SetTrigger("Attack" + attack.ToString());
@@ -56,7 +55,8 @@ public class BruteEnemyAttacks : EnemyAttackTemplate
             Debug.LogError("Attack value for Dash invalid");
             return;
         }
-        brain.moveable.Dash(transform.forward * dashRange, dashTime);
+        brain.moveable.Ram(transform.forward * dashRange, dashTime);
+        jukebox.PlaySound(1);
         currentWaitingTime = dashTime;
         if (animationTimer < 0)
             animationTimer = 0;
@@ -64,14 +64,7 @@ public class BruteEnemyAttacks : EnemyAttackTemplate
 
 
 
-    public void AttackEnd()
-    {
-        count = 0;
-        brain.state = EnemyStates.NOTHING;
 
-        brain.an.SetBool("Attacking", false);
-        Debug.Log(Time.realtimeSinceStartup - timeTest);
-    }
 
     // Start is called before the first frame update
     void Start()

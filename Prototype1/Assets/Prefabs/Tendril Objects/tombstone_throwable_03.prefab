@@ -72,6 +72,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: tombstone_throwable_03
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7ee48b343bc38ee46a30dcaeb961d07a, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7ee48b343bc38ee46a30dcaeb961d07a, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -82,6 +90,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7ee48b343bc38ee46a30dcaeb961d07a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6706367861582671198}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7ee48b343bc38ee46a30dcaeb961d07a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6873835581831344276}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7ee48b343bc38ee46a30dcaeb961d07a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4134068593577063184}
@@ -151,6 +162,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6873835581831344276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4999234966187698106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41c6abad749d3f645b6bdb822862d427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultEffectDuration: 5
+  damagePerTick: 4
+  tickInterval: 0.5
+  startOnFire: 0
+  an: {fileID: 0}
 --- !u!114 &4134068593577063184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,10 +191,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clashDamage: 10
+  neutralSpeed: 15
+  rateOfChange: 1
+  maxDamage: 40
+  speed: 0
   isLaunched: 0
-  timeToStop: 1
+  slowdownPerSecond: 30
   isDashing: 0
   tendrilOwner: {fileID: 0}
+  flyingHitBox: {fileID: 0}
+  flyingHitBoxMod: 1.25
+  debug: 0
 --- !u!114 &6841114306540634730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,24 +228,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a12c10e85cb88c4ab2ee8a95cf9a91a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 30
-  clashDamage: 15
+  _frozenBeforeTendril: 1
+  maxHealth: 20
   DestructionParticle: {fileID: 7141866554852115599, guid: eb4485787cd10004da588128fe280f63, type: 3}
   DestructionParticleLifetime: 4
   KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
+  effectsOnHit: []
   jukebox:
     tracks:
-    - sound: {fileID: 8300000, guid: 7959056ae15c7eb4d873407522f2a063, type: 3}
+    - sound: {fileID: 8300000, guid: 0d8d5bab4d7304d4aa05b66b094cee2b, type: 3}
       masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
       outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
       outputVolParameter: 1
-      volume: 0
+      volume: 1
       isLocalized: 0
       rolloffMode: 0
       minDistance: 0
       maxDistance: 0
       spatialBlend: 0
-    - sound: {fileID: 8300000, guid: ee0cbdfffdd145a4e853026ae65fdb5b, type: 3}
+    - sound: {fileID: 8300000, guid: 8d6af06cf9028c440997d869ef3d3a9d, type: 3}
       masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
       outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
       outputVolParameter: 1
@@ -220,6 +257,8 @@ MonoBehaviour:
       maxDistance: 0
       spatialBlend: 0
     transform: {fileID: 0}
+  respawning: 0
+  respawnDelay: 5
 --- !u!208 &4244390049796167170
 NavMeshObstacle:
   m_ObjectHideFlags: 0

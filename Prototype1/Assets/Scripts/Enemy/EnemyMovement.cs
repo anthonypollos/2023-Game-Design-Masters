@@ -4,7 +4,11 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
 
-public class EnemyMovement : MonoBehaviour
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+public class EnemyMovement : MonoBehaviour, ISlowable
 {
     public bool isMoving = true;
     [SerializeField] 
@@ -20,7 +24,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField]
     Vector3 centerPoint;
     [SerializeField]
-    float wanderRadius;
+    public float wanderRadius;
     [HideInInspector]
     public EnemyBrain brain;
 
@@ -42,9 +46,17 @@ public class EnemyMovement : MonoBehaviour
 
     int lastValue;
 
+    List<float> slowMods;
+    float[] slowModsArray;
+
+    [SerializeField] bool debug = false;
+
     // Start is called before the first frame update
     void Start()
     {
+        EnterSlowArea(0);
+        //If we don't change the center point from 0 0 0, assume we want the center point to be the spawn location.
+        if (centerPoint == Vector3.zero) centerPoint = transform.position;
         previousPosition = transform.position;
         refreshTime = 0;
         rb = GetComponent<Rigidbody>();
@@ -65,7 +77,7 @@ public class EnemyMovement : MonoBehaviour
     void Update()
     {
         count += Time.deltaTime;
-        if (brain.state == EnemyStates.ATTACKING)
+        if (brain.state == EnemyStates.ATTACKING || brain.state == EnemyStates.DEAD)
         {
             refreshTime = 0;
         }
@@ -88,22 +100,34 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
+    public void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(1, 0, 0, .125f);
+        Gizmos.DrawWireSphere(transform.position, tooCloseRange);
+    }
+
     public void Move()
     {
 
-        if (isMoving)
+        if (isMoving && brain.state != EnemyStates.DEAD)
         {
             if (count >= 1f || corner >= path.corners.Length)
             {
                 if (!NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path))
                 {
+                    if (debug)
+                        Debug.Log("Path failed");
                     RandomPoint(out targetPosition);
                 }
                 else
                 {
+                    if(debug) 
+                        Debug.Log("Path written");
                     corner = 0;
                     if (path.status != NavMeshPathStatus.PathComplete)
                     {
+                        if (debug)
+                            Debug.Log("Path incomplete");
                         RandomPoint(out targetPosition);
                     }
                 }
@@ -127,12 +151,38 @@ public class EnemyMovement : MonoBehaviour
     private void Movement(Vector3 dir)
     {
         dir.y = 0;
-        rb.velocity = movementSpeed * (dir) + Vector3.up * rb.velocity.y;
+        dir = dir.normalized;
+        if (debug)
+        {
+            Debug.Log(dir);
+            Debug.DrawLine(rb.position, rb.position + dir * 6, Color.red);
+        }
+        float adjustedMS = movementSpeed * (1 - Mathf.Max(slowModsArray));
+        rb.velocity = adjustedMS * (dir) + Vector3.up * rb.velocity.y;
         if (isMoving && brain.an!=null)
         {
             if (rb.velocity == Vector3.zero) brain.an.SetFloat("MoveState", 0);
             else if (!brain.isAggro) brain.an.SetFloat("MoveState", 1);
             else brain.an.SetFloat("MoveState", 2);
+        }
+    }
+
+    public void EnterSlowArea(float slowPercent)
+    {
+        if (slowMods == null)
+        {
+            slowMods = new List<float>();
+        }
+        slowMods.Add(slowPercent);
+        slowModsArray = slowMods.ToArray();
+    }
+    public void ExitSlowArea(float slowPercent)
+    {
+        if (slowMods != null)
+        {
+            if (slowMods.Contains(slowPercent))
+                slowMods.Remove(slowPercent);
+            slowModsArray = slowMods.ToArray();
         }
     }
 
@@ -258,17 +308,52 @@ public class EnemyMovement : MonoBehaviour
     {
         if (isPatrolling) centerPoint = transform.position;
         Vector3 randomPoint = centerPoint + Random.insideUnitSphere * wanderRadius;
+        randomPoint.y = centerPoint.y;
         NavMeshHit hit;
         for (int i = 0; i < 100; i++)
         {
-            if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(randomPoint, out hit, 2.0f, NavMesh.AllAreas))
             {
                 output = hit.position;
                 return true;
             }
         }
-        //Debug.Log("fail");
+        if(debug)
+            Debug.Log("fail");
         output = Vector3.zero;
         return false;
     }
 }
+
+//Visualizer for changing the Enemy's wander radius.
+//Tutorial followed: https://www.youtube.com/watch?v=ABuXRbJDdXs
+//Sean did this. If this screws things up, blame me.
+#if UNITY_EDITOR
+[CustomEditor(typeof(EnemyMovement))]
+public class EnemyMovementEditor : Editor
+{
+    public void OnSceneGUI()
+    {
+        //Link the EnemyMovement script into this editor class
+        var linkedObject = target as EnemyMovement;
+
+        //set the handle colors.
+        Handles.color = Color.green;
+
+        //begin a check to see if we've changed anything.
+        EditorGUI.BeginChangeCheck();
+
+        //create a new float based on where we've dragged the radius sphere
+        float newWanderRadius = Handles.RadiusHandle(Quaternion.identity, linkedObject.transform.position, linkedObject.wanderRadius, false);
+       
+        //check to see if the range has been changed
+        if (EditorGUI.EndChangeCheck())
+        {
+            //if the range has been changed, we record that.
+            Undo.RecordObject(target, "Update Range");
+            //Now, we replace our wander radius with the new wander radius made by dragging the wander radius sphere. Yippeeeeee!!!!!!
+            linkedObject.wanderRadius = newWanderRadius;
+        }
+    }
+}
+#endif

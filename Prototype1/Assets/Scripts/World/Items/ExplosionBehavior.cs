@@ -5,21 +5,27 @@ using UnityEngine;
 public class ExplosionBehavior : MonoBehaviour
 {
     [SerializeField] int dmg;
+    [SerializeField] int Playerdmg;
     [SerializeField] float explosiveForce;
     [SerializeField] float explosiveCarryDistance;
+    [SerializeField] float fireTime = 4f;
     [SerializeField] LayerMask layerMask;
     List<GameObject> hit;
     ParticleSystem[] particleSystems;
 
     [Header("Sound")]
     [SerializeField] private JukeBox jukebox;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
     private void Start()
     {
+        jukebox.PlaySound(0);
         StartCoroutine(DestroySelf());
         hit = new List<GameObject>();
         particleSystems = GetComponentsInChildren<ParticleSystem>();
-        jukebox.SetTransform(transform);
-        jukebox.PlaySound(0);
     }
     IEnumerator DestroySelf()
     {
@@ -49,7 +55,19 @@ public class ExplosionBehavior : MonoBehaviour
         {
             hit.Add(entity);
             IDamageable damaged = entity.GetComponent<IDamageable>();
-            if (damaged != null) damaged.TakeDamage(dmg);
+            if (damaged != null)
+            {
+                if (entity.gameObject.CompareTag("Player"))
+                {
+                    damaged.TakeDamage(Playerdmg, DamageTypes.EXPLOSION);
+                }
+
+                else
+                {
+                    damaged.TakeDamage(dmg, DamageTypes.EXPLOSION);
+                }
+
+            }
             Moveable moveable = entity.GetComponent<Moveable>();
             if (moveable != null)
             {
@@ -61,6 +79,12 @@ public class ExplosionBehavior : MonoBehaviour
             }
             IKickable kicked = entity.GetComponent<IKickable>();
             if (kicked != null) kicked.Kicked();
+
+            Flammable flammable = entity.GetComponent<Flammable>();
+            if(flammable != null)
+            {
+                flammable.Activate(fireTime);
+            }
         }
     }
 

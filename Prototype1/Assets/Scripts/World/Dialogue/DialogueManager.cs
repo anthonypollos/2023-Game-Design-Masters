@@ -5,11 +5,16 @@ using UnityEngine.UI;
 using TMPro;
 using Ink.Runtime;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager instance { get; private set; }
     [SerializeField] GameObject dialogBox;
+    [SerializeField] GameObject choiceBox;
+    [SerializeField] GameObject backgroundPanel;
+    [SerializeField] GameObject pcPortrait;
+    [SerializeField] GameObject npcPortrait;
     [SerializeField] TextMeshProUGUI mainText;
     [SerializeField] List<GameObject> choiceButtons;
     Button topButton;
@@ -19,6 +24,21 @@ public class DialogueManager : MonoBehaviour
     private bool choiceNeeded;
     private bool choiceBuffer;
     MainControls mc;
+    InteractBehavior playerInteraction;
+
+    [SerializeField] TextMeshProUGUI pcNameText;
+    [SerializeField] TextMeshProUGUI npcNameText;
+    //[SerializeField] Animator imageAnimator;
+    [SerializeField] Animator portraitAnimator;
+    
+    private const string IMAGE_TAG = "i";
+    private const string PC_PORTRAIT = "pp";
+    private const string NPC_PORTRAIT = "np";
+    private const string PC_SPEAKER = "ps";
+    private const string NPC_SPEAKER = "ns";
+    private const string PC_NAME = "pn";
+    private const string NPC_NAME = "nn";
+    private string activeName;
 
     private void Awake()
     {
@@ -32,19 +52,18 @@ public class DialogueManager : MonoBehaviour
 
     private void OnEnable()
     {
-        if (mc == null)
-        {
-            mc = new MainControls();
-        }
-        mc.Main.Interact.Enable();
-        mc.Main.Interact.performed += _ => AttemptContinue();
+        mc = ControlsContainer.instance.mainControls;
+        mc.Main.Interact.performed += Interact;
     }
     private void OnDisable()
     {
-        if (mc != null)
-        {
-            mc.Main.Interact.Disable();
-        }
+        mc.Main.Interact.performed -= Interact;
+    }
+
+    private void Interact(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+            AttemptContinue();
     }
 
     private void Start()
@@ -52,6 +71,10 @@ public class DialogueManager : MonoBehaviour
         choiceBuffer = false;
         choiceNeeded = false;
         currentStory = null;
+        pcNameText.text = "Maria";
+        npcNameText.text = "";
+        //imageAnimator.Play("Default");
+        //portraitAnimator.Play("Default");
         buttonText = new List<TextMeshProUGUI>();
         if (choiceButtons.Count != 0)
         {
@@ -64,14 +87,34 @@ public class DialogueManager : MonoBehaviour
             }
         }
         dialogBox.gameObject.SetActive(false);
+        Debug.Log("disabling db");
     }
 
+    public void SetPlayerInteraction(InteractBehavior temp)
+    {
+        //Debug.Log(temp.name);
+        playerInteraction = temp;
+    }
     public void EnterDialogMode(TextAsset inkJSON)
     {
+        Debug.Log(currentStory);
         Debug.Log("Starting Dialog");
+        pcNameText.text = "Maria";
+        npcNameText.text = "";
+        //imageAnimator.Play("Default");
+        //portraitAnimator.Play("Default");
         currentStory = new Story(inkJSON.text);
         Time.timeScale = 0f;
+        playerInteraction.Toggle();
         dialogBox.SetActive(true);
+        Debug.Log("enabling db");
+        choiceBox.SetActive(false);
+        backgroundPanel.SetActive(true);
+        pcPortrait.SetActive(true);
+        npcPortrait.SetActive(false);
+        portraitAnimator.SetTrigger("pcSpeak");
+        portraitAnimator.ResetTrigger("npcSpeak");
+        portraitAnimator.ResetTrigger("pcChoice");
         ContinueStory();
 
 
@@ -79,6 +122,7 @@ public class DialogueManager : MonoBehaviour
 
     private void AttemptContinue()
     {
+        Debug.Log(storyStarted);
         if (storyStarted && !choiceNeeded)
             ContinueStory();
     }
@@ -89,12 +133,15 @@ public class DialogueManager : MonoBehaviour
         {
             if (currentStory.canContinue)
             {
-                storyStarted = true;
+                StartCoroutine(Buffer());
                 mainText.text = currentStory.Continue();
+                dialogBox.SetActive(true);
+                HandleTags();
                 DisplayChoices();
             }
             else
             {
+                //Debug.Log("Set to false");
                 storyStarted = false;
                 currentStory = null;
                 mainText.text = "";
@@ -103,13 +150,73 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    IEnumerator Buffer()
+    {
+        //Debug.Log("Coroutine Started");
+        yield return new WaitForSecondsRealtime(0.1f);
+        storyStarted = true;
+        //Debug.Log("Set to true");
+    }
+
+    private void HandleTags()
+    {
+        List<string> tags = currentStory.currentTags;
+        foreach (string tag in tags)
+        {
+            string[] splitTags = tag.Split(":");
+            Debug.Log(tag);
+
+            switch(splitTags[0])
+            {
+                /*
+                case IMAGE_TAG:
+                    imageAnimator.Play(splitTags[1]);
+                    break;
+                */
+                case PC_SPEAKER:
+                    portraitAnimator.SetTrigger("pcSpeak");
+                    portraitAnimator.ResetTrigger("npcSpeak");
+                    portraitAnimator.ResetTrigger("pcChoice");
+                    break;
+                case NPC_SPEAKER:
+                    npcPortrait.SetActive(true);
+                    portraitAnimator.SetTrigger("npcSpeak");
+                    portraitAnimator.ResetTrigger("pcSpeak");
+                    portraitAnimator.ResetTrigger("pcChoice");
+                    break;
+                case NPC_PORTRAIT:
+                    npcPortrait.SetActive(true);
+                    float index = float.Parse(splitTags[1]);
+                    portraitAnimator.SetFloat("npcIndex", index);
+                    break;
+                case NPC_NAME:
+                    npcNameText.text = splitTags[1];
+                    break;
+                case PC_NAME:
+                    pcNameText.text = splitTags[1];
+                    break;
+                default: 
+                    Debug.LogError("Tag not recognized");
+                    Debug.LogError(tag);
+                    break;
+            }
+        }
+    }
+
     private IEnumerator EndStory()
     {
+        playerInteraction.Toggle();
         Debug.Log("Ending Dialog");
         yield return new WaitForSecondsRealtime(0.05f);
         foreach (GameObject button in choiceButtons)
             button.SetActive(false);
+        portraitAnimator.Play("Empty");
         dialogBox.SetActive(false);
+        Debug.Log("disabling db");
+        choiceBox.SetActive(false);
+        backgroundPanel.SetActive(false);
+        pcPortrait.SetActive(false);
+        npcPortrait.SetActive(false);
         Time.timeScale = 1f;
 
     }
@@ -135,6 +242,9 @@ public class DialogueManager : MonoBehaviour
         }
         if (currentChoices.Count > 0)
         {
+            portraitAnimator.SetTrigger("pcChoice");
+            portraitAnimator.ResetTrigger("pcSpeak");
+            portraitAnimator.ResetTrigger("npcSpeak");
             topButton.Select();
             StartCoroutine(ChoiceBuffer());
             choiceNeeded = true;
@@ -160,6 +270,9 @@ public class DialogueManager : MonoBehaviour
             choiceBuffer = false;
             currentStory.ChooseChoiceIndex(choice);
             choiceNeeded = false;
+            portraitAnimator.SetTrigger("pcSpeak");
+            portraitAnimator.ResetTrigger("npcSpeak");
+            portraitAnimator.ResetTrigger("pcChoice");
             ContinueStory();
         }
     }

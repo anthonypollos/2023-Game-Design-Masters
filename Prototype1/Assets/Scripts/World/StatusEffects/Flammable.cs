@@ -9,11 +9,18 @@ public class Flammable : IStatus
     private Coroutine onFire;
     private IDamageable iDamageable;
     [SerializeField] bool startOnFire;
+    public bool isBurning = false;
     [HideInInspector] public Animator an;
     private ParticleSystem fireEffect;
     private ParticleSystem.EmissionModule em;
     private Light glow;
+    private int mod = 1;
+    Coroutine coroutine = null;
 
+    public void StopDropAndRoll()
+    {
+        Deactivate();
+    }
     
     protected override void Deactivate()
     {
@@ -22,6 +29,7 @@ public class Flammable : IStatus
             an.SetBool("Burning", false);
         */
         effectOn = false;
+        isBurning = false;
         if (fireEffect != null)
         {
             fireEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
@@ -71,22 +79,45 @@ public class Flammable : IStatus
 
     protected IEnumerator Damage()
     {
+        isBurning = true;
         while (effectOn)
         {
             yield return new WaitForSeconds(tickInterval);
             //Debug.Log("Tick Damage");
             if (iDamageable != null)
             {
-                iDamageable.TakeDamage(damagePerTick);
+                iDamageable.TakeDamage(damagePerTick, DamageTypes.FIRE);
             }
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+
+        Flammable flammable = collision.gameObject.GetComponent<Flammable>();
+        if (flammable != null && onFire != null)
+        {
+            Debug.Log("Collision Fire");
+            flammable.Activate();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Flammable flammable = other.gameObject.GetComponent<Flammable>();
+        if (flammable != null && onFire != null)
+        {
+            flammable.Activate();
         }
     }
 
     private void OnCollisionStay(Collision collision)
     {
+        
         Flammable flammable = collision.gameObject.GetComponent<Flammable>();
         if (flammable != null && onFire!=null)
         {
+            //Debug.Log("Collision Fire");
             flammable.Activate();
         }
     }
@@ -110,7 +141,7 @@ public class Flammable : IStatus
         fireEffect = GetComponentInChildren<ParticleSystem>(true);
         if (fireEffect != null)
         {
-            Debug.Log("got fire on" + name);
+            //Debug.Log("got fire on" + name);
             em = fireEffect.emission;
             em.enabled = false;
             glow = fireEffect.gameObject.GetComponentInChildren<Light>(true);
@@ -131,4 +162,24 @@ public class Flammable : IStatus
     {
         
     }
+
+    public void FireVulnerable(float duration)
+    {
+        if(coroutine!=null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
+        coroutine = StartCoroutine(Vulnerable(duration));
+    }
+
+    IEnumerator Vulnerable(float duration)
+    {
+        mod = 2;
+        yield return new WaitForSeconds(duration);
+        mod = 1;
+        coroutine = null;
+    }
+
+
 }

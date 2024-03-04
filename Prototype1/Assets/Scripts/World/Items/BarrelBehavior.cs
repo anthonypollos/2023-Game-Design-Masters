@@ -11,9 +11,22 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
     [SerializeField] float fuse = 5f;
     [SerializeField] JukeBox jukebox;
 
+    bool wasOn = false;
+    [SerializeField] bool respawning = false;
+    [SerializeField] float respawnDelay = 5f;
+    Vector3 initialPos;
+    Quaternion initialRot;
+
+    private void OnEnable()
+    {
+        wasOn = true;
+    }
     // Start is called before the first frame update
     void Start()
     {
+        initialPos = transform.position;
+        initialRot = transform.rotation;
+        primed = false;
         health = 10;
         moveable = GetComponent<Moveable>();
         primed = false;
@@ -25,7 +38,7 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
         primed = true;
     }
 
-    public void Pulled()
+    public void Pulled(IsoAttackManager player = null)
     {
     }
 
@@ -38,8 +51,12 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
     {
         
     }
+    public int GetHealth()
+    {
+        return 0;
+    }
 
-    public void TakeDamage(int dmg)
+    public void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
     {
         health -= dmg;
         if (health <= 0)
@@ -52,6 +69,11 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
         }
     }
 
+    public bool WillBreak(int dmg)
+    {
+        return (dmg >= health);
+    }
+
     private IEnumerator Timer()
     {
         yield return new WaitForSeconds(fuse);
@@ -61,22 +83,8 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
     {
         if (!collision.gameObject.CompareTag("Player") && moveable.isLaunched)
         {
-            if (primed)
-            {
-                Explode();
-            }
-            ITrap trap = collision.gameObject.GetComponent<ITrap>();
-            if(trap!=null)
-            {
-                trap.ActivateTrap(gameObject);
-            }
-            
             if (!collision.gameObject.CompareTag("Ground"))
-            {
-                
-                IDamageable dam = collision.gameObject.GetComponent<IDamageable>();
-                if (dam!=null)
-                    dam.TakeDamage(10);
+            { 
                 Explode();
             }
         }
@@ -85,8 +93,28 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
 
     private void Explode()
     {
-        jukebox.PlaySound(0);
-        Instantiate(explosion, transform.position, Quaternion.identity);
-        Destroy(gameObject);
+        if (!primed)
+        {
+            primed = true;
+            jukebox.PlaySound(0);
+            Instantiate(explosion, transform.position, Quaternion.identity);
+            gameObject.SetActive(false);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (wasOn)
+        {
+            wasOn = false;
+            if (respawning)
+            {
+                GameController.instance.Respawn(gameObject, respawnDelay, initialPos, initialRot);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 }

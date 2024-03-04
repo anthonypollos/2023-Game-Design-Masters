@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
+//Josh Bonovich
+//This abstract class holds all the necessary "interacton" behaviors. Such as if it gets hit or pulled
 public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullable, IKickable
 {
     [HideInInspector]
@@ -22,17 +23,18 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     public IsoAttackManager lassoOwner;
     [Tooltip("Stun time when taking damage")]
     [SerializeField] float staggerTime = 0.5f;
-
+    protected bool coroutineRunning = false;
 
 
     public abstract void Kicked();
     public virtual void Lassoed()
     {
+        lassoed = true;
         lassoImage.fillAmount = 0;
         lassoImage.gameObject.SetActive(true);
         StartCoroutine(BreakOut());
     }
-    public virtual void Pulled()
+    public virtual void Pulled(IsoAttackManager player = null)
     {
         //lassoImage.gameObject.SetActive(false);
     }
@@ -44,7 +46,7 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     }
     public virtual void Stagger()
     {
-        if (stunned)
+        if (!stunned)
         {
             StopCoroutine(Staggered());
             StartCoroutine(Staggered());
@@ -52,7 +54,9 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     }
     protected virtual void Stunned()
     {
-        brain.state = EnemyStates.NOTHING;
+        if(brain.state!=EnemyStates.DEAD)
+            brain.state = EnemyStates.NOTHING;
+        stunned = true;
     }
 
     public virtual void Stun(float time)
@@ -72,6 +76,7 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
         brain.PackAggro();
     }
 
+    //the enemy gets itself out of a tendril
     protected IEnumerator BreakOut()
     {
         float timer = 0;
@@ -86,9 +91,11 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
 
     protected virtual IEnumerator StunTimer(float seconds)
     {
+        coroutineRunning = true;
         Stunned();
         yield return new WaitForSeconds(seconds);
         UnStunned();
+        coroutineRunning = false;
     }
 
 

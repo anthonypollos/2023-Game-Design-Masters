@@ -4,15 +4,35 @@ using UnityEngine;
 
 public class MissionBehavior : MonoBehaviour
 {
+    [Tooltip("Objects with a toggleable to be toggled when finished on it or its children")]
     [SerializeField] List<GameObject> toggleOnFinish;
     private List<IToggleable> toggles;
+    [Tooltip("Game Objects you want to be toggled on or off completely when finished")]
+    [SerializeField] List<GameObject> toggleIfActiveOnFinish;
     [SerializeField] protected string missionText;
     public Vector3 checkPointLocation;
     protected IMissionContainer folder;
     protected bool triggered;
+    protected bool completed;
+
+    [Header("Dialogue on completion (LEAVE EMPTY IF NO DIALOGUE)")]
+    [Header("Default Texts (no levels beaten)")]
+    [SerializeField] TextAsset dialogueText1;
+    [Header("Text based on level(s) completed")]
+    [Tooltip("Prioritized from top down")]
+    [SerializeField] List<TextAssets2> dialogueTexts;
+    TextAsset initialDialogue;
+
+    [SerializeField] private JukeBox jukebox;
+
+    private void Awake()
+    {
+        jukebox.SetTransform(transform);
+    }
 
     protected void Start()
     {
+        completed = false;
         toggles = new List<IToggleable>();
         if (toggles == null && toggleOnFinish.Count>0)
         {
@@ -22,6 +42,24 @@ public class MissionBehavior : MonoBehaviour
                 IToggleable toggle = temp.GetComponentInChildren<IToggleable>();
                 if (toggle != null) { toggles.Add(toggle); }
             }
+        }
+        SavedValues savedValues = SaveLoadManager.instance.GetCopy();
+        foreach (TextAssets2 asset in dialogueTexts)
+        {
+            bool levelFinished;
+            if (savedValues.levels.TryGetValue(asset.levelName, out levelFinished))
+            {
+                if (levelFinished)
+                {
+                    initialDialogue = asset.initialDialogue;
+                    break;
+                }
+
+            }
+        }
+        if (initialDialogue == null)
+        {
+            initialDialogue = dialogueText1;
         }
     }
     public void SetFolder(IMissionContainer folder)
@@ -63,18 +101,36 @@ public class MissionBehavior : MonoBehaviour
 
     public virtual void OnComplete()
     {
-        triggered = true;
-        if (toggles != null)
+        if (!completed)
         {
-            if (toggles.Count > 0)
+            QuickSetToggles();
+            triggered = true;
+            completed = true;
+            if (toggles != null)
             {
-                foreach (IToggleable toggle in toggles)
+                if (toggles.Count > 0)
                 {
-                    toggle.Toggle();
+                    foreach (IToggleable toggle in toggles)
+                    {
+                        toggle.Toggle();
+                    }
                 }
             }
+            if (toggleIfActiveOnFinish != null)
+            {
+                if (toggleIfActiveOnFinish.Count > 0)
+                {
+                    foreach (GameObject go in toggleIfActiveOnFinish)
+                    {
+                        go.SetActive(!go.activeInHierarchy);
+                    }
+                }
+            }
+            folder.MissionComplete(this);
+            jukebox.PlaySound(0);
+            if (initialDialogue != null)
+                DialogueManager.instance.EnterDialogMode(initialDialogue);
         }
-        folder.MissionComplete(this);
     }
 
 

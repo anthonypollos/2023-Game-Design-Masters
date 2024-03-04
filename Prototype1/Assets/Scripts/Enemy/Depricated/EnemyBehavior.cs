@@ -53,7 +53,7 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
         launching = false;
         moveable = GetComponent<Moveable>();
         ec = FindObjectOfType<EnemyContainer>();
-        ec.AddEnemy(gameObject);
+        //ec.AddEnemy(gameObject);
         deaggroCurrentTime = 0;
         hasCollided = false;
         eh = GetComponent<EnemyHealth>();
@@ -311,7 +311,7 @@ public class EnemyBehavior : MonoBehaviour, IPullable, IKickable, IEnemy
         //Insert lassoed animation
     }
 
-    public void Pulled()
+    public void Pulled(IsoAttackManager player = null)
     {
         //Insert pulled animation
     }

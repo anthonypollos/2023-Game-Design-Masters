@@ -68,7 +68,7 @@ public class JukeBox
             }
             else
             {
-                Debug.LogError("Error: That audio clip is not set");
+                //Debug.LogError("Error: That audio clip is not set");
             }
         }
     }

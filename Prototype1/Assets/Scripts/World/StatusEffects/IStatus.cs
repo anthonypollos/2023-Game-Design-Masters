@@ -16,11 +16,12 @@ public abstract class IStatus : MonoBehaviour
     {
         Effect();
         currentTime = 0;
+        adjustedEffectDuration = 0;
         if (timerCoroutine == null)
         {
             timerCoroutine = StartCoroutine(Timer());
         }
-        Debug.Log("Activate Status On " + name);
+        //Debug.Log("Activate Status On " + name);
     }    
 
     public virtual void Activate(float time)

@@ -54,7 +54,7 @@ public class DeveloperConsole : MonoBehaviour
     [SerializeField] List<ConsoleCommand> commands;
 
     [Header("UI")]
-    [SerializeField] GameObject consoleUI;
+    [SerializeField] public GameObject consoleUI;
     [SerializeField] TMP_InputField inputField;
     [SerializeField] TextMeshProUGUI consoleTextField;
     private float previousTimeScale;

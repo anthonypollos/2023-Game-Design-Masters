@@ -5,9 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
 {
-    [SerializeField]
-    [Tooltip("Damage dealt and taken when colliding with someone then launched")]
-    int clashDamage = 20;
 
     [Tooltip("Stun Modifier")]
     [SerializeField] float stunMod = 1;
@@ -16,7 +13,6 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     [SerializeField] private JukeBox jukebox;
 
-    List<GameObject> hasCollidedWith;
 
 
     private void Awake()
@@ -29,13 +25,12 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
         stunned = false;
         launched = false;
         hasCollided = true;
-        hasCollidedWith = new List<GameObject>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (launched && !brain.moveable.isLaunched)
+        if (launched && !brain.moveable.isLaunched && !coroutineRunning)
         {
             hasCollided = true;
             UnStunned();
@@ -64,10 +59,17 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     public override void Lassoed()
     {
-        return;
+        if(brain.moveable.isDashing)
+            Break();
+        else
+        {
+            brain.an.SetBool("Tendriled", true);
+            Stunned();
+            base.Lassoed();
+        }
     }
 
-    public override void Pulled()
+    public override void Pulled(IsoAttackManager player = null)
     {
         base.Pulled();
         launched = true;
@@ -81,6 +83,7 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         base.Break();
         lassoed = false;
+        jukebox.PlaySound(0);
         if (!brain.moveable.isLaunched)
         {
             brain.an.SetBool("Tendriled", false);
@@ -102,6 +105,7 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         base.Stunned();
         stunned = true;
+        
         //brain.an.SetBool("Stunned", true);
         brain.an.SetBool("Attacking", false);
     }
@@ -124,34 +128,23 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
         yield break;
 
     }
+    public void DashCollide()
+    {
+        StartCoroutine(Buffer());
+    }
+
+    public IEnumerator Buffer()
+    {
+        yield return new WaitForSeconds(0.1f);
+        hasCollided = false;
+    }
 
     public override void Death()
     {
         brain.health.Death();
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (brain.moveable.isLaunched && !collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Lasso") && !hasCollided)
-        {
-            hasCollided = true;
-            GameObject hit = collision.gameObject;
-            brain.health.TakeDamage(clashDamage);
-            IDamageable temp = hit.GetComponent<IDamageable>();
-            if (temp != null)
-            {
-                temp.TakeDamage(clashDamage);
-                jukebox.PlaySound(1);
-            }
 
-            ITrap temp2 = hit.GetComponent<ITrap>();
-            if (temp2 != null)
-            {
-                temp2.ActivateTrap(gameObject);
-            }
-
-        }
-    }
 
     public override void Stun(float time)
     {

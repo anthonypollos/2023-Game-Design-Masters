@@ -72,6 +72,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: tombstone_throwable_06
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b9f5e9c11a0f3a2438b8e7d697bb834d, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b9f5e9c11a0f3a2438b8e7d697bb834d, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -163,10 +171,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clashDamage: 10
+  neutralSpeed: 15
+  rateOfChange: 1
+  maxDamage: 40
+  speed: 0
   isLaunched: 0
-  timeToStop: 1
+  slowdownPerSecond: 30
   isDashing: 0
   tendrilOwner: {fileID: 0}
+  flyingHitBox: {fileID: 0}
+  flyingHitBoxMod: 1.25
+  debug: 0
 --- !u!114 &5935252942748970104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,24 +208,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a12c10e85cb88c4ab2ee8a95cf9a91a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 30
-  clashDamage: 10
+  _frozenBeforeTendril: 1
+  maxHealth: 20
   DestructionParticle: {fileID: 7141866554852115599, guid: eb4485787cd10004da588128fe280f63, type: 3}
   DestructionParticleLifetime: 4
   KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
+  effectsOnHit: []
   jukebox:
     tracks:
-    - sound: {fileID: 8300000, guid: 7959056ae15c7eb4d873407522f2a063, type: 3}
+    - sound: {fileID: 8300000, guid: 0d8d5bab4d7304d4aa05b66b094cee2b, type: 3}
       masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
       outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
       outputVolParameter: 1
-      volume: 0
+      volume: 1
       isLocalized: 0
       rolloffMode: 0
       minDistance: 0
       maxDistance: 0
       spatialBlend: 0
-    - sound: {fileID: 8300000, guid: ee0cbdfffdd145a4e853026ae65fdb5b, type: 3}
+    - sound: {fileID: 8300000, guid: 6a4911b1a6dca6b4480f6647e8056898, type: 3}
       masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
       outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
       outputVolParameter: 1
@@ -220,6 +237,8 @@ MonoBehaviour:
       maxDistance: 0
       spatialBlend: 0
     transform: {fileID: 0}
+  respawning: 0
+  respawnDelay: 5
 --- !u!208 &8469684333193453603
 NavMeshObstacle:
   m_ObjectHideFlags: 0

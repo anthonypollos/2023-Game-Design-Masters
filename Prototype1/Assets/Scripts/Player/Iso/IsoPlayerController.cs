@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
-public class IsoPlayerController : MonoBehaviour, IKickable
+public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 {
     [SerializeField] [Tooltip("The rigidbody used for movement")] private Rigidbody _rb;
     [SerializeField] [Tooltip("The player's movement speed")] private float _speed = 5;
@@ -21,20 +22,25 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     [HideInInspector]
     public bool isDead;
     private bool canDash;
+    public bool isStunned;
     private GameController gc;
     private int previousLayer;
     [SerializeField] GameObject lasso;
 
     [SerializeField] float dashRange, dashTime, dashCD;
-    [SerializeField] Image dashCDIndicator;
+    //[SerializeField] Image dashCDIndicator;
     [SerializeField] private JukeBox jukebox;
 
     [SerializeField] float speedModWhenLassoOut;
     [SerializeField] float speedModWhenPulling;
     IsoAttackManager attackManager;
+    Flammable flammable;
 
     [Header("Animator Variables")]
     [SerializeField] Animator anim; //assigned in inspector for now; can change
+
+    List<float> slowMods;
+    float[] slowModsArray;
 
     private void Awake()
     {
@@ -42,7 +48,10 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     }
     private void Start()
     {
+        EnterSlowArea(0);
+        isStunned = false;
         attackManager = GetComponent<IsoAttackManager>();
+        flammable = GetComponent<Flammable>();
         moveable = GetComponent<Moveable>();
         attackState = 0;
         isDead = false;
@@ -54,40 +63,87 @@ public class IsoPlayerController : MonoBehaviour, IKickable
         DeveloperConsole.instance.SetPlayer(gameObject, _rb);
         if (ears != null)
         {
-            Debug.Log("i'm listening");
+            //Debug.Log("i'm listening");
         }
     }
 
     private void OnEnable()
     {
-        mc = new MainControls();
-        mc.Enable();
-        mc.Main.Move.performed += ctx => _input = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
-        mc.Main.Move.canceled += _ => _input = Vector3.zero;
-        mc.Main.Aim.performed += ctx => _aimInput = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue <Vector2>().y);
-        mc.Main.Dash.performed += _ => Dash();
+        mc = ControlsContainer.instance.mainControls;
+        mc.Main.Move.performed += OnMove;
+        mc.Main.Move.canceled += OnMove;
+        mc.Main.Aim.performed += OnAim;
+        mc.Main.Aim.canceled += OnAim;
+        mc.Main.Dash.performed += OnDash;
+    }
+
+    private void OnDisable()
+    {
+        mc.Main.Move.performed -= OnMove;
+        mc.Main.Move.canceled -= OnMove;
+        mc.Main.Aim.performed -= OnAim;
+        mc.Main.Aim.canceled -= OnAim;
+        mc.Main.Dash.performed -= OnDash;
+    }
+
+    private void OnDash(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+            Dash();
+    }
+
+    private void OnMove(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed)
+        {
+            _input = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
+        }
+        if(ctx.canceled)
+        {
+            _input = Vector3.zero;
+        }
+    }
+
+    private void OnAim(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed)
+        {
+            _aimInput = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
+        }
+        if(ctx.canceled)
+        {
+            _aimInput = Vector3.zero;
+        }
     }
 
     private void Update()
     {
-        if (Time.timeScale != 0)
+        if (Time.timeScale != 0 && !isStunned)
         {
             if (!isDead && !moveable.isLaunched && attackState != Helpers.ATTACKING)
                 Look();
 
             if (gameObject.layer == LayerMask.NameToLayer("PlayerDashing") && !moveable.isLaunched)
             {
+                Debug.Log("PlayerDash revert");
                 gameObject.layer = previousLayer;
             }
+        }
+        if(isStunned && !moveable.isLaunched)
+        {
+            isStunned = false;
         }
     }
 
     private void FixedUpdate()
     {
-        if (Time.timeScale != 0)
+        if (Time.timeScale != 0 && !isStunned)
         {
             if (!moveable.isLaunched && !isDead && attackState != Helpers.ATTACKING)
+            {
+                Look();
                 Move();
+            }
             else
                 if (!moveable.isLaunched)
                 _rb.velocity = Vector3.zero + Vector3.up * _rb.velocity.y;
@@ -155,24 +211,32 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     {
         if(canDash && !moveable.isLaunched && !isDead && Time.timeScale != 0)
         {
-            
+            Debug.Log("Transform.forward: " + transform.forward);
+            if (flammable.isBurning)
+            {
+                flammable.StopDropAndRoll();
+            }
             if (attackState == Helpers.LASSOING || attackState == Helpers.LASSOED || attackState == Helpers.PULLING)
             {
                 attackManager.ForceRelease();
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
                 jukebox.PlaySound(0);
-                if(_input == Vector3.zero)
+                if (_input == Vector3.zero)
                     moveable.Dash(transform.forward * dashRange, dashTime);
                 else
+                {
+                    Debug.Log(_input.ToIso());
                     moveable.Dash(_input.ToIso().normalized * dashRange, dashTime);
+                }
                 anim.SetFloat("DashSpeed", 32f / (24 * dashTime));
                 anim.SetTrigger("Dash");
                 StartCoroutine(DashCD());
             }
             else if (attackState == Helpers.NOTATTACKING || _input == Vector3.zero)
             {
-                previousLayer = gameObject.layer;
+                if (gameObject.layer != LayerMask.NameToLayer("PlayerDashing"))
+                    previousLayer = gameObject.layer;
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
                 jukebox.PlaySound(0);
@@ -183,19 +247,19 @@ public class IsoPlayerController : MonoBehaviour, IKickable
             }
         }
     }
-
+    
     private IEnumerator DashCD()
     {
         
         for (float i =0; i<dashCD; i+=0.01f)
         {
             yield return new WaitForSeconds(0.01f);
-            dashCDIndicator.fillAmount = i / dashCD;
+            //dashCDIndicator.fillAmount = i / dashCD;
         }
         canDash = true;
-        dashCDIndicator.fillAmount = 1;
+        //dashCDIndicator.fillAmount = 1;
     }
-
+    
 
     public (bool success, Vector3 position) GetMousePosition()
     {
@@ -203,7 +267,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
         if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
         {
-            Debug.DrawRay(hitInfo.point, Vector3.down, Color.red);
+            //Debug.DrawRay(hitInfo.point, Vector3.down, Color.red);
             return (success: true, position: hitInfo.point);
 
         }
@@ -216,6 +280,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable
     private void Move()
     {
         float adjustedSpeed = _speed;
+        adjustedSpeed *= (1 - Mathf.Max(slowModsArray));
         if (attackState == Helpers.LASSOING || attackState == Helpers.LASSOED)
             adjustedSpeed *= speedModWhenLassoOut;
         if (attackState == Helpers.PULLING)
@@ -230,13 +295,38 @@ public class IsoPlayerController : MonoBehaviour, IKickable
 
     }
 
+    public void EnterSlowArea(float slowPercent)
+    {
+        if (slowMods == null)
+        {
+            slowMods = new List<float>();
+        }
+        slowMods.Add(slowPercent);
+        slowModsArray = slowMods.ToArray();
+    }
+    public void ExitSlowArea(float slowPercent)
+    {
+        if (slowMods != null)
+        {
+            if (slowMods.Contains(slowPercent))
+                slowMods.Remove(slowPercent);
+            slowModsArray = slowMods.ToArray();
+        }
+    }
+
     public void Kicked()
     {
-
+        isStunned = true;
+        attackState = Helpers.NOTATTACKING;
     }
 
 
-
+    public void Footsteps()
+    {
+       
+       jukebox.PlaySound(1);
+        
+    }
 
 
 }
