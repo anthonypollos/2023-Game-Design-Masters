@@ -21,6 +21,17 @@ public class MenuNavigation : MonoBehaviour
             SetSelectedButton(buttonToSelect);
     }
 
+
+    private void OnEnable()
+    {
+        // on enable for things like enabling the pause menu, level select where there is no Button to press first
+
+        if(EventSystem.current.currentSelectedGameObject != null)
+        {
+            print("theres something selected");
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -38,8 +49,11 @@ public class MenuNavigation : MonoBehaviour
 
     public void SetSelectedButton(Button button)
     {
-        buttonToSelect = button;
-        buttonToSelect.Select();
+        if(inputChecker.IsController() && button != null)
+        {
+            buttonToSelect = button;
+            buttonToSelect.Select();
+        }
     }
 
 
