@@ -7,7 +7,6 @@ using TMPro;
 public class OptionsManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI mouseNavText, controllerNavText;
-    [SerializeField] private Button[] panels;
 
     private InputChecker inputChecker;
     private bool isController = false;
@@ -42,25 +41,11 @@ public class OptionsManager : MonoBehaviour
     {
         mouseNavText.gameObject.SetActive(true);
         controllerNavText.gameObject.SetActive(false);
-
-        foreach (Button panel in panels)
-        {
-            Navigation navigation = panel.navigation;
-            navigation.mode = Navigation.Mode.None;
-            panel.navigation = navigation;
-        }
     }
 
     private void SetController()
     {
         mouseNavText.gameObject.SetActive(false);
         controllerNavText.gameObject.SetActive(true);
-
-        foreach (Button panel in panels)
-        {
-            Navigation navigation = panel.navigation;
-            navigation.mode = Navigation.Mode.Explicit;
-            panel.navigation = navigation;
-        }
     }
 }
