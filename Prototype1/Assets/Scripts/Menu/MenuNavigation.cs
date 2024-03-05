@@ -21,14 +21,13 @@ public class MenuNavigation : MonoBehaviour
             SetSelectedButton(buttonToSelect);
     }
 
+    [SerializeField] private bool setOnEnable = false;
 
     private void OnEnable()
     {
-        // on enable for things like enabling the pause menu, level select where there is no Button to press first
-
-        if(EventSystem.current.currentSelectedGameObject != null)
+        if(setOnEnable && EventSystem.current.currentSelectedGameObject == null)
         {
-            print("theres something selected");
+            print("select top button");
         }
     }
 
@@ -42,24 +41,23 @@ public class MenuNavigation : MonoBehaviour
             if (isController)
                 SetSelectedButton(buttonToSelect);
 
-            //else
-                //DeselectButtons();
+            else
+                DeselectButtons();
         }
     }
 
     public void SetSelectedButton(Button button)
     {
-        if(inputChecker.IsController() && button != null)
-        {
-            buttonToSelect = button;
+        buttonToSelect = button;
+        
+        if (inputChecker.IsController() && button != null)
             buttonToSelect.Select();
-        }
     }
 
 
     public void DeselectButtons()
     {
-        //EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
 }
