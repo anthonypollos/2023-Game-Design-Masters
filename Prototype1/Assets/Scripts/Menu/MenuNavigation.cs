@@ -13,7 +13,7 @@ public class MenuNavigation : MonoBehaviour
     private bool isController = false;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         inputChecker = FindObjectOfType<InputChecker>();
 
@@ -25,9 +25,9 @@ public class MenuNavigation : MonoBehaviour
 
     private void OnEnable()
     {
-        if(setOnEnable && EventSystem.current.currentSelectedGameObject == null)
+        if(setOnEnable)
         {
-            print("select top button");
+            SetSelectedButton(buttonToSelect);
         }
     }
 
@@ -50,7 +50,7 @@ public class MenuNavigation : MonoBehaviour
     {
         buttonToSelect = button;
         
-        if (inputChecker.IsController() && button != null)
+        if (inputChecker.IsController())
             buttonToSelect.Select();
     }
 
