@@ -10,16 +10,16 @@ public class AdjustOptionsController : MonoBehaviour
     [SerializeField] private UnityEvent leftButton, rightButton, actionButton;
 
     [SerializeField] private TextMeshProUGUI navTextDisplay;
-    private string defaultNavText;
+    //private string defaultNavText;
     [SerializeField] [TextArea] private string navText;
 
     private bool canDpad = true;
 
     private void OnEnable()
     {
-        defaultNavText = navTextDisplay.text;
+        //defaultNavText = navTextDisplay.text;
 
-        navTextDisplay.text = defaultNavText + navText;
+        navTextDisplay.text = navText;
     }
 
     // Update is called once per frame
@@ -30,7 +30,7 @@ public class AdjustOptionsController : MonoBehaviour
         {
             float dpadX = gamepad.dpad.ReadValue().x;
 
-            if(gamepad.buttonWest.wasPressedThisFrame)
+            if(gamepad.buttonSouth.wasPressedThisFrame)
             {
                 if (actionButton != null)
                     actionButton.Invoke();

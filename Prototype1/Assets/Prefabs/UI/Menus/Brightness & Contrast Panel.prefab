@@ -182,6 +182,81 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &4330496811298540072
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8191713008452647131}
+  - component: {fileID: 1600477022120716731}
+  - component: {fileID: 3601633499732928145}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8191713008452647131
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4330496811298540072}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2923307281621197378}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1600477022120716731
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4330496811298540072}
+  m_CullTransparentMesh: 1
+--- !u!114 &3601633499732928145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4330496811298540072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &5334657946263929628
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,7 +446,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 327.5, y: 50}
+  m_SizeDelta: {x: 681.7, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &2791649887133579572
 CanvasRenderer:
@@ -401,7 +476,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Adjust Until ________
+  m_text: Adjust Brightness & Contrast to Your Heart's Content
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 37aed5b3ba5f24da197feb712215b85c, type: 2}
   m_sharedMaterial: {fileID: 968993670254531903, guid: 37aed5b3ba5f24da197feb712215b85c, type: 2}
@@ -620,7 +695,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8191713008452647131}
   m_Father: {fileID: 5769885872434346620}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -649,7 +725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1141,6 +1217,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2909131717008252371, guid: 50aa1ab30273542a3b28e1005fc74476, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 6126502089058900114}
     - target: {fileID: 4969911333363457439, guid: 50aa1ab30273542a3b28e1005fc74476, type: 3}
       propertyPath: panelType
       value: 1
@@ -1155,7 +1235,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9113292520876438099, guid: 50aa1ab30273542a3b28e1005fc74476, type: 3}
       propertyPath: navText
-      value: 'Adjust Option: <sprite=93>/<sprite=94>'
+      value: 'Navigate Menu: <sprite=110>/<sprite=106>          Adjust Option: <sprite=93>/<sprite=94>'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1170,6 +1250,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1821192846278539738, guid: 50aa1ab30273542a3b28e1005fc74476, type: 3}
   m_PrefabInstance: {fileID: 1968479293563635362}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3678946797516741489 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2909131717008252371, guid: 50aa1ab30273542a3b28e1005fc74476, type: 3}
+  m_PrefabInstance: {fileID: 1968479293563635362}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3004348628511684476
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2077,6 +2168,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2909131717008252371, guid: 50aa1ab30273542a3b28e1005fc74476, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 3678946797516741489}
+    - target: {fileID: 2909131717008252371, guid: 50aa1ab30273542a3b28e1005fc74476, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 1144054978694348267}
     - target: {fileID: 4969911333363457439, guid: 50aa1ab30273542a3b28e1005fc74476, type: 3}
       propertyPath: panelType
       value: 1
@@ -2091,7 +2190,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9113292520876438099, guid: 50aa1ab30273542a3b28e1005fc74476, type: 3}
       propertyPath: navText
-      value: 'Adjust Option: <sprite=93>/<sprite=94>'
+      value: 'Navigate Menu: <sprite=110>/<sprite=106>          Adjust Option: <sprite=93>/<sprite=94>'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
