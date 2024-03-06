@@ -47,6 +47,7 @@ public class Moveable : MonoBehaviour, ISlowable
     IDamageable myDamageable;
     private bool charged = false;
     private GameObject chargedDetonationPrefab;
+    Coroutine dashingFailSafe;
 
     List<float> slowMods;
     float[] slowModsArray;
@@ -672,6 +673,15 @@ public class Moveable : MonoBehaviour, ISlowable
         dir.y = 0;
         speed = Vector3.Distance(transform.position, targetLocation) / time;
         isLaunched = true;
+        if (dashingFailSafe != null)
+            StopCoroutine(dashingFailSafe);
+        dashingFailSafe = StartCoroutine(DashFailSafe(time));
+    }
+
+    IEnumerator DashFailSafe(float time)
+    {
+        yield return new WaitForSeconds(time * 1.5f);
+        ForceStop();
     }
 
     public void ForceStop()
