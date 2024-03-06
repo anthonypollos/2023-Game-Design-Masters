@@ -105,7 +105,7 @@ public class GameController : MonoBehaviour
                 paused = true;
                 Cursor.lockState = CursorLockMode.None;
                 pauseMenu.SetActive(true);
-                topButtonPause.Select();
+                //topButtonPause.Select();
                 Time.timeScale = 0;
             }
         }

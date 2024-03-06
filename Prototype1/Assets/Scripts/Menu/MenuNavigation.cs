@@ -25,7 +25,7 @@ public class MenuNavigation : MonoBehaviour
 
     private void OnEnable()
     {
-        if(setOnEnable)
+        if(setOnEnable && inputChecker.IsController())
         {
             SetSelectedButton(buttonToSelect);
         }
@@ -43,6 +43,11 @@ public class MenuNavigation : MonoBehaviour
 
             else
                 DeselectButtons();
+        }
+
+        if(!inputChecker.IsController() && EventSystem.current.currentSelectedGameObject != null)
+        {
+            DeselectButtons();
         }
     }
 

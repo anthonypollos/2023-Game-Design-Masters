@@ -6,7 +6,7 @@ public class SetButtonLookTarget : MonoBehaviour
 
     [SerializeField] [Tooltip("")] private float lookIndex;
 
-    public void Start()
+    public void OnEnable()
     {
         mm = FindObjectOfType<MenuManager>();
         GetComponent<Animator>().SetBool("MainMenu", true);
