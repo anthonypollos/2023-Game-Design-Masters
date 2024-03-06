@@ -211,9 +211,14 @@ public class SetOptions : MonoBehaviour
         graphicsOptions.SetVsync(false);
         graphicsOptions.SetFPS(defaultFPS);
         graphicsOptions.SetQuality(defaultQuality);
+        //ResetBrightnessContrast();
+        graphicsOptions.SetSepia(false);
+    }
+
+    public void ResetBrightnessContrast()
+    {
         graphicsOptions.SetBrightness(defaultBrightness);
         graphicsOptions.SetContrast(defaultContrast);
-        graphicsOptions.SetSepia(false);
     }
     #endregion
 }

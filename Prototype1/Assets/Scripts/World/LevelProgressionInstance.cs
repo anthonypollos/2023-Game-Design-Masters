@@ -69,6 +69,6 @@ public class LevelProgressionInstance : MonoBehaviour
                 count++;
             }
         }
-        collectableText.text = count + "/" + collectableIDs.Count + " collectables";
+        collectableText.text = count + "/" + collectableIDs.Count + " collectibles";
     }
 }

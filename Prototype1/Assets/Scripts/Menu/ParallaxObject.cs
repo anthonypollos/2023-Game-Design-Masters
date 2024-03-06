@@ -51,8 +51,8 @@ public class ParallaxObject : MonoBehaviour
     /// </summary>
     private void ParallaxAxis()
     {
-        float newPosX = Input.GetAxis("Horizontal") / 2;
-        float newPosY = Input.GetAxis("Vertical") / 2;
+        float newPosX = Input.GetAxis("Horizontal");// / 2;
+        float newPosY = Input.GetAxis("Vertical");// / 2;
 
         Parallax(newPosX, newPosY);
     }
