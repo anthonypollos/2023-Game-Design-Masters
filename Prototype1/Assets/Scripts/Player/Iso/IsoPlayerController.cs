@@ -29,7 +29,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 
     [SerializeField] float dashRange, dashTime, dashCD;
     //[SerializeField] Image dashCDIndicator;
-    [SerializeField] private JukeBox jukebox;
+    //[SerializeField] private JukeBox jukebox;
 
     [SerializeField] float speedModWhenLassoOut;
     [SerializeField] float speedModWhenPulling;
@@ -44,7 +44,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 
     private void Awake()
     {
-        jukebox.SetTransform(transform);
+        //jukebox.SetTransform(transform);
     }
     private void Start()
     {
@@ -221,7 +221,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
                 attackManager.ForceRelease();
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
-                jukebox.PlaySound(0);
+                //jukebox.PlaySound(0);
                 if (_input == Vector3.zero)
                     moveable.Dash(transform.forward * dashRange, dashTime);
                 else
@@ -239,7 +239,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
                     previousLayer = gameObject.layer;
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
-                jukebox.PlaySound(0);
+                //jukebox.PlaySound(0);
                 moveable.Dash(transform.forward * dashRange, dashTime);
                 anim.SetFloat("DashSpeed", 32f / (24 * dashTime));
                 anim.SetTrigger("Dash");
@@ -324,7 +324,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
     public void Footsteps()
     {
        
-       jukebox.PlaySound(1);
+       //jukebox.PlaySound(1);
         
     }
 
