@@ -45,6 +45,7 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         InitializeMusic(FMODEvents.instance.music);
+        InitializeMusic(FMODEvents.instance.ambiance);
     }
 
     // Update is called once per frame
