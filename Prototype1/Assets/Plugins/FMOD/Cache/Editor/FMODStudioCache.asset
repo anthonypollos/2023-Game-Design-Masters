@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7740161943850474452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/HeavyDamage
+  m_EditorClassIdentifier: 
+  Path: event:/HeavyDamage
+  Guid:
+    Data1: 1079331123
+    Data2: 1335892471
+    Data3: -781073248
+    Data4: -1369277853
+  Banks:
+  - {fileID: -4985070253451059656}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-4985070253451059656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15,10 +42,10 @@ MonoBehaviour:
   Path: ../../../FMOD Studio/grimstone-valley/Build/Desktop/Voices.bank
   Name: Voices
   StudioPath: bank:/Voices
-  lastModified: 638466165185578404
+  lastModified: 638466170940850710
   FileSizes:
   - Name: Desktop
-    Value: 97760
+    Value: 181472
   Exists: 1
 --- !u!114 &-4173000437070738399
 MonoBehaviour:
@@ -67,6 +94,33 @@ MonoBehaviour:
   - Name: Desktop
     Value: 3636032
   Exists: 1
+--- !u!114 &-2849004373871876433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/HeavyDeath
+  m_EditorClassIdentifier: 
+  Path: event:/HeavyDeath
+  Guid:
+    Data1: -1329571058
+    Data2: 1244113888
+    Data3: 1362977712
+    Data4: -925670115
+  Banks:
+  - {fileID: -4985070253451059656}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-671410611178461231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,12 +172,14 @@ MonoBehaviour:
   - {fileID: 6381059089952006952}
   - {fileID: 7572366428771813758}
   - {fileID: 560116235002752589}
+  - {fileID: -2849004373871876433}
+  - {fileID: -7740161943850474452}
   EditorParameters: []
   MasterBanks:
   - {fileID: 4447061781076969990}
   StringsBanks:
   - {fileID: 8149247867401396245}
-  cacheTime: 638466165185578404
+  cacheTime: 638466170940850710
   cacheVersion: 131616
 --- !u!114 &560116235002752589
 MonoBehaviour:
@@ -167,7 +223,7 @@ MonoBehaviour:
   Path: ../../../FMOD Studio/grimstone-valley/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638466165184894549
+  lastModified: 638466170939827466
   FileSizes:
   - Name: Desktop
     Value: 1036
@@ -268,8 +324,8 @@ MonoBehaviour:
   Path: ../../../FMOD Studio/grimstone-valley/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638466165184909707
+  lastModified: 638466170939844217
   FileSizes:
   - Name: Desktop
-    Value: 1084
+    Value: 1172
   Exists: 1
