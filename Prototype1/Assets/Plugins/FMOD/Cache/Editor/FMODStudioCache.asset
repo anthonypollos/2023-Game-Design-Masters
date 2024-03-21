@@ -27,6 +27,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-7400405302883787328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/RangeDAmage
+  m_EditorClassIdentifier: 
+  Path: event:/RangeDAmage
+  Guid:
+    Data1: -1855904290
+    Data2: 1141386434
+    Data3: 927697054
+    Data4: 1805153334
+  Banks:
+  - {fileID: -4985070253451059656}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-4985070253451059656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42,10 +69,10 @@ MonoBehaviour:
   Path: ../../../FMOD Studio/grimstone-valley/Build/Desktop/Voices.bank
   Name: Voices
   StudioPath: bank:/Voices
-  lastModified: 638466170940850710
+  lastModified: 638466214114735548
   FileSizes:
   - Name: Desktop
-    Value: 181472
+    Value: 197344
   Exists: 1
 --- !u!114 &-4173000437070738399
 MonoBehaviour:
@@ -165,23 +192,26 @@ MonoBehaviour:
   - {fileID: 4447061781076969990}
   - {fileID: -3296850046638143213}
   - {fileID: -4985070253451059656}
+  - {fileID: 8568693602880095484}
   EditorEvents:
   - {fileID: 6095534371546818840}
   - {fileID: -4173000437070738399}
   - {fileID: -671410611178461231}
   - {fileID: 6381059089952006952}
   - {fileID: 7572366428771813758}
-  - {fileID: 560116235002752589}
   - {fileID: -2849004373871876433}
   - {fileID: -7740161943850474452}
+  - {fileID: 1913837715907871457}
+  - {fileID: 7742011119490442088}
+  - {fileID: -7400405302883787328}
   EditorParameters: []
   MasterBanks:
   - {fileID: 4447061781076969990}
   StringsBanks:
   - {fileID: 8149247867401396245}
-  cacheTime: 638466170940850710
+  cacheTime: 638466218961140767
   cacheVersion: 131616
---- !u!114 &560116235002752589
+--- !u!114 &1913837715907871457
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -191,16 +221,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/RangeDamage
+  m_Name: event:/RangeDAggro
   m_EditorClassIdentifier: 
-  Path: event:/RangeDamage
+  Path: event:/RangeDAggro
   Guid:
-    Data1: -1855904290
-    Data2: 1141386434
-    Data3: 927697054
-    Data4: 1805153334
+    Data1: -1581397155
+    Data2: 1314355322
+    Data3: -1511114833
+    Data4: 1547914853
   Banks:
-  - {fileID: -4985070253451059656}
+  - {fileID: 8568693602880095484}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -223,7 +253,7 @@ MonoBehaviour:
   Path: ../../../FMOD Studio/grimstone-valley/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638466170939827466
+  lastModified: 638466218960365958
   FileSizes:
   - Name: Desktop
     Value: 1036
@@ -309,6 +339,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &7742011119490442088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/MeleeAggro
+  m_EditorClassIdentifier: 
+  Path: event:/MeleeAggro
+  Guid:
+    Data1: -510080354
+    Data2: 1234988915
+    Data3: -1694665086
+    Data4: -1773092967
+  Banks:
+  - {fileID: -4985070253451059656}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &8149247867401396245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,8 +381,28 @@ MonoBehaviour:
   Path: ../../../FMOD Studio/grimstone-valley/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638466170939844217
+  lastModified: 638466218960389461
   FileSizes:
   - Name: Desktop
-    Value: 1172
+    Value: 1302
+  Exists: 1
+--- !u!114 &8568693602880095484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/SFX.bank
+  m_EditorClassIdentifier: 
+  Path: ../../../FMOD Studio/grimstone-valley/Build/Desktop/SFX.bank
+  Name: SFX
+  StudioPath: bank:/SFX
+  lastModified: 638466218961140767
+  FileSizes:
+  - Name: Desktop
+    Value: 43648
   Exists: 1
