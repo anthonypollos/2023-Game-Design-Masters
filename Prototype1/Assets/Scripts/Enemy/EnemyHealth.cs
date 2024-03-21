@@ -31,6 +31,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     private OutlineToggle outlineManager;
 
     [SerializeField] private EventReference enemyDamaged;
+    [SerializeField] private EventReference enemyDeath;
 
     private void Awake()
     {
@@ -108,6 +109,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public void Death()
     {
         //jukebox.PlaySound(1);
+        AudioManager.instance.PlayOneShot(enemyDeath, this.transform.position);
         ec.RemoveEnemy(gameObject);
         ec.RemoveAggro(gameObject);
         Destroy(gameObject);
