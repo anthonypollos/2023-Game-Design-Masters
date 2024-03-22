@@ -141,37 +141,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a12c10e85cb88c4ab2ee8a95cf9a91a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  immuneTypes: 
   _frozenBeforeTendril: 0
-  health: 20
+  maxHealth: 20
   DestructionParticle: {fileID: 4936532240143131715, guid: c5d3deaea700ec044b5fbe652d782eb2, type: 3}
   DestructionParticleLifetime: 4
   KickedParticle: {fileID: 4099935107488988707, guid: 96fb81890a7dde74baa069a090d96dfb, type: 3}
   effectsOnHit: []
-  jukebox:
-    tracks:
-    - sound: {fileID: 0}
-      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 1
-      volume: 1
-      isLocalized: 0
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
-    - sound: {fileID: 8300000, guid: 047cf20c9818f1b47adefdbba1709c4d, type: 3}
-      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 1
-      volume: 1
-      isLocalized: 0
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
-    transform: {fileID: 0}
   respawning: 0
   respawnDelay: 5
+  collide:
+    Guid:
+      Data1: 1406587514
+      Data2: 1236993393
+      Data3: 458917249
+      Data4: 1615339013
+    Path: event:/Collide
 --- !u!114 &3425839645886273677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,6 +173,7 @@ MonoBehaviour:
   damagePerTick: 1
   tickInterval: 0.5
   startOnFire: 0
+  isBurning: 0
   an: {fileID: 0}
 --- !u!114 &5292964548218716208
 MonoBehaviour:
@@ -210,6 +196,11 @@ MonoBehaviour:
   slowdownPerSecond: 30
   isDashing: 0
   tendrilOwner: {fileID: 0}
+  flyingHitBox: {fileID: 0}
+  piercing: 0
+  uses: 0
+  flyingHitBoxMod: 1.25
+  debug: 0
 --- !u!54 &5270876837110414529
 Rigidbody:
   m_ObjectHideFlags: 0

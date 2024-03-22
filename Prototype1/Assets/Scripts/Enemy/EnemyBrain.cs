@@ -237,7 +237,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
             isAggro = true;
             health.ec.AddAggro(gameObject);
             StopCoroutine(Ambiance());
-            //jukebox.PlaySound(1);
+            AudioManager.instance.PlayOneShot(enemyAggro, this.transform.position);
         }
         
     }

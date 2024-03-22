@@ -273,6 +273,8 @@ MonoBehaviour:
   isDashing: 0
   tendrilOwner: {fileID: 0}
   flyingHitBox: {fileID: 0}
+  piercing: 0
+  uses: 0
   flyingHitBoxMod: 1.25
   debug: 0
 --- !u!114 &-2980969239082223904
@@ -287,37 +289,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a12c10e85cb88c4ab2ee8a95cf9a91a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  immuneTypes: 
   _frozenBeforeTendril: 0
   maxHealth: 15
   DestructionParticle: {fileID: 4902614723868296185, guid: 145011e46478daf48aac562017f0e90b, type: 3}
   DestructionParticleLifetime: 10
   KickedParticle: {fileID: 0}
   effectsOnHit: []
-  jukebox:
-    tracks:
-    - sound: {fileID: 8300000, guid: 0d8d5bab4d7304d4aa05b66b094cee2b, type: 3}
-      masterOutputGroup: {fileID: 0}
-      outputGroup: {fileID: 5853289452479768643, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 0
-      volume: 0
-      isLocalized: 0
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
-    - sound: {fileID: 8300000, guid: e3bbe2fe59c4f0f48b38cb928c6d9489, type: 3}
-      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 1
-      volume: 1
-      isLocalized: 0
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
-    transform: {fileID: 0}
   respawning: 0
   respawnDelay: 5
+  collide:
+    Guid:
+      Data1: 1406587514
+      Data2: 1236993393
+      Data3: 458917249
+      Data4: 1615339013
+    Path: event:/Collide
 --- !u!114 &-4059721318918431973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,6 +321,7 @@ MonoBehaviour:
   damagePerTick: 0
   tickInterval: 0.5
   startOnFire: 1
+  isBurning: 0
   an: {fileID: 0}
 --- !u!54 &-6726584002751740166
 Rigidbody:
