@@ -19,6 +19,8 @@ public class Moveable : MonoBehaviour, ISlowable
     [SerializeField] float rateOfChange = 1f;
     [SerializeField] float maxDamage = 40f;
 
+
+    [SerializeField] bool isEnemy = false;
     Rigidbody rb;
     Vector3 targetLocation;
     [SerializeField ] float speed;
@@ -237,9 +239,10 @@ public class Moveable : MonoBehaviour, ISlowable
             //calculate clash damage
             if (!unstoppable)
             {
-                if (moveable == null)
+                if (moveable == null) //wall
                 {
-                    myDamageable.TakeDamage(CalculateClashDamage(true));
+                    if(!isEnemy)
+                        myDamageable.TakeDamage(CalculateClashDamage(true));
                 }
                 else if (!moveable.AlreadyHit(myCollider))
                 {
@@ -376,8 +379,11 @@ public class Moveable : MonoBehaviour, ISlowable
             //calculate clash damage
             if (!unstoppable)
             {
-                if (moveable == null)
-                    myDamageable.TakeDamage(CalculateClashDamage(true));
+                if (moveable == null) //wall
+                {
+                    if(!isEnemy)
+                        myDamageable.TakeDamage(CalculateClashDamage(true));
+                }
                 else if (!moveable.AlreadyHit(myCollider))
                 {
                     myDamageable.TakeDamage(CalculateClashDamage(true));

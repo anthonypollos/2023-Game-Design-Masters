@@ -10,7 +10,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     [SerializeField] private JukeBox jukebox;
 
-    MeleeAttackBehavior mab;
+    [SerializeField] MeleeAttackBehavior mab;
 
     private void Awake()
     {
@@ -22,7 +22,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         stunned = false;
         launched = false;
         hasCollided = true;
-        mab = GetComponentInChildren<MeleeAttackBehavior>();
+        //mab = GetComponentInChildren<MeleeAttackBehavior>();
     }
 
     // Update is called once per frame
@@ -144,13 +144,25 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     public void IgnoreInteractables()
     {
-        if(mab !=null)
-        mab.IgnoreAllInteractables();
+        if (mab != null)
+        {
+            mab.IgnoreAllInteractables();
+        }
+        else
+        {
+            Debug.Log("MAB == null");
+        }
     }
 
     public void RecognizeInteractables()
     {
-        if(mab != null)
-        mab.RecognizeAllInteractables();
+        if (mab != null)
+        {
+            mab.RecognizeAllInteractables();
+        }
+        else
+        {
+            Debug.Log("MAB == null");
+        }
     }
 }
