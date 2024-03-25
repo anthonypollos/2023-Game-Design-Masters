@@ -34,6 +34,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 
     private OutlineToggle outlineManager;
     [SerializeField] private EventReference collide;
+    [SerializeField] private EventReference breaking;
 
     private void Awake()
     {
@@ -152,6 +153,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
                         //jukebox.PlaySound(0);
                         //jukebox.PlaySound(1);
                         AudioManager.instance.PlayOneShot(collide, this.transform.position);
+                        AudioManager.instance.PlayOneShot(breaking, this.transform.position);
                         gameObject.SetActive(false);
                     }
                 }
