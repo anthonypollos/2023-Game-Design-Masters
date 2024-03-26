@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using FMODUnity;
 
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
-    [SerializeField] JukeBox jukebox;
+    //[SerializeField] JukeBox jukebox;
     [SerializeField] int health = 100;
     [SerializeField] GameObject bloodParticle;
     int maxHealth;
@@ -15,10 +16,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     [Header("Animator Variables")]
     [SerializeField] Animator anim; //assigned in inspector for now; can change
+    [SerializeField] private EventReference playerDamage;
 
     private void Awake()
    {
-     jukebox.SetTransform(transform);
+     //jukebox.SetTransform(transform);
    }
     private void Start()
     {
@@ -42,7 +44,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             //destroy the particle
             Destroy(vfxobj, 4);
         }
-        if (dmg > 0) jukebox.PlaySound(0);
+        if (dmg > 0) AudioManager.instance.PlayOneShot(playerDamage, this.transform.position);
         if (!DeveloperConsole.instance.godMode)
         {
             health -= dmg;
@@ -66,7 +68,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if (!pc.isDead)
         {
             anim.SetTrigger("Death");
-            jukebox.PlaySound(1);
+            //jukebox.PlaySound(1);
             pc.isDead = true;
             pc.isStunned = true;
             pc.attackState = Helpers.NOTATTACKING;

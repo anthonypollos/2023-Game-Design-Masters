@@ -44,6 +44,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
     float[] slowModsArray;
 
     [SerializeField] private EventReference footsteps;
+    [SerializeField] private EventReference dashing;
 
     private void Awake()
     {
@@ -225,6 +226,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
                 //jukebox.PlaySound(0);
+                AudioManager.instance.PlayOneShot(dashing, this.transform.position);
                 if (_input == Vector3.zero)
                     moveable.Dash(transform.forward * dashRange, dashTime);
                 else
