@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using FMODUnity;
 
 public class IsoAttackManager : MonoBehaviour, ICanKick
 {
@@ -53,7 +54,11 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
 
     [Header("Sound")]
-    [SerializeField] private JukeBox jukebox;
+    //[SerializeField] private JukeBox jukebox;
+    [SerializeField] private EventReference tendril1;
+    [SerializeField] private EventReference tendril2;
+    [SerializeField] private EventReference tendril3;
+    [SerializeField] private EventReference tendrilsound;
 
     bool kicking;
     GameObject kick;
@@ -73,7 +78,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     private void Awake()
     {
-        jukebox.SetTransform(transform);
+        //jukebox.SetTransform(transform);
     }
 
     // Start is called before the first frame update
@@ -178,7 +183,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 canKick = false;
                 
                 kick.SetActive(true);
-                jukebox.PlaySound(0);
+                //jukebox.PlaySound(0);
                 //Debug.Log("I kick em!");
                 // could move kick anim trigger here?
             }
@@ -307,11 +312,33 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 {
                     moveable.Tossed(tossSpeed);
                 }
-                jukebox.PlaySound(Random.Range(1,4));
+                //jukebox.PlaySound(Random.Range(1,4));
+                PickEffortSound(tendrilsound, Random.Range(1,4));
+                //AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
             }
         }
 
 
+    }
+
+    public void PickEffortSound(EventReference tendrilsound, int selection)
+    {
+        print(selection);
+        switch (selection)
+        {
+            case 3:
+                tendrilsound = tendril3;
+                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                break;
+            case 2:
+                tendrilsound = tendril2;
+                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                break;
+            default:
+                tendrilsound = tendril1;
+                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                break;
+        }
     }
 
     public void ForceRelease()
