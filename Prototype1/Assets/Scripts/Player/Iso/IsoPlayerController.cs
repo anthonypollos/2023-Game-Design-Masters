@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using FMODUnity;
 
 public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 {
@@ -41,6 +42,8 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 
     List<float> slowMods;
     float[] slowModsArray;
+
+    [SerializeField] private EventReference footsteps;
 
     private void Awake()
     {
@@ -323,9 +326,9 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 
     public void Footsteps()
     {
-       
-       //jukebox.PlaySound(1);
-        
+
+        //jukebox.PlaySound(1);
+        AudioManager.instance.PlayOneShot(footsteps, this.transform.position);
     }
 
 
