@@ -3167,6 +3167,7 @@ MonoBehaviour:
   neutralSpeed: 15
   rateOfChange: 1
   maxDamage: 10
+  isEnemy: 0
   speed: 10
   isLaunched: 0
   slowdownPerSecond: 15
@@ -3256,29 +3257,7 @@ MonoBehaviour:
   lassoOwner: {fileID: 0}
   staggerTime: 0.25
   KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
-  jukebox:
-    tracks:
-    - sound: {fileID: 8300000, guid: e4800f2bd1dec0d43857c9aa001c3c12, type: 3}
-      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 1
-      volume: 1
-      isLocalized: 0
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
-    - sound: {fileID: 8300000, guid: a76cf17b5d8b132459d813624d12a9a9, type: 3}
-      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 1
-      volume: 1
-      isLocalized: 0
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
-    transform: {fileID: 0}
+  mab: {fileID: 0}
 --- !u!95 &1326128710388581793
 Animator:
   serializedVersion: 5
@@ -3344,19 +3323,13 @@ MonoBehaviour:
   attackFramesPerSecond: 8
   dashRange: 10
   dashTime: 1
-  jukebox:
-    tracks:
-    - sound: {fileID: 8300000, guid: 8677aa7ddafb59a428eb9ecf59fba1b9, type: 3}
-      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 1
-      volume: 0.9
-      isLocalized: 0
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
-    transform: {fileID: 0}
+  enemyAggro:
+    Guid:
+      Data1: -510080354
+      Data2: 1234988915
+      Data3: -1694665086
+      Data4: -1773092967
+    Path: event:/MeleeAggro
 --- !u!114 &5249165833020425685
 MonoBehaviour:
   m_ObjectHideFlags: 0

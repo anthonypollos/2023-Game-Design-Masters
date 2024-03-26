@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 [RequireComponent(typeof(Animator))]
 public class BruteEnemyAttacks : EnemyAttackTemplate
@@ -10,11 +11,13 @@ public class BruteEnemyAttacks : EnemyAttackTemplate
     [Header("Dashing variables")]
     [SerializeField] float dashRange;
     [SerializeField] float dashTime;
-    [Header("JukeBox")]
-    [SerializeField] private JukeBox jukebox;
+    //[Header("JukeBox")]
+    //[SerializeField] private JukeBox jukebox;
+
+    [SerializeField] private EventReference enemyAggro;
     private void Awake()
     {
-        jukebox.SetTransform(transform);
+        //jukebox.SetTransform(transform);
     }
     public override void Attack()
     {
@@ -42,7 +45,8 @@ public class BruteEnemyAttacks : EnemyAttackTemplate
         brain.state = EnemyStates.ATTACKING;
         brain.an.SetTrigger("Attack" + attack.ToString());
         brain.LookAtPlayer();
-        jukebox.PlaySound(0);
+        //jukebox.PlaySound(0);
+        AudioManager.instance.PlayOneShot(enemyAggro, this.transform.position);
         timeTest = Time.realtimeSinceStartup;
     }
 
@@ -56,7 +60,7 @@ public class BruteEnemyAttacks : EnemyAttackTemplate
             return;
         }
         brain.moveable.Ram(transform.forward * dashRange, dashTime);
-        jukebox.PlaySound(1);
+        //jukebox.PlaySound(1);
         currentWaitingTime = dashTime;
         if (animationTimer < 0)
             animationTimer = 0;
