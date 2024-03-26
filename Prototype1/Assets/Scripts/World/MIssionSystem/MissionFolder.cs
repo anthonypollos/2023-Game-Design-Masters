@@ -233,6 +233,12 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         
     }
 
+    public void Win()
+    {
+        if (!win)
+            Victory();
+    }
+
     private void Victory()
     {
         win = true;
