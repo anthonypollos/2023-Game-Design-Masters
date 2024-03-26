@@ -10,6 +10,8 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     //[SerializeField] private JukeBox jukebox;
 
+    [SerializeField] MeleeAttackBehavior mab;
+
     private void Awake()
     {
         //jukebox.SetTransform(transform);
@@ -20,6 +22,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         stunned = false;
         launched = false;
         hasCollided = true;
+        //mab = GetComponentInChildren<MeleeAttackBehavior>();
     }
 
     // Update is called once per frame
@@ -137,5 +140,29 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         StopCoroutine(base.StunTimer(seconds));
         StartCoroutine(base.StunTimer(seconds));
         yield break;
+    }
+
+    public void IgnoreInteractables()
+    {
+        if (mab != null)
+        {
+            mab.IgnoreAllInteractables();
+        }
+        else
+        {
+            Debug.Log("MAB == null");
+        }
+    }
+
+    public void RecognizeInteractables()
+    {
+        if (mab != null)
+        {
+            mab.RecognizeAllInteractables();
+        }
+        else
+        {
+            Debug.Log("MAB == null");
+        }
     }
 }
