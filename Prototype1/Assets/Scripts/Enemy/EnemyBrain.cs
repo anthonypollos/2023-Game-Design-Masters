@@ -252,6 +252,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
         while(!isAggro)
         {
             //jukebox.PlaySound(0);
+            AudioManager.instance.PlayOneShot(enemyAmbient, this.transform.position);
             yield return new WaitForSeconds(10f);
         }
     }
