@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class ExplosionBehavior : MonoBehaviour
 {
@@ -13,16 +14,18 @@ public class ExplosionBehavior : MonoBehaviour
     List<GameObject> hit;
     ParticleSystem[] particleSystems;
 
-    [Header("Sound")]
-    [SerializeField] private JukeBox jukebox;
+    //[Header("Sound")]
+    //[SerializeField] private JukeBox jukebox;
+    [SerializeField] private EventReference explosionSound;
 
     private void Awake()
     {
-        jukebox.SetTransform(transform);
+        //jukebox.SetTransform(transform);
     }
     private void Start()
     {
-        jukebox.PlaySound(0);
+        //jukebox.PlaySound(0);
+        AudioManager.instance.PlayOneShot(explosionSound, this.transform.position);
         StartCoroutine(DestroySelf());
         hit = new List<GameObject>();
         particleSystems = GetComponentsInChildren<ParticleSystem>();
