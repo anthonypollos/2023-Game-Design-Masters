@@ -21,6 +21,12 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public EnemyBrain brain;
     bool quitting = false;
 
+   [SerializeField] public bool canSpawnEnemies;
+   [SerializeField] public int healthToSpawn;
+   [SerializeField] public int enemiesToSpawn;
+   [SerializeField] public float spawnRadius;
+    public GameObject enemyToSpawn;
+
     private OutlineToggle outlineManager;
 
     private void Awake()
@@ -42,7 +48,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         if (transform.position.y < -20f)
             Die();
     }
-    public void TakeDamage(int dmg)
+    public void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
     {
         health -= dmg;
         if (dmg > staggerThreshold)
@@ -62,6 +68,23 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         if (health <= 0) Die();
         healthSlider.value = (float)health/ maxHealth;
         if (dmg > 0) jukebox.PlaySound(0);
+
+        if (health <= healthToSpawn && canSpawnEnemies == true)
+        {
+            for (var i = 0; i < enemiesToSpawn; i++)
+            {
+                Vector2 dir = Random.insideUnitCircle * spawnRadius;
+
+                dir = dir.normalized;
+
+                Vector3 spawnLoc = transform.position;
+
+                spawnLoc = spawnLoc + spawnRadius * (Vector3.right * dir.x + Vector3.forward * dir.y);
+                Instantiate(enemyToSpawn, spawnLoc, Quaternion.identity);
+                canSpawnEnemies = false;
+            }
+            
+        }
 
         //Prevent overheal
         if (health > maxHealth) health = maxHealth;
@@ -85,6 +108,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         ec.RemoveEnemy(gameObject);
         ec.RemoveAggro(gameObject);
         Destroy(gameObject);
+    }
+
+    public int GetHealth()
+    {
+        return health;
     }
 
     private void OnEnable()
@@ -112,11 +140,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     private void OnSceneChange(Scene scene)
     {
         quitting = true;
-    }
-
-    public int GetHealth()
-    {
-        return health;
     }
 
     public int GetMaxHealth()

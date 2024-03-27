@@ -1,3 +1,6 @@
+/*
+ * Avery
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,6 +35,13 @@ public class GraphicsOptions : MonoBehaviour
     private int currentFPSIndex = 0;
 
     [Header("---------------------------")]
+    [Header("Graphics Quality Variables")]
+    [SerializeField] private TextMeshProUGUI qualityText;
+    [SerializeField] private string[] qualityTexts;
+    private int currentQualityIndex = 0;
+    private int defaultQualityIndex = 0;
+
+    [Header("---------------------------")]
     [Header("Brightness & Contrast Variables")]
     [SerializeField] private TextMeshProUGUI[] brightnessTexts;
     [SerializeField] private TextMeshProUGUI[] contrastTexts;
@@ -39,27 +49,26 @@ public class GraphicsOptions : MonoBehaviour
     [SerializeField] private Slider[] contrastSliders;
     [SerializeField] private VolumeProfile globalVolume;
     private ColorAdjustments colorAdjustments;
+
+    [Header("---------------------------")]
+    [Header("Funny Variables")]
+    [SerializeField] private TextMeshProUGUI sepiaText;
+    [SerializeField] private string[] sepiaTexts;
+    [SerializeField] private ScriptableRendererFeature oldTimeyPass;
+    private GameObject oldTimeyVol;
+    private Volume vol;
     #endregion
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if(targetFPS.Length > 0)
             currentFPSIndex = System.Array.IndexOf(targetFPS, PlayerPrefs.GetInt("TargetFPS", 60));
-        //set current res index to whatever's closet to system default
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     #region Resolution
     /// <summary>
-    /// 
+    /// Cycle through resolution options
     /// </summary>
-    /// <param name="mod"></param>
     public void CycleResolution(int mod)
     {
         currentResIndex += mod;
@@ -73,9 +82,9 @@ public class GraphicsOptions : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Set screen resolution to chosen setting
     /// </summary>
-    /// <param name="index"></param>
+    /// <param name="index">Index of chosen resolution</param>
     public void SetResolution(int index)
     {
         currentResIndex = index;
@@ -92,9 +101,9 @@ public class GraphicsOptions : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Saves resolution closest to monitor's default size
     /// </summary>
-    /// <param name="index"></param>
+    /// <param name="index">Index of default resolution</param>
     public void SetDefaultResolution(int index)
     {
         resolutions[index].defaultText = "(Default)";
@@ -104,9 +113,9 @@ public class GraphicsOptions : MonoBehaviour
 
     #region Fullscreen
     /// <summary>
-    /// 
+    /// Set display mode to fullscreen or windowed
     /// </summary>
-    /// <param name="fullscreen"></param>
+    /// <param name="fullscreen">Is fullscreen?</param>
     public void SetFullscreen(bool fullscreen)
     {
         Screen.fullScreen = fullscreen;
@@ -129,9 +138,9 @@ public class GraphicsOptions : MonoBehaviour
 
     #region VSync
     /// <summary>
-    /// 
+    /// Enable or disable Vsync
     /// </summary>
-    /// <param name="vsync"></param>
+    /// <param name="vsync">Is Vsync on?</param>
     public void SetVsync(bool vsync)
     {
         switch(vsync)
@@ -154,9 +163,8 @@ public class GraphicsOptions : MonoBehaviour
 
     #region FPS
     /// <summary>
-    /// 
+    /// Cycle through FPS options
     /// </summary>
-    /// <param name="mod"></param>
     public void CycleFPS(int mod)
     {
         currentFPSIndex += mod;
@@ -170,9 +178,9 @@ public class GraphicsOptions : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Set target FPS to chosen setting
     /// </summary>
-    /// <param name="framerate"></param>
+    /// <param name="framerate">Target FPS</param>
     public void SetFPS(int framerate)
     {
         fpsText.text = framerate + " FPS";
@@ -182,11 +190,41 @@ public class GraphicsOptions : MonoBehaviour
     }
     #endregion
 
+    #region Graphics Quality
+    /// <summary>
+    /// Cycle through quality options
+    /// </summary>
+    public void CycleQuality(int mod)
+    {
+        currentQualityIndex += mod;
+
+        if (currentQualityIndex < 0)
+            currentQualityIndex = 0;
+        else if (currentQualityIndex >= qualityTexts.Length)
+            currentQualityIndex = (qualityTexts.Length - 1);
+
+        SetQuality(currentQualityIndex);
+    }
+
+    /// <summary>
+    /// Set graphics quality to chosen level
+    /// </summary>
+    /// <param name="index">Graphics quality level; 0 = low, 3 = ultra</param>
+    public void SetQuality(int index)
+    {
+        qualityText.text = qualityTexts[index];
+
+        PlayerPrefs.SetInt("TargetQuality", index);
+
+        QualitySettings.SetQualityLevel(index);
+    }
+    
+    #endregion
+
     #region Brightness
     /// <summary>
-    /// 
+    /// Get target brightness value
     /// </summary>
-    /// <param name="mod"></param>
     public void AdjustBrightness(int mod)
     {
         int val = (int)brightnessSliders[0].value + mod;
@@ -209,9 +247,9 @@ public class GraphicsOptions : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Set brightness to target value
     /// </summary>
-    /// <param name="value"></param>
+    /// <param name="value">Target brightness value</param>
     public void SetBrightness(float value)
     {
         PlayerPrefs.SetFloat("Brightness", value);
@@ -227,15 +265,14 @@ public class GraphicsOptions : MonoBehaviour
         }
 
         if (globalVolume.TryGet<ColorAdjustments>(out colorAdjustments))
-            colorAdjustments.postExposure.value = (value / 13.3f);
+            colorAdjustments.postExposure.value = (value / 5.88f);
     }
     #endregion
 
     #region Contrast
     /// <summary>
-    /// 
+    /// Get target contrast value
     /// </summary>
-    /// <param name="mod"></param>
     public void AdjustContrast(int mod)
     {
         int val = (int)contrastSliders[0].value + mod;
@@ -258,9 +295,9 @@ public class GraphicsOptions : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Set target contrast value
     /// </summary>
-    /// <param name="value"></param>
+    /// <param name="value">Target contrast value</param>
     public void SetContrast(float value)
     {
         PlayerPrefs.SetFloat("Contrast", value);
@@ -276,8 +313,37 @@ public class GraphicsOptions : MonoBehaviour
         }
 
         if (globalVolume.TryGet<ColorAdjustments>(out colorAdjustments))
-            colorAdjustments.contrast.value = ((value - 10) * 2);
+            colorAdjustments.contrast.value = ((value - 10) * 3);
     }
+    #endregion
+
+    #region Sepia
+    public void SetSepia(bool sepia)
+    {
+        if(oldTimeyVol == null)
+            oldTimeyVol = GameObject.Find("Old Timey Volume");
+
+        if(vol == null)
+            vol = oldTimeyVol.GetComponent<Volume>();
+
+        oldTimeyPass.SetActive(sepia);
+
+        switch (sepia)
+        {
+            case true:
+                sepiaText.text = sepiaTexts[1];
+                PlayerPrefs.SetInt("SepiaMode", 1);
+                vol.weight = 1;
+                break;
+
+            case false:
+                sepiaText.text = sepiaTexts[0];
+                PlayerPrefs.SetInt("SepiaMode", 0);
+                vol.weight = 0;
+                break;
+        }
+    }
+
     #endregion
 }
 

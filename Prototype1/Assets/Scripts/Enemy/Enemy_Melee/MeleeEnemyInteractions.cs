@@ -10,6 +10,8 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     [SerializeField] private JukeBox jukebox;
 
+    [SerializeField] MeleeAttackBehavior mab;
+
     private void Awake()
     {
         jukebox.SetTransform(transform);
@@ -20,12 +22,13 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         stunned = false;
         launched = false;
         hasCollided = true;
+        //mab = GetComponentInChildren<MeleeAttackBehavior>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (launched && !brain.moveable.isLaunched)
+        if (launched && !brain.moveable.isLaunched && !coroutineRunning)
         {
             hasCollided = true;
             launched = false;
@@ -61,7 +64,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         brain.an.SetBool("Tendriled", true);
     }
 
-    public override void Pulled()
+    public override void Pulled(IsoAttackManager player = null)
     {
         base.Pulled();
         launched = true;
@@ -98,6 +101,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         stunned = true;
         //brain.an.SetBool("Stunned", true);
         brain.an.SetBool("Attacking", false);
+        brain.an.SetBool("Tendriled", true);
     }
 
     protected override void UnStunned()
@@ -105,6 +109,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         if(!lassoed && !launched && !brain.moveable.isLaunched)
         {
             brain.an.SetBool("Tendriled", false);
+            brain.an.SetTrigger("NextState");
             //brain.an.SetBool("Stunned", false);
             base.UnStunned();
         }
@@ -135,5 +140,29 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
         StopCoroutine(base.StunTimer(seconds));
         StartCoroutine(base.StunTimer(seconds));
         yield break;
+    }
+
+    public void IgnoreInteractables()
+    {
+        if (mab != null)
+        {
+            mab.IgnoreAllInteractables();
+        }
+        else
+        {
+            Debug.Log("MAB == null");
+        }
+    }
+
+    public void RecognizeInteractables()
+    {
+        if (mab != null)
+        {
+            mab.RecognizeAllInteractables();
+        }
+        else
+        {
+            Debug.Log("MAB == null");
+        }
     }
 }

@@ -10,35 +10,35 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 7a15302fd9b79f24680c4cc9850eb2af, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 219.2
+      value: -4.32
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a15302fd9b79f24680c4cc9850eb2af, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.755
+      value: 0.85
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a15302fd9b79f24680c4cc9850eb2af, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -497.283
+      value: 18.17
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a15302fd9b79f24680c4cc9850eb2af, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.6087619
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a15302fd9b79f24680c4cc9850eb2af, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.793353
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a15302fd9b79f24680c4cc9850eb2af, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a15302fd9b79f24680c4cc9850eb2af, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a15302fd9b79f24680c4cc9850eb2af, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -255
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a15302fd9b79f24680c4cc9850eb2af, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -51,6 +51,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 7a15302fd9b79f24680c4cc9850eb2af, type: 3}
       propertyPath: m_Name
       value: pitchfork_throwable
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7a15302fd9b79f24680c4cc9850eb2af, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -105,7 +109,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.001038613, y: 0.0010041335, z: 0.020139815}
+  m_Size: {x: 0.001038613, y: 0.002038613, z: 0.020139815}
   m_Center: {x: -0.000011167377, y: -2.9775207e-17, z: 0.010118085}
 --- !u!65 &4582452739195243326
 BoxCollider:
@@ -126,7 +130,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.008766412, y: 0.0010041335, z: 0.010535499}
+  m_Size: {x: 0.008766412, y: 0.002004133, z: 0.010535499}
   m_Center: {x: 0, y: -1.9812365e-18, z: 0.02542154}
 --- !u!54 &6345640940366802097
 Rigidbody:
@@ -167,15 +171,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clashDamage: 20
+  clashDamage: 10
   neutralSpeed: 15
-  rateOfChange: 1
+  rateOfChange: 0
   maxDamage: 50
   speed: 0
   isLaunched: 0
   slowdownPerSecond: 30
   isDashing: 0
   tendrilOwner: {fileID: 0}
+  flyingHitBox: {fileID: 0}
+  piercing: 1
+  uses: 10
+  flyingHitBoxMod: 1.5
+  debug: 0
 --- !u!114 &1628755014830915272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,14 +210,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a12c10e85cb88c4ab2ee8a95cf9a91a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  immuneTypes: 
   _frozenBeforeTendril: 0
-  health: 5
+  maxHealth: 20
   DestructionParticle: {fileID: 7141866554852115599, guid: eb4485787cd10004da588128fe280f63, type: 3}
   DestructionParticleLifetime: 4
   KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
+  effectsOnHit: []
   jukebox:
-    tracks: []
+    tracks:
+    - sound: {fileID: 8300000, guid: c74bafcbed8eea54585f19649be49bd4, type: 3}
+      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputVolParameter: 1
+      volume: 1
+      isLocalized: 0
+      rolloffMode: 0
+      minDistance: 0
+      maxDistance: 0
+      spatialBlend: 0
     transform: {fileID: 0}
+  respawning: 1
+  respawnDelay: 2
 --- !u!208 &6036751698641605177
 NavMeshObstacle:
   m_ObjectHideFlags: 0

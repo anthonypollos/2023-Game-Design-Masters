@@ -125,6 +125,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 
             if (gameObject.layer == LayerMask.NameToLayer("PlayerDashing") && !moveable.isLaunched)
             {
+                Debug.Log("PlayerDash revert");
                 gameObject.layer = previousLayer;
             }
         }
@@ -234,7 +235,8 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
             }
             else if (attackState == Helpers.NOTATTACKING || _input == Vector3.zero)
             {
-                previousLayer = gameObject.layer;
+                if (gameObject.layer != LayerMask.NameToLayer("PlayerDashing"))
+                    previousLayer = gameObject.layer;
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
                 jukebox.PlaySound(0);

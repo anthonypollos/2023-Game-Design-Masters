@@ -38,7 +38,7 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
         primed = true;
     }
 
-    public void Pulled()
+    public void Pulled(IsoAttackManager player = null)
     {
     }
 
@@ -51,8 +51,12 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
     {
         
     }
+    public int GetHealth()
+    {
+        return 0;
+    }
 
-    public void TakeDamage(int dmg)
+    public void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
     {
         health -= dmg;
         if (health <= 0)

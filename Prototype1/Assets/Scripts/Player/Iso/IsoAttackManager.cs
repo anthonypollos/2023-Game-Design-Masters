@@ -12,7 +12,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     [SerializeField] [Tooltip("The speed of the pull")] float minPullSpeed = 9f;
     [SerializeField] [Tooltip("The max speed of the pull")] float maxPullSpeed = 24f;
     [SerializeField] [Tooltip("Toss speed")] float tossSpeed = 9f;
-    [SerializeField] [Tooltip("Time it takes to reach max speed")] float timeToMax = 1.5f;
+    [SerializeField][Tooltip("Time it takes to reach max speed")] float timeToMax = 1.5f;
     [SerializeField] [Tooltip("Time it takes holding to reset speed")] float timeToReset = 0.5f;
     float currentTime = 0;
     float restTime = 0;
@@ -45,6 +45,13 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     private bool canKick;
     MainControls mc;
 
+    [Header("Charge mechanic")]
+    [SerializeField][Tooltip("Leave at 0 for infinite")]
+    float chargeTime;
+    [SerializeField]
+    GameObject chargeDetonationPrefab;
+
+
     [Header("Sound")]
     [SerializeField] private JukeBox jukebox;
 
@@ -61,6 +68,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     //[Header("TEMP Outlines")]
     //[SerializeField] OutlineToggle outlineToggle;
     private OutlineToggle outlineToggle;
+
+    bool charged = false;
 
     private void Awake()
     {
@@ -128,6 +137,32 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             ForceRelease();
     }
 
+    public (bool, GameObject, float duration) TakeCharge()
+    {
+        if(charged)
+        {
+            charged = false;
+            return (true, chargeDetonationPrefab, chargeTime);
+        }
+        return (false, null, -1);
+    }
+
+    public void AquireCharge()
+    {
+        Debug.Log("Charge gained");
+        charged = true;
+        if (chargeTime > 0)
+        {
+            StopCoroutine("ChargeCountdown");
+            StartCoroutine("ChargeCountdown");
+        }
+    }
+
+    private IEnumerator ChargeCountdown()
+    {
+        yield return new WaitForSeconds(chargeTime);
+        charged = false;
+    }
     private void Kick()
     {
         if (Time.timeScale != 0 && !pc.isStunned)
@@ -356,7 +391,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             }
             //lassoRangeUIIndicator.gameObject.SetActive(false);
             //lb.transform.parent = null;
-            target.GetComponent<IPullable>().Pulled();
+            target.GetComponent<IPullable>().Pulled(this);
         }
         if(moveable==null)
         {

@@ -30,7 +30,7 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
     // Update is called once per frame
     void Update()
     {
-        if (launched && !brain.moveable.isLaunched)
+        if (launched && !brain.moveable.isLaunched && !coroutineRunning)
         {
             hasCollided = true;
             UnStunned();
@@ -69,7 +69,7 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
         }
     }
 
-    public override void Pulled()
+    public override void Pulled(IsoAttackManager player = null)
     {
         base.Pulled();
         launched = true;

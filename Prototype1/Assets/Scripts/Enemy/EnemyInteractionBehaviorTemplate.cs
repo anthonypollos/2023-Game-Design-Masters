@@ -23,6 +23,7 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     public IsoAttackManager lassoOwner;
     [Tooltip("Stun time when taking damage")]
     [SerializeField] float staggerTime = 0.5f;
+    protected bool coroutineRunning = false;
 
 
     public abstract void Kicked();
@@ -33,7 +34,7 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
         lassoImage.gameObject.SetActive(true);
         StartCoroutine(BreakOut());
     }
-    public virtual void Pulled()
+    public virtual void Pulled(IsoAttackManager player = null)
     {
         //lassoImage.gameObject.SetActive(false);
     }
@@ -45,7 +46,7 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     }
     public virtual void Stagger()
     {
-        if (stunned)
+        if (!stunned)
         {
             StopCoroutine(Staggered());
             StartCoroutine(Staggered());
@@ -55,6 +56,7 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     {
         if(brain.state!=EnemyStates.DEAD)
             brain.state = EnemyStates.NOTHING;
+        stunned = true;
     }
 
     public virtual void Stun(float time)
@@ -89,9 +91,11 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
 
     protected virtual IEnumerator StunTimer(float seconds)
     {
+        coroutineRunning = true;
         Stunned();
         yield return new WaitForSeconds(seconds);
         UnStunned();
+        coroutineRunning = false;
     }
 
 

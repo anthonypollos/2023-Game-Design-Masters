@@ -59,12 +59,12 @@ public class ExplosionBehavior : MonoBehaviour
             {
                 if (entity.gameObject.CompareTag("Player"))
                 {
-                    damaged.TakeDamage(Playerdmg);
+                    damaged.TakeDamage(Playerdmg, DamageTypes.EXPLOSION);
                 }
 
                 else
                 {
-                    damaged.TakeDamage(dmg);
+                    damaged.TakeDamage(dmg, DamageTypes.EXPLOSION);
                 }
 
             }

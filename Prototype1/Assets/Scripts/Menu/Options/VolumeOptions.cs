@@ -1,3 +1,6 @@
+/*
+ * Avery
+ */
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -11,6 +14,8 @@ public class VolumeOptions : MonoBehaviour
     [SerializeField] [Tooltip("Corresponding AudioMixer Group")] private AudioMixer mixer;
     [SerializeField] [Tooltip("Corrseponding exposed AudioMixer volume parameter name")] private string mixerVarName;
 
+    [SerializeField] private GameObject muteIcon, audioIcon, audioLowIcon, audioMidIcon, audioHighIcon;
+
     /// <summary>
     /// 
     /// </summary>
@@ -20,9 +25,6 @@ public class VolumeOptions : MonoBehaviour
     /// 
     /// </summary>
     private float prevVal = 10;
-
-    //temp
-    public TextMeshProUGUI testMuteText;
 
     /// <summary>
     /// 
@@ -39,15 +41,17 @@ public class VolumeOptions : MonoBehaviour
     {
         if (slider.value == 0)
         {
-            testMuteText.text = "muted";
             muted = true;
+            audioIcon.SetActive(false);
+            muteIcon.SetActive(true);
         }
 
         else
         {
             muted = false;
-            testMuteText.text = "unmuted";
             prevVal = slider.value;
+            audioIcon.SetActive(true);
+            muteIcon.SetActive(false);
         }
     }
 
@@ -71,7 +75,6 @@ public class VolumeOptions : MonoBehaviour
             default:
                 slider.value = val;
                 SetLevel(val);
-
                 break;
         }
     }
@@ -93,6 +96,25 @@ public class VolumeOptions : MonoBehaviour
         }
         else
         {
+            if(value < 7)
+            {
+                audioLowIcon.SetActive(true);
+                audioMidIcon.SetActive(false);
+                audioHighIcon.SetActive(false);
+            }
+            else if(value < 15)
+            {
+                audioLowIcon.SetActive(true);
+                audioMidIcon.SetActive(true);
+                audioHighIcon.SetActive(false);
+            }
+            else
+            {
+                audioLowIcon.SetActive(true);
+                audioMidIcon.SetActive(true);
+                audioHighIcon.SetActive(true);
+            }
+
             prevVal = value;
             newVal = value / 20;
 
@@ -118,13 +140,15 @@ public class VolumeOptions : MonoBehaviour
             case (true):
                 SetLevel(0);
                 slider.value = 0;
-                testMuteText.text = "muted";
+                audioIcon.SetActive(false);
+                muteIcon.SetActive(true);
                 break;
 
             case (false):
                 SetLevel(prevVal);
                 slider.value = prevVal;
-                testMuteText.text = "unmuted";
+                audioIcon.SetActive(true);
+                muteIcon.SetActive(false);
                 break;
         }
     }

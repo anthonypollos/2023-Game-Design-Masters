@@ -1,3 +1,6 @@
+/*
+ * Avery
+ */
 using System.Collections;
 using UnityEngine;
 using TMPro;
@@ -27,6 +30,8 @@ public class MenuManager : MonoBehaviour
     private void Update()
     {
         // if input changes, update start text to show right prompt
+        SetText();
+
         if ((Input.anyKeyDown || Input.GetButtonDown("Submit")))
             anim.SetTrigger("NextState");
 

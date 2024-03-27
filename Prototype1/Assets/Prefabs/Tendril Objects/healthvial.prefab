@@ -148,7 +148,7 @@ MonoBehaviour:
   hurtPlayer: 1
   hurtItem: 0
   hurtEnemy: 0
-  damageAmount: -20
+  damageAmount: -25
   tickDamage: 0
   tickRate: 0.5
   destroyAfterUse: 1
@@ -199,6 +199,11 @@ MonoBehaviour:
   slowdownPerSecond: 30
   isDashing: 0
   tendrilOwner: {fileID: 0}
+  flyingHitBox: {fileID: 0}
+  piercing: 0
+  uses: 0
+  flyingHitBoxMod: 1.25
+  debug: 0
 --- !u!54 &3625821023382857399
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -238,8 +243,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a12c10e85cb88c4ab2ee8a95cf9a91a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  immuneTypes: 
   _frozenBeforeTendril: 0
-  health: 1000
+  maxHealth: 20
   DestructionParticle: {fileID: 0}
   DestructionParticleLifetime: 0
   KickedParticle: {fileID: 0}
