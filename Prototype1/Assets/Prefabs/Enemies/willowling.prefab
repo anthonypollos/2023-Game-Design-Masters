@@ -382,6 +382,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9f7b7bc8d897b2439ad8081aa9d2e71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jukebox:
+    tracks:
+    - sound: {fileID: 8300000, guid: 01b71649ba897254780a913781e191a2, type: 3}
+      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputVolParameter: 1
+      volume: 1
+      isLocalized: 1
+      rolloffMode: 0
+      minDistance: 0
+      maxDistance: 10
+      spatialBlend: 0
+    - sound: {fileID: 8300000, guid: 5c9ee94fcfed3ef49b9c7c51a2248fe8, type: 3}
+      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputVolParameter: 1
+      volume: 1
+      isLocalized: 1
+      rolloffMode: 0
+      minDistance: 0
+      maxDistance: 10
+      spatialBlend: 0
+    transform: {fileID: 0}
   health: 40
   staggerThreshold: 15
   bloodParticle: {fileID: 0}
@@ -393,20 +416,6 @@ MonoBehaviour:
   enemiesToSpawn: 0
   spawnRadius: 0
   enemyToSpawn: {fileID: 0}
-  enemyDamaged:
-    Guid:
-      Data1: -1855904290
-      Data2: 1141386434
-      Data3: 927697054
-      Data4: 1805153334
-    Path: event:/RangeDamage
-  enemyDeath:
-    Guid:
-      Data1: -1042487030
-      Data2: 1160619179
-      Data3: -2041485633
-      Data4: 1809331730
-    Path: event:/RangeDeath
 --- !u!114 &7950380925680013476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,20 +440,29 @@ MonoBehaviour:
     m_Bits: 24841
   state: 0
   optimalRange: 30
-  enemyAmbient:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  enemyAggro:
-    Guid:
-      Data1: -1581397155
-      Data2: 1314355322
-      Data3: -1511114833
-      Data4: 1547914853
-    Path: event:/RangeDAggro
+  jukebox:
+    tracks:
+    - sound: {fileID: 8300000, guid: 7baca801b6aac114b93c879520c0ec3a, type: 3}
+      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputGroup: {fileID: -4828692957543937038, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputVolParameter: 3
+      volume: 1
+      isLocalized: 1
+      rolloffMode: 0
+      minDistance: 0
+      maxDistance: 0
+      spatialBlend: 0
+    - sound: {fileID: 8300000, guid: 8677aa7ddafb59a428eb9ecf59fba1b9, type: 3}
+      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputGroup: {fileID: -4828692957543937038, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputVolParameter: 3
+      volume: 1
+      isLocalized: 1
+      rolloffMode: 0
+      minDistance: 0
+      maxDistance: 0
+      spatialBlend: 0
+    transform: {fileID: 0}
 --- !u!114 &171129446447713872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -515,13 +533,29 @@ MonoBehaviour:
   projectile: {fileID: 5597029714246309807, guid: 13c1186b0d99c0144ad449c13e8d12d8, type: 3}
   shootLocation: {fileID: 2947902013867653686}
   spreadAngle: 20
-  enemyShoot:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+  jukebox:
+    tracks:
+    - sound: {fileID: 8300000, guid: cc1f607e36c40494fa526cf8f4e480b2, type: 3}
+      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputVolParameter: 1
+      volume: 0.5
+      isLocalized: 0
+      rolloffMode: 0
+      minDistance: 0
+      maxDistance: 0
+      spatialBlend: 0
+    - sound: {fileID: 8300000, guid: 8f7c1225e31e1524b93c9db2e1dc7aa9, type: 3}
+      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
+      outputVolParameter: 1
+      volume: 1
+      isLocalized: 0
+      rolloffMode: 0
+      minDistance: 0
+      maxDistance: 0
+      spatialBlend: 0
+    transform: {fileID: 0}
 --- !u!114 &3349835507943828987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -576,7 +610,7 @@ MonoBehaviour:
   neutralSpeed: 15
   rateOfChange: 1
   maxDamage: 40
-  isEnemy: 0
+  isEnemy: 1
   speed: 0
   isLaunched: 0
   slowdownPerSecond: 30
