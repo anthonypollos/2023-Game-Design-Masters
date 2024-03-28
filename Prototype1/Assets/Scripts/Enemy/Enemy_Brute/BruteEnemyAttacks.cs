@@ -15,6 +15,7 @@ public class BruteEnemyAttacks : EnemyAttackTemplate
     //[SerializeField] private JukeBox jukebox;
 
     [SerializeField] private EventReference enemyAggro;
+    [SerializeField] private EventReference enemyAttack;
     private void Awake()
     {
         //jukebox.SetTransform(transform);
@@ -61,6 +62,7 @@ public class BruteEnemyAttacks : EnemyAttackTemplate
         }
         brain.moveable.Ram(transform.forward * dashRange, dashTime);
         //jukebox.PlaySound(1);
+        AudioManager.instance.PlayOneShot(enemyAttack, this.transform.position);
         currentWaitingTime = dashTime;
         if (animationTimer < 0)
             animationTimer = 0;
