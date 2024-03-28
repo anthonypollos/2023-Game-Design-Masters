@@ -245,6 +245,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
                 //jukebox.PlaySound(0);
+                AudioManager.instance.PlayOneShot(dashing, this.transform.position);
                 moveable.Dash(transform.forward * dashRange, dashTime);
                 anim.SetFloat("DashSpeed", 32f / (24 * dashTime));
                 anim.SetTrigger("Dash");
