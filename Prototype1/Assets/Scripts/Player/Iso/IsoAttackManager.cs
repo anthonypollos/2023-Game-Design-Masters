@@ -220,7 +220,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 }
                 else
                 {
-                    pulling = true;
+                    if(lb.GetAttachment().Item1!=null)
+                        pulling = true;
                 }
             }
         }
