@@ -205,14 +205,17 @@ public class EnemyBrain : MonoBehaviour, IEnemy
         RaycastHit hit;
         if (Physics.Raycast(transform.position, target.position - transform.position, out hit, Mathf.Infinity, layermask))
         {
-            if (hit.transform == target)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return hit.transform == target;
+        }
+        return false;
+    }
+
+    public bool CheckLOS(Vector3 posToCheck, Transform target)
+    {
+        RaycastHit hit;
+        if(Physics.Raycast(posToCheck, target.position - posToCheck, out hit, Mathf.Infinity, layermask ))
+        {
+            return hit.transform == target;
         }
         return false;
     }
