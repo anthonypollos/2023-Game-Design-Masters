@@ -267,12 +267,15 @@ MonoBehaviour:
   neutralSpeed: 15
   rateOfChange: 1
   maxDamage: 40
+  isEnemy: 0
   speed: 0
   isLaunched: 0
   slowdownPerSecond: 30
   isDashing: 0
   tendrilOwner: {fileID: 0}
   flyingHitBox: {fileID: 0}
+  piercing: 0
+  uses: 0
   flyingHitBoxMod: 1.25
   debug: 0
 --- !u!114 &-2980969239082223904
@@ -287,6 +290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a12c10e85cb88c4ab2ee8a95cf9a91a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  immuneTypes: 
   _frozenBeforeTendril: 0
   maxHealth: 15
   DestructionParticle: {fileID: 4902614723868296185, guid: 145011e46478daf48aac562017f0e90b, type: 3}
@@ -334,6 +338,7 @@ MonoBehaviour:
   damagePerTick: 0
   tickInterval: 0.5
   startOnFire: 1
+  isBurning: 0
   an: {fileID: 0}
 --- !u!54 &-6726584002751740166
 Rigidbody:
@@ -393,7 +398,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.0075, y: 0.0075, z: 0.009}
+  m_Extents: {x: 0.006, y: 0.005, z: 0.006}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
