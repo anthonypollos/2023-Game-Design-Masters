@@ -43,6 +43,14 @@ public class EnemyMovement : MonoBehaviour, ISlowable
     [Tooltip("How close player has to be for the enemy to try and retreat")]
     float tooCloseRange;
 
+    [SerializeField]
+    [Tooltip("Radius possible that the enemy will think the player is at when it comes to navigation")]
+    float offsetRadius;
+    [SerializeField]
+    [Tooltip("Read Only")]
+    Vector2 offset = Vector2.zero;
+
+
 
     int lastValue;
 
@@ -71,6 +79,7 @@ public class EnemyMovement : MonoBehaviour, ISlowable
             if (isPatrolling)
                 targetPosition = patrolPoints[0];
         }
+        offset = Random.insideUnitCircle * offsetRadius;
     }
 
     // Update is called once per frame
@@ -121,6 +130,15 @@ public class EnemyMovement : MonoBehaviour, ISlowable
                 }
                 else
                 {
+                    if (debug)
+                    {
+                        Vector3 previousPoint = transform.position;
+                        foreach (Vector3 point in path.corners)
+                        {
+                            Debug.DrawLine(previousPoint, point, Color.magenta);
+                            previousPoint = point;
+                        }
+                    }
                     if(debug) 
                         Debug.Log("Path written");
                     corner = 0;
@@ -292,7 +310,28 @@ public class EnemyMovement : MonoBehaviour, ISlowable
 
         else
         {
-            targetPosition = brain.player.position;
+            Vector3 temp = Vector3.zero;
+            temp.x = brain.player.position.x + offset.x;
+            temp.y = brain.player.position.y;
+            temp.z = brain.player.position.z + offset.y;
+            if (brain.CheckLOS(temp, brain.player))
+            {
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(temp, out hit, 2.0f, NavMesh.AllAreas))
+                {
+                    temp = hit.position;
+                    targetPosition = temp;
+                }
+                else
+                {
+                    targetPosition = brain.player.position;
+                }
+                
+            }
+            else
+            {
+                targetPosition = brain.player.position;
+            }
         }
         if (!NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path))
         {
