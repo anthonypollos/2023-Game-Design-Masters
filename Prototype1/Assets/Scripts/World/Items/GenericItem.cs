@@ -32,6 +32,8 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     Quaternion initialRot;
 
     private OutlineToggle outlineManager;
+    //This boolean will keep track of whether or not the object was, at any point, frozen, even IF it is no longer frozen.
+    private bool wasFrozen;
 
 
     private void Awake()
@@ -53,13 +55,28 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         //If set to be frozen, freeze.
         if (_frozenBeforeTendril)
         {
-            //Get the constraints and assign them to rbconstraints
-            //We will NEED this if we ever want to have objects that only move along single axes (like the minecart)
-            rbconstraints = GetComponent<Rigidbody>().constraints;
-            //Now freeze.
-            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            //Moved to "Freeze" so that respawned objects can have this
+            Freeze();
         }
         //maxHealth = health;
+    }
+
+    /// <summary>
+    /// Freeze the object. We commit this to its own public thing so that it can be caught by GameController.cs and used with respawning objects.
+    /// </summary>
+    public void Freeze()
+    {
+        //Get the constraints and assign them to rbconstraints
+        //We will NEED this if we ever want to have objects that only move along single axes (like the minecart)
+        //if check to make sure that the past constraints weren't "nothing." If they ARE nothing, assume this is a respawned object.
+        if (rbconstraints != RigidbodyConstraints.None) rbconstraints = GetComponent<Rigidbody>().constraints;
+        //We have no way of accessing frozenBeforeTendril on a respawned object prior to now, so we set it to true *in* this function.
+        //This won't matter for first-time spawned objects, but for respawning objects, we need to be able to see that this is set to true so that every new one is frozen.
+        _frozenBeforeTendril = true;
+        //Now freeze.
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        //We were (and are currently) frozen, make sure this bool is set to true
+        wasFrozen = true;
     }
 
     public void Kicked()
@@ -162,14 +179,34 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         return (dmg >= health);
     }
 
-
+    /// <summary>
+    /// Public method to set this object's Rigid Body Constraints.
+    /// I committed this to a public method because, for respawning objects that start frozen in place, we need to get the constraints BEFORE we freeze it.
+    /// This might be messy or unneeded, but if it gets the job done, it gets the job done, and perf is fine right now anyway.
+    /// </summary>
+    public void SetConstraints()
+    {
+        GetComponent<Rigidbody>().constraints = rbconstraints;
+    }
+    /// <summary>
+    /// Fuck it, if Set Constraints isn't doing what I want, we make a default constraint list of... no constraints and set respawned objects to THAT.
+    /// Just don't have any respawning objects with constraints on them for right now.
+    /// </summary>
+    public void SetDefaultConstraints()
+    {
+        rbconstraints = RigidbodyConstraints.None;
+        print("Test:" + rbconstraints);
+        GetComponent<Rigidbody>().constraints = rbconstraints;
+    }
 
     private void Unfreeze()
     {
         //1. return to non-frozen constraints taken from start
-        GetComponent<Rigidbody>().constraints = rbconstraints;
+        SetConstraints();
         //2. turn the boolean off so this is only called once.
         _frozenBeforeTendril = false;
+        //3. just in case it wasn't already set, set wasFrozen to true;
+        wasFrozen = true;
     }
 
     private void OnDisable()
@@ -179,7 +216,8 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
             wasOn = false;
             if (respawning)
             {
-                GameController.instance.Respawn(gameObject, respawnDelay, initialPos, initialRot);
+                //We use the second overload for this now so that it knows whether or not the original was frozen
+                GameController.instance.Respawn(gameObject, respawnDelay, initialPos, initialRot, wasFrozen);
             }
             else
             {
