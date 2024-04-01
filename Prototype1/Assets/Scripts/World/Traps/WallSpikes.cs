@@ -10,6 +10,9 @@ public class WallSpikes : MonoBehaviour, ITrap
 
     [SerializeField] private JukeBox jukebox;
 
+    [SerializeField] private float red = 0f;
+    [SerializeField] private float green = 1f;
+
     private void Awake()
     {
         jukebox.SetTransform(transform);
@@ -22,20 +25,27 @@ public class WallSpikes : MonoBehaviour, ITrap
         int mod = 1;
         IDamageable temp = target.GetComponent<IDamageable>();
         jukebox.PlaySound(0);
-        if (temp!= null)
+        if (temp != null)
         {
-            if(target.CompareTag("Player"))
+            if (target.CompareTag("Player"))
                 mod = 2;
-            temp.TakeDamage(dmg/mod);
+            temp.TakeDamage(dmg / mod);
         }
         Bleedable bleedable = target.GetComponent<Bleedable>();
-        if(bleedable!=null)
+        if (bleedable != null)
         {
-            bleedable.Activate(bleedTime/mod);
+            bleedable.Activate(bleedTime / mod);
         }
         jukebox.PlaySound(0);
         uses--;
-        if(uses==0)
+
+        for (int i = 0; i < uses; i++)
+        {
+            red = red + .15f;
+            green = green - .15f;
+            GetComponent<Renderer>().material.color = new Color(red, green, 0, 0);
+        }
+        if (uses == 0)
         {
             Break();
         }
