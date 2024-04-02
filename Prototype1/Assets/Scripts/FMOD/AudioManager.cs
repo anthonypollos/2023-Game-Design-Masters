@@ -11,8 +11,8 @@ public class AudioManager : MonoBehaviour
 
     private EventInstance musicEventInstance;
     private EventInstance ambEventInstance;
-    private List<EventInstance> eventInstances;
-    private List<StudioEventEmitter> eventEmitters;
+    public List<EventInstance> eventInstances;
+    public List<StudioEventEmitter> eventEmitters;
 
     private void Awake()
     {

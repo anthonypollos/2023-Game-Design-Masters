@@ -11,6 +11,7 @@ public class AmbianceTriggerChange : MonoBehaviour
     {
         if(other.gameObject.tag == "Player")
         {
+            AudioManager.instance.eventInstances.Clear();
             AudioManager.instance.SetAmbianceArea(ambiance);
             AudioManager.instance.SetMusicArea(bgmusic);
         }
