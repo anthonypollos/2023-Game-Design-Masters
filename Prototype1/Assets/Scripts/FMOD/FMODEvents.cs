@@ -8,6 +8,7 @@ public class FMODEvents : MonoBehaviour
 
     [field: Header("Music")]
     [field:SerializeField] public EventReference music { get; private set; }
+
     [field: Header("Ambiance")]
     [field: SerializeField] public EventReference ambiance { get; private set; }
     public static FMODEvents instance { get; private set; }

@@ -2,12 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using FMODUnity;
+
 public class HubPortal : InteractableBehaviorTemplate, ISaveable
 {
     [SerializeField] string worldName;
+    FMOD.Studio.Bus MasterBus;
     public override bool Interact()
     {
+        MasterBus = FMODUnity.RuntimeManager.GetBus("Bus:/");
+        //MasterBus.stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         SceneManager.LoadScene(worldName);
+        MasterBus.stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         return false;
     }
 

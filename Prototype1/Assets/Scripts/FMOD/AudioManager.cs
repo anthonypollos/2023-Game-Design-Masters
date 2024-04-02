@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -34,6 +35,11 @@ public class AudioManager : MonoBehaviour
         musicEventInstance.start();
     }
 
+    private void StopInstance(EventReference musicEventReference)
+    {
+        
+        musicEventInstance.release();
+    }
     public EventInstance CreateInstance(EventReference eventReference)
     {
         EventInstance eventInstance = RuntimeManager.CreateInstance(eventReference);
@@ -46,11 +52,18 @@ public class AudioManager : MonoBehaviour
     {
         InitializeMusic(FMODEvents.instance.music);
         InitializeMusic(FMODEvents.instance.ambiance);
+        
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void SetAmbianceArea(AmbianceArea scene)
+    {
+        musicEventInstance.setParameterByName("scene", (float) scene);
     }
 }
