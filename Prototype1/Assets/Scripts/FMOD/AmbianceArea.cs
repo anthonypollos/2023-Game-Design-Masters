@@ -5,5 +5,6 @@ using UnityEngine;
 public enum AmbianceArea
 {
    HUBAMBIANCE = 0,
-   ACTUALTOWNAMBIANCE = 1
+
+   TOWNAMBIANCE = 1
 }

@@ -53,7 +53,7 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         InitializeMusic(FMODEvents.instance.music);
-        InitializeAmbiance(FMODEvents.instance.ambiance);
+        InitializeMusic(FMODEvents.instance.ambiance);
         
         
     }
@@ -64,8 +64,13 @@ public class AudioManager : MonoBehaviour
         
     }
 
-    public void SetAmbianceArea(AmbianceArea scene)
+    public void SetAmbianceArea(AmbianceArea ambiance)
     {
-        musicEventInstance.setParameterByName("scene", (float) scene);
+        musicEventInstance.setParameterByName("ambiance", (float) ambiance);
+    }
+
+    public void SetMusicArea(MusicArea bgmusic)
+    {
+        musicEventInstance.setParameterByName("bgmusic", (float) bgmusic);
     }
 }

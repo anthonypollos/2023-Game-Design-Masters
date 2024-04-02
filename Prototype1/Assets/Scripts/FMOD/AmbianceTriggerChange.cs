@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class AmbianceTriggerChange : MonoBehaviour
 {
-    [SerializeField] private AmbianceArea scene;
+    [SerializeField] private AmbianceArea ambiance;
+    [SerializeField] private MusicArea bgmusic;
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Player")
         {
-            AudioManager.instance.SetAmbianceArea(scene);
+            AudioManager.instance.SetAmbianceArea(ambiance);
+            AudioManager.instance.SetMusicArea(bgmusic);
         }
     }
 }
