@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance { get; private set;}
 
     private EventInstance musicEventInstance;
+    private EventInstance ambEventInstance;
     private List<EventInstance> eventInstances;
     private List<StudioEventEmitter> eventEmitters;
 
@@ -35,11 +36,12 @@ public class AudioManager : MonoBehaviour
         musicEventInstance.start();
     }
 
-    private void StopInstance(EventReference musicEventReference)
+    private void InitializeAmbiance(EventReference ambEventReference)
     {
-        
-        musicEventInstance.release();
+        ambEventInstance = CreateInstance(ambEventReference);
+        ambEventInstance.start();
     }
+
     public EventInstance CreateInstance(EventReference eventReference)
     {
         EventInstance eventInstance = RuntimeManager.CreateInstance(eventReference);
@@ -51,7 +53,7 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         InitializeMusic(FMODEvents.instance.music);
-        InitializeMusic(FMODEvents.instance.ambiance);
+        InitializeAmbiance(FMODEvents.instance.ambiance);
         
         
     }
