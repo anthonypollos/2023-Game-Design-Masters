@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using FMODUnity;
 
 public class LassoBehavior : MonoBehaviour
 {
@@ -36,15 +37,17 @@ public class LassoBehavior : MonoBehaviour
     private Camera cam;
     private LineRenderer lr;
     [SerializeField] private LayerMask groundMask;
-    [SerializeField] private JukeBox jukebox;
+    //[SerializeField] private JukeBox jukebox;
     LassoLine line;
     bool thrown;
 
+    [SerializeField] private EventReference tendrilUse;
+    [SerializeField] private EventReference tendrilBreak;
 
     // Start is called before the first frame update
     private void Awake()
     {
-        jukebox.SetTransform(transform);
+        //jukebox.SetTransform(transform);
         thrown = false;
         //collider = GetComponent<Collider>();
         attackManager = FindObjectOfType<IsoAttackManager>();
@@ -108,7 +111,8 @@ public class LassoBehavior : MonoBehaviour
         slider.value = 0f;
         slider.gameObject.SetActive(true);
         GetComponent<Collider>().enabled = true;
-        jukebox.PlaySound(0);
+        AudioManager.instance.PlayOneShot(tendrilUse, this.transform.position);
+        //jukebox.PlaySound(0);
         thrown = true;
     }
 
@@ -195,7 +199,8 @@ public class LassoBehavior : MonoBehaviour
                     moveable.ForceRelease();
                 moveable = null;
                 attached = null;
-                jukebox.PlaySound(1);
+                //jukebox.PlaySound(1);
+                AudioManager.instance.PlayOneShot(tendrilBreak, this.transform.position);
             }
 
             if (moveable != null && !gc.toggleLasso)
@@ -327,7 +332,7 @@ public class LassoBehavior : MonoBehaviour
         if(attached!=null)
         {
             attached.GetComponent<IPullable>().Break();
-            jukebox.PlaySound(1);
+            //jukebox.PlaySound(1);
         }
         if(moveable!=null)
         {

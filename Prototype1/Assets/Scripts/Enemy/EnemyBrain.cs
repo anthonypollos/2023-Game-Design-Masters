@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -47,12 +48,13 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     [Tooltip("What distance does the creature want to stay in from the player")]
     public float optimalRange;
 
-    [SerializeField] private JukeBox jukebox;
+    //[SerializeField] private JukeBox jukebox;
 
-
+    [SerializeField] private EventReference enemyAmbient;
+    [SerializeField] private EventReference enemyAggro;
     private void Awake()
     {
-        jukebox.SetTransform(transform);
+        //jukebox.SetTransform(transform);
     }
     // Start is called before the first frame update
     void Start()
@@ -238,7 +240,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
             isAggro = true;
             health.ec.AddAggro(gameObject);
             StopCoroutine(Ambiance());
-            jukebox.PlaySound(1);
+            AudioManager.instance.PlayOneShot(enemyAggro, this.transform.position);
         }
         
     }
@@ -252,7 +254,8 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     {
         while(!isAggro)
         {
-            jukebox.PlaySound(0);
+            //jukebox.PlaySound(0);
+            AudioManager.instance.PlayOneShot(enemyAmbient, this.transform.position);
             yield return new WaitForSeconds(10f);
         }
     }
