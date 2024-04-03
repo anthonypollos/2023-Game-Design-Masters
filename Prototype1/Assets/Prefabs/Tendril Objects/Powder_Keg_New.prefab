@@ -148,22 +148,22 @@ MonoBehaviour:
   DestructionParticleLifetime: 4
   KickedParticle: {fileID: 4099935107488988707, guid: 96fb81890a7dde74baa069a090d96dfb, type: 3}
   effectsOnHit: []
-  respawning: 0
-  respawnDelay: 5
-  collide:
+  collideSound:
     Guid:
       Data1: 1406587514
       Data2: 1236993393
       Data3: 458917249
       Data4: 1615339013
     Path: event:/Collide
-  breaking:
+  breakSound:
     Guid:
       Data1: -397892180
       Data2: 1263299277
       Data3: 882491830
       Data4: 1818749134
     Path: event:/Break
+  respawning: 0
+  respawnDelay: 5
 --- !u!114 &3425839645886273677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,10 +194,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPickup: 0
   clashDamage: 10
   neutralSpeed: 15
   rateOfChange: 1
   maxDamage: 40
+  isEnemy: 0
   speed: 0
   isLaunched: 0
   slowdownPerSecond: 30

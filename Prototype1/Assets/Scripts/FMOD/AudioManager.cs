@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
-using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -11,8 +10,8 @@ public class AudioManager : MonoBehaviour
 
     private EventInstance musicEventInstance;
     private EventInstance ambEventInstance;
-    public List<EventInstance> eventInstances;
-    public List<StudioEventEmitter> eventEmitters;
+    private List<EventInstance> eventInstances;
+    //private List<StudioEventEmitter> eventEmitters;
 
    // [SerializeField] private AmbianceArea ambiance;
   //  [SerializeField] private MusicArea bgmusic;
@@ -25,7 +24,7 @@ public class AudioManager : MonoBehaviour
         }
         instance = this;
         eventInstances = new List<EventInstance>();
-        eventEmitters = new List<StudioEventEmitter>();
+        //eventEmitters = new List<StudioEventEmitter>();
 
     }
 
