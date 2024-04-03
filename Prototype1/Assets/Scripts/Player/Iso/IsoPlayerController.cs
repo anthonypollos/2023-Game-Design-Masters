@@ -13,7 +13,6 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
     private Vector3 _input;
     public Vector3 _aimInput;
     private Camera cam;
-    private AudioListener ears;
     MainControls mc;
     [SerializeField] LayerMask groundMask;
     bool canUnstun;
@@ -60,15 +59,10 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
         attackState = 0;
         isDead = false;
         cam = Camera.main;
-        ears = GetComponentInChildren<AudioListener>();
         Helpers.UpdateMatrix();
         canDash = true;
         gc = FindObjectOfType<GameController>();
         DeveloperConsole.instance.SetPlayer(gameObject, _rb);
-        if (ears != null)
-        {
-            //Debug.Log("i'm listening");
-        }
     }
 
     private void OnEnable()
@@ -153,12 +147,6 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
                 _rb.velocity = Vector3.zero + Vector3.up * _rb.velocity.y;
         }
     }
-
-    private void LateUpdate()
-    {
-        ears.transform.Rotate(0, 0, 0);
-    }
-
 
 
     // The character rotates to move in the direction of the player's input
