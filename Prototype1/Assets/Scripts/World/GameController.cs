@@ -180,6 +180,17 @@ public class GameController : MonoBehaviour
         StartCoroutine(DelayedRespawn(temp, delay));
     }
 
+    public void Respawn(GameObject go, float delay, Vector3 pos, Quaternion rot, bool frozenstatus)
+    {
+        if (!go.gameObject.scene.isLoaded)
+            return;
+        GameObject temp = Instantiate(go, pos, rot);
+        Destroy(go);
+        //If the gameobject we're respawning has "_frozenBeforeTendril" set to true, we run delayedrespawnfrozen so that the new one will ALSO be frozen on spawn
+        if (frozenstatus) StartCoroutine(DelayedRespawnFrozen(temp, delay));
+        //Otherwise, spawn as normal
+        else StartCoroutine(DelayedRespawn(temp, delay));
+    }
 
 
     private IEnumerator DelayedRespawn(GameObject go, float delay)
@@ -200,6 +211,29 @@ public class GameController : MonoBehaviour
             }
         }
             
+    }
+
+    private IEnumerator DelayedRespawnFrozen(GameObject go, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        go.SetActive(true);
+        //Add the respawned object to the outline manager
+        foreach (Transform child in go.transform)
+        {
+            //Check the children of the respawned object. Find whatever child has the outline and add it
+            if (child.GetComponent<Outline>() != null)
+            {
+                if (outlineManager != null)
+                    outlineManager.AddOutline(child.gameObject);
+                //de-activate the outline
+                child.GetComponent<Outline>().enabled = false;
+            }
+        }
+        //Set the object's rbconstraints to "None"
+        go.GetComponent<GenericItem>().SetDefaultConstraints();
+        //Freeze the object
+        go.GetComponent<GenericItem>().Freeze();
     }
 
 }
