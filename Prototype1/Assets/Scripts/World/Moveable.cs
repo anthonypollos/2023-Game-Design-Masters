@@ -14,6 +14,7 @@ using static UnityEngine.UI.Image;
 public class Moveable : MonoBehaviour, ISlowable
 {
 
+    [SerializeField] bool isPickup = false;
     [SerializeField] int clashDamage = 10;
     [SerializeField] float neutralSpeed = 15f;
     [SerializeField] float rateOfChange = 1f;
@@ -588,7 +589,7 @@ public class Moveable : MonoBehaviour, ISlowable
     
     void IgnorePlayer()
     {
-        if (!collidersHit.Contains(playerCollider))
+        if (!collidersHit.Contains(playerCollider) && !isPickup)
         {
             collidersHit.Add(playerCollider);
             foreach(Collider myCollider in myColliders)
