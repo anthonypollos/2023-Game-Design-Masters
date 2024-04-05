@@ -28,7 +28,7 @@ body:
     options:
 		- Windows
 		- Mac
-		- Linux
+		- Both
   validations:
     required: true
 - type: dropdown
@@ -38,6 +38,7 @@ body:
     options:
 		- Desktop
 		- Laptop
+		- Happens on Both
   validations:
     required: true
 - type: dropdown

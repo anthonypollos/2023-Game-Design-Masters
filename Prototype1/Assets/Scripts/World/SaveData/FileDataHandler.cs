@@ -8,17 +8,19 @@ public class FileDataHandler
 {
     private string dataDirPath = "";
     private string dataFileName = "";
+    private string dataSlot = "";
 
     public FileDataHandler(string directoryPath = "", string fileName = "SaveData.lasso")
     {
         dataDirPath = directoryPath;
         dataFileName = fileName;
-        Debug.Log(Path.Combine(dataDirPath, dataFileName));
+        dataSlot = PlayerPrefs.GetInt("SaveSlot", 0).ToString();
+        Debug.Log(Path.Combine(dataDirPath, "SaveData", dataSlot+dataFileName));
     }
 
     public void Delete()
     {
-        string fullPath = Path.Combine(dataDirPath, dataFileName);
+        string fullPath = Path.Combine(dataDirPath, "SaveData", dataSlot + dataFileName);
         if (File.Exists(fullPath))
         {
             File.Delete(fullPath);
@@ -29,7 +31,7 @@ public class FileDataHandler
     public SavedValues Load()
     {
         //Debug.Log("Loading files");
-        string fullPath = Path.Combine(dataDirPath, dataFileName);
+        string fullPath = Path.Combine(dataDirPath, "SaveData", dataSlot + dataFileName);
         SavedValues loadedData = null;
         if(File.Exists(fullPath))
         {
@@ -57,7 +59,7 @@ public class FileDataHandler
     public void Save(SavedValues savedValues)
     {
         //Debug.Log("Saving files");
-        string fullPath = Path.Combine(dataDirPath, dataFileName);
+        string fullPath = Path.Combine(dataDirPath, "SaveData", dataSlot + dataFileName);
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
