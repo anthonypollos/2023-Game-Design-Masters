@@ -33,6 +33,13 @@ public class SaveLoadManager : MonoBehaviour
         }
     }
 
+    public void ChangeDataHandler(int slot)
+    {
+        PlayerPrefs.SetInt("SaveSlot", slot);
+        dataHandler = new FileDataHandler(Application.persistentDataPath);
+        LoadGame();
+    }
+
     private void Start()
     {
         
@@ -148,7 +155,7 @@ public class SaveLoadManager : MonoBehaviour
             savedValues.currentLevelMissionStatuses.Clear();
         }
         InitialSave();
-        IEnumerable<ISaveable> saveableObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISaveable>();
+        IEnumerable<ISaveable> saveableObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveable>();
         this.saveableObjects = new List<ISaveable>(saveableObjects);
         LoadGame();
     }
