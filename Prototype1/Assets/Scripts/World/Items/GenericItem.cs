@@ -12,6 +12,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     private RigidbodyConstraints rbconstraints;
     [Tooltip("Enable if this object should stay in place before being grabbed.")]
     [SerializeField] bool _frozenBeforeTendril = false;
+    [Tooltip("Set to 0 or lower for max health to be near infinite")]
     [SerializeField] private int maxHealth = 20;
     [Tooltip("The object that's created when this item is destroyed.\nDoes not need to be a particle.")]
     [SerializeField] GameObject DestructionParticle;
@@ -40,11 +41,15 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 
     private void Awake()
     {
+        if (maxHealth <= 0)
+            maxHealth = int.MaxValue;
         //jukebox.SetTransform(transform);
         outlineManager = FindObjectOfType<OutlineToggle>();
     }
     private void OnEnable()
     {
+        if (maxHealth <= 0)
+            maxHealth = int.MaxValue;
         health = maxHealth;
         wasOn = true;
     }
