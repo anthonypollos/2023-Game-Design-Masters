@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using FMODUnity;
 
 //Josh Bonovich
 //Controls and contains the enemies hp
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
-    [SerializeField] private JukeBox jukebox;
+    //[SerializeField] private JukeBox jukebox;
     [SerializeField] int health = 100;
     [SerializeField] int staggerThreshold = 15;
     [SerializeField] GameObject bloodParticle;
@@ -29,11 +30,14 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     private OutlineToggle outlineManager;
 
+    [SerializeField] private EventReference enemyDamaged;
+    [SerializeField] private EventReference enemyDeath;
+
     private void Awake()
     {
         outlineManager = FindObjectOfType<OutlineToggle>();
         quitting = false;
-        jukebox.SetTransform(transform);
+        //jukebox.SetTransform(transform);
         SceneManager.sceneUnloaded += OnSceneChange;
     }
     private void Start()
@@ -67,7 +71,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         }
         if (health <= 0) Die();
         healthSlider.value = (float)health/ maxHealth;
-        if (dmg > 0) jukebox.PlaySound(0);
+        if (dmg > 0) AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
 
         if (health <= healthToSpawn && canSpawnEnemies == true)
         {
@@ -104,7 +108,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     public void Death()
     {
-        jukebox.PlaySound(1);
+        //jukebox.PlaySound(1);
+        AudioManager.instance.PlayOneShot(enemyDeath, this.transform.position);
         ec.RemoveEnemy(gameObject);
         ec.RemoveAggro(gameObject);
         Destroy(gameObject);

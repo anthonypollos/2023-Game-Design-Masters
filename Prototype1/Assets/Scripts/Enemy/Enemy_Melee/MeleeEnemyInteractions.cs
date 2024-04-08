@@ -8,13 +8,13 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     [SerializeField] GameObject KickedParticle;
 
-    [SerializeField] private JukeBox jukebox;
+    //[SerializeField] private JukeBox jukebox;
 
     [SerializeField] MeleeAttackBehavior mab;
 
     private void Awake()
     {
-        jukebox.SetTransform(transform);
+        //jukebox.SetTransform(transform);
     }
     void Start()
     {

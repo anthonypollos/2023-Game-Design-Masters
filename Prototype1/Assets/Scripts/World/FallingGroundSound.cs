@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class FallingGroundSound : MonoBehaviour
 {
-    
-    AudioSource asource;
-    
+
+    [SerializeField] private EventReference groundFall;
+
     // Start is called before the first frame update
     void Start()
     {
-        asource = GetComponent<AudioSource>();
+        PlaySound();
         //asource.Play();
     }
 
@@ -22,7 +23,7 @@ public class FallingGroundSound : MonoBehaviour
 
     public void PlaySound()
     {
-        asource.Play();
+        AudioManager.instance.PlayOneShot(groundFall, this.transform.position);
     }
 
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using FMODUnity;
 
 public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 {
@@ -12,7 +13,6 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
     private Vector3 _input;
     public Vector3 _aimInput;
     private Camera cam;
-    private AudioListener ears;
     MainControls mc;
     [SerializeField] LayerMask groundMask;
     bool canUnstun;
@@ -29,7 +29,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 
     [SerializeField] float dashRange, dashTime, dashCD;
     //[SerializeField] Image dashCDIndicator;
-    [SerializeField] private JukeBox jukebox;
+    //[SerializeField] private JukeBox jukebox;
 
     [SerializeField] float speedModWhenLassoOut;
     [SerializeField] float speedModWhenPulling;
@@ -42,9 +42,12 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
     List<float> slowMods;
     float[] slowModsArray;
 
+    [SerializeField] private EventReference footsteps;
+    [SerializeField] private EventReference dashing;
+
     private void Awake()
     {
-        jukebox.SetTransform(transform);
+        //jukebox.SetTransform(transform);
     }
     private void Start()
     {
@@ -56,15 +59,10 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
         attackState = 0;
         isDead = false;
         cam = Camera.main;
-        ears = GetComponentInChildren<AudioListener>();
         Helpers.UpdateMatrix();
         canDash = true;
         gc = FindObjectOfType<GameController>();
         DeveloperConsole.instance.SetPlayer(gameObject, _rb);
-        if (ears != null)
-        {
-            //Debug.Log("i'm listening");
-        }
     }
 
     private void OnEnable()
@@ -150,12 +148,6 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
         }
     }
 
-    private void LateUpdate()
-    {
-        ears.transform.Rotate(0, 0, 0);
-    }
-
-
 
     // The character rotates to move in the direction of the player's input
     private void Look()
@@ -221,7 +213,8 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
                 attackManager.ForceRelease();
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
-                jukebox.PlaySound(0);
+                //jukebox.PlaySound(0);
+                AudioManager.instance.PlayOneShot(dashing, this.transform.position);
                 if (_input == Vector3.zero)
                     moveable.Dash(transform.forward * dashRange, dashTime);
                 else
@@ -239,7 +232,8 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
                     previousLayer = gameObject.layer;
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
-                jukebox.PlaySound(0);
+                //jukebox.PlaySound(0);
+                AudioManager.instance.PlayOneShot(dashing, this.transform.position);
                 moveable.Dash(transform.forward * dashRange, dashTime);
                 anim.SetFloat("DashSpeed", 32f / (24 * dashTime));
                 anim.SetTrigger("Dash");
@@ -323,9 +317,9 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 
     public void Footsteps()
     {
-       
-       jukebox.PlaySound(1);
-        
+
+        //jukebox.PlaySound(1);
+        AudioManager.instance.PlayOneShot(footsteps, this.transform.position);
     }
 
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using FMODUnity;
 
 public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 {
@@ -19,8 +20,9 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     [SerializeField] GameObject KickedParticle;
     [SerializeField][Tooltip("Add the name of the status you want to invoke when this object hits a target")] string[] effectsOnHit;
 
-    [SerializeField] private JukeBox jukebox;
-
+    //[SerializeField] private JukeBox jukebox;
+    [SerializeField] private EventReference collideSound;
+    [SerializeField] private EventReference breakSound;
     //Keeps track of if this object is alive or not. This is to prevent it from double dying.
     private bool isAlive = true;
     private int health;
@@ -38,7 +40,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 
     private void Awake()
     {
-        jukebox.SetTransform(transform);
+        //jukebox.SetTransform(transform);
         outlineManager = FindObjectOfType<OutlineToggle>();
     }
     private void OnEnable()
@@ -125,7 +127,8 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         if (!immuneTypes.Contains(damageType))
         {
             health -= dmg;
-            jukebox.PlaySound(0);
+            //jukebox.PlaySound(0);
+            AudioManager.instance.PlayOneShot(collideSound, this.transform.position);
             if (dmg > 0)
                 if (health <= 0)
                 {
@@ -164,8 +167,10 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
                                 }
                             }
                         }
-                        jukebox.PlaySound(0);
-                        jukebox.PlaySound(1);
+                        //jukebox.PlaySound(0);
+                        //jukebox.PlaySound(1);
+                        AudioManager.instance.PlayOneShot(collideSound, this.transform.position);
+                        AudioManager.instance.PlayOneShot(breakSound, this.transform.position);
                         gameObject.SetActive(false);
                     }
                 }

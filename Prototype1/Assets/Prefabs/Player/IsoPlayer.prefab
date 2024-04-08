@@ -1590,7 +1590,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: 0, y: 0, z: 0, w: 1}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: -0.048998047, y: -0.053208996, z: 0.0053004962, w: 0.99736655}
-    ColliderRadius: 0.5228083
+    ColliderRadius: 0.54619145
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0, y: 0, z: 0}
@@ -1622,7 +1622,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: 0.0000011996209, y: 0.0000016463495, z: -0.0000007300043, w: 1.0000001}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: 0.0000011846425, y: 0.0000016763809, z: -0.00000074645516, w: 1}
-    ColliderRadius: 0.39210624
+    ColliderRadius: 0.4096436
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0.005706523, y: -0.0019327349, z: 0.013224952}
@@ -1654,7 +1654,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: 0.00046008485, y: -0.00006516122, z: 0.0008487312, w: 0.99999994}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: 0.000458848, y: -0.00006682243, z: 0.0008494477, w: 0.9999995}
-    ColliderRadius: 0.40059042
+    ColliderRadius: 0.4180301
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0.0110432925, y: -0.009097466, z: 0.025864188}
@@ -1686,7 +1686,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: -0.0053201835, y: -0.0062860907, z: 0.0013850265, w: 0.99996537}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: -0.005785347, y: -0.006215754, z: 0.0005396246, w: 0.9999638}
-    ColliderRadius: 0.3878123
+    ColliderRadius: 0.40222877
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0.012033218, y: -0.019281035, z: 0.030207444}
@@ -2521,12 +2521,10 @@ GameObject:
   - component: {fileID: -2951775800152396056}
   - component: {fileID: 7830389134396124948}
   - component: {fileID: 8086080676862633664}
-  - component: {fileID: 69583174752842746}
-  - component: {fileID: 6981609900582880189}
   - component: {fileID: 7268124728826437991}
-  - component: {fileID: 8762836687011229426}
   - component: {fileID: 1283658283833350426}
   - component: {fileID: 8529491358012224155}
+  - component: {fileID: 5223442332554331675}
   m_Layer: 3
   m_Name: IsoPlayer
   m_TagString: Player
@@ -2608,32 +2606,23 @@ MonoBehaviour:
   dashRange: 12
   dashTime: 0.5
   dashCD: 0.22
-  jukebox:
-    tracks:
-    - sound: {fileID: 8300000, guid: 380a2957595547e4289ca1432f39f72a, type: 3}
-      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 1
-      volume: 1
-      isLocalized: 1
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
-    - sound: {fileID: 8300000, guid: b6bf6e3293bd91342a496b99bf03d928, type: 3}
-      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 1
-      volume: 0.07
-      isLocalized: 1
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
-    transform: {fileID: 0}
   speedModWhenLassoOut: 1
   speedModWhenPulling: 0.8
   anim: {fileID: 7268124728826437991}
+  footsteps:
+    Guid:
+      Data1: -391403363
+      Data2: 1102261153
+      Data3: 1643329702
+      Data4: 1261868036
+    Path: event:/Footsteps
+  dashing:
+    Guid:
+      Data1: -312603009
+      Data2: 1220099669
+      Data3: -403543108
+      Data4: -1126160405
+    Path: event:/Dashing
 --- !u!114 &1401297822148593465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2670,49 +2659,34 @@ MonoBehaviour:
   kickCDIndicator: {fileID: 3620240208058457411}
   chargeTime: 0
   chargeDetonationPrefab: {fileID: 0}
-  jukebox:
-    tracks:
-    - sound: {fileID: 8300000, guid: ba86bd6e4fb9309408783a2568fd24d9, type: 3}
-      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 1
-      volume: 0.1
-      isLocalized: 1
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
-    - sound: {fileID: 8300000, guid: 44c7cd5d7cd975d47a1c22675a7b7ff2, type: 3}
-      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 1
-      volume: 0.5
-      isLocalized: 1
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
-    - sound: {fileID: 8300000, guid: d0081188e40ce454a86b3add0fb9788e, type: 3}
-      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 1
-      volume: 0.5
-      isLocalized: 1
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
-    - sound: {fileID: 8300000, guid: 3604321e18e307041a569cc393222683, type: 3}
-      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 1
-      volume: 0.5
-      isLocalized: 1
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
-    transform: {fileID: 0}
+  tendril1:
+    Guid:
+      Data1: -1704267184
+      Data2: 1300612813
+      Data3: 98192055
+      Data4: 151871984
+    Path: event:/PullTendril1
+  tendril2:
+    Guid:
+      Data1: -1704267184
+      Data2: 1300612813
+      Data3: 98192055
+      Data4: 151871984
+    Path: event:/PullTendril1
+  tendril3:
+    Guid:
+      Data1: 754766012
+      Data2: 1249620624
+      Data3: -250832717
+      Data4: 1452959443
+    Path: event:/PullTendril3
+  tendrilsound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   pc: {fileID: 0}
   anim: {fileID: 7268124728826437991}
 --- !u!114 &339944857379058434
@@ -2727,32 +2701,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e99c7884af43d9f4f8d760a58c7cb475, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jukebox:
-    tracks:
-    - sound: {fileID: 8300000, guid: c4efa1f308d320e4c8361eeb5db34dc9, type: 3}
-      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 1
-      volume: 0.7
-      isLocalized: 1
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
-    - sound: {fileID: 8300000, guid: 129dfd77bcd18b840943ff46c30071aa, type: 3}
-      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 1
-      volume: 0.7
-      isLocalized: 1
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
-    transform: {fileID: 0}
   health: 100
   bloodParticle: {fileID: 3819351497248801758, guid: 825a543a483823647818e91c51585d77, type: 3}
   anim: {fileID: 7268124728826437991}
+  playerDamage:
+    Guid:
+      Data1: 2713353
+      Data2: 1210572160
+      Data3: 71702421
+      Data4: 1896089733
+    Path: event:/PlayerDamage
 --- !u!54 &6157092007949576416
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2909,6 +2867,7 @@ MonoBehaviour:
   neutralSpeed: 15
   rateOfChange: 1
   maxDamage: 40
+  isEnemy: 0
   speed: 0
   isLaunched: 0
   slowdownPerSecond: 30
@@ -2955,110 +2914,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textBox: {fileID: 8053272589178392021}
---- !u!81 &69583174752842746
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2030166625210922752}
-  m_Enabled: 0
---- !u!82 &6981609900582880189
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2030166625210922752}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -5058894599458057237, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 82ea17e7e5e33dd4ca02fafb857a9e85, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.3
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!95 &7268124728826437991
 Animator:
   serializedVersion: 5
@@ -3080,102 +2935,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!82 &8762836687011229426
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2030166625210922752}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -3251258584773406207, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 35e86d63f0a9b7a40abe2c67e6a3e168, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.55
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &1283658283833350426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3210,6 +2969,19 @@ MonoBehaviour:
   damagePerTick: 2
   tickInterval: 0.5
   an: {fileID: 0}
+--- !u!114 &5223442332554331675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030166625210922752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 2030166625210922752}
 --- !u!1 &2057469794136797750
 GameObject:
   m_ObjectHideFlags: 0
@@ -4830,7 +4602,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: 0, y: 0, z: 0, w: 1}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: -0.048998047, y: -0.053208996, z: 0.0053004962, w: 0.99736655}
-    ColliderRadius: 0.5228083
+    ColliderRadius: 0.41712236
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0, y: 0, z: 0}
@@ -4862,7 +4634,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: 0.0000011996209, y: 0.0000016463495, z: -0.0000007300043, w: 1.0000001}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: 0.0000011846425, y: 0.0000016763809, z: -0.00000074645516, w: 1}
-    ColliderRadius: 0.39210624
+    ColliderRadius: 0.31284177
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0.005706523, y: -0.0019327349, z: 0.013224952}
@@ -4894,7 +4666,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: 0.00046008485, y: -0.00006516122, z: 0.0008487312, w: 0.99999994}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: 0.000458848, y: -0.00006682243, z: 0.0008494477, w: 0.9999995}
-    ColliderRadius: 0.40059042
+    ColliderRadius: 0.31834587
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0.0110432925, y: -0.009097466, z: 0.025864188}
@@ -4926,7 +4698,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: -0.0053201835, y: -0.0062860907, z: 0.0013850265, w: 0.99996537}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: -0.005785347, y: -0.006215754, z: 0.0005396246, w: 0.9999638}
-    ColliderRadius: 0.3878123
+    ColliderRadius: 0.3075508
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0.012033218, y: -0.019281035, z: 0.030207444}
@@ -8190,7 +7962,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: 0, y: 0, z: 0, w: 1}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: -0.048998047, y: -0.053208996, z: 0.0053004962, w: 0.99736655}
-    ColliderRadius: 0.5228083
+    ColliderRadius: 0.43327287
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0, y: 0, z: 0}
@@ -8222,7 +7994,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: 0.0000011996209, y: 0.0000016463495, z: -0.0000007300043, w: 1.0000001}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: 0.0000011846425, y: 0.0000016763809, z: -0.00000074645516, w: 1}
-    ColliderRadius: 0.39210624
+    ColliderRadius: 0.32495466
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0.005706523, y: -0.0019327349, z: 0.013224952}
@@ -8254,7 +8026,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: 0.00046008485, y: -0.00006516122, z: 0.0008487312, w: 0.99999994}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: 0.000458848, y: -0.00006682243, z: 0.0008494477, w: 0.9999995}
-    ColliderRadius: 0.40059042
+    ColliderRadius: 0.33369988
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0.0110432925, y: -0.009097466, z: 0.025864188}
@@ -8286,7 +8058,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: -0.0053201835, y: -0.0062860907, z: 0.0013850265, w: 0.99996537}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: -0.005785347, y: -0.006215754, z: 0.0005396246, w: 0.9999638}
-    ColliderRadius: 0.3878123
+    ColliderRadius: 0.3215332
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0.012033218, y: -0.019281035, z: 0.030207444}
@@ -10292,7 +10064,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: 0, y: 0, z: 0, w: 1}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: -0.048998047, y: -0.053208996, z: 0.0053004962, w: 0.99736655}
-    ColliderRadius: 0.5228083
+    ColliderRadius: 0.5675636
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0, y: 0, z: 0}
@@ -10324,7 +10096,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: 0.0000011996209, y: 0.0000016463495, z: -0.0000007300043, w: 1.0000001}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: 0.0000011846425, y: 0.0000016763809, z: -0.00000074645516, w: 1}
-    ColliderRadius: 0.39210624
+    ColliderRadius: 0.4256727
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0.005706523, y: -0.0019327349, z: 0.013224952}
@@ -10356,7 +10128,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: 0.00046008485, y: -0.00006516122, z: 0.0008487312, w: 0.99999994}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: 0.000458848, y: -0.00006682243, z: 0.0008494477, w: 0.9999995}
-    ColliderRadius: 0.40059042
+    ColliderRadius: 0.43438745
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0.0110432925, y: -0.009097466, z: 0.025864188}
@@ -10388,7 +10160,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: -0.0053201835, y: -0.0062860907, z: 0.0013850265, w: 0.99996537}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: -0.005785347, y: -0.006215754, z: 0.0005396246, w: 0.9999638}
-    ColliderRadius: 0.3878123
+    ColliderRadius: 0.41796497
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0.012033218, y: -0.019281035, z: 0.030207444}
@@ -12248,7 +12020,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: 0, y: 0, z: 0, w: 1}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: -0.048998047, y: -0.053208996, z: 0.0053004962, w: 0.99736655}
-    ColliderRadius: 0.5228083
+    ColliderRadius: 0.5548327
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0, y: 0, z: 0}
@@ -12280,7 +12052,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: 0.0000011996209, y: 0.0000016463495, z: -0.0000007300043, w: 1.0000001}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: 0.0000011846425, y: 0.0000016763809, z: -0.00000074645516, w: 1}
-    ColliderRadius: 0.39210624
+    ColliderRadius: 0.41612452
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0.005706523, y: -0.0019327349, z: 0.013224952}
@@ -12312,7 +12084,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: 0.00046008485, y: -0.00006516122, z: 0.0008487312, w: 0.99999994}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: 0.000458848, y: -0.00006682243, z: 0.0008494477, w: 0.9999995}
-    ColliderRadius: 0.40059042
+    ColliderRadius: 0.4246441
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0.0110432925, y: -0.009097466, z: 0.025864188}
@@ -12344,7 +12116,7 @@ MonoBehaviour:
     InitialLocalRotationInRoot: {x: -0.0053201835, y: -0.0062860907, z: 0.0013850265, w: 0.99996537}
     LocalOffset: {x: 0, y: 0, z: 0}
     InitialLocalRotation: {x: -0.005785347, y: -0.006215754, z: 0.0005396246, w: 0.9999638}
-    ColliderRadius: 0.3878123
+    ColliderRadius: 0.40859056
     CollisionContactFlag: 0
     CollisionContactRelevancy: -1
     VelocityHelper: {x: 0.012033218, y: -0.019281035, z: 0.030207444}
