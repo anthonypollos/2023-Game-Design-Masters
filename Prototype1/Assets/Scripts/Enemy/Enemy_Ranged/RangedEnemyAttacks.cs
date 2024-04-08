@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class RangedEnemyAttacks : EnemyAttackTemplate
 {
@@ -18,11 +19,11 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
     [Tooltip("Spread angle")]
     float spreadAngle = 10f;
 
-    [SerializeField] private JukeBox jukebox;
-
+    //[SerializeField] private JukeBox jukebox;
+    [SerializeField] private EventReference enemyShoot;
     private void Awake()
     {
-        jukebox.SetTransform(transform);
+        //jukebox.SetTransform(transform);
     }
     public override void Attack()
     {
@@ -58,7 +59,8 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
     {
         currentShot++;
         int projectilesToSpawn = (currentShot%multiShotInterval)==0 ? 3 : 1;
-        jukebox.PlaySound(1);
+        //jukebox.PlaySound(1);
+        AudioManager.instance.PlayOneShot(enemyShoot, this.transform.position);
         //if (currentShot%multiShotInterval == 0) Debug.Log("trigger multi");
         for (int i = 0; i < projectilesToSpawn; i++)
         { 

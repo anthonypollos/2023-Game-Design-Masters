@@ -171,10 +171,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPickup: 0
   clashDamage: 10
   neutralSpeed: 15
   rateOfChange: 0
   maxDamage: 50
+  isEnemy: 0
   speed: 0
   isLaunched: 0
   slowdownPerSecond: 30
@@ -217,19 +219,20 @@ MonoBehaviour:
   DestructionParticleLifetime: 4
   KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
   effectsOnHit: []
-  jukebox:
-    tracks:
-    - sound: {fileID: 8300000, guid: c74bafcbed8eea54585f19649be49bd4, type: 3}
-      masterOutputGroup: {fileID: 24300002, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputGroup: {fileID: -3287792725401267053, guid: 1241586799aa9ae46937b77ce7513719, type: 2}
-      outputVolParameter: 1
-      volume: 1
-      isLocalized: 0
-      rolloffMode: 0
-      minDistance: 0
-      maxDistance: 0
-      spatialBlend: 0
-    transform: {fileID: 0}
+  collideSound:
+    Guid:
+      Data1: -1815640311
+      Data2: 1221313293
+      Data3: -2075765313
+      Data4: 1837862448
+    Path: event:/Spike-stab
+  breakSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   respawning: 1
   respawnDelay: 2
 --- !u!208 &6036751698641605177

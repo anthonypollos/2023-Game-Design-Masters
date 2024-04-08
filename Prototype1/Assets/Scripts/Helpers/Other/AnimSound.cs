@@ -1,8 +1,10 @@
 using UnityEngine;
+using FMODUnity;
 
 public class AnimSound : MonoBehaviour
 {
-    [SerializeField] private JukeBox jukebox;
+    //[SerializeField] private JukeBox jukebox;
+    [SerializeField] private EventReference enemyAttack;
 
     /// <summary>
     /// Plays sound clip at given index
@@ -10,7 +12,8 @@ public class AnimSound : MonoBehaviour
     /// <param name="index">Index of clip to play</param>
     public void PlaySound(int index)
     {
-        jukebox.PlaySound(index);
+        //jukebox.PlaySound(index);
+        AudioManager.instance.PlayOneShot(enemyAttack, this.transform.position);
     }
 
 
@@ -23,6 +26,7 @@ public class AnimSound : MonoBehaviour
     /// <param name="max">Maximum clip index</param>
     public void PlaySoundRandom(int min, int max)
     {
-        jukebox.PlaySound(Random.Range(min, max + 1));
+        //jukebox.PlaySound(Random.Range(min, max + 1));
+        AudioManager.instance.PlayOneShot(enemyAttack, this.transform.position);
     }
 }
