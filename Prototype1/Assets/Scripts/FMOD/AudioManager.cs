@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
-using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -11,8 +10,11 @@ public class AudioManager : MonoBehaviour
 
     private EventInstance musicEventInstance;
     private EventInstance ambEventInstance;
-    public List<EventInstance> eventInstances;
-    public List<StudioEventEmitter> eventEmitters;
+    private List<EventInstance> eventInstances;
+    //private List<StudioEventEmitter> eventEmitters;
+
+   // [SerializeField] private AmbianceArea ambiance;
+  //  [SerializeField] private MusicArea bgmusic;
 
     private void Awake()
     {
@@ -22,7 +24,8 @@ public class AudioManager : MonoBehaviour
         }
         instance = this;
         eventInstances = new List<EventInstance>();
-        eventEmitters = new List<StudioEventEmitter>();
+        //eventEmitters = new List<StudioEventEmitter>();
+
     }
 
     public void PlayOneShot(EventReference sound, Vector3 worldPos)
@@ -52,10 +55,11 @@ public class AudioManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InitializeMusic(FMODEvents.instance.music);
-        InitializeMusic(FMODEvents.instance.ambiance);
-        
-        
+       // InitializeMusic(FMODEvents.instance.music);
+       // InitializeMusic(FMODEvents.instance.ambiance);
+
+     //   AudioManager.instance.SetAmbianceArea(ambiance);
+      //  AudioManager.instance.SetMusicArea(bgmusic);
     }
 
     // Update is called once per frame
