@@ -13,6 +13,8 @@ public class WallSpikes : MonoBehaviour, ITrap
     [SerializeField] private float red = 0f;
     [SerializeField] private float green = 1f;
 
+    [SerializeField] private EventReference stab;
+
     private void Awake()
     {
         jukebox.SetTransform(transform);
@@ -24,8 +26,10 @@ public class WallSpikes : MonoBehaviour, ITrap
     {
         int mod = 1;
         IDamageable temp = target.GetComponent<IDamageable>();
-        jukebox.PlaySound(0);
+        //jukebox.PlaySound(0);
+        AudioManager.instance.PlayOneShot(stab, this.transform.position);
         if (temp != null)
+            if (temp != null)
         {
             if (target.CompareTag("Player"))
                 mod = 2;
