@@ -10,6 +10,7 @@ public class LassoBehavior : MonoBehaviour
     private GameController gc;
     public IsoAttackManager attackManager;
     //private Collider collider;
+    private List<Collider> colliders;
 
     private float maxThrowDistance = 999;
     private float maxDistance = 999;
@@ -110,7 +111,13 @@ public class LassoBehavior : MonoBehaviour
             line.gameObject.SetActive(true);
         slider.value = 0f;
         slider.gameObject.SetActive(true);
-        GetComponent<Collider>().enabled = true;
+        if(colliders == null)
+            colliders = new List<Collider>(GetComponentsInChildren<Collider>(true));
+        foreach (Collider collider in colliders)
+        {
+            collider.enabled = true;
+            //Debug.Log("turned on lasso collider");
+        }
         AudioManager.instance.PlayOneShot(tendrilUse, this.transform.position);
         //jukebox.PlaySound(0);
         thrown = true;
@@ -342,7 +349,10 @@ public class LassoBehavior : MonoBehaviour
         moveable = null;
         attached = null;
         lr.enabled = false;
-        GetComponent<Collider>().enabled = false;
+        if(colliders == null)
+            colliders = new List<Collider>(GetComponentsInChildren<Collider>(true));
+        foreach (Collider collider in colliders)
+            collider.enabled = false;
     }
 
 

@@ -38,7 +38,8 @@ public class SporeCloud : MonoBehaviour
             if(health == null) health = other.GetComponent<PlayerHealth>();
 
             hitCD = 0;
-            health.TakeDamage(damagePerTick);
+            if(health!=null)
+                health.TakeDamage(damagePerTick);
         }
     }
 }

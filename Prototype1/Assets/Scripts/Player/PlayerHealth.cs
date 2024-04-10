@@ -17,7 +17,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     [Header("Animator Variables")]
     [SerializeField] Animator anim; //assigned in inspector for now; can change
     [SerializeField] private EventReference playerDamage;
-
+    [SerializeField] private EventReference playerDeath;
     private void Awake()
    {
      //jukebox.SetTransform(transform);
@@ -68,6 +68,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if (!pc.isDead)
         {
             anim.SetTrigger("Death");
+            AudioManager.instance.PlayOneShot(playerDeath, this.transform.position);
             //jukebox.PlaySound(1);
             pc.isDead = true;
             pc.isStunned = true;

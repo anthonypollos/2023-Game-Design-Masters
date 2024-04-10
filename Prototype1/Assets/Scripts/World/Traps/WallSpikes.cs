@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class WallSpikes : MonoBehaviour, ITrap
 {
@@ -8,11 +9,11 @@ public class WallSpikes : MonoBehaviour, ITrap
     [SerializeField] float bleedTime = 3f;
     [SerializeField] [Tooltip("<=0 means infinite")] int uses = 0;
 
-    [SerializeField] private JukeBox jukebox;
-
+    //[SerializeField] private JukeBox jukebox;
+    [SerializeField] private EventReference stab;
     private void Awake()
     {
-        jukebox.SetTransform(transform);
+        //jukebox.SetTransform(transform);
         if (uses <= 0)
             uses = int.MaxValue;
     }
@@ -21,7 +22,8 @@ public class WallSpikes : MonoBehaviour, ITrap
     {
         int mod = 1;
         IDamageable temp = target.GetComponent<IDamageable>();
-        jukebox.PlaySound(0);
+        //jukebox.PlaySound(0);
+        AudioManager.instance.PlayOneShot(stab, this.transform.position);
         if (temp!= null)
         {
             if(target.CompareTag("Player"))
@@ -33,7 +35,8 @@ public class WallSpikes : MonoBehaviour, ITrap
         {
             bleedable.Activate(bleedTime/mod);
         }
-        jukebox.PlaySound(0);
+        //jukebox.PlaySound(0);
+        AudioManager.instance.PlayOneShot(stab, this.transform.position);
         uses--;
         if(uses==0)
         {

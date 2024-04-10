@@ -44,6 +44,10 @@ ExportedObj/
 *.opendb
 *.VC.db
 
+# fmod garbo
+*.fobj
+/Prototype1/FMOD Assets/grimstone-valley/.cache/buildrecords/Desktop/*.br
+
 # Unity3D generated meta files
 *.pidb.meta
 *.pdb.meta
@@ -97,32 +101,24 @@ $RECYCLE.BIN/
 /Prototype1/Assets/FImpossible Creations/Plugins - Animating/Tail Animator/Packages - Demos - Converter/Tail Animator - V2 Demo Unity Below 2018 Examples.unitypackage.meta
 /Prototype1/Assets/FImpossible Creations/Plugins - Animating/Tail Animator/Packages - Demos - Converter/Tail Animator V1 to V2 Converter + Old Examples.unitypackage.meta
 
-### FMOD Unity Integration ###
-# Never ignore DLLs in the FMOD subfolder, so make sure that the FMOD-folder is in the correct path.
-!/[Aa]ssets/Plugins/FMOD/**/*.dll
+# Never ignore DLLs in the FMOD subfolder.
+!/[Aa]ssets/Plugins/FMOD/**/lib/*
 
-# Don't ignore images and gizmos used by FMOD in the Unity Editor
-!/[Aa}ssets/Gizmos/FMOD/*
-!/[Aa}ssets/Editor Default Resources/FMOD/*
+# Don't ignore images and gizmos used by FMOD in the Unity Editor.
+!/[Aa]ssets/Gizmos/FMOD/*
+!/[Aa]ssets/Editor Default Resources/FMOD/*
 
-# Ignore the Cache-file since it is updated locally either way
-/[Aa]ssets/**/FMODStudioCache.asset
-/[Aa]ssets/**/FMODStudioCache.asset.meta
-/[Aa]ssets/Plugins/FMOD/Cache.meta
-/[Aa]ssets/Plugins/FMOD/Cache/Editor.meta
+# Ignore the Cache folder since it is updated locally.
+/[Aa]ssets/Plugins/FMOD/Cache/*
 
-# Log-files
-fmod.log
+# Ignore bank files in the StreamingAssets folder.
+/[Aa]ssets/StreamingAssets/**/*.bank
+/[Aa]ssets/StreamingAssets/**/*.bank.meta
+
+# If the source bank files are kept outside of the StreamingAssets folder then these can be ignored.
+# Log files can be ignored.
 fmod_editor.log
 
-# FMOD 1.10.x (Legacy)
-/Assets/FMODAssets/*
-/Assets/FMODStudioCache.meta
+/Prototype1/FMOD Assets/grimstone-valley/.cache/buildrecords/Desktop/**
 
-# Add the info.plist files to gitignore
-/Assets/Plugins/FMOD/platforms/mac/lib/fmodstudio.bundle/contents/Info.plist
-/Assets/Plugins/FMOD/platforms/mac/lib/fmodstudioL.bundle/contents/Info.plist
-/Assets/Plugins/FMOD/platforms/mac/lib/resonanceaudio.bundle/contents/Info.plist
-Prototype1/Assets/Plugins/FMOD/platforms/mac/lib/fmodstudio.bundle/Contents/Info.plist
-Prototype1/Assets/Plugins/FMOD/platforms/mac/lib/fmodstudioL.bundle/Contents/Info.plist
-Prototype1/Assets/Plugins/FMOD/platforms/mac/lib/resonanceaudio.bundle/Contents/Info.plist
+Prototype1/FMOD Assets/grimstone-valley/.unsaved/Metadata/Workspace.xml
