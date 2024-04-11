@@ -58,6 +58,10 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     [SerializeField] private EventReference tendril1;
     [SerializeField] private EventReference tendril2;
     [SerializeField] private EventReference tendril3;
+    [SerializeField] private EventReference tendril4;
+    [SerializeField] private EventReference tendril5;
+    [SerializeField] private EventReference tendril6;
+    [SerializeField] private EventReference tendril7;
     [SerializeField] private EventReference tendrilsound;
 
     bool kicking;
@@ -314,7 +318,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                     moveable.Tossed(tossSpeed);
                 }
                 //jukebox.PlaySound(Random.Range(1,4));
-                PickEffortSound(tendrilsound, Random.Range(1,4));
+                PickEffortSound(tendrilsound, Random.Range(1,8));
                 //AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
             }
         }
@@ -327,6 +331,22 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         print(selection);
         switch (selection)
         {
+            case 7:
+                tendrilsound = tendril7;
+                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                break;
+            case 6:
+                tendrilsound = tendril6;
+                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                break;
+            case 5:
+                tendrilsound = tendril5;
+                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                break;
+            case 4:
+                tendrilsound = tendril4;
+                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                break;
             case 3:
                 tendrilsound = tendril3;
                 AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
