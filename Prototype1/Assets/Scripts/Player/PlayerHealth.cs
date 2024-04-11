@@ -16,7 +16,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     [Header("Animator Variables")]
     [SerializeField] Animator anim; //assigned in inspector for now; can change
-    [SerializeField] private EventReference playerDamage;
+    [SerializeField] private EventReference playerDamage1;
+    [SerializeField] private EventReference playerDamage2;
+    [SerializeField] private EventReference playerDamage4;
+    [SerializeField] private EventReference playerDamage5;
+    [SerializeField] private EventReference hurtsound;
     [SerializeField] private EventReference playerDeath;
     private void Awake()
    {
@@ -44,7 +48,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             //destroy the particle
             Destroy(vfxobj, 4);
         }
-        if (dmg > 0) AudioManager.instance.PlayOneShot(playerDamage, this.transform.position);
+        if (dmg > 0) PickEffortSound(hurtsound, Random.Range(1, 5));
         if (!DeveloperConsole.instance.godMode)
         {
             health -= dmg;
@@ -98,5 +102,29 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public int GetMaxHealth()
     {
         return maxHealth;
+    }
+
+    public void PickEffortSound(EventReference hurtsound, int selection)
+    {
+        print(selection);
+        switch (selection)
+        {
+            case 4:
+                hurtsound = playerDamage5;
+                AudioManager.instance.PlayOneShot(hurtsound, this.transform.position);
+                break;
+            case 3:
+                hurtsound = playerDamage4;
+                AudioManager.instance.PlayOneShot(hurtsound, this.transform.position);
+                break;
+            case 2:
+                hurtsound = playerDamage2;
+                AudioManager.instance.PlayOneShot(hurtsound, this.transform.position);
+                break;
+            default:
+                hurtsound = playerDamage1;
+                AudioManager.instance.PlayOneShot(hurtsound, this.transform.position);
+                break;
+        }
     }
 }
