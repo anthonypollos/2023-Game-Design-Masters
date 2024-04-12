@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3465452738189461657}
   - component: {fileID: 8823974526979645704}
   - component: {fileID: 1810308560256795330}
+  - component: {fileID: -4860126611288520239}
   m_Layer: 17
   m_Name: CombatMission
   m_TagString: Untagged
@@ -88,6 +89,7 @@ MonoBehaviour:
   - {fileID: 0}
   arenaBarriers:
   - {fileID: 0}
+  isNextWave: 0
 --- !u!33 &3465452738189461657
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -151,3 +153,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _myColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &-4860126611288520239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5636749570643761064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: 1306625272
+      Data2: 1163406204
+      Data3: 973489048
+      Data4: 1152653587
+    Path: event:/CombatMusic
+  Event: 
+  PlayEvent: 3
+  StopEvent: 4
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
