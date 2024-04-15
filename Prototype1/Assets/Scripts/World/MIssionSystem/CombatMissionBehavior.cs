@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class CombatMissionBehavior : MissionBehavior
 {
@@ -10,6 +11,7 @@ public class CombatMissionBehavior : MissionBehavior
     //bool completed;
 
     [SerializeField] bool isNextWave = false;
+    [SerializeField] private EventReference objectiveSound;
 
     private void Awake()
     {
@@ -77,6 +79,7 @@ public class CombatMissionBehavior : MissionBehavior
             barrier.SetActive(false);
         }
         folder.CombatFinished();
+        AudioManager.instance.PlayOneShot(objectiveSound, this.transform.position);
         base.OnComplete();
     }
 }
