@@ -76,6 +76,7 @@ public class MissionBehavior : MonoBehaviour
     
     protected virtual void OnTriggered()
     {
+        AudioManager.instance.PlayOneShot(objectiveSound, this.transform.position);
         OnComplete();
     }
 
@@ -128,9 +129,10 @@ public class MissionBehavior : MonoBehaviour
                     }
                 }
             }
+            //AudioManager.instance.PlayOneShot(objectiveSound, this.transform.position);
             folder.MissionComplete(this);
             //jukebox.PlaySound(0);
-            AudioManager.instance.PlayOneShot(objectiveSound, this.transform.position);
+            //AudioManager.instance.PlayOneShot(objectiveSound, this.transform.position);
             if (initialDialogue != null)
                 DialogueManager.instance.EnterDialogMode(initialDialogue);
         }
