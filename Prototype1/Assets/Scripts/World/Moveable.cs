@@ -25,6 +25,7 @@ public class Moveable : MonoBehaviour, ISlowable
     Rigidbody rb;
     Vector3 targetLocation;
     [SerializeField ] float speed;
+    float previousSpeed;
     [HideInInspector] public bool isLaunched;
     Coroutine stopping;
     float buffer;
@@ -237,26 +238,7 @@ public class Moveable : MonoBehaviour, ISlowable
             }
             Moveable moveable = collision.transform.GetComponent<Moveable>();
             OnClash();
-            //calculate clash damage
-            if (!unstoppable)
-            {
-                if (moveable == null) //wall
-                {
-                    if(!isEnemy)
-                        myDamageable.TakeDamage(CalculateClashDamage(true));
-                }
-                else if (!moveable.AlreadyHit(myCollider))
-                {
-                    myDamageable.TakeDamage(CalculateClashDamage(true));
-                    if (!piercing)
-                        moveable.OnClash();
-                }
-            }
-            IDamageable damageable = collision.transform.GetComponent<IDamageable>();
-            if (damageable != null)
-            {
-                damageable.TakeDamage(CalculateClashDamage());
-            }
+            previousSpeed = speed;
             if (moveable != null)
             {
                 if (!moveable.AlreadyHit(myCollider))
@@ -292,15 +274,36 @@ public class Moveable : MonoBehaviour, ISlowable
                         }
                     }
                     IKickable kickable = collision.transform.GetComponent<IKickable>();
-                    if(kickable != null)
+                    if (kickable != null)
                     {
                         kickable.Kicked();
                     }
-                    if(!unstoppable)
+                    if (!unstoppable)
                         moveable.ForceReleaseDelayed();
-                    
+
                 }
             }
+            //calculate clash damage
+            if (!unstoppable)
+            {
+                if (moveable == null) //wall
+                {
+                    if(!isEnemy)
+                        myDamageable.TakeDamage(CalculateClashDamage(true));
+                }
+                else if (!moveable.AlreadyHit(myCollider))
+                {
+                    myDamageable.TakeDamage(CalculateClashDamage(true));
+                    if (!piercing)
+                        moveable.OnClash();
+                }
+            }
+            IDamageable damageable = collision.transform.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.TakeDamage(CalculateClashDamage());
+            }
+            
             
             //if wall, hard stop
             else if (!isStopping)
@@ -377,25 +380,7 @@ public class Moveable : MonoBehaviour, ISlowable
             }
             Moveable moveable = collision.transform.GetComponent<Moveable>();
             OnClash();
-            //calculate clash damage
-            if (!unstoppable)
-            {
-                if (moveable == null) //wall
-                {
-                    if(!isEnemy)
-                        myDamageable.TakeDamage(CalculateClashDamage(true));
-                }
-                else if (!moveable.AlreadyHit(myCollider))
-                {
-                    myDamageable.TakeDamage(CalculateClashDamage(true));
-                    moveable.OnClash();
-                }
-            }
-            IDamageable damageable = collision.transform.GetComponent<IDamageable>();
-            if (damageable != null)
-            {
-                damageable.TakeDamage(CalculateClashDamage());
-            }
+            previousSpeed = speed;
             if (moveable != null)
             {
                 if (!moveable.AlreadyHit(myCollider))
@@ -418,11 +403,31 @@ public class Moveable : MonoBehaviour, ISlowable
                     {
                         kickable.Kicked();
                     }
-                    if(!unstoppable)
+                    if (!unstoppable)
                         moveable.ForceReleaseDelayed();
 
                 }
             }
+            //calculate clash damage
+            if (!unstoppable)
+            {
+                if (moveable == null) //wall
+                {
+                    if(!isEnemy)
+                        myDamageable.TakeDamage(CalculateClashDamage(true));
+                }
+                else if (!moveable.AlreadyHit(myCollider))
+                {
+                    myDamageable.TakeDamage(CalculateClashDamage(true));
+                    moveable.OnClash();
+                }
+            }
+            IDamageable damageable = collision.transform.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.TakeDamage(CalculateClashDamage());
+            }
+            
 
             //if wall, hard stop
             else if (!isStopping)
@@ -454,7 +459,7 @@ public class Moveable : MonoBehaviour, ISlowable
         if (piercing && selfDamage)
             return CalculatePiercingDamage();
         else
-            return Mathf.RoundToInt(Mathf.Clamp(((float)clashDamage + (speed - neutralSpeed)*rateOfChange), 0, maxDamage));
+            return Mathf.RoundToInt(Mathf.Clamp(((float)clashDamage + (previousSpeed - neutralSpeed)*rateOfChange), 0, maxDamage));
     }
 
     int CalculatePiercingDamage()

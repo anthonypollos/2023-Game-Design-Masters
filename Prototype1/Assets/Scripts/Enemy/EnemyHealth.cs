@@ -33,6 +33,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [SerializeField] private EventReference enemyDamaged;
     [SerializeField] private EventReference enemyDeath;
 
+    bool dead = false;
+
     private void Awake()
     {
         outlineManager = FindObjectOfType<OutlineToggle>();
@@ -42,6 +44,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     }
     private void Start()
     {
+        dead = false;
         ec = FindObjectOfType<EnemyContainer>();
         ec.AddEnemy(gameObject);
         maxHealth = health;
@@ -101,8 +104,29 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     private void Die()
     {
+        if (!dead)
+        {
+            Collider[] colliders = GetComponentsInChildren<Collider>();
+            foreach (Collider collider in colliders)
+            {
+                if (collider.gameObject.layer == 7)
+                    collider.enabled = false;
+            }
+            StartCoroutine(WaitUntilStop(colliders));
+        }
+        
+    }
+
+    IEnumerator WaitUntilStop(Collider[] colliders)
+    {
+        dead = true;
+        yield return new WaitUntil(() => brain.moveable.isDashing||!brain.moveable.isLaunched);
+        foreach (Collider collider in colliders)
+        {
+            collider.gameObject.layer = 28;
+        }
         brain.state = EnemyStates.DEAD;
-        brain.moveable.Hold();
+        brain.moveable.ForceStop();
         brain.interaction.Death();
     }
 
