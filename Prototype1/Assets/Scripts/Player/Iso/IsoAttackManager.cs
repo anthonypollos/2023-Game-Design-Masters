@@ -62,6 +62,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     [SerializeField] private EventReference tendril5;
     [SerializeField] private EventReference tendril6;
     [SerializeField] private EventReference tendril7;
+    [SerializeField] private EventReference tendril8;
+    [SerializeField] private EventReference tendril9;
     [SerializeField] private EventReference tendrilsound;
 
     bool kicking;
@@ -79,7 +81,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     private OutlineToggle outlineToggle;
 
     bool charged = false;
-
+    int lastSelection;
     private void Awake()
     {
         //jukebox.SetTransform(transform);
@@ -318,7 +320,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                     moveable.Tossed(tossSpeed);
                 }
                 //jukebox.PlaySound(Random.Range(1,4));
-                PickEffortSound(tendrilsound, Random.Range(1,8));
+                PickEffortSound(tendrilsound, Random.Range(1,10));
                 //AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
             }
         }
@@ -328,38 +330,119 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     public void PickEffortSound(EventReference tendrilsound, int selection)
     {
-        print(selection);
         switch (selection)
         {
+            case 9:
+                tendrilsound = tendril9;
+                if (selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 10));
+                }
+                break;
+            case 8:
+                tendrilsound = tendril8;
+                if (selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 10));
+                }
+                break;
             case 7:
                 tendrilsound = tendril7;
-                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                if(selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 8));
+                }
                 break;
             case 6:
                 tendrilsound = tendril6;
-                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                if (selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 8));
+                }
                 break;
             case 5:
                 tendrilsound = tendril5;
-                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                if (selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 8));
+                }
                 break;
             case 4:
                 tendrilsound = tendril4;
-                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                if (selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 8));
+                }
                 break;
             case 3:
                 tendrilsound = tendril3;
-                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                if (selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 8));
+                }
                 break;
             case 2:
                 tendrilsound = tendril2;
-                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                if (selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 8));
+                }
                 break;
             default:
                 tendrilsound = tendril1;
-                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                if (selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 8));
+                }
                 break;
         }
+
+        //lastSelection = selection;
     }
 
     public void ForceRelease()
