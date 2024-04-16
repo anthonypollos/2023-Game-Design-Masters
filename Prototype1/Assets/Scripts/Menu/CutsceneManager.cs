@@ -9,12 +9,17 @@ public class CutsceneManager : MonoBehaviour
     public string sceneToLoad;
     MainControls mainControls;
 
+    public Animator anim;
+
+    public bool isCutscene = false;
+
     // Start is called before the first frame update
     void OnEnable()
     {
         mainControls = ControlsContainer.instance.mainControls;
         mainControls.Main.Interact.performed += Interact;
 
+        anim.SetBool("isCutscene", true);
     }
 
     private void OnDisable()
@@ -24,7 +29,7 @@ public class CutsceneManager : MonoBehaviour
 
     private void Interact(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
+        if (ctx.performed && isCutscene)
             Skip();
     }
 
