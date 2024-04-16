@@ -60,7 +60,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         health -= dmg;
         if (dmg > staggerThreshold)
         {
-
+            AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
             //If there is a blood particle, create it.
             if (bloodParticle != null)
             {
@@ -74,7 +74,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         }
         if (health <= 0) Die();
         healthSlider.value = (float)health/ maxHealth;
-        if (dmg > 0) AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
+        if (dmg > 0) //AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
 
         if (health <= healthToSpawn && canSpawnEnemies == true)
         {
