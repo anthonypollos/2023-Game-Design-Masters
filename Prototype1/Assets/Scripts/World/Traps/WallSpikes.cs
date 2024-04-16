@@ -11,6 +11,10 @@ public class WallSpikes : MonoBehaviour, ITrap
 
     //[SerializeField] private JukeBox jukebox;
     [SerializeField] private EventReference stab;
+
+    [SerializeField] private float red = 0f;
+    [SerializeField] private float green = 1f;
+
     private void Awake()
     {
         //jukebox.SetTransform(transform);
@@ -38,7 +42,14 @@ public class WallSpikes : MonoBehaviour, ITrap
         //jukebox.PlaySound(0);
         AudioManager.instance.PlayOneShot(stab, this.transform.position);
         uses--;
-        if(uses==0)
+
+        for (int i = 0; i < uses; i++)
+        {
+            red = red * (1.25f);
+            green = green * (.75f);
+            GetComponent<Renderer>().material.color = new Color(red, green, 0, 0);
+        }
+        if (uses==0)
         {
             Break();
         }
