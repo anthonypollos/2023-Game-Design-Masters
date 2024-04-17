@@ -458,7 +458,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     {
         if (Time.timeScale != 0)
         {
-            if (lasso.activeInHierarchy)
+            if (lasso.activeInHierarchy && !isRetracting)
             {
                 pc.attackState = Helpers.LASSOED;
                 pulling = false;
