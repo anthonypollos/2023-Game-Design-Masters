@@ -82,6 +82,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     bool charged = false;
     int lastSelection;
+
+    bool ignoreRelease = false;
     private void Awake()
     {
         //jukebox.SetTransform(transform);
@@ -231,8 +233,10 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 }
                 else
                 {
-                    if(lb.GetAttachment().Item1!=null)
+                    if (lb.GetAttachment().Item1 != null)
                         pulling = true;
+                    else
+                        ignoreRelease = true;
                 }
             }
         }
@@ -285,6 +289,11 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     private void Lasso()
     {
+        if(ignoreRelease)
+        {
+            ignoreRelease = false;
+            return;
+        }
 
         if (Time.timeScale != 0 && !pc.isStunned && !pc.isDead)
         {
