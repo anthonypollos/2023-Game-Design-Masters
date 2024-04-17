@@ -30,12 +30,20 @@ public class BruteEnemyInteractions : EnemyInteractionBehaviorTemplate
     // Update is called once per frame
     void Update()
     {
-        if (launched && !brain.moveable.isLaunched && !coroutineRunning)
+        if (!brain.moveable.isLaunched && !coroutineRunning)
         {
-            hasCollided = true;
-            UnStunned();
-            launched = false;
+            if (launched)
+            {
+                hasCollided = true;
+                UnStunned();
+                launched = false;
+            }
+            else if (stunned)
+            {
+                UnStunned();
+            }
         }
+
     }
     public override void Kicked()
     {
