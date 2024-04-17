@@ -299,24 +299,30 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         {
             currentTime = 0;
             restTime = 0;
-            if (!lasso.activeInHierarchy && !kicking && !pc.moveable.isLaunched && isCharging)
+            if (!lasso.activeInHierarchy && !kicking  && isCharging)
             {
-
                 isCharging = false;
-                pc.attackState = Helpers.LASSOED;
-                //GameObject temp = Instantiate(lasso, transform.position, Quaternion.identity);
-                lasso.SetActive(true);
-                tendril.SetActive(true);
-                lb.enabled = true;
-                lasso.transform.parent = null;
-                lassoRB.isKinematic = false;
-                lassoRB.velocity = transform.forward * lassoSpeed;
-                float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
-                //LassoBehavior lb = temp.GetComponent<LassoBehavior>();
-                lb.SetValues(currentDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
-                lb.Launched();
-
-                anim.SetTrigger("TendrilThrow");
+                if (!pc.moveable.isLaunched)
+                {
+                    pc.attackState = Helpers.LASSOED;
+                    //GameObject temp = Instantiate(lasso, transform.position, Quaternion.identity);
+                    lasso.SetActive(true);
+                    tendril.SetActive(true);
+                    lb.enabled = true;
+                    lasso.transform.parent = null;
+                    lassoRB.isKinematic = false;
+                    lassoRB.velocity = transform.forward * lassoSpeed;
+                    float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
+                    //LassoBehavior lb = temp.GetComponent<LassoBehavior>();
+                    lb.SetValues(currentDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
+                    lb.Launched();
+                    anim.SetTrigger("TendrilThrow");
+                }
+                else
+                {
+                    if (pc.attackState != Helpers.ATTACKING)
+                        pc.attackState = Helpers.NOTATTACKING;
+                }
             }
 
             if (lasso.activeInHierarchy && lb.GetAttachment().Item2 != null)
