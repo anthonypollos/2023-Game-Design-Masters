@@ -156,6 +156,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
                             }
 
                             //This code makes gibs inherit their parent's angles and velocity
+                            //ALSO: If the particles have outlines, add them to the outline manager.
                             foreach (Transform child in vfxobj.transform)
                             {
                                 //check every child in the instantiated object to see if they have rigidbodies.
@@ -169,6 +170,13 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 
                                     //If this is an explosion, increase the velocity ten-fold
                                     if (vfxobj.CompareTag("Explosion")) child.gameObject.GetComponent<Rigidbody>().velocity *= 10;
+                                }
+                                //Check the children of the gib object. Find whatever child has the outline and add it
+                                if (child.GetComponent<Outline>() != null)
+                                {
+                                    outlineManager.AddOutline(child.gameObject);
+                                    //de-activate the outline
+                                    child.GetComponent<Outline>().enabled = false;
                                 }
                             }
                         }
