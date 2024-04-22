@@ -5,7 +5,7 @@ using FMODUnity;
 
 public class EventEmitterAccess : MonoBehaviour
 {
-    public GameObject AudioManager;
+    public GameObject AManager;
     
     // Start is called before the first frame update
     void Start()
@@ -23,7 +23,7 @@ public class EventEmitterAccess : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            AudioManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
+            AManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
         }
         
     }
@@ -32,7 +32,7 @@ public class EventEmitterAccess : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            AudioManager.GetComponent<FMODUnity.StudioEventEmitter>().Play();
+            //AManager.GetComponent<FMODUnity.StudioEventEmitter>().Play();
         }
     }
 }
