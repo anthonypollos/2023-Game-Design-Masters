@@ -33,6 +33,12 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [SerializeField] private EventReference enemyDamaged;
     [SerializeField] private EventReference enemyDeath;
 
+    [Tooltip("The particle object to spawn upon enemy death.\nNote: This can be any Game Object.")]
+    [SerializeField] private GameObject DeathParticle;
+    //Set this here so that we never have a null case. It can be changed in-editor as needed
+    [Tooltip("How long the Death Particle lives before Despawning.\nSet to 0 or below for an immortal object.")]
+    [SerializeField] private float DeathParticleLifetime = 4;
+
     bool dead = false;
 
     private void Awake()
@@ -136,6 +142,12 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         AudioManager.instance.PlayOneShot(enemyDeath, this.transform.position);
         ec.RemoveEnemy(gameObject);
         ec.RemoveAggro(gameObject);
+        if (DeathParticle != null)
+        {
+            //print("Attempting to spawn " + DeathParticle + " from " + this + " at " + transform.position);
+            GameObject tempparticle = Instantiate(DeathParticle, transform.position, Quaternion.identity);
+            if (DeathParticleLifetime > 0) Destroy(tempparticle, DeathParticleLifetime);
+        }
         Destroy(gameObject);
     }
 
