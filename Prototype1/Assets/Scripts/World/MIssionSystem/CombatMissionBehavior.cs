@@ -13,6 +13,8 @@ public class CombatMissionBehavior : MissionBehavior
     [SerializeField] bool isNextWave = false;
     [SerializeField] private EventReference objectiveSound;
 
+    public GameObject AManager;
+    public GameObject musicTrigger;
     private void Awake()
     {
         startingCount = enemies.Count;
@@ -79,6 +81,8 @@ public class CombatMissionBehavior : MissionBehavior
             barrier.SetActive(false);
         }
         folder.CombatFinished();
+        Destroy(musicTrigger);
+        AManager.GetComponent<FMODUnity.StudioEventEmitter>().Play();
         AudioManager.instance.PlayOneShot(objectiveSound, this.transform.position);
         base.OnComplete();
     }
