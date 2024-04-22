@@ -17,6 +17,7 @@ public class CombatMissionBehavior : MissionBehavior
     public GameObject musicTrigger;
     private void Awake()
     {
+        if (AManager == null) AManager = FindObjectOfType<AudioManager>().gameObject;
         startingCount = enemies.Count;
         completed = false;
 
