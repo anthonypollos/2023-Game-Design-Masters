@@ -214,6 +214,18 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         
     }
 
+    //Testing B Controls Methods
+    private void Toss()
+    {
+
+    }
+
+    private void Return()
+    {
+
+    }
+
+    //OG Control Methods
     private void LassoCharge()
     {
         if (Time.timeScale != 0 && !pc.isStunned)
