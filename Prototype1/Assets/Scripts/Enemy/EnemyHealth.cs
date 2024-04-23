@@ -33,6 +33,14 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [SerializeField] private EventReference enemyDamaged;
     [SerializeField] private EventReference enemyDeath;
 
+    [Tooltip("The particle object to spawn upon enemy death.\nNote: This can be any Game Object.")]
+    [SerializeField] private GameObject DeathParticle;
+    //Set this here so that we never have a null case. It can be changed in-editor as needed
+    [Tooltip("How long the Death Particle lives before Despawning.\nSet to 0 or below for an immortal object.")]
+    [SerializeField] private float DeathParticleLifetime = 4;
+
+    bool dead = false;
+
     private void Awake()
     {
         outlineManager = FindObjectOfType<OutlineToggle>();
@@ -42,6 +50,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     }
     private void Start()
     {
+        dead = false;
         ec = FindObjectOfType<EnemyContainer>();
         ec.AddEnemy(gameObject);
         maxHealth = health;
@@ -57,7 +66,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         health -= dmg;
         if (dmg > staggerThreshold)
         {
-
+            AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
             //If there is a blood particle, create it.
             if (bloodParticle != null)
             {
@@ -71,7 +80,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         }
         if (health <= 0) Die();
         healthSlider.value = (float)health/ maxHealth;
-        if (dmg > 0) AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
+        if (dmg > 0) //AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
 
         if (health <= healthToSpawn && canSpawnEnemies == true)
         {
@@ -101,8 +110,29 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     private void Die()
     {
+        if (!dead)
+        {
+            Collider[] colliders = GetComponentsInChildren<Collider>();
+            foreach (Collider collider in colliders)
+            {
+                if (collider.gameObject.layer == 7)
+                    collider.enabled = false;
+            }
+            StartCoroutine(WaitUntilStop(colliders));
+        }
+        
+    }
+
+    IEnumerator WaitUntilStop(Collider[] colliders)
+    {
+        dead = true;
+        yield return new WaitUntil(() => brain.moveable.isDashing||!brain.moveable.isLaunched);
+        foreach (Collider collider in colliders)
+        {
+            collider.gameObject.layer = 28;
+        }
         brain.state = EnemyStates.DEAD;
-        brain.moveable.Hold();
+        brain.moveable.ForceStop();
         brain.interaction.Death();
     }
 
@@ -112,6 +142,12 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         AudioManager.instance.PlayOneShot(enemyDeath, this.transform.position);
         ec.RemoveEnemy(gameObject);
         ec.RemoveAggro(gameObject);
+        if (DeathParticle != null)
+        {
+            //print("Attempting to spawn " + DeathParticle + " from " + this + " at " + transform.position);
+            GameObject tempparticle = Instantiate(DeathParticle, transform.position, Quaternion.identity);
+            if (DeathParticleLifetime > 0) Destroy(tempparticle, DeathParticleLifetime);
+        }
         Destroy(gameObject);
     }
 

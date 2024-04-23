@@ -28,12 +28,21 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     // Update is called once per frame
     void Update()
     {
-        if (launched && !brain.moveable.isLaunched && !coroutineRunning)
+       if (!brain.moveable.isLaunched && !coroutineRunning)
         {
-            hasCollided = true;
-            launched = false;
-            UnStunned();
+            if (launched)
+            {
+                hasCollided = true;
+                UnStunned();
+                launched = false;
+            }
+            else if (stunned)
+            {
+                UnStunned();
+            }
         }
+
+        
     }
     public override void Kicked()
     {

@@ -58,6 +58,12 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     [SerializeField] private EventReference tendril1;
     [SerializeField] private EventReference tendril2;
     [SerializeField] private EventReference tendril3;
+    [SerializeField] private EventReference tendril4;
+    [SerializeField] private EventReference tendril5;
+    [SerializeField] private EventReference tendril6;
+    [SerializeField] private EventReference tendril7;
+    [SerializeField] private EventReference tendril8;
+    [SerializeField] private EventReference tendril9;
     [SerializeField] private EventReference tendrilsound;
 
     bool kicking;
@@ -75,7 +81,9 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     private OutlineToggle outlineToggle;
 
     bool charged = false;
+    int lastSelection;
 
+    bool ignoreRelease = false;
     private void Awake()
     {
         //jukebox.SetTransform(transform);
@@ -225,8 +233,10 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 }
                 else
                 {
-                    if(lb.GetAttachment().Item1!=null)
+                    if (lb.GetAttachment().Item1 != null)
                         pulling = true;
+                    else
+                        ignoreRelease = true;
                 }
             }
         }
@@ -279,29 +289,40 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     private void Lasso()
     {
+        if(ignoreRelease)
+        {
+            ignoreRelease = false;
+            return;
+        }
 
         if (Time.timeScale != 0 && !pc.isStunned && !pc.isDead)
         {
             currentTime = 0;
             restTime = 0;
-            if (!lasso.activeInHierarchy && !kicking && !pc.moveable.isLaunched && isCharging)
+            if (!lasso.activeInHierarchy && !kicking  && isCharging)
             {
-
                 isCharging = false;
-                pc.attackState = Helpers.LASSOED;
-                //GameObject temp = Instantiate(lasso, transform.position, Quaternion.identity);
-                lasso.SetActive(true);
-                tendril.SetActive(true);
-                lb.enabled = true;
-                lasso.transform.parent = null;
-                lassoRB.isKinematic = false;
-                lassoRB.velocity = transform.forward * lassoSpeed;
-                float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
-                //LassoBehavior lb = temp.GetComponent<LassoBehavior>();
-                lb.SetValues(currentDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
-                lb.Launched();
-
-                anim.SetTrigger("TendrilThrow");
+                if (!pc.moveable.isLaunched)
+                {
+                    pc.attackState = Helpers.LASSOED;
+                    //GameObject temp = Instantiate(lasso, transform.position, Quaternion.identity);
+                    lasso.SetActive(true);
+                    tendril.SetActive(true);
+                    lb.enabled = true;
+                    lasso.transform.parent = null;
+                    lassoRB.isKinematic = false;
+                    lassoRB.velocity = transform.forward * lassoSpeed;
+                    float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
+                    //LassoBehavior lb = temp.GetComponent<LassoBehavior>();
+                    lb.SetValues(currentDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
+                    lb.Launched();
+                    anim.SetTrigger("TendrilThrow");
+                }
+                else
+                {
+                    if (pc.attackState != Helpers.ATTACKING)
+                        pc.attackState = Helpers.NOTATTACKING;
+                }
             }
 
             if (lasso.activeInHierarchy && lb.GetAttachment().Item2 != null)
@@ -314,7 +335,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                     moveable.Tossed(tossSpeed);
                 }
                 //jukebox.PlaySound(Random.Range(1,4));
-                PickEffortSound(tendrilsound, Random.Range(1,4));
+                PickEffortSound(tendrilsound, Random.Range(1,10));
                 //AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
             }
         }
@@ -324,29 +345,126 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     public void PickEffortSound(EventReference tendrilsound, int selection)
     {
-        print(selection);
         switch (selection)
         {
+            case 9:
+                tendrilsound = tendril9;
+                if (selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 10));
+                }
+                break;
+            case 8:
+                tendrilsound = tendril8;
+                if (selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 10));
+                }
+                break;
+            case 7:
+                tendrilsound = tendril7;
+                if(selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 8));
+                }
+                break;
+            case 6:
+                tendrilsound = tendril6;
+                if (selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 8));
+                }
+                break;
+            case 5:
+                tendrilsound = tendril5;
+                if (selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 8));
+                }
+                break;
+            case 4:
+                tendrilsound = tendril4;
+                if (selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 8));
+                }
+                break;
             case 3:
                 tendrilsound = tendril3;
-                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                if (selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 8));
+                }
                 break;
             case 2:
                 tendrilsound = tendril2;
-                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                if (selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 8));
+                }
                 break;
             default:
                 tendrilsound = tendril1;
-                AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                if (selection != lastSelection)
+                {
+                    AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                    lastSelection = selection;
+                }
+                else
+                {
+                    PickEffortSound(tendrilsound, Random.Range(1, 8));
+                }
                 break;
         }
+
+        //lastSelection = selection;
     }
 
     public void ForceRelease()
     {
         if (Time.timeScale != 0)
         {
-            if (lasso.activeInHierarchy)
+            if (lasso.activeInHierarchy && !isRetracting)
             {
                 pc.attackState = Helpers.LASSOED;
                 pulling = false;

@@ -18,6 +18,7 @@ public class SetOptions : MonoBehaviour
     [Header("---------------------------")]
     [Header("Audio Settings")]
     [SerializeField] [Tooltip("Volume Sliders")] private Slider[] volSliders;
+    [SerializeField] [Tooltip("Volume Panels *IN SAME ORDER AS SLIDERS*")] private VolumeOptions[] volOptions;
     [SerializeField] [Tooltip("Exposed AudioMixer volume parameter names *IN SAME ORDER AS SLIDERS*")] private string[] mixerVarNames;
 
     [Header("---------------------------")]
@@ -192,7 +193,12 @@ public class SetOptions : MonoBehaviour
     private void SetVolPrefs()
     {
         for (int i = 0; i < volSliders.Length; i++)
-            volSliders[i].value = PlayerPrefs.GetFloat(mixerVarNames[i], defaultVolume);
+        {
+            float vol = PlayerPrefs.GetFloat(mixerVarNames[i], defaultVolume);
+
+            volSliders[i].value = vol;
+            volOptions[i].SetBusVolume(vol/20);
+        }
     }
     #endregion
 

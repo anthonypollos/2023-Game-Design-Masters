@@ -9,16 +9,15 @@ public class WallSpikes : MonoBehaviour, ITrap
     [SerializeField] float bleedTime = 3f;
     [SerializeField] [Tooltip("<=0 means infinite")] int uses = 0;
 
-    [SerializeField] private JukeBox jukebox;
+    //[SerializeField] private JukeBox jukebox;
+    [SerializeField] private EventReference stab;
 
     [SerializeField] private float red = 0f;
     [SerializeField] private float green = 1f;
 
-    [SerializeField] private EventReference stab;
-
     private void Awake()
     {
-        jukebox.SetTransform(transform);
+        //jukebox.SetTransform(transform);
         if (uses <= 0)
             uses = int.MaxValue;
     }
@@ -29,28 +28,28 @@ public class WallSpikes : MonoBehaviour, ITrap
         IDamageable temp = target.GetComponent<IDamageable>();
         //jukebox.PlaySound(0);
         AudioManager.instance.PlayOneShot(stab, this.transform.position);
-        if (temp != null)
-            if (temp != null)
+        if (temp!= null)
         {
-            if (target.CompareTag("Player"))
+            if(target.CompareTag("Player"))
                 mod = 2;
-            temp.TakeDamage(dmg / mod);
+            temp.TakeDamage(dmg/mod);
         }
         Bleedable bleedable = target.GetComponent<Bleedable>();
-        if (bleedable != null)
+        if(bleedable!=null)
         {
-            bleedable.Activate(bleedTime / mod);
+            bleedable.Activate(bleedTime/mod);
         }
-        jukebox.PlaySound(0);
+        //jukebox.PlaySound(0);
+        AudioManager.instance.PlayOneShot(stab, this.transform.position);
         uses--;
 
         for (int i = 0; i < uses; i++)
         {
-            red = red + .15f;
-            green = green - .15f;
+            red = red * (1.25f);
+            green = green * (.75f);
             GetComponent<Renderer>().material.color = new Color(red, green, 0, 0);
         }
-        if (uses == 0)
+        if (uses==0)
         {
             Break();
         }

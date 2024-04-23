@@ -1,19 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class CombatMissionBehavior : MissionBehavior
 {
     [SerializeField] List<EnemyBrain> enemies;
     int startingCount;
     [SerializeField] List<GameObject> arenaBarriers;
-    bool completed;
+    //bool completed;
 
+    [SerializeField] bool isNextWave = false;
+    [SerializeField] private EventReference objectiveSound;
+
+    public GameObject AManager;
+    public GameObject musicTrigger;
     private void Awake()
     {
+        if (AManager == null) AManager = FindObjectOfType<AudioManager>().gameObject;
         startingCount = enemies.Count;
         completed = false;
 
+    }
+
+    private void OnEnable()
+    {
+        if (isNextWave)
+            StartCombat();
     }
     protected override void OnTriggered()
     {
@@ -42,9 +55,11 @@ public class CombatMissionBehavior : MissionBehavior
 
     public void RemoveEnemy(EnemyBrain enemy)
     {
+        Debug.Log("enemy killed");
         if(enemies.Contains(enemy) && !completed)
         {
             enemies.Remove(enemy);
+            Debug.Log("enemy count: " + enemies.Count);
             if (enemies.Count <= 0)
                 OnComplete();
         }
@@ -52,7 +67,8 @@ public class CombatMissionBehavior : MissionBehavior
 
     public override void OnComplete()
     {
-        completed = true;
+        Debug.Log("Completed");
+        //completed = true;
         if(enemies.Count>0)
         {
             foreach(EnemyBrain enemy in enemies)
@@ -66,6 +82,9 @@ public class CombatMissionBehavior : MissionBehavior
             barrier.SetActive(false);
         }
         folder.CombatFinished();
+        Destroy(musicTrigger);
+        AManager.GetComponent<FMODUnity.StudioEventEmitter>().Play();
+        AudioManager.instance.PlayOneShot(objectiveSound, this.transform.position);
         base.OnComplete();
     }
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using TMPro;
+using FMODUnity;
+using FMOD.Studio;
 
 public class VolumeOptions : MonoBehaviour
 {
@@ -13,6 +15,9 @@ public class VolumeOptions : MonoBehaviour
 
     [SerializeField] [Tooltip("Corresponding AudioMixer Group")] private AudioMixer mixer;
     [SerializeField] [Tooltip("Corrseponding exposed AudioMixer volume parameter name")] private string mixerVarName;
+
+    private Bus audioBus;
+    [SerializeField] private string audioBusRef;
 
     [SerializeField] private GameObject muteIcon, audioIcon, audioLowIcon, audioMidIcon, audioHighIcon;
 
@@ -32,6 +37,7 @@ public class VolumeOptions : MonoBehaviour
     private void Start()
     {
         Invoke("CheckSliderVal", 0.05f);
+        audioBus = RuntimeManager.GetBus(audioBusRef);
     }
 
     /// <summary>
@@ -122,10 +128,23 @@ public class VolumeOptions : MonoBehaviour
                 ToggleMute();
         }
 
-        mixer.SetFloat(mixerVarName, Mathf.Log10(newVal) * 20);
+        //mixer.SetFloat(mixerVarName, Mathf.Log10(newVal) * 20);
+
+        audioBus.setVolume(newVal);
+
         PlayerPrefs.SetFloat(mixerVarName, value);
 
         volDisplay.text = (value * 5) + "%";
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetBusVolume(float value)
+    {
+        audioBus = RuntimeManager.GetBus(audioBusRef);
+        audioBus.setVolume(value);
     }
 
     /// <summary>
