@@ -91,11 +91,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a47dc2687ffe3bb4a8637e84fd330466, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a47dc2687ffe3bb4a8637e84fd330466, type: 3}
       propertyPath: m_TagString
-      value: Interactable
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -104,15 +104,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a47dc2687ffe3bb4a8637e84fd330466, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3189632074339289794}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a47dc2687ffe3bb4a8637e84fd330466, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4936227010254663788}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a47dc2687ffe3bb4a8637e84fd330466, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3949764144998552594}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a47dc2687ffe3bb4a8637e84fd330466, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7348065775900649383}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a47dc2687ffe3bb4a8637e84fd330466, type: 3}
       insertIndex: -1
       addedObject: {fileID: 228095948987944573}
@@ -149,149 +140,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4936227010254663788
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 446037578592764806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isPickup: 0
-  clashDamage: 4
-  neutralSpeed: 15
-  rateOfChange: 1
-  maxDamage: 10
-  isEnemy: 0
-  speed: 0
-  isLaunched: 0
-  slowdownPerSecond: 30
-  isDashing: 0
-  tendrilOwner: {fileID: 0}
-  flyingHitBox: {fileID: 0}
-  piercing: 0
-  uses: 0
-  flyingHitBoxMod: 1.25
-  debug: 0
---- !u!114 &3949764144998552594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 446037578592764806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a12c10e85cb88c4ab2ee8a95cf9a91a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  immuneTypes: 
-  _frozenBeforeTendril: 0
-  maxHealth: 5
-  DestructionParticle: {fileID: 7141866554852115599, guid: eb4485787cd10004da588128fe280f63, type: 3}
-  DestructionParticleLifetime: 4
-  KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
-  effectsOnHit: []
-  collideSound:
-    Guid:
-      Data1: 1406587514
-      Data2: 1236993393
-      Data3: 458917249
-      Data4: 1615339013
-    Path: event:/Collide
-  breakSound:
-    Guid:
-      Data1: 1860626156
-      Data2: 1177657115
-      Data3: 202913409
-      Data4: -1114200623
-    Path: event:/Tombstone-break
-  respawning: 0
-  respawnDelay: 5
---- !u!114 &7348065775900649383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 446037578592764806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 1
-  outlineColor: {r: 1, g: 0.71257484, b: 0, a: 0.14901961}
-  outlineWidth: 1.5
-  precomputeOutline: 1
-  bakeKeys:
-  - {fileID: -7759331768739107841, guid: 90968070f07d453489d1cb9fcdb00e83, type: 3}
-  bakeValues:
-  - data:
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.70710677, y: -0.70710677, z: 0}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.70710677, y: -0.70710677, z: 0}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: 0.6873327, y: 0.7206997, z: -0.09036463}
-    - {x: -0.6758218, y: 0.73133874, z: -0.0916986}
-    - {x: -0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.6758218, y: 0.73133874, z: -0.0916986}
-    - {x: -0.70150894, y: 0.30467296, z: -0.6442511}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.45000008, y: 0.66367394, z: -0.59752566}
-    - {x: -0.42465883, y: 0.7632259, z: -0.48698154}
-    - {x: -0.688158, y: 0.4972392, z: -0.5283859}
-    - {x: -0.70710677, y: -0.70710677, z: 0}
-    - {x: -0.42528138, y: 0.76870286, z: -0.47773594}
-    - {x: -0.51291937, y: 0.51047355, z: -0.690167}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.543258, y: 0.4992518, z: -0.67499506}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.51291937, y: 0.51047355, z: -0.690167}
-    - {x: 0.6873327, y: 0.7206997, z: -0.09036463}
-    - {x: 0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: 0.7126606, y: 0.29990548, z: -0.63417}
-    - {x: 0.50622976, y: 0.6409106, z: -0.57703125}
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.49039966, y: 0.73468506, z: -0.46877077}
-    - {x: 0.70710677, y: -0.70710677, z: 0}
-    - {x: 0.72556084, y: 0.4716064, z: -0.50114757}
-    - {x: 0.49251714, y: 0.73918116, z: -0.45938873}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.543258, y: 0.4992518, z: -0.67499506}
-    - {x: -0.42528138, y: 0.76870286, z: -0.47773594}
-    - {x: 0.49251714, y: 0.73918116, z: -0.45938873}
-    - {x: 0.543258, y: 0.4992518, z: -0.67499506}
-    - {x: -0.51291937, y: 0.51047355, z: -0.690167}
-    - {x: -0.688158, y: 0.4972392, z: -0.5283859}
-    - {x: 0.49251714, y: 0.73918116, z: -0.45938873}
-    - {x: -0.42528138, y: 0.76870286, z: -0.47773594}
-    - {x: 0.72556084, y: 0.4716064, z: -0.50114757}
-    - {x: -0.42465883, y: 0.7632259, z: -0.48698154}
-    - {x: 0.49039966, y: 0.73468506, z: -0.46877077}
-    - {x: -0.45000008, y: 0.66367394, z: -0.59752566}
-    - {x: 0.50622976, y: 0.6409106, z: -0.57703125}
-    - {x: 0.49039966, y: 0.73468506, z: -0.46877077}
-    - {x: -0.42465883, y: 0.7632259, z: -0.48698154}
-    - {x: -0.6758218, y: 0.73133874, z: -0.0916986}
-    - {x: 0.6873327, y: 0.7206997, z: -0.09036463}
-    - {x: 0.7126606, y: 0.29990548, z: -0.63417}
-    - {x: -0.70150894, y: 0.30467296, z: -0.6442511}
-    - {x: -0.45000008, y: 0.66367394, z: -0.59752566}
-    - {x: 0.50622976, y: 0.6409106, z: -0.57703125}
 --- !u!64 &228095948987944573
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -373,11 +221,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b920b7fed77c73440b3429b84bcc95ba, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b920b7fed77c73440b3429b84bcc95ba, type: 3}
       propertyPath: m_TagString
-      value: Interactable
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -386,15 +234,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b920b7fed77c73440b3429b84bcc95ba, type: 3}
       insertIndex: -1
       addedObject: {fileID: 267032837800900027}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b920b7fed77c73440b3429b84bcc95ba, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5959521329657310054}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b920b7fed77c73440b3429b84bcc95ba, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3135474076130724009}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b920b7fed77c73440b3429b84bcc95ba, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4592084599467269463}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b920b7fed77c73440b3429b84bcc95ba, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3599184693237394303}
@@ -436,149 +275,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5959521329657310054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2147356245840024534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isPickup: 0
-  clashDamage: 4
-  neutralSpeed: 15
-  rateOfChange: 1
-  maxDamage: 10
-  isEnemy: 0
-  speed: 0
-  isLaunched: 0
-  slowdownPerSecond: 30
-  isDashing: 0
-  tendrilOwner: {fileID: 0}
-  flyingHitBox: {fileID: 0}
-  piercing: 0
-  uses: 0
-  flyingHitBoxMod: 1.25
-  debug: 0
---- !u!114 &3135474076130724009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2147356245840024534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a12c10e85cb88c4ab2ee8a95cf9a91a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  immuneTypes: 
-  _frozenBeforeTendril: 0
-  maxHealth: 5
-  DestructionParticle: {fileID: 7141866554852115599, guid: eb4485787cd10004da588128fe280f63, type: 3}
-  DestructionParticleLifetime: 4
-  KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
-  effectsOnHit: []
-  collideSound:
-    Guid:
-      Data1: 1406587514
-      Data2: 1236993393
-      Data3: 458917249
-      Data4: 1615339013
-    Path: event:/Collide
-  breakSound:
-    Guid:
-      Data1: 1860626156
-      Data2: 1177657115
-      Data3: 202913409
-      Data4: -1114200623
-    Path: event:/Tombstone-break
-  respawning: 0
-  respawnDelay: 5
---- !u!114 &4592084599467269463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2147356245840024534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 1
-  outlineColor: {r: 1, g: 0.71257484, b: 0, a: 0.14901961}
-  outlineWidth: 1.5
-  precomputeOutline: 1
-  bakeKeys:
-  - {fileID: -7759331768739107841, guid: 90968070f07d453489d1cb9fcdb00e83, type: 3}
-  bakeValues:
-  - data:
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.70710677, y: -0.70710677, z: 0}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.70710677, y: -0.70710677, z: 0}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: 0.6873327, y: 0.7206997, z: -0.09036463}
-    - {x: -0.6758218, y: 0.73133874, z: -0.0916986}
-    - {x: -0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.6758218, y: 0.73133874, z: -0.0916986}
-    - {x: -0.70150894, y: 0.30467296, z: -0.6442511}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.45000008, y: 0.66367394, z: -0.59752566}
-    - {x: -0.42465883, y: 0.7632259, z: -0.48698154}
-    - {x: -0.688158, y: 0.4972392, z: -0.5283859}
-    - {x: -0.70710677, y: -0.70710677, z: 0}
-    - {x: -0.42528138, y: 0.76870286, z: -0.47773594}
-    - {x: -0.51291937, y: 0.51047355, z: -0.690167}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.543258, y: 0.4992518, z: -0.67499506}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.51291937, y: 0.51047355, z: -0.690167}
-    - {x: 0.6873327, y: 0.7206997, z: -0.09036463}
-    - {x: 0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: 0.7126606, y: 0.29990548, z: -0.63417}
-    - {x: 0.50622976, y: 0.6409106, z: -0.57703125}
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.49039966, y: 0.73468506, z: -0.46877077}
-    - {x: 0.70710677, y: -0.70710677, z: 0}
-    - {x: 0.72556084, y: 0.4716064, z: -0.50114757}
-    - {x: 0.49251714, y: 0.73918116, z: -0.45938873}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.543258, y: 0.4992518, z: -0.67499506}
-    - {x: -0.42528138, y: 0.76870286, z: -0.47773594}
-    - {x: 0.49251714, y: 0.73918116, z: -0.45938873}
-    - {x: 0.543258, y: 0.4992518, z: -0.67499506}
-    - {x: -0.51291937, y: 0.51047355, z: -0.690167}
-    - {x: -0.688158, y: 0.4972392, z: -0.5283859}
-    - {x: 0.49251714, y: 0.73918116, z: -0.45938873}
-    - {x: -0.42528138, y: 0.76870286, z: -0.47773594}
-    - {x: 0.72556084, y: 0.4716064, z: -0.50114757}
-    - {x: -0.42465883, y: 0.7632259, z: -0.48698154}
-    - {x: 0.49039966, y: 0.73468506, z: -0.46877077}
-    - {x: -0.45000008, y: 0.66367394, z: -0.59752566}
-    - {x: 0.50622976, y: 0.6409106, z: -0.57703125}
-    - {x: 0.49039966, y: 0.73468506, z: -0.46877077}
-    - {x: -0.42465883, y: 0.7632259, z: -0.48698154}
-    - {x: -0.6758218, y: 0.73133874, z: -0.0916986}
-    - {x: 0.6873327, y: 0.7206997, z: -0.09036463}
-    - {x: 0.7126606, y: 0.29990548, z: -0.63417}
-    - {x: -0.70150894, y: 0.30467296, z: -0.6442511}
-    - {x: -0.45000008, y: 0.66367394, z: -0.59752566}
-    - {x: 0.50622976, y: 0.6409106, z: -0.57703125}
 --- !u!64 &3599184693237394303
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -655,11 +351,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 055ae4453fb00c442a08ea2b6cc27274, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 055ae4453fb00c442a08ea2b6cc27274, type: 3}
       propertyPath: m_TagString
-      value: Interactable
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -668,15 +364,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 055ae4453fb00c442a08ea2b6cc27274, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4123784346174120583}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 055ae4453fb00c442a08ea2b6cc27274, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4840934581019220947}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 055ae4453fb00c442a08ea2b6cc27274, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1033740187095911471}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 055ae4453fb00c442a08ea2b6cc27274, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1286306479310840198}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 055ae4453fb00c442a08ea2b6cc27274, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5269384813452440622}
@@ -713,149 +400,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4840934581019220947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1226318208201898880}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isPickup: 0
-  clashDamage: 4
-  neutralSpeed: 15
-  rateOfChange: 1
-  maxDamage: 10
-  isEnemy: 0
-  speed: 0
-  isLaunched: 0
-  slowdownPerSecond: 30
-  isDashing: 0
-  tendrilOwner: {fileID: 0}
-  flyingHitBox: {fileID: 0}
-  piercing: 0
-  uses: 0
-  flyingHitBoxMod: 1.25
-  debug: 0
---- !u!114 &1033740187095911471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1226318208201898880}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a12c10e85cb88c4ab2ee8a95cf9a91a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  immuneTypes: 
-  _frozenBeforeTendril: 0
-  maxHealth: 5
-  DestructionParticle: {fileID: 7141866554852115599, guid: eb4485787cd10004da588128fe280f63, type: 3}
-  DestructionParticleLifetime: 4
-  KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
-  effectsOnHit: []
-  collideSound:
-    Guid:
-      Data1: 1406587514
-      Data2: 1236993393
-      Data3: 458917249
-      Data4: 1615339013
-    Path: event:/Collide
-  breakSound:
-    Guid:
-      Data1: 1860626156
-      Data2: 1177657115
-      Data3: 202913409
-      Data4: -1114200623
-    Path: event:/Tombstone-break
-  respawning: 0
-  respawnDelay: 5
---- !u!114 &1286306479310840198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1226318208201898880}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 1
-  outlineColor: {r: 1, g: 0.71257484, b: 0, a: 0.14901961}
-  outlineWidth: 1.5
-  precomputeOutline: 1
-  bakeKeys:
-  - {fileID: -7759331768739107841, guid: 90968070f07d453489d1cb9fcdb00e83, type: 3}
-  bakeValues:
-  - data:
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.70710677, y: -0.70710677, z: 0}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.70710677, y: -0.70710677, z: 0}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: 0.6873327, y: 0.7206997, z: -0.09036463}
-    - {x: -0.6758218, y: 0.73133874, z: -0.0916986}
-    - {x: -0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.6758218, y: 0.73133874, z: -0.0916986}
-    - {x: -0.70150894, y: 0.30467296, z: -0.6442511}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.45000008, y: 0.66367394, z: -0.59752566}
-    - {x: -0.42465883, y: 0.7632259, z: -0.48698154}
-    - {x: -0.688158, y: 0.4972392, z: -0.5283859}
-    - {x: -0.70710677, y: -0.70710677, z: 0}
-    - {x: -0.42528138, y: 0.76870286, z: -0.47773594}
-    - {x: -0.51291937, y: 0.51047355, z: -0.690167}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.543258, y: 0.4992518, z: -0.67499506}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.51291937, y: 0.51047355, z: -0.690167}
-    - {x: 0.6873327, y: 0.7206997, z: -0.09036463}
-    - {x: 0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: 0.7126606, y: 0.29990548, z: -0.63417}
-    - {x: 0.50622976, y: 0.6409106, z: -0.57703125}
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.49039966, y: 0.73468506, z: -0.46877077}
-    - {x: 0.70710677, y: -0.70710677, z: 0}
-    - {x: 0.72556084, y: 0.4716064, z: -0.50114757}
-    - {x: 0.49251714, y: 0.73918116, z: -0.45938873}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.543258, y: 0.4992518, z: -0.67499506}
-    - {x: -0.42528138, y: 0.76870286, z: -0.47773594}
-    - {x: 0.49251714, y: 0.73918116, z: -0.45938873}
-    - {x: 0.543258, y: 0.4992518, z: -0.67499506}
-    - {x: -0.51291937, y: 0.51047355, z: -0.690167}
-    - {x: -0.688158, y: 0.4972392, z: -0.5283859}
-    - {x: 0.49251714, y: 0.73918116, z: -0.45938873}
-    - {x: -0.42528138, y: 0.76870286, z: -0.47773594}
-    - {x: 0.72556084, y: 0.4716064, z: -0.50114757}
-    - {x: -0.42465883, y: 0.7632259, z: -0.48698154}
-    - {x: 0.49039966, y: 0.73468506, z: -0.46877077}
-    - {x: -0.45000008, y: 0.66367394, z: -0.59752566}
-    - {x: 0.50622976, y: 0.6409106, z: -0.57703125}
-    - {x: 0.49039966, y: 0.73468506, z: -0.46877077}
-    - {x: -0.42465883, y: 0.7632259, z: -0.48698154}
-    - {x: -0.6758218, y: 0.73133874, z: -0.0916986}
-    - {x: 0.6873327, y: 0.7206997, z: -0.09036463}
-    - {x: 0.7126606, y: 0.29990548, z: -0.63417}
-    - {x: -0.70150894, y: 0.30467296, z: -0.6442511}
-    - {x: -0.45000008, y: 0.66367394, z: -0.59752566}
-    - {x: 0.50622976, y: 0.6409106, z: -0.57703125}
 --- !u!64 &5269384813452440622
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -937,11 +481,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b009253f639a395468cfe3fcd2aedc0a, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b009253f639a395468cfe3fcd2aedc0a, type: 3}
       propertyPath: m_TagString
-      value: Interactable
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -950,15 +494,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b009253f639a395468cfe3fcd2aedc0a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4951285617953903177}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b009253f639a395468cfe3fcd2aedc0a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 510545541436759514}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b009253f639a395468cfe3fcd2aedc0a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8554908294135468416}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b009253f639a395468cfe3fcd2aedc0a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3193946186142622975}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b009253f639a395468cfe3fcd2aedc0a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8009100184509589146}
@@ -995,149 +530,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &510545541436759514
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2437259169522974338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isPickup: 0
-  clashDamage: 4
-  neutralSpeed: 15
-  rateOfChange: 1
-  maxDamage: 10
-  isEnemy: 0
-  speed: 0
-  isLaunched: 0
-  slowdownPerSecond: 30
-  isDashing: 0
-  tendrilOwner: {fileID: 0}
-  flyingHitBox: {fileID: 0}
-  piercing: 0
-  uses: 0
-  flyingHitBoxMod: 1.25
-  debug: 0
---- !u!114 &8554908294135468416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2437259169522974338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a12c10e85cb88c4ab2ee8a95cf9a91a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  immuneTypes: 
-  _frozenBeforeTendril: 0
-  maxHealth: 5
-  DestructionParticle: {fileID: 7141866554852115599, guid: eb4485787cd10004da588128fe280f63, type: 3}
-  DestructionParticleLifetime: 4
-  KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
-  effectsOnHit: []
-  collideSound:
-    Guid:
-      Data1: 1406587514
-      Data2: 1236993393
-      Data3: 458917249
-      Data4: 1615339013
-    Path: event:/Collide
-  breakSound:
-    Guid:
-      Data1: 1860626156
-      Data2: 1177657115
-      Data3: 202913409
-      Data4: -1114200623
-    Path: event:/Tombstone-break
-  respawning: 0
-  respawnDelay: 5
---- !u!114 &3193946186142622975
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2437259169522974338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 1
-  outlineColor: {r: 1, g: 0.71257484, b: 0, a: 0.14901961}
-  outlineWidth: 1.5
-  precomputeOutline: 1
-  bakeKeys:
-  - {fileID: -7759331768739107841, guid: 90968070f07d453489d1cb9fcdb00e83, type: 3}
-  bakeValues:
-  - data:
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.70710677, y: -0.70710677, z: 0}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.70710677, y: -0.70710677, z: 0}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: 0.6873327, y: 0.7206997, z: -0.09036463}
-    - {x: -0.6758218, y: 0.73133874, z: -0.0916986}
-    - {x: -0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.6758218, y: 0.73133874, z: -0.0916986}
-    - {x: -0.70150894, y: 0.30467296, z: -0.6442511}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.45000008, y: 0.66367394, z: -0.59752566}
-    - {x: -0.42465883, y: 0.7632259, z: -0.48698154}
-    - {x: -0.688158, y: 0.4972392, z: -0.5283859}
-    - {x: -0.70710677, y: -0.70710677, z: 0}
-    - {x: -0.42528138, y: 0.76870286, z: -0.47773594}
-    - {x: -0.51291937, y: 0.51047355, z: -0.690167}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.543258, y: 0.4992518, z: -0.67499506}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.51291937, y: 0.51047355, z: -0.690167}
-    - {x: 0.6873327, y: 0.7206997, z: -0.09036463}
-    - {x: 0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: 0.7126606, y: 0.29990548, z: -0.63417}
-    - {x: 0.50622976, y: 0.6409106, z: -0.57703125}
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.49039966, y: 0.73468506, z: -0.46877077}
-    - {x: 0.70710677, y: -0.70710677, z: 0}
-    - {x: 0.72556084, y: 0.4716064, z: -0.50114757}
-    - {x: 0.49251714, y: 0.73918116, z: -0.45938873}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.543258, y: 0.4992518, z: -0.67499506}
-    - {x: -0.42528138, y: 0.76870286, z: -0.47773594}
-    - {x: 0.49251714, y: 0.73918116, z: -0.45938873}
-    - {x: 0.543258, y: 0.4992518, z: -0.67499506}
-    - {x: -0.51291937, y: 0.51047355, z: -0.690167}
-    - {x: -0.688158, y: 0.4972392, z: -0.5283859}
-    - {x: 0.49251714, y: 0.73918116, z: -0.45938873}
-    - {x: -0.42528138, y: 0.76870286, z: -0.47773594}
-    - {x: 0.72556084, y: 0.4716064, z: -0.50114757}
-    - {x: -0.42465883, y: 0.7632259, z: -0.48698154}
-    - {x: 0.49039966, y: 0.73468506, z: -0.46877077}
-    - {x: -0.45000008, y: 0.66367394, z: -0.59752566}
-    - {x: 0.50622976, y: 0.6409106, z: -0.57703125}
-    - {x: 0.49039966, y: 0.73468506, z: -0.46877077}
-    - {x: -0.42465883, y: 0.7632259, z: -0.48698154}
-    - {x: -0.6758218, y: 0.73133874, z: -0.0916986}
-    - {x: 0.6873327, y: 0.7206997, z: -0.09036463}
-    - {x: 0.7126606, y: 0.29990548, z: -0.63417}
-    - {x: -0.70150894, y: 0.30467296, z: -0.6442511}
-    - {x: -0.45000008, y: 0.66367394, z: -0.59752566}
-    - {x: 0.50622976, y: 0.6409106, z: -0.57703125}
 --- !u!64 &8009100184509589146
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1281,11 +673,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 35da037166df31040bf03e990bab1bc0, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 35da037166df31040bf03e990bab1bc0, type: 3}
       propertyPath: m_TagString
-      value: Interactable
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1294,15 +686,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 35da037166df31040bf03e990bab1bc0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4027909043178022635}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 35da037166df31040bf03e990bab1bc0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5453370483932937889}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 35da037166df31040bf03e990bab1bc0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6666089798412227295}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 35da037166df31040bf03e990bab1bc0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5961875361957376973}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 35da037166df31040bf03e990bab1bc0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2413405903619239099}
@@ -1339,149 +722,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5453370483932937889
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5883593286053901782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isPickup: 0
-  clashDamage: 4
-  neutralSpeed: 15
-  rateOfChange: 1
-  maxDamage: 10
-  isEnemy: 0
-  speed: 0
-  isLaunched: 0
-  slowdownPerSecond: 30
-  isDashing: 0
-  tendrilOwner: {fileID: 0}
-  flyingHitBox: {fileID: 0}
-  piercing: 0
-  uses: 0
-  flyingHitBoxMod: 1.25
-  debug: 0
---- !u!114 &6666089798412227295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5883593286053901782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a12c10e85cb88c4ab2ee8a95cf9a91a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  immuneTypes: 
-  _frozenBeforeTendril: 0
-  maxHealth: 5
-  DestructionParticle: {fileID: 7141866554852115599, guid: eb4485787cd10004da588128fe280f63, type: 3}
-  DestructionParticleLifetime: 4
-  KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
-  effectsOnHit: []
-  collideSound:
-    Guid:
-      Data1: 1406587514
-      Data2: 1236993393
-      Data3: 458917249
-      Data4: 1615339013
-    Path: event:/Collide
-  breakSound:
-    Guid:
-      Data1: 1860626156
-      Data2: 1177657115
-      Data3: 202913409
-      Data4: -1114200623
-    Path: event:/Tombstone-break
-  respawning: 0
-  respawnDelay: 5
---- !u!114 &5961875361957376973
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5883593286053901782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 1
-  outlineColor: {r: 1, g: 0.71257484, b: 0, a: 0.14901961}
-  outlineWidth: 1.5
-  precomputeOutline: 1
-  bakeKeys:
-  - {fileID: -7759331768739107841, guid: 90968070f07d453489d1cb9fcdb00e83, type: 3}
-  bakeValues:
-  - data:
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.70710677, y: -0.70710677, z: 0}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.70710677, y: -0.70710677, z: 0}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: 0.6873327, y: 0.7206997, z: -0.09036463}
-    - {x: -0.6758218, y: 0.73133874, z: -0.0916986}
-    - {x: -0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: -0.6758218, y: 0.73133874, z: -0.0916986}
-    - {x: -0.70150894, y: 0.30467296, z: -0.6442511}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.45000008, y: 0.66367394, z: -0.59752566}
-    - {x: -0.42465883, y: 0.7632259, z: -0.48698154}
-    - {x: -0.688158, y: 0.4972392, z: -0.5283859}
-    - {x: -0.70710677, y: -0.70710677, z: 0}
-    - {x: -0.42528138, y: 0.76870286, z: -0.47773594}
-    - {x: -0.51291937, y: 0.51047355, z: -0.690167}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.543258, y: 0.4992518, z: -0.67499506}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.51291937, y: 0.51047355, z: -0.690167}
-    - {x: 0.6873327, y: 0.7206997, z: -0.09036463}
-    - {x: 0.4472136, y: 0.09042924, z: 0.8898441}
-    - {x: 0.7126606, y: 0.29990548, z: -0.63417}
-    - {x: 0.50622976, y: 0.6409106, z: -0.57703125}
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.49039966, y: 0.73468506, z: -0.46877077}
-    - {x: 0.70710677, y: -0.70710677, z: 0}
-    - {x: 0.72556084, y: 0.4716064, z: -0.50114757}
-    - {x: 0.49251714, y: 0.73918116, z: -0.45938873}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.543258, y: 0.4992518, z: -0.67499506}
-    - {x: -0.42528138, y: 0.76870286, z: -0.47773594}
-    - {x: 0.49251714, y: 0.73918116, z: -0.45938873}
-    - {x: 0.543258, y: 0.4992518, z: -0.67499506}
-    - {x: -0.51291937, y: 0.51047355, z: -0.690167}
-    - {x: -0.688158, y: 0.4972392, z: -0.5283859}
-    - {x: 0.49251714, y: 0.73918116, z: -0.45938873}
-    - {x: -0.42528138, y: 0.76870286, z: -0.47773594}
-    - {x: 0.72556084, y: 0.4716064, z: -0.50114757}
-    - {x: -0.42465883, y: 0.7632259, z: -0.48698154}
-    - {x: 0.49039966, y: 0.73468506, z: -0.46877077}
-    - {x: -0.45000008, y: 0.66367394, z: -0.59752566}
-    - {x: 0.50622976, y: 0.6409106, z: -0.57703125}
-    - {x: 0.49039966, y: 0.73468506, z: -0.46877077}
-    - {x: -0.42465883, y: 0.7632259, z: -0.48698154}
-    - {x: -0.6758218, y: 0.73133874, z: -0.0916986}
-    - {x: 0.6873327, y: 0.7206997, z: -0.09036463}
-    - {x: 0.7126606, y: 0.29990548, z: -0.63417}
-    - {x: -0.70150894, y: 0.30467296, z: -0.6442511}
-    - {x: -0.45000008, y: 0.66367394, z: -0.59752566}
-    - {x: 0.50622976, y: 0.6409106, z: -0.57703125}
 --- !u!64 &2413405903619239099
 MeshCollider:
   m_ObjectHideFlags: 0
