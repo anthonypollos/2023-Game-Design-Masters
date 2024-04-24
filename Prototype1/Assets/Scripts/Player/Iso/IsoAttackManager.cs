@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using FMODUnity;
 
+
+
 public class IsoAttackManager : MonoBehaviour, ICanKick
 {
     [Header("Lasso properties")]
@@ -111,6 +113,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         lassoRB = lasso.GetComponent<Rigidbody>();
         lb.SetValues(maxThrowLassoDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
         outlineToggle = FindObjectOfType<OutlineToggle>();
+        if (outlineToggle != null)
+            outlineToggle.ToggleOutline(true);
     }
 
     private void OnEnable()
@@ -119,6 +123,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         mc.Main.Secondary.performed += Secondary;
         mc.Main.Primary.performed += Primary;
         mc.Main.Primary.canceled += Primary;
+        //Note, naming on Release was before we moved release functionality to Secondary
         mc.Main.Release.performed += Release;
     }
 
@@ -133,9 +138,9 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     private void Primary(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
-            LassoCharge();
+            Toss();
         if (ctx.canceled)
-            Lasso();
+            Return();
     }
 
     private void Secondary(InputAction.CallbackContext ctx)
@@ -217,12 +222,67 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     //Testing B Controls Methods
     private void Toss()
     {
+        if(Time.timeScale != 0 && !pc.isStunned && !pc.isDead && !kicking)
+        {
+            if(!pc.moveable.isLaunched)
+            {
+                if(!lasso.activeInHierarchy)
+                {
+                    pc.attackState = Helpers.LASSOING;
+                    pc.LookAtMouse();
+                    lasso.SetActive(true);
+                    tendril.SetActive(true);
+                    lb.enabled = true;
+                    lasso.transform.parent = null;
+                    lassoRB.isKinematic = false;
+                    lassoRB.velocity = transform.forward * lassoSpeed;
+                    //float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
+                    lb.SetValues(maxThrowLassoDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
+                    lb.Launched();
+                    anim.SetTrigger("TendrilThrow");
+                    StartCoroutine(WaitUntilGrab());
+                }
+            }
+        }
+    }
 
+    private IEnumerator WaitUntilGrab()
+    {
+        yield return new WaitUntil(()=>isRetracting || lb.GetAttachment().Item1 != null);
+        if(lb.GetAttachment().Item1!=null)
+        {
+            pulling = true;
+            currentTime = 0;
+            restTime = 0;
+        }
     }
 
     private void Return()
     {
-
+        if(Time.timeScale != 0 && !pc.isStunned && !pc.isDead)
+        {
+            Debug.Log("return");
+            if (lasso.activeInHierarchy)
+            {
+                if (lb.GetAttachment().Item2 != null)
+                {
+                    bool flick = pulling;
+                    Moveable moveable = lb.GetAttachment().Item2;
+                    ForceRelease();
+                    if (flick)
+                    {
+                        moveable.Tossed(tossSpeed);
+                    }
+                    //jukebox.PlaySound(Random.Range(1,4));
+                    PickEffortSound(tendrilsound, Random.Range(1, 10));
+                    //AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
+                }
+                else
+                {
+                    StartCoroutine(WaitForRetraction());
+                }
+            }
+        }
     }
 
     //OG Control Methods
@@ -615,8 +675,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             pc.attackState = Helpers.NOTATTACKING;
 
         anim.SetTrigger("NextState");
-        if(outlineToggle != null)
-            outlineToggle.ToggleOutline(false);
+        //if(outlineToggle != null)
+            //outlineToggle.ToggleOutline(false);
     }
 
     

@@ -5,21 +5,29 @@ using UnityEngine;
 public class OutlineToggle : MonoBehaviour
 {
     [SerializeField] private List<Outline> outlines;
+    bool on;
 
     // Start is called before the first frame update
     void Start()
     {
         //fill list with outline objects
         outlines = new List<Outline>(FindObjectsOfType<Outline>());
+        on = false;
         ToggleOutline(false);
+    }
+
+    public void ToggleOutline()
+    {
+        ToggleOutline(!on);
     }
 
     public void ToggleOutline(bool toggle)
     {
+        on = toggle;
         foreach(Outline outline in outlines)
         {
             if(outline != null)
-                outline.enabled = toggle;
+                outline.enabled = on;
         }
     }
 
@@ -27,7 +35,10 @@ public class OutlineToggle : MonoBehaviour
     public void AddOutline(GameObject NewOutline)
     {
         //Debug.Log("Attempting to add " + NewOutline + " to the outline list.");
-        outlines.Add(NewOutline.GetComponent<Outline>());
+        Outline outline = NewOutline.GetComponent<Outline>();
+        outlines.Add(outline);
+        outline.enabled = on;
+
     }
 
     public void RemoveOutline(GameObject RemoveMe)
