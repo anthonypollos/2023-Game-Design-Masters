@@ -147,6 +147,8 @@ public class GameController : MonoBehaviour
             }
         }
     }
+
+    //Add sound things here
     public void CombatState(bool state)
     {
         if(isThirdPerson)
