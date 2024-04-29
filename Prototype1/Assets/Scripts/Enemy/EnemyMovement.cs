@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
+using FMOD;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,9 +12,11 @@ using UnityEditor;
 public class EnemyMovement : MonoBehaviour, ISlowable
 {
     public bool isMoving = true;
-    [SerializeField] 
+    [SerializeField] bool isIdle = false;
+    [SerializeField]
     float movementSpeed;
-    [SerializeField] [Tooltip("Is the enemy a patrol type enemy or a random wandering enemy")] 
+    [SerializeField]
+    [Tooltip("Is the enemy a patrol type enemy or a random wandering enemy")]
     bool isPatrolling;
     [Header("Patrolling variables")]
     [SerializeField]
@@ -32,6 +35,9 @@ public class EnemyMovement : MonoBehaviour, ISlowable
     private float refreshTime;
     private Vector3 targetPosition;
     private NavMeshPath path;
+    //private NavMeshPath previousPath;
+    private List<Vector3> corners;
+    private List<Vector3> prevCorners;
     private float count;
     private int corner;
     [HideInInspector]
@@ -69,6 +75,8 @@ public class EnemyMovement : MonoBehaviour, ISlowable
         refreshTime = 0;
         rb = GetComponent<Rigidbody>();
         path = new NavMeshPath();
+        corners = new List<Vector3>();
+        prevCorners = new List<Vector3>();
         targetPosition = transform.position;
         isforward = true;
         currentPoint = 0;
@@ -96,7 +104,7 @@ public class EnemyMovement : MonoBehaviour, ISlowable
         }
         if (!brain.isAggro && !isPatrolling)
         {
-            if(refreshTime > 2f)
+            if (refreshTime > 2f)
             {
                 refreshTime = 0;
                 if (Vector3.Distance(previousPosition, transform.position) < 0.5f)
@@ -120,50 +128,108 @@ public class EnemyMovement : MonoBehaviour, ISlowable
 
         if (isMoving && brain.state != EnemyStates.DEAD)
         {
-            if (count >= 1f || corner >= path.corners.Length)
+            if (count >= 1f || corner >= corners.Count)
             {
+                isIdle = false;
+                SavePrevious();
                 if (!NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path))
                 {
                     if (debug)
-                        Debug.Log("Path failed");
-                    RandomPoint(out targetPosition);
+                        UnityEngine.Debug.Log("Path failed");
+                    if (!brain.isAggro)
+                        RandomPoint(out targetPosition);
+                    else
+                    {
+                        if (corner < corners.Count)
+                        {
+                            LoadPrevious();
+                        }
+                        else
+                        {
+                            Stop();
+                        }
+                    }
                 }
                 else
                 {
+
                     if (debug)
                     {
                         Vector3 previousPoint = transform.position;
-                        foreach (Vector3 point in path.corners)
+                        foreach (Vector3 point in corners)
                         {
-                            Debug.DrawLine(previousPoint, point, Color.magenta);
+                            UnityEngine.Debug.DrawLine(previousPoint, point, Color.magenta);
                             previousPoint = point;
                         }
                     }
-                    if(debug) 
-                        Debug.Log("Path written");
-                    corner = 0;
+                    if (debug)
+                        UnityEngine.Debug.Log("Path written");
+
                     if (path.status != NavMeshPathStatus.PathComplete)
                     {
                         if (debug)
-                            Debug.Log("Path incomplete");
-                        RandomPoint(out targetPosition);
+                            UnityEngine.Debug.Log("Path incomplete");
+                        if (!brain.isAggro)
+                            RandomPoint(out targetPosition);
+                        else
+                        {
+                            if (corner < corners.Count)
+                            {
+                                LoadPrevious();
+                            }
+                            else
+                            {
+                                Stop();
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        LoadPath();
+                        corner = 0;
                     }
                 }
             }
 
-            if (corner < path.corners.Length && Vector3.Distance(transform.position, path.corners[corner]) < 1.0f)
+            if (corner < corners.Count && Vector3.Distance(transform.position, corners[corner]) < 1.0f)
             {
                 corner++;
             }
-
             MovementCalc();
         }
+    }
+
+    private void SavePrevious()
+    {
+        prevCorners.Clear();
+        prevCorners.AddRange(corners);
+    }
+
+    private void LoadPrevious()
+    {
+        corners.Clear();
+        corners.AddRange(prevCorners);
+    }
+
+    private void LoadPath()
+    {
+        corners.Clear();
+        corners.AddRange(path.corners);
     }
 
     public void Stop()
     {
         if (isMoving)
-        rb.velocity = Vector3.zero + rb.velocity.y * Vector3.up;
+        {
+            isIdle = true;
+            brain.an.SetFloat("MoveState", 0);
+            rb.velocity = Vector3.zero + rb.velocity.y * Vector3.up;
+            if (path.status == NavMeshPathStatus.PathInvalid)
+            {
+                MoveBackIntoZone();
+            }
+        }
     }
 
     private void Movement(Vector3 dir)
@@ -172,14 +238,48 @@ public class EnemyMovement : MonoBehaviour, ISlowable
         dir = dir.normalized;
         if (debug)
         {
-            Debug.Log(dir);
-            Debug.DrawLine(rb.position, rb.position + dir * 6, Color.red);
+            UnityEngine.Debug.Log(dir);
+            UnityEngine.Debug.DrawLine(rb.position, rb.position + dir * 6, Color.red);
         }
         float adjustedMS = movementSpeed * (1 - Mathf.Max(slowModsArray));
         rb.velocity = adjustedMS * (dir) + Vector3.up * rb.velocity.y;
-        if (isMoving && brain.an!=null)
+        if (isMoving && brain.an != null)
         {
-            if (rb.velocity == Vector3.zero) brain.an.SetFloat("MoveState", 0);
+            if (dir == Vector3.zero) brain.an.SetFloat("MoveState", 0);
+            else if (!brain.isAggro) brain.an.SetFloat("MoveState", 1);
+            else brain.an.SetFloat("MoveState", 2);
+        }
+    }
+
+    private void MoveBackIntoZone()
+    {
+        Vector3 dir = Vector3.zero;
+        if (brain.CheckLOS(transform.position, brain.player))
+        {
+            dir = (brain.player.position - transform.position);
+            dir.y = 0;
+            dir = dir.normalized;
+        }
+        else
+        {
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(transform.position, out hit, 2.0f, NavMesh.AllAreas))
+            {
+                dir = (hit.position - transform.position);
+                dir.y = 0;
+                dir = dir.normalized;
+            }
+            else
+            {
+                UnityEngine.Debug.Log("Can't return");
+            }
+
+        }
+        float adjustedMS = movementSpeed * (1 - Mathf.Max(slowModsArray));
+        rb.velocity = adjustedMS * (dir) + Vector3.up * rb.velocity.y;
+        if (isMoving && brain.an != null)
+        {
+            if (dir == Vector3.zero) brain.an.SetFloat("MoveState", 0);
             else if (!brain.isAggro) brain.an.SetFloat("MoveState", 1);
             else brain.an.SetFloat("MoveState", 2);
         }
@@ -206,18 +306,21 @@ public class EnemyMovement : MonoBehaviour, ISlowable
 
     private void MovementCalc()
     {
-        Vector3 dir;
-        //Debug.Log(path.corners[corner]);
-        if (corner < path.corners.Length)
+        if (!isIdle)
         {
-            dir = (path.corners[corner] - transform.position).normalized;
+            Vector3 dir;
             //Debug.Log(path.corners[corner]);
+            if (corner < corners.Count)
+            {
+                dir = (corners[corner] - transform.position).normalized;
+                //Debug.Log(path.corners[corner]);
+            }
+            else
+            {
+                dir = (targetPosition - transform.position).normalized;
+            }
+            Movement(dir);
         }
-        else
-        {
-            dir = (targetPosition - transform.position).normalized;
-        }
-        Movement(dir);
         if (brain.isAggro)
         {
             CalculateAggroMovement();
@@ -243,7 +346,7 @@ public class EnemyMovement : MonoBehaviour, ISlowable
                     if (isforward)
                     {
                         currentPoint++;
-                        if(currentPoint >= patrolPoints.Length)
+                        if (currentPoint >= patrolPoints.Length)
                         {
                             currentPoint = patrolPoints.Length - 2;
                             targetPosition = patrolPoints[currentPoint];
@@ -253,7 +356,7 @@ public class EnemyMovement : MonoBehaviour, ISlowable
                     else
                     {
                         currentPoint--;
-                        if(currentPoint<0)
+                        if (currentPoint < 0)
                         {
                             currentPoint = 1;
                             targetPosition = patrolPoints[currentPoint];
@@ -326,21 +429,42 @@ public class EnemyMovement : MonoBehaviour, ISlowable
                 {
                     targetPosition = brain.player.position;
                 }
-                
+
             }
             else
             {
                 targetPosition = brain.player.position;
             }
         }
+        SavePrevious();
         if (!NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path))
         {
-
+            LoadPrevious();
         }
         else
         {
-            corner = 0;
+            if (path.status != NavMeshPathStatus.PathComplete)
+            {
+
+                if (corner < corners.Count)
+                {
+                    LoadPrevious();
+                }
+                else
+                {
+                    Stop();
+                }
+
+
+            }
+            else
+            {
+                LoadPath();
+                corner = 0;
+            }
         }
+
+
     }
 
     private bool RandomPoint(out Vector3 output)
@@ -357,8 +481,8 @@ public class EnemyMovement : MonoBehaviour, ISlowable
                 return true;
             }
         }
-        if(debug)
-            Debug.Log("fail");
+        if (debug)
+            UnityEngine.Debug.Log("fail");
         output = Vector3.zero;
         return false;
     }
@@ -384,7 +508,7 @@ public class EnemyMovementEditor : Editor
 
         //create a new float based on where we've dragged the radius sphere
         float newWanderRadius = Handles.RadiusHandle(Quaternion.identity, linkedObject.transform.position, linkedObject.wanderRadius, false);
-       
+
         //check to see if the range has been changed
         if (EditorGUI.EndChangeCheck())
         {
