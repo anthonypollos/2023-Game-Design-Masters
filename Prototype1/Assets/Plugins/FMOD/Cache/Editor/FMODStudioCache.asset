@@ -69,7 +69,7 @@ MonoBehaviour:
   Path: FMOD Assets/Build/Desktop/TownLevel-bank.bank
   Name: TownLevel-bank
   StudioPath: bank:/TownLevel-bank
-  lastModified: 638488748310777132
+  lastModified: 638500058449715665
   FileSizes: []
   Exists: 1
 --- !u!114 &-8147818495695822875
@@ -123,6 +123,34 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-7898368258866000815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/TownLoopMusicEvent
+  m_EditorClassIdentifier: 
+  Path: event:/TownLoopMusicEvent
+  Guid:
+    Data1: -455518917
+    Data2: 1218942381
+    Data3: 1596559528
+    Data4: -1864190094
+  Banks:
+  - {fileID: 4766807839296025283}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -7034176599166258075}
   MinDistance: 1
   MaxDistance: 20
   Length: 0
@@ -207,6 +235,32 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-7034176599166258075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/TownLoopMusicEvent/Parameter 1
+  m_EditorClassIdentifier: 
+  Name: Parameter 1
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 1846253302
+    data2: 2284803399
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - NoCombat
+  - InCombat
+  Exists: 1
 --- !u!114 &-6960467620499528707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,6 +315,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-6884880807728094529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/CombatMusic
+  m_EditorClassIdentifier: 
+  Path: event:/CombatMusic
+  Guid:
+    Data1: 1306625272
+    Data2: 1163406204
+    Data3: 973489048
+    Data4: 1152653587
+  Banks:
+  - {fileID: 4766807839296025283}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 72000
 --- !u!114 &-4745518365568399671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,10 +439,10 @@ MonoBehaviour:
   Path: FMOD Assets/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638488748281594035
+  lastModified: 638500058404389532
   FileSizes:
   - Name: 
-    Value: 3578
+    Value: 3768
   Exists: 1
 --- !u!114 &-2849004373871876433
 MonoBehaviour:
@@ -568,14 +649,14 @@ MonoBehaviour:
   StudioPath: 
   Min: 0
   Max: 2
-  Default: 0
+  Default: 1
   ID:
     data1: 3851932764
     data2: 1722200964
   Type: 2
   IsGlobal: 0
   Labels:
-  - hubmusic
+  - combatmusic
   - townmusic
   - Value A
   Exists: 1
@@ -705,12 +786,15 @@ MonoBehaviour:
   - {fileID: 167020480725040122}
   - {fileID: -616835842747531609}
   - {fileID: 7529640333759765491}
+  - {fileID: -7898368258866000815}
+  - {fileID: 8129798236692232231}
+  - {fileID: -6884880807728094529}
   EditorParameters: []
   MasterBanks:
   - {fileID: 205488135033700889}
   StringsBanks:
   - {fileID: -3549985533672677428}
-  cacheTime: 638488748312391644
+  cacheTime: 638500058452161032
   cacheVersion: 131616
 --- !u!114 &147883649529003412
 MonoBehaviour:
@@ -781,7 +865,7 @@ MonoBehaviour:
   Path: FMOD Assets/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638488748281584069
+  lastModified: 638500058404389532
   FileSizes: []
   Exists: 1
 --- !u!114 &274468965779756295
@@ -853,7 +937,7 @@ MonoBehaviour:
   Path: FMOD Assets/Build/Desktop/Voices.bank
   Name: Voices
   StudioPath: bank:/Voices
-  lastModified: 638488748312391644
+  lastModified: 638500058452161032
   FileSizes: []
   Exists: 1
 --- !u!114 &1410676579184890623
@@ -979,7 +1063,7 @@ MonoBehaviour:
   Path: FMOD Assets/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638488748310595725
+  lastModified: 638500058436113953
   FileSizes: []
   Exists: 1
 --- !u!114 &3443967468727101175
@@ -1132,7 +1216,7 @@ MonoBehaviour:
   Path: FMOD Assets/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638488748305031823
+  lastModified: 638500058429655666
   FileSizes: []
   Exists: 1
 --- !u!114 &5155597538835404780
@@ -1297,7 +1381,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 70806
+  Length: 98181
 --- !u!114 &6381059089952006952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1394,7 +1478,7 @@ MonoBehaviour:
   Path: FMOD Assets/Build/Desktop/Ambiance.bank
   Name: Ambiance
   StudioPath: bank:/Ambiance
-  lastModified: 638488748269895094
+  lastModified: 638500058391793015
   FileSizes: []
   Exists: 1
 --- !u!114 &6832910195917342481
@@ -1613,6 +1697,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &8129798236692232231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BossMusic
+  m_EditorClassIdentifier: 
+  Path: event:/BossMusic
+  Guid:
+    Data1: -1867726449
+    Data2: 1077501769
+    Data3: -1952341876
+    Data4: -581682443
+  Banks:
+  - {fileID: 4766807839296025283}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 84000
 --- !u!114 &8386163869521599747
 MonoBehaviour:
   m_ObjectHideFlags: 0
