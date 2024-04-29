@@ -67,13 +67,15 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
+        //CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
         Time.timeScale = 1;
         mainCameras = new List<Camera>();
         GameObject[] temp = GameObject.FindGameObjectsWithTag("MainCamera");
         foreach (GameObject go in temp) {
             mainCameras.Add(go.GetComponent<Camera>());
         }
+
+        CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
     }
     private void OnEnable()
     {
@@ -156,15 +158,15 @@ public class GameController : MonoBehaviour
         if(isThirdPerson)
             if(state)
             {
-                //targetZoom = combatZoom;
+                targetZoom = combatZoom;
                 CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Play();
                 AManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
             }
             else
             {
-                //targetZoom = nonCombatZoom;
-                CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
+                targetZoom = nonCombatZoom;
                 AManager.GetComponent<FMODUnity.StudioEventEmitter>().Play();
+                CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
             }
     }
 
