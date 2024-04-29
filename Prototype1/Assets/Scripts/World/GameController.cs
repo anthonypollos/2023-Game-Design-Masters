@@ -34,6 +34,8 @@ public class GameController : MonoBehaviour
     public static GameController instance;
 
     private OutlineToggle outlineManager;
+    public GameObject AManager;
+    public GameObject CombatMusicManager;
 
     private void Awake()
     {
@@ -65,12 +67,15 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        //CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
         Time.timeScale = 1;
         mainCameras = new List<Camera>();
         GameObject[] temp = GameObject.FindGameObjectsWithTag("MainCamera");
         foreach (GameObject go in temp) {
             mainCameras.Add(go.GetComponent<Camera>());
         }
+
+        CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
     }
     private void OnEnable()
     {
@@ -79,11 +84,12 @@ public class GameController : MonoBehaviour
         mc.Main.Menu.performed += _ => TogglePauseMenu();
         mc.Main.Restart.performed += _ => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         mc.Main.ToggleLasso.performed += _ => ToggleLasso();
-        CombatState(false);
+        CombatState(true);
     }
 
     private void OnDisable()
     {
+        CombatState(false);
         mc.Disable();
     }
 
@@ -153,10 +159,14 @@ public class GameController : MonoBehaviour
             if(state)
             {
                 targetZoom = combatZoom;
+                CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Play();
+                AManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
             }
             else
             {
                 targetZoom = nonCombatZoom;
+                AManager.GetComponent<FMODUnity.StudioEventEmitter>().Play();
+                CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
             }
     }
 
