@@ -92,7 +92,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
                 i = 0;
             else
             {
-                if (temp > 0 && temp < missions.Count)
+                if (temp >= 0 && temp < missions.Count)
                 {
                     if (!missionsStatuses[temp])
                     {
@@ -285,7 +285,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         missionsCompleted = 0;
         if(savedValues.currentLevelMissionStatuses.Count == 0)
         {
-            //Debug.Log("No missions found");
+            Debug.Log("No missions found");
             bool[] temp = new bool[missions.Count];
             for (int i = 0; i < temp.Length; i++)
                 temp[i] = false;

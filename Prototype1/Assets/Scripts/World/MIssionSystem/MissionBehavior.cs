@@ -106,6 +106,7 @@ public class MissionBehavior : MonoBehaviour
     {
         if (!completed)
         {
+            Debug.Log(gameObject.name + ": completed");
             QuickSetToggles();
             triggered = true;
             completed = true;
