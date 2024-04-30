@@ -28,7 +28,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     [HideInInspector]
     public Moveable moveable;
     //player information
-    [HideInInspector]
+    //[HideInInspector]
     public Transform player;
     Vector3 lastKnownLocation;
     //detecting values
@@ -59,7 +59,8 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     // Start is called before the first frame update
     void Start()
     {
-        player = GameController.GetPlayer();
+        //If we set the player transform to something other than the player, don't reset this
+        if (player == null) player = GameController.GetPlayer();
         //Debug.Log(player);
         isAggro = false;
         moveable = GetComponent<Moveable>();
