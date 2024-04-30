@@ -123,6 +123,9 @@ public class JournalItem : MonoBehaviour
         multiPage.SetPage(value, itemDescription);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void SetDescriptionNotFoundText()
     {
         string text = "";
