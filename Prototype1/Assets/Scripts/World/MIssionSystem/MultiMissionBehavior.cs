@@ -73,20 +73,21 @@ public class MultiMissionBehavior : MissionBehavior, IMissionContainer
     {
         if(objectivesCompleted >= objectives.Count) 
         {
-            combinedMissionText = "Current Status: <color=green>Completed</color>\n" + missionText;
+            combinedMissionText = "<s>" + missionText + "</s>";
+
         }
         else
         {
-            combinedMissionText = "Current Status: <color=orange>In Progress</color>\n" + missionText + "<size="+objectiveTextModifier+"%>";
+            combinedMissionText =  missionText + "<size="+objectiveTextModifier+"%>";
             for(int i = 0; i< objectives.Count; i++)
             {
                 if (objectiveStatuses[i])
                 {
-                    combinedMissionText+= ("\nObjective " + (i+1) + " Status: <color=green>Completed</color>\n" + objectives[i].GetMissionText().Item1);
+                    combinedMissionText+= ("        <s>" + objectives[i].GetMissionText().Item1 + "</s>");
                 }
                 else
                 {
-                    combinedMissionText += ("\nObjective " + (i+1) + " Status:" +
+                    combinedMissionText += ("       "+
                         GetObjectiveText(objectives[i]));
                 }
             }
@@ -103,14 +104,13 @@ public class MultiMissionBehavior : MissionBehavior, IMissionContainer
     {
         if (currentCombatObjectiveActive == combatObjective)
         {
-            string message = "<color=red>Active</color>\n" +
-                combatObjective.GetMissionText().Item1 +
+            string message = combatObjective.GetMissionText().Item1 +
                 "\nEnemies Slain: " + currentCombatObjectiveActive.GetCount();
             return message;
         }
         else
         {
-            string message = "<color=orange>In Progress</color>\n" + combatObjective.GetMissionText().Item1;
+            string message = combatObjective.GetMissionText().Item1;
             return message;
         }
     }
@@ -124,8 +124,7 @@ public class MultiMissionBehavior : MissionBehavior, IMissionContainer
         }
         else
         {
-           return ("<color=orange>In Progress</color>\n" 
-                    + objective.GetMissionText().Item1);
+           return (objective.GetMissionText().Item1);
         }
     }
 

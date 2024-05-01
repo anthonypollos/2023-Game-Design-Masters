@@ -23,11 +23,13 @@ public class GameController : MonoBehaviour
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject[] menus;
     [SerializeField] GameObject deathMenu;
+    [SerializeField] GameObject journalMenu;
     [SerializeField] Button topButtonPause;
     [SerializeField] Button topButtonDead;
     [SerializeField] List<string> nonGameScenes;
 
     bool paused;
+    bool journalOpen;
 
     static GameObject player;
 
@@ -36,11 +38,13 @@ public class GameController : MonoBehaviour
     private OutlineToggle outlineManager;
     public GameObject AManager;
     public GameObject CombatMusicManager;
+    public SavedValues savedValuesInstance;
 
     private void Awake()
     {
         outlineManager = FindObjectOfType<OutlineToggle>();
         paused = false;
+        journalOpen = false;
         Cursor.lockState = CursorLockMode.Confined;
         if (instance != null && instance != this)
         {
@@ -84,6 +88,8 @@ public class GameController : MonoBehaviour
         mc.Main.Menu.performed += _ => TogglePauseMenu();
         mc.Main.Restart.performed += _ => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         mc.Main.ToggleLasso.performed += _ => ToggleLasso();
+        mc.Main.Journal.performed += _ => ToggleJournal();
+
         CombatState(true);
     }
 
@@ -111,6 +117,29 @@ public class GameController : MonoBehaviour
                 paused = true;
                 Cursor.lockState = CursorLockMode.None;
                 pauseMenu.SetActive(true);
+                //topButtonPause.Select();
+                Time.timeScale = 0;
+            }
+        }
+    }
+
+    public void ToggleJournal()
+    {
+        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
+        {
+            if (journalOpen)
+            {
+                journalOpen = false;
+                Cursor.lockState = CursorLockMode.Confined;
+                journalMenu.SetActive(false);
+                Time.timeScale = 1;
+            }
+            else if (Time.timeScale != 0)
+            {
+                savedValuesInstance = SaveLoadManager.instance.GetCopy();
+                journalOpen = true;
+                Cursor.lockState = CursorLockMode.None;
+                journalMenu.SetActive(true);
                 //topButtonPause.Select();
                 Time.timeScale = 0;
             }

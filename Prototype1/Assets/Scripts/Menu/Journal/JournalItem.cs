@@ -9,6 +9,9 @@ public class JournalItem : MonoBehaviour
 {
     // THIS IS TEMP!!! UNTIL TIED IN W SAVE SYSTEM!!!
     public bool isFound = false;
+    [Tooltip("Nothing = always avalible, itemID = requires ID to be collected, levelCheck requires level (ItemLocation variable) to be completed")]
+    enum CollectedCheck {nothing, itemID, levelCheck}
+    [SerializeField] CollectedCheck collectedCheck;
 
     [Header("General Variables")]
 
@@ -37,6 +40,9 @@ public class JournalItem : MonoBehaviour
 
     public enum ItemLocation { Tutorial, Hub, Town, Railyard }
     public ItemLocation itemLocation;
+
+    //Change this value in realtion to the above locations to the scene name
+    private string[] levels = new string[4]{"Tutorial_new", "HubScene", "Town_Connor_Art_Pass", "railyard_v2"};
 
     /// <summary>
     /// Description to display if player has not found item yet
@@ -80,6 +86,42 @@ public class JournalItem : MonoBehaviour
         /*
          * IF ITEM NOT FOUND! Need to set button text to nameNotFound
          */
+    }
+
+    private void OnEnable()
+    {
+        SavedValues temp =
+        GameController.instance.savedValuesInstance;
+        bool exists;
+        switch(collectedCheck)
+        {
+            case CollectedCheck.nothing:
+                isFound = true;
+                break;
+            case CollectedCheck.itemID:
+                exists = temp.collectables.TryGetValue(itemID, out isFound);
+                if (!exists)
+                    isFound = false;
+                break;
+            case CollectedCheck.levelCheck:
+                exists = temp.levels.TryGetValue(levels[(int)itemLocation], out isFound);
+                if (!exists)
+                {
+                    Debug.Log(levels[(int)itemLocation] + ": not found");
+                    isFound = false;
+                }
+                break;
+        }
+        if(buttonText==null)
+            buttonText = GetComponentInChildren<TextMeshProUGUI>();
+        if (itemName.CompareTo("") == 0)
+            itemName = buttonText.text;
+        if (!isFound)
+            buttonText.text = nameNotFound;
+        else if (collectedCheck != CollectedCheck.nothing)
+            buttonText.text = itemName;
+
+        SelectItem();
     }
 
     public void SelectItem()
