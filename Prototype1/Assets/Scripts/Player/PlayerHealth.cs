@@ -8,9 +8,9 @@ using FMODUnity;
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
     //[SerializeField] JukeBox jukebox;
-    [SerializeField] int health = 100;
+    [SerializeField][Tooltip("The player's current health value")] int health = 100;
     [SerializeField] GameObject bloodParticle;
-    int maxHealth;
+    [SerializeField] int maxHealth = 100;
     IsoPlayerController pc;
     Slider hpBar;
 
@@ -30,7 +30,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         hpBar = GetComponentInChildren<Slider>();
         pc = GetComponent<IsoPlayerController>();
-        maxHealth = health;
+        //maxHealth = health;
+        hpBar.value = (float)health / (float)maxHealth;
     }
 
     private void Update()
