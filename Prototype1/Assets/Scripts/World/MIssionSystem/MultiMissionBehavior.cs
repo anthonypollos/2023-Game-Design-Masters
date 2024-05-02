@@ -83,11 +83,11 @@ public class MultiMissionBehavior : MissionBehavior, IMissionContainer
             {
                 if (objectiveStatuses[i])
                 {
-                    combinedMissionText+= ("        <s>" + objectives[i].GetMissionText().Item1 + "</s>");
+                    combinedMissionText+="\n" + ("        <s>" + objectives[i].GetMissionText().Item1 + "</s>");
                 }
                 else
                 {
-                    combinedMissionText += ("       "+
+                    combinedMissionText += "\n" + ("       "+
                         GetObjectiveText(objectives[i]));
                 }
             }

@@ -31,15 +31,12 @@ public class LassoBehavior : MonoBehaviour
     //[SerializeField] float pullAngle = 90f;
     private Transform player;
     private Vector3 dir;
-    private Slider slider;
-    private Image sliderFill;
 
     private Moveable moveable;
     private Camera cam;
     private LineRenderer lr;
     [SerializeField] private LayerMask groundMask;
     //[SerializeField] private JukeBox jukebox;
-    LassoLine line;
     bool thrown;
 
     [SerializeField] private EventReference tendrilUse;
@@ -64,8 +61,6 @@ public class LassoBehavior : MonoBehaviour
         lr = GetComponent<LineRenderer>();
         lr.enabled = false;
         gc = FindObjectOfType<GameController>();
-        line = GetComponentInChildren<LassoLine>();
-        line.gameObject.SetActive(false);
         player = attackManager.transform;
         //Handles.color = Color.cyan;
     }
@@ -87,14 +82,8 @@ public class LassoBehavior : MonoBehaviour
         this.minPullDistance = maxPullDistance * 1;
         this.maxThrowDistance = maxThrowRange;
         //this.player = playerPos;
-        this.slider = slider;
         this.maxDistance = breakRange;
-        if (line != null)
-        {
-            line.SetValues(player, maxDistance);
-            line.gameObject.SetActive(true);
-        }
-        this.sliderFill = sliderFill;
+
 
     }
 
@@ -105,12 +94,6 @@ public class LassoBehavior : MonoBehaviour
 
     public void Launched()
     {
-        if (line == null)
-            line = GetComponentInChildren<LassoLine>();
-        if(line!= null)
-            line.gameObject.SetActive(true);
-        slider.value = 0f;
-        slider.gameObject.SetActive(true);
         if(colliders == null)
             colliders = new List<Collider>(GetComponentsInChildren<Collider>(true));
         foreach (Collider collider in colliders)
@@ -141,8 +124,6 @@ public class LassoBehavior : MonoBehaviour
                 //gameObject.transform.parent = temp.transform;
                 //transform.localPosition = Vector3.zero;
                 gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                slider.value = 0;
-                slider.gameObject.SetActive(true);
                 moveable = temp.GetComponent<Moveable>();
                 if (moveable != null)
                 {
@@ -151,7 +132,6 @@ public class LassoBehavior : MonoBehaviour
                     attachedRB = temp.GetComponent<Rigidbody>();
                     //lassoRange.SetAttached(attached.transform, attachedRB);
                     lr.enabled = true;
-                    line.gameObject.SetActive(true);
 
                     adjustedPullRange = maxPullDistance / attachedRB.mass;
                 }
@@ -190,15 +170,9 @@ public class LassoBehavior : MonoBehaviour
         {
             if (Vector3.Distance(startingPos, transform.position) >= maxThrowDistance && attached == null) attackManager.Release();
             float distance = Vector3.Distance(transform.position, player.position);
-            if (slider != null)
-            {
-                slider.value = distance / maxDistance;
-                sliderFill.color = line.GetGradient().Evaluate(distance / maxDistance);
-            }
 
             if (distance > maxDistance)
             {
-                slider.gameObject.SetActive(false);
                 if (attached != null)
                     attached.GetComponent<IPullable>().Break();
                 attackManager.ForceRelease();
@@ -290,10 +264,6 @@ public class LassoBehavior : MonoBehaviour
 
     }
 
-    private void OnDestroy()
-    {
-        slider.gameObject.SetActive(false);
-    }
 
 
     public (GameObject, Moveable) GetAttachment()
@@ -306,7 +276,6 @@ public class LassoBehavior : MonoBehaviour
         bool returnValue = true;
         transform.parent = null;
         //lr.enabled = true;
-        line.gameObject.SetActive(true);
         if (moveable != null && moveable.gameObject.activeInHierarchy)
         {
             //Debug.Log("movable avalible");
@@ -329,8 +298,6 @@ public class LassoBehavior : MonoBehaviour
     public void Retracted()
     {
         lr.enabled = false;
-        line.gameObject.SetActive(false);
-        slider.gameObject.SetActive(false);
         thrown = false;
     }
 
