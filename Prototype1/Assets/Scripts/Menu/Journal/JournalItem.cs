@@ -48,6 +48,7 @@ public class JournalItem : MonoBehaviour
     /// Description to display if player has not found item yet
     /// </summary>
     private string descriptionNotFound;
+    private string[] descriptionNotFoundArray;
 
     [Header("Animator Variables")]
 
@@ -82,6 +83,12 @@ public class JournalItem : MonoBehaviour
 
         anim = GameObject.Find("Journal Menu").GetComponent<Animator>();
         buttonText = GetComponentInChildren<TextMeshProUGUI>();
+
+        descriptionNotFoundArray = new string[itemDescription.Length];
+        for (int i = 0; i < itemDescription.Length; i++)
+        {
+            descriptionNotFoundArray[i] = descriptionNotFound;
+        }
 
         /*
          * IF ITEM NOT FOUND! Need to set button text to nameNotFound
@@ -161,8 +168,11 @@ public class JournalItem : MonoBehaviour
         // temp fix
         if(multiPage == null)
             multiPage = FindObjectOfType<MultiPageText>(true);
+        if(isFound)
+            multiPage.SetPage(value, itemDescription);
+        else
+            multiPage.SetPage(value, descriptionNotFoundArray);
 
-        multiPage.SetPage(value, itemDescription);
     }
 
     /// <summary>
