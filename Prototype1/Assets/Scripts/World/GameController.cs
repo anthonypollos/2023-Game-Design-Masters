@@ -103,6 +103,13 @@ public class GameController : MonoBehaviour
     {
         if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
         {
+            if(journalOpen)
+            {
+                journalOpen = false;
+                Cursor.lockState = CursorLockMode.Confined;
+                journalMenu.SetActive(false);
+                Time.timeScale = 1;
+            }
             if (paused)
             {
                 paused = false;
@@ -216,6 +223,19 @@ public class GameController : MonoBehaviour
             return;
         GameObject temp = Instantiate(go, pos, rot);
         Destroy(go);
+        /*MeshRenderer mr = temp.GetComponentInChildren<MeshRenderer>();
+        List<Material> mats = new List<Material>(mr.materials);
+        Debug.Log("Materials " + mats.Count);
+        int i = 0;
+        foreach (Material mat in mats)
+        {
+            Debug.Log("material " + i);
+            Debug.Log(mat);
+            i++;
+        }
+        mats.RemoveAll(null);
+        mr.SetMaterials(mats);
+        */
         StartCoroutine(DelayedRespawn(temp, delay));
     }
 
@@ -225,6 +245,20 @@ public class GameController : MonoBehaviour
             return;
         GameObject temp = Instantiate(go, pos, rot);
         Destroy(go);
+        /*
+        MeshRenderer mr = temp.GetComponentInChildren<MeshRenderer>();
+        List<Material> mats = new List<Material>(mr.materials);
+        Debug.Log("Materials " + mats.Count);
+        int i = 0;
+        foreach(Material mat in mats)
+        {
+            Debug.Log("material " + i);
+            Debug.Log(mat);
+            i++;
+        }
+        mats.RemoveAll(null);
+        mr.SetMaterials(mats);
+        */
         //If the gameobject we're respawning has "_frozenBeforeTendril" set to true, we run delayedrespawnfrozen so that the new one will ALSO be frozen on spawn
         if (frozenstatus) StartCoroutine(DelayedRespawnFrozen(temp, delay));
         //Otherwise, spawn as normal
