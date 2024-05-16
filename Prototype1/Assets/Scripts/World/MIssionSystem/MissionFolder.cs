@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 {
+    [SerializeField] bool isHub;
     [SerializeField] List<MissionBehavior> missions;
     MenuControls controls;
     [SerializeField] Transform player;
@@ -40,6 +41,8 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     // Start is called before the first frame update
     void Start()
     {
+        if (isHub)
+            Win();
         if (missions.Count == 0)
         {
             win = true;
@@ -71,6 +74,27 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
             //wayFinder.transform.position = player.position + dir * wayFinderDistanceFromPlayer + Vector3.up * 2;
             //wayFinder.transform.forward = dir;
         }
+    }
+
+    public string GetText()
+    {
+        string text = "<s>";
+        for(int i = 0; i<=missionsCompleted; i++)
+        {
+            if (i == missionsCompleted)
+            {
+                text += "</s>";
+                if (missionsCompleted == missions.Count)
+                {
+                    text += "Leave the area";
+                }
+            }
+            else
+            {
+                text += missions[i].GetMissionText().Item1 + "\n";
+            }
+        }
+        return text;
     }
 
     void NextMission()
@@ -160,17 +184,17 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     public void UpdateMissionText()
     {
         string message = "";
-        string temp = missionsStatuses[currentDisplayedMission] ?
-            "<color=green>Completed</color>" : "<color=orange>In Progress</color>";
+        bool temp = missionsStatuses[currentDisplayedMission];
         if (!missions[currentDisplayedMission].GetMissionText().Item2)
         {
-            message = "Current Status: " + temp + "\n" +
-                missions[currentDisplayedMission].GetMissionText().Item1;
+            message = missions[currentDisplayedMission].GetMissionText().Item1;
         }
         else
         {
             message = missions[currentDisplayedMission].GetMissionText().Item1;
         }
+        if (temp)
+            message = "<s>" + message + "</s>";
         missionTextBox.text = message;
     }
 
@@ -205,8 +229,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     {
         if (combatMissionActive)
         {
-            string message = "Current Status: <color=red>Active</color>\n" +
-                currentCombatMissionActive.GetMissionText().Item1 +
+            string message = currentCombatMissionActive.GetMissionText().Item1 +
                 "\nEnemies Slain: " + currentCombatMissionActive.GetCount();
             missionTextBox.text = message;
         }

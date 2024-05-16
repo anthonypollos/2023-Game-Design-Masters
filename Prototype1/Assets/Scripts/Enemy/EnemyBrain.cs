@@ -198,6 +198,18 @@ public class EnemyBrain : MonoBehaviour, IEnemy
         return false;
     }
 
+    public bool CanSeePosition(Vector3 position)
+    {
+        if (Physics.Raycast(transform.position, position - transform.position, Vector3.Distance(transform.position, position), layermask))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     public bool CanSee(Transform target)
     {
         if(target == player)

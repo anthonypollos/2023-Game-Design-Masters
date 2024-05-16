@@ -37,7 +37,8 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     private OutlineToggle outlineManager;
     //This boolean will keep track of whether or not the object was, at any point, frozen, even IF it is no longer frozen.
     private bool wasFrozen;
-
+    //This float stores the mass of the object if frozenBeforeTendril is true.
+    private float realMass;
 
     private void Awake()
     {
@@ -82,6 +83,10 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         _frozenBeforeTendril = true;
         //Now freeze.
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        //get the actual mass of the object
+        realMass = GetComponent<Rigidbody>().mass;
+        //Set the mass to 1000 so that it becomes solid to the player
+        GetComponent<Rigidbody>().mass = 1000f;
         //We were (and are currently) frozen, make sure this bool is set to true
         wasFrozen = true;
     }
@@ -219,11 +224,13 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 
     private void Unfreeze()
     {
-        //1. return to non-frozen constraints taken from start
+        //1. reset the object's mass to whatever its original value was
+        GetComponent<Rigidbody>().mass = realMass;
+        //2. return to non-frozen constraints taken from start
         SetConstraints();
-        //2. turn the boolean off so this is only called once.
+        //3. turn the boolean off so this is only called once.
         _frozenBeforeTendril = false;
-        //3. just in case it wasn't already set, set wasFrozen to true;
+        //4. just in case it wasn't already set, set wasFrozen to true;
         wasFrozen = true;
     }
 

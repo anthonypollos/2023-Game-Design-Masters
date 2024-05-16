@@ -14,24 +14,32 @@ public class SlowingArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        ISlowable slowable;
-        if(other.transform.TryGetComponent<ISlowable>(out slowable))
+        ISlowable[] slowItems = null;
+        slowItems = other.GetComponents<ISlowable>();
+        if(slowItems.Length>0)
         {
-            if(!slowables.Contains(slowable))
-                slowables.Add(slowable);
-            slowable.EnterSlowArea(slowingAmount);
+            foreach (ISlowable slowable in slowItems)
+            {
+                if (!slowables.Contains(slowable))
+                    slowables.Add(slowable);
+                slowable.EnterSlowArea(slowingAmount);
+            }
         }
 
     }
 
     private void OnTriggerExit(Collider other)
     {
-        ISlowable slowable;
-        if(other.transform.TryGetComponent<ISlowable> (out slowable))
+        ISlowable[] slowItems = null;
+        slowItems = other.GetComponents<ISlowable>();
+        if (slowItems.Length>0)
         {
-            if(slowables.Contains(slowable))
-                slowables.Remove(slowable);
-            slowable.ExitSlowArea(slowingAmount);
+            foreach (ISlowable slowable in slowItems)
+            {
+                if (slowables.Contains(slowable))
+                    slowables.Remove(slowable);
+                slowable.ExitSlowArea(slowingAmount);
+            }
         }
     }
 
