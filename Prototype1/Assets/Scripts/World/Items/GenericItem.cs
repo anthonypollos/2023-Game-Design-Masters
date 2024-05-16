@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using FMODUnity;
+using System;
 
 public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 {
@@ -16,8 +17,10 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     [SerializeField] private int maxHealth = 20;
     [Tooltip("The object that's created when this item is destroyed.\nDoes not need to be a particle.")]
     [SerializeField] GameObject DestructionParticle;
+    [Tooltip("Set this if you don't want the object to spawn where the original object was.")]
+    [SerializeField] Vector3 particlePosOffset;
     [Tooltip("The amount of time the Destruction Particle Object is alive for.\n0 means it lives forever.")]
-    [SerializeField] float DestructionParticleLifetime = 4f;
+    [SerializeField] float particleLifetime = 4f;
     [SerializeField] GameObject KickedParticle;
     [SerializeField][Tooltip("Add the name of the status you want to invoke when this object hits a target")] string[] effectsOnHit;
 
@@ -151,13 +154,16 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
                         //If there is a destruction particle, create it.
                         if (DestructionParticle != null)
                         {
+
                             //create the particle, gib, etc.
-                            GameObject vfxobj = Instantiate(DestructionParticle, gameObject.transform.position, Quaternion.identity);
+                            GameObject vfxobj = Instantiate(DestructionParticle, (gameObject.transform.position+particlePosOffset), gameObject.transform.rotation);
+                            Debug.Log("spawning " + DestructionParticle.name);
+
                             //Check to see if the particle has a lifetime.
-                            if (DestructionParticleLifetime != 0f)
+                            if (particleLifetime != 0f)
                             {
                                 //destroy the particle
-                                Destroy(vfxobj, DestructionParticleLifetime);
+                                Destroy(vfxobj, particleLifetime);
                             }
 
                             //This code makes gibs inherit their parent's angles and velocity
@@ -284,6 +290,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         {
             foreach (Transform child in transform)
             {
+                Debug.Log(gameObject.name + " is dying");
                 //If we have an outline, remove from the list on death
                 if (child.GetComponent<Outline>() != null)
                 {
