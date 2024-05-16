@@ -61,6 +61,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         if (transform.position.y < -20f)
             Die();
     }
+
     public void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
     {
         health -= dmg;
@@ -82,18 +83,23 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         healthSlider.value = (float)health/ maxHealth;
         if (dmg > 0) //AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
 
-        if (health <= healthToSpawn && canSpawnEnemies == true)
+        if (health <= healthToSpawn && canSpawnEnemies == true && enemyToSpawn != null && enemyToSpawn.GetComponent<EnemyBrain>()!=null) 
         {
             for (var i = 0; i < enemiesToSpawn; i++)
             {
-                Vector2 dir = Random.insideUnitCircle * spawnRadius;
+                Vector3 spawnLoc;
+                    do {
+                        Vector2 dir = Random.insideUnitCircle * spawnRadius;
 
-                dir = dir.normalized;
+                        dir = dir.normalized;
 
-                Vector3 spawnLoc = transform.position;
+                        spawnLoc = transform.position;
 
-                spawnLoc = spawnLoc + spawnRadius * (Vector3.right * dir.x + Vector3.forward * dir.y);
-                Instantiate(enemyToSpawn, spawnLoc, Quaternion.identity);
+                        spawnLoc = spawnLoc + spawnRadius * (Vector3.right * dir.x + Vector3.forward * dir.y);
+                    }
+                    while (brain.CanSeePosition(spawnLoc));
+
+                Instantiate(enemyToSpawn, spawnLoc, Quaternion.identity).GetComponent<EnemyBrain>().Aggro();
                 canSpawnEnemies = false;
             }
             

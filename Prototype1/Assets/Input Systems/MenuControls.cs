@@ -80,6 +80,15 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Journal"",
+                    ""type"": ""Button"",
+                    ""id"": ""8e9520bc-d4f4-4acd-88c1-fd8454c6cbc3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -192,6 +201,17 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
                     ""action"": ""Console"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""048facfa-6da9-4826-a7a5-dae82cacf7bd"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Journal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -206,6 +226,7 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
         m_Main_NextMission = m_Main.FindAction("NextMission", throwIfNotFound: true);
         m_Main_PreviousMission = m_Main.FindAction("PreviousMission", throwIfNotFound: true);
         m_Main_Console = m_Main.FindAction("Console", throwIfNotFound: true);
+        m_Main_Journal = m_Main.FindAction("Journal", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -273,6 +294,7 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_NextMission;
     private readonly InputAction m_Main_PreviousMission;
     private readonly InputAction m_Main_Console;
+    private readonly InputAction m_Main_Journal;
     public struct MainActions
     {
         private @MenuControls m_Wrapper;
@@ -283,6 +305,7 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
         public InputAction @NextMission => m_Wrapper.m_Main_NextMission;
         public InputAction @PreviousMission => m_Wrapper.m_Main_PreviousMission;
         public InputAction @Console => m_Wrapper.m_Main_Console;
+        public InputAction @Journal => m_Wrapper.m_Main_Journal;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -310,6 +333,9 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
             @Console.started += instance.OnConsole;
             @Console.performed += instance.OnConsole;
             @Console.canceled += instance.OnConsole;
+            @Journal.started += instance.OnJournal;
+            @Journal.performed += instance.OnJournal;
+            @Journal.canceled += instance.OnJournal;
         }
 
         private void UnregisterCallbacks(IMainActions instance)
@@ -332,6 +358,9 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
             @Console.started -= instance.OnConsole;
             @Console.performed -= instance.OnConsole;
             @Console.canceled -= instance.OnConsole;
+            @Journal.started -= instance.OnJournal;
+            @Journal.performed -= instance.OnJournal;
+            @Journal.canceled -= instance.OnJournal;
         }
 
         public void RemoveCallbacks(IMainActions instance)
@@ -357,5 +386,6 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
         void OnNextMission(InputAction.CallbackContext context);
         void OnPreviousMission(InputAction.CallbackContext context);
         void OnConsole(InputAction.CallbackContext context);
+        void OnJournal(InputAction.CallbackContext context);
     }
 }

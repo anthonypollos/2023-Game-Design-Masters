@@ -292,6 +292,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                     //float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
                     lb.SetValues(maxThrowLassoDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
                     lb.Launched();
+                    lasso.transform.forward = transform.forward;
                     anim.SetTrigger("TendrilThrow");
                     StartCoroutine(WaitUntilGrab());
                 }
