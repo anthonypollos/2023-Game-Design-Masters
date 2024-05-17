@@ -649,33 +649,36 @@ public class Moveable : MonoBehaviour, ISlowable
 
     public void Grabbed()
     {
-        if (stopping != null)
+        if (isLaunched && !unstoppable)
         {
-            StopCoroutine(stopping);
-            stopping = null;
-        }
-        flyingHitBox.SetActive(false);
-        hold = true;
-        isStopping = false;
-        isDashing = false;
-        buffer = 0;
-        targetLocation = transform.position;
-        dir = Vector3.zero;
-        speed = 0;
-        isLaunched = false;
-        IgnorePlayer();
-        float timer;
-        var temp = tendrilOwner.TakeCharge();
-        if (!charged)
-        {
-            charged = temp.Item1;
-        }
-        chargedDetonationPrefab = temp.Item2;
-        timer = temp.Item3;
-        if(temp.Item1 && timer > 0)
-        {
-            StopCoroutine("ChargeCountdown");
-            StartCoroutine(ChargeCountdown(timer));
+            if (stopping != null)
+            {
+                StopCoroutine(stopping);
+                stopping = null;
+            }
+            flyingHitBox.SetActive(false);
+            hold = true;
+            isStopping = false;
+            isDashing = false;
+            buffer = 0;
+            targetLocation = transform.position;
+            dir = Vector3.zero;
+            speed = 0;
+            isLaunched = false;
+            IgnorePlayer();
+            float timer;
+            var temp = tendrilOwner.TakeCharge();
+            if (!charged)
+            {
+                charged = temp.Item1;
+            }
+            chargedDetonationPrefab = temp.Item2;
+            timer = temp.Item3;
+            if (temp.Item1 && timer > 0)
+            {
+                StopCoroutine("ChargeCountdown");
+                StartCoroutine(ChargeCountdown(timer));
+            }
         }
     }
     private IEnumerator ChargeCountdown(float timer)
@@ -756,6 +759,11 @@ public class Moveable : MonoBehaviour, ISlowable
     {
         if(gameObject.activeInHierarchy)
             StartCoroutine(ReleaseDelayed());
+    }
+
+    public float GetSpeed()
+    {
+        return speed;
     }
 
     IEnumerator ReleaseDelayed()

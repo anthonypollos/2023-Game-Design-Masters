@@ -16,7 +16,7 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
     [Tooltip("Range at which the enemy will always do an attack")]
     protected float minAttackRange;
     [SerializeField]
-    [Tooltip("Time it takes once in range to attack")]
+    [Tooltip("Time it takes once in range to attack (NOT USED ON BOSS)")]
     public float attackSpeed;
     [HideInInspector]
     public EnemyBrain brain;
@@ -31,7 +31,7 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
     [Header("Attack frame data")]
     [SerializeField] protected int[] attackFrames;
     [SerializeField] protected int attackFramesPerSecond;
-    bool windUp = false;
+    protected bool windUp = false;
     
 
     protected float timeTest;
@@ -57,9 +57,9 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
                 count += Time.deltaTime;
             else
                 count -= Time.deltaTime / 2;
-            count = Mathf.Clamp(count, 0, attackSpeed);
+            //count = Mathf.Clamp(count, 0, attackSpeed);
         }
-        if(brain.state == EnemyStates.ATTACKING )
+        if(brain.state == EnemyStates.ATTACKING || brain.state == EnemyStates.ENRAGED)
         {
             animationTimer += Time.deltaTime;
             if(animationTimer >= currentWaitingTime)
@@ -141,10 +141,10 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
     }
 
     //attack has ended and resets enemy states to default
-    public void AttackEnd()
+    public virtual void AttackEnd()
     {
         count = 0;
-        if(brain.state != EnemyStates.DEAD)
+        if(brain.state != EnemyStates.DEAD && brain.state != EnemyStates.ENRAGED)
             brain.state = EnemyStates.NOTHING;
         windUp = false;
         brain.an.SetBool("Attacking", false);
