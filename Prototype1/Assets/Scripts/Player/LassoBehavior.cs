@@ -174,7 +174,7 @@ public class LassoBehavior : MonoBehaviour
             if (distance > maxDistance)
             {
                 if (attached != null)
-                    attached.GetComponent<IPullable>().Break();
+                    attached.GetComponentInParent<IPullable>().Break();
                 attackManager.ForceRelease();
                 if (moveable != null)
                     moveable.ForceRelease();
@@ -305,7 +305,7 @@ public class LassoBehavior : MonoBehaviour
     {
         if(attached!=null)
         {
-            attached.GetComponent<IPullable>().Break();
+            attached.GetComponentInParent<IPullable>().Break();
             //jukebox.PlaySound(1);
         }
         if(moveable!=null)
