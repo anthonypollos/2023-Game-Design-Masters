@@ -18,6 +18,8 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     [SerializeField] GameObject DestructionParticle;
     [Tooltip("The amount of time the Destruction Particle Object is alive for.\n0 means it lives forever.")]
     [SerializeField] float DestructionParticleLifetime = 4f;
+    [Tooltip("The offset from the parent object that the particle spawns from")]
+    [SerializeField] Vector3 ParticleOffset;
     [SerializeField] GameObject KickedParticle;
     [SerializeField][Tooltip("Add the name of the status you want to invoke when this object hits a target")] string[] effectsOnHit;
 
@@ -40,6 +42,13 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     //This float stores the mass of the object if frozenBeforeTendril is true.
     private float realMass;
 
+    //The following setup is for making stationary objects solid
+    [Header("Stationary Object Settings")]
+    [Tooltip("Do we freeze this object when it's not moving?")]
+    [SerializeField] private bool _freezeOnStationary = false;
+    [Tooltip("How frequently do we check to see if the object is stationary?")]
+    [SerializeField] private float stationaryCheckRate = 1f;
+
     private void Awake()
     {
         if (maxHealth <= 0)
@@ -60,6 +69,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         initialPos = transform.position;
         initialRot = transform.rotation;
         moveable = GetComponent<Moveable>();
+        realMass = GetComponent<Rigidbody>().mass;
         //If set to be frozen, freeze.
         if (_frozenBeforeTendril)
         {
@@ -67,6 +77,13 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
             Freeze();
         }
         //maxHealth = health;
+        //If we freeze on stationary, start repeating the check
+        //First check happens randomly between 0 and 1 seconds so that checks are staggered.
+        //Staggering this check will help save on perf
+        if (_freezeOnStationary)
+        {
+            InvokeRepeating(nameof(checkStationary), Random.Range(0,1f) , stationaryCheckRate);
+        }
     }
 
     /// <summary>
@@ -85,6 +102,15 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         //get the actual mass of the object
         realMass = GetComponent<Rigidbody>().mass;
+        //HACK HACK HACK HACK HACK
+        //If the mass is greater than 10, let's assume this is respawned and set realMass down to 1
+        //WE SHOULD FIND A FIX FOR THIS!!!
+        print("Realmass for " + this + " reported as " + realMass);
+        if (realMass > 10f)
+        {
+            print("Realmass for " + this + " detected as being greater than 10. Assuming this object is respawned and setting realmass to 1.");
+            realMass = 1f;
+        }
         //Set the mass to 1000 so that it becomes solid to the player
         GetComponent<Rigidbody>().mass = 1000f;
         //We were (and are currently) frozen, make sure this bool is set to true
@@ -152,7 +178,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
                         if (DestructionParticle != null)
                         {
                             //create the particle, gib, etc.
-                            GameObject vfxobj = Instantiate(DestructionParticle, gameObject.transform.position, Quaternion.identity);
+                            GameObject vfxobj = Instantiate(DestructionParticle, (gameObject.transform.position + ParticleOffset), Quaternion.identity);
                             //Check to see if the particle has a lifetime.
                             if (DestructionParticleLifetime != 0f)
                             {
@@ -291,5 +317,12 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
                 }
             }
         }
+    }
+
+    //If this object freezes when it's stationary, run this check every stationarycheckrate seconds
+    private void checkStationary()
+    {
+        //In order to make sure the mass doesn't repeatedly reset if this object is set to freeze while stationary, we check to make sure _frozenBeforeTendril is false before running this
+         if (GetComponent<Rigidbody>().IsSleeping() && !_frozenBeforeTendril) Freeze();
     }
 }
