@@ -78,7 +78,7 @@ public class GameController : MonoBehaviour
         foreach (GameObject go in temp) {
             mainCameras.Add(go.GetComponent<Camera>());
         }
-
+        if (CombatMusicManager != null)
         CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
     }
     private void OnEnable()
@@ -195,14 +195,14 @@ public class GameController : MonoBehaviour
             if(state)
             {
                 targetZoom = combatZoom;
-                CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Play();
+                if (CombatMusicManager != null) CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Play();
                 AManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
             }
             else
             {
                 targetZoom = nonCombatZoom;
                 AManager.GetComponent<FMODUnity.StudioEventEmitter>().Play();
-                CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
+                if (CombatMusicManager != null) CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
             }
     }
 
