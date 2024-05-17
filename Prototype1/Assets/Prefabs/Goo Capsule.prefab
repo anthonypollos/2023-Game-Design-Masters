@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &652283395507484277
+--- !u!1 &5489438787759211475
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,50 +8,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6136205956858052914}
-  - component: {fileID: 7297008620718375982}
-  - component: {fileID: 8983513172388640660}
-  - component: {fileID: 8624681457540361339}
-  - component: {fileID: 6648953338645416082}
-  - component: {fileID: 6587655345033436516}
-  - component: {fileID: 6143606052240172037}
+  - component: {fileID: 4646316544166276900}
+  - component: {fileID: 2749376022561819872}
+  - component: {fileID: 7090665617143066024}
+  - component: {fileID: 695931240930598175}
+  - component: {fileID: 1812723907127387754}
+  - component: {fileID: 6504257690329794202}
   m_Layer: 0
-  m_Name: Test Dynamic Wall
-  m_TagString: Wall
+  m_Name: Goo Capsule
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6136205956858052914
+--- !u!4 &4646316544166276900
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 652283395507484277}
+  m_GameObject: {fileID: 5489438787759211475}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 98.02, y: -0.72, z: 86.16}
-  m_LocalScale: {x: 6, y: 3, z: 0.6}
+  m_LocalRotation: {x: 0, y: 0.5, z: 0, w: 0.8660254}
+  m_LocalPosition: {x: 118, y: -1, z: 88}
+  m_LocalScale: {x: 2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &7297008620718375982
+  m_LocalEulerAnglesHint: {x: 0, y: 60, z: 0}
+--- !u!33 &2749376022561819872
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 652283395507484277}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &8983513172388640660
+  m_GameObject: {fileID: 5489438787759211475}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &7090665617143066024
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 652283395507484277}
+  m_GameObject: {fileID: 5489438787759211475}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -65,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 87681837e993c3f4896272358ee5bc84, type: 2}
+  - {fileID: 2100000, guid: 7ba99e2f4b4c836468df47459ad5c36a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -87,13 +86,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8624681457540361339
-BoxCollider:
+--- !u!136 &695931240930598175
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 652283395507484277}
+  m_GameObject: {fileID: 5489438787759211475}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -105,16 +104,18 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6648953338645416082
+--- !u!114 &1812723907127387754
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 652283395507484277}
+  m_GameObject: {fileID: 5489438787759211475}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a12c10e85cb88c4ab2ee8a95cf9a91a, type: 3}
@@ -122,9 +123,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   immuneTypes: 
   _frozenBeforeTendril: 0
-  maxHealth: 20
-  DestructionParticle: {fileID: 6946088820986309541, guid: 210e41efde1390a409728c52cf2d174a, type: 3}
-  particlePosOffset: {x: 1, y: 4, z: 1}
+  maxHealth: 4
+  DestructionParticle: {fileID: 652283395507484277, guid: fa6f2aa12469eac449c010b3d3f6adc6, type: 3}
+  particlePosOffset: {x: -28, y: 0, z: -2}
   particleLifetime: 0
   KickedParticle: {fileID: 0}
   effectsOnHit: []
@@ -137,59 +138,32 @@ MonoBehaviour:
     Path: event:/Collide
   breakSound:
     Guid:
-      Data1: 1860626156
-      Data2: 1177657115
-      Data3: 202913409
-      Data4: -1114200623
-    Path: event:/Tombstone-break
+      Data1: -397892180
+      Data2: 1263299277
+      Data3: 882491830
+      Data4: 1818749134
+    Path: event:/Break
   respawning: 0
   respawnDelay: 5
---- !u!54 &6587655345033436516
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 652283395507484277}
-  serializedVersion: 4
-  m_Mass: 10000000
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
---- !u!114 &6143606052240172037
+--- !u!114 &6504257690329794202
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 652283395507484277}
+  m_GameObject: {fileID: 5489438787759211475}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3694ad5e04340e409fff522dbc7e83f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dmg: 100
+  dmg: 50
   bleedTime: 0
-  uses: 1
+  uses: 0
   stab:
     Guid:
-      Data1: 1406587514
-      Data2: 1236993393
-      Data3: 458917249
-      Data4: 1615339013
-    Path: event:/Collide
+      Data1: -761214339
+      Data2: 1171546186
+      Data3: 1289489068
+      Data4: -1843537114
+    Path: event:/Explosion
