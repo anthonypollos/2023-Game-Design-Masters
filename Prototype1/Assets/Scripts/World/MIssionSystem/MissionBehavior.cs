@@ -25,7 +25,7 @@ public class MissionBehavior : MonoBehaviour
     TextAsset initialDialogue;
 
     //[SerializeField] private JukeBox jukebox;
-    [SerializeField] private EventReference objectiveSound;
+    [SerializeField] protected EventReference objectiveSound;
 
     private void Awake()
     {
