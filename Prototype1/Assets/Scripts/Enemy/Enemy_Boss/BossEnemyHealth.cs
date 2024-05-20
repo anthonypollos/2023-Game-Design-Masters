@@ -12,7 +12,7 @@ public class BossEnemyHealth : EnemyHealth
     public override void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
     {
         if (brain.state == EnemyStates.ENRAGED) return;
-        if(healthThreshold<healthThresholds.Length && health-dmg < healthThresholds[healthThreshold])
+        if(healthThreshold<healthThresholds.Length && health-dmg <= healthThresholds[healthThreshold])
         {
             ToggleThreshold();
         }
@@ -40,8 +40,9 @@ public class BossEnemyHealth : EnemyHealth
 
     private void ToggleThreshold()
     {
+        bossBrain.Enrage();
         health = healthThresholds[healthThreshold];
         healthThreshold++;
-        bossBrain.Enrage();
+        
     }
 }

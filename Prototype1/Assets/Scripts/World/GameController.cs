@@ -27,6 +27,7 @@ public class GameController : MonoBehaviour
     [SerializeField] Button topButtonPause;
     [SerializeField] Button topButtonDead;
     [SerializeField] List<string> nonGameScenes;
+    bool inCombat = false;
 
     bool paused;
     bool journalOpen;
@@ -191,6 +192,9 @@ public class GameController : MonoBehaviour
     }
     public void CombatState(bool state)
     {
+        if (state == inCombat)
+            return;
+        inCombat = state;
         if(isThirdPerson)
             if(state)
             {
