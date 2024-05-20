@@ -93,9 +93,11 @@ public class BossEnemyAttacks : EnemyAttackTemplate
             dir.y = 0;
             dir = dir.normalized;
             collision.gameObject.GetComponent<Moveable>().Slammed(dir, rb.mass * brain.moveable.GetSpeed(), myCollider);
-            if(!playerInvulnerable)
+            if (!playerInvulnerable)
+            {
                 collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(damageToPlayerOnHit);
-            StartCoroutine(InvulnerabilityFrames());
+                StartCoroutine(InvulnerabilityFrames());
+            }
         }
     }
 
