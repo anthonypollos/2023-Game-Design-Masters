@@ -11,7 +11,7 @@ public class CombatMissionBehavior : MissionBehavior
     //bool completed;
 
     [SerializeField] bool isNextWave = false;
-    [SerializeField] private EventReference objectiveSound;
+    //[SerializeField] new protected EventReference objectiveSound;
 
     //public GameObject AManager;
     //public GameObject musicTrigger;
