@@ -690,7 +690,7 @@ MonoBehaviour:
   clashDamage: 10
   neutralSpeed: 15
   rateOfChange: 1
-  maxDamage: 40
+  maxDamage: 15
   isEnemy: 1
   speed: 0
   isLaunched: 0
@@ -771,8 +771,8 @@ MonoBehaviour:
   offset: {x: 0, y: 0}
   debug: 0
   bossBrain: {fileID: 0}
-  chargeMaxSpeed: 10
-  chargeTurningMomentum: 20
+  chargeMaxSpeed: 14
+  chargeTurningMomentum: 0.75
 --- !u!95 &2661496155728209727
 Animator:
   serializedVersion: 5
@@ -829,7 +829,7 @@ MonoBehaviour:
   attackSpeed: 0
   brain: {fileID: 0}
   attackWindUpSeconds:
-  - 0.5
+  - 1.5
   attackSeconds:
   - 0.25
   attackWindDownSeconds:
@@ -837,10 +837,11 @@ MonoBehaviour:
   attackFrames: 0a0000000a000000
   attackFramesPerSecond: 24
   bossBrain: {fileID: 0}
-  timeToStartCharging: 5
-  damageToPlayerOnHit: 25
+  timeToStartCharging: 3
+  damageToPlayerOnHit: 15
   timeToEndCharging: 15
-  timeToStartRam: 3
+  timeToStartRam: 1
+  playerInvulTime: 1
   dashRange: 60
   dashTime: 1.5
   enemyAggro:
@@ -954,7 +955,7 @@ RectTransform:
   m_GameObject: {fileID: 6148682352971246336}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.4289255, y: 3.4289255, z: 3.4289255}
+  m_LocalScale: {x: 2.068225, y: 2.068225, z: 2.068225}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8377418548629992779}
@@ -964,7 +965,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 237, y: -270}
+  m_AnchoredPosition: {x: 203, y: -177}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3133428222812396121
@@ -1006,7 +1007,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 4951568869358535669}
   m_HandleRect: {fileID: 0}
