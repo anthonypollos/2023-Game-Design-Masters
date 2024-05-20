@@ -27,7 +27,8 @@ public class ThornBehavior : MonoBehaviour, IProjectile
         IDamageable id = hit.GetComponent<IDamageable>();
         if (id != null)
         {
-            id.TakeDamage(damage);
+            if(other.gameObject.CompareTag("Player"))
+                id.TakeDamage(damage);
             Destroy(gameObject);
         }
         if (gameObject.CompareTag("Wall") || gameObject.CompareTag("Ground"))

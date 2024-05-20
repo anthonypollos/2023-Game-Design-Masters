@@ -40,7 +40,7 @@ public class MeleeAttackBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!hasHit.Contains(other.gameObject))
+        if (!hasHit.Contains(other.gameObject) && other.gameObject.CompareTag("Player")) ;
         {
             IDamageable target = other.GetComponent<IDamageable>();
             if (target != null)
