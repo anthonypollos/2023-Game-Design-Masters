@@ -5,6 +5,7 @@ using UnityEngine;
 public class OutlineToggle : MonoBehaviour
 {
     [SerializeField] private List<Outline> outlines;
+    [SerializeField] 
     bool on;
 
     // Start is called before the first frame update
@@ -12,8 +13,8 @@ public class OutlineToggle : MonoBehaviour
     {
         //fill list with outline objects
         outlines = new List<Outline>(FindObjectsOfType<Outline>());
-        on = false;
-        ToggleOutline(false);
+        //on = false;
+        //ToggleOutline(false);
     }
 
     public void ToggleOutline()
