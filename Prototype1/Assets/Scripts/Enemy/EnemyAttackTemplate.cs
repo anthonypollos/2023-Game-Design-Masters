@@ -57,7 +57,7 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
                 count += Time.deltaTime;
             else
                 count -= Time.deltaTime / 2;
-            //count = Mathf.Clamp(count, 0, attackSpeed);
+            count = Mathf.Clamp(count, 0, count);
         }
         if(brain.state == EnemyStates.ATTACKING || brain.state == EnemyStates.ENRAGED)
         {
