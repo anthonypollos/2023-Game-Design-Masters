@@ -14,6 +14,8 @@ public static class EnemyStates
     public const int NOTHING = 0;
     public const int ATTACKING = 1;
     public const int DEAD = 2;
+    public const int CHARGING = 3;
+    public const int ENRAGED = 4;
 }
 
 public class EnemyBrain : MonoBehaviour, IEnemy
@@ -23,8 +25,8 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     public EnemyHealth health;
     [HideInInspector]
     public EnemyInteractionBehaviorTemplate interaction;
-    EnemyMovement movement;
-    EnemyAttackTemplate attack;
+    protected EnemyMovement movement;
+    protected EnemyAttackTemplate attack;
     [HideInInspector]
     public Moveable moveable;
     //player information
@@ -42,7 +44,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     [SerializeField] 
     [Tooltip("What layers block LOS from the player")]
     LayerMask layermask;
-    [HideInInspector]
+    [Tooltip("READ ONLY")]
     public int state;
     [SerializeField] 
     [Tooltip("What distance does the creature want to stay in from the player")]
@@ -59,6 +61,11 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     // Start is called before the first frame update
     void Start()
     {
+        Starting();
+    }
+
+    protected virtual void Starting()
+    {
         //If we set the player transform to something other than the player, don't reset this
         if (player == null) player = GameController.GetPlayer();
         //Debug.Log(player);
@@ -73,15 +80,20 @@ public class EnemyBrain : MonoBehaviour, IEnemy
         movement = GetComponent<EnemyMovement>();
         movement.brain = this;
         attack = GetComponent<EnemyAttackTemplate>();
-        if(attack !=null)
+        if (attack != null)
             attack.brain = this;
-        
+
         state = EnemyStates.NOTHING;
         StartCoroutine(Ambiance());
     }
 
     // Update is called once per frame
     void Update()
+    {
+        Updating();
+    }
+
+    protected virtual void Updating()
     {
         if (state != EnemyStates.DEAD)
         {
@@ -103,7 +115,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
         }
     }
 
-    void CheckMovement()
+    protected virtual void CheckMovement()
     {
         if (InRange(optimalRange))
         {
@@ -115,7 +127,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
         }
     }
 
-    void CheckRotation()
+    protected void CheckRotation()
     {
         if(state == EnemyStates.NOTHING)
         {
@@ -137,7 +149,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
         }
     }
 
-    void CheckArea()
+    protected void CheckArea()
     {
         if (CanSeePlayer())
             PackAggro();
@@ -163,7 +175,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
         }
     }
 
-    void CheckAttack()
+    protected virtual void CheckAttack()
     {
         if(attack!=null)
             if (InRange(attack.maxAttackRange) && isAggro)

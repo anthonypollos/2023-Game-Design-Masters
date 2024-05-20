@@ -30,8 +30,11 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     public virtual void Lassoed()
     {
         lassoed = true;
-        lassoImage.fillAmount = 0;
-        lassoImage.gameObject.SetActive(true);
+        if (lassoImage != null)
+        {
+            lassoImage.fillAmount = 0;
+            lassoImage.gameObject.SetActive(true);
+        }
         StartCoroutine(BreakOut());
     }
     public virtual void Pulled(IsoAttackManager player = null)
@@ -40,7 +43,8 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     }
     public virtual void Break()
     {
-        lassoImage.gameObject.SetActive(false);
+        if(lassoImage!= null)
+            lassoImage.gameObject.SetActive(false);
         if (brain.moveable.tendrilOwner != null) brain.moveable.tendrilOwner.ForceRelease();
         else Debug.Log("LassoOwner = null");
     }

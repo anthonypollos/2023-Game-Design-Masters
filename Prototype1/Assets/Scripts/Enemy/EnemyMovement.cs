@@ -44,7 +44,6 @@ public class EnemyMovement : MonoBehaviour, ISlowable
     public Rigidbody rb;
 
 
-
     [SerializeField]
     [Tooltip("How close player has to be for the enemy to try and retreat")]
     float tooCloseRange;
@@ -54,19 +53,24 @@ public class EnemyMovement : MonoBehaviour, ISlowable
     float offsetRadius;
     [SerializeField]
     [Tooltip("Read Only")]
-    Vector2 offset = Vector2.zero;
+    protected Vector2 offset = Vector2.zero;
 
 
 
     int lastValue;
 
     List<float> slowMods;
-    float[] slowModsArray;
+    protected float[] slowModsArray;
 
-    [SerializeField] bool debug = false;
+    [SerializeField] protected bool debug = false;
 
     // Start is called before the first frame update
     void Start()
+    {
+        Starting();
+    }
+
+    protected virtual void Starting()
     {
         EnterSlowArea(0);
         //If we don't change the center point from 0 0 0, assume we want the center point to be the spawn location.
@@ -94,7 +98,7 @@ public class EnemyMovement : MonoBehaviour, ISlowable
     void Update()
     {
         count += Time.deltaTime;
-        if (brain.state == EnemyStates.ATTACKING || brain.state == EnemyStates.DEAD)
+        if (brain.state == EnemyStates.ATTACKING || brain.state == EnemyStates.DEAD || brain.state == EnemyStates.ENRAGED)
         {
             refreshTime = 0;
         }
@@ -232,7 +236,7 @@ public class EnemyMovement : MonoBehaviour, ISlowable
         }
     }
 
-    private void Movement(Vector3 dir)
+    protected virtual void Movement(Vector3 dir)
     {
         dir.y = 0;
         dir = dir.normalized;

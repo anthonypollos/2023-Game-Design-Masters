@@ -26,7 +26,7 @@ public class MeleeEnemyAttacks : EnemyAttackTemplate
     {
         if (count >= attackSpeed)
         {
-            count -= 0.5f;
+            count = attackSpeed - 0.5f;
             AttackAI();
         }
     }

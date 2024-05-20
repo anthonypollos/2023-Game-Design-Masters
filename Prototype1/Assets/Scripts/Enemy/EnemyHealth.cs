@@ -10,36 +10,30 @@ using FMODUnity;
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
     //[SerializeField] private JukeBox jukebox;
-    [SerializeField] int health = 100;
-    [SerializeField] int staggerThreshold = 15;
-    [SerializeField] GameObject bloodParticle;
-    int maxHealth;
-    [SerializeField] Slider healthSlider;
+    [SerializeField] protected int health = 100;
+    [SerializeField] protected int staggerThreshold = 15;
+    [SerializeField] protected GameObject bloodParticle;
+    protected int maxHealth;
+    [SerializeField] protected Slider healthSlider;
     //enemy container for controlling how many enemies are in the scene
     [HideInInspector]
     public EnemyContainer ec;
     [HideInInspector]
     public EnemyBrain brain;
-    bool quitting = false;
-
-   [SerializeField] public bool canSpawnEnemies;
-   [SerializeField] public int healthToSpawn;
-   [SerializeField] public int enemiesToSpawn;
-   [SerializeField] public float spawnRadius;
-    public GameObject enemyToSpawn;
+    protected bool quitting = false;
 
     private OutlineToggle outlineManager;
 
-    [SerializeField] private EventReference enemyDamaged;
-    [SerializeField] private EventReference enemyDeath;
+    [SerializeField] protected EventReference enemyDamaged;
+    [SerializeField] protected EventReference enemyDeath;
 
     [Tooltip("The particle object to spawn upon enemy death.\nNote: This can be any Game Object.")]
-    [SerializeField] private GameObject DeathParticle;
+    [SerializeField] protected GameObject DeathParticle;
     //Set this here so that we never have a null case. It can be changed in-editor as needed
     [Tooltip("How long the Death Particle lives before Despawning.\nSet to 0 or below for an immortal object.")]
-    [SerializeField] private float DeathParticleLifetime = 4;
+    [SerializeField] protected float DeathParticleLifetime = 4;
 
-    bool dead = false;
+    protected bool dead = false;
 
     private void Awake()
     {
@@ -62,7 +56,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
             Die();
     }
 
-    public void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
+    public virtual void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
     {
         health -= dmg;
         if (dmg > staggerThreshold)
@@ -83,27 +77,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         healthSlider.value = (float)health/ maxHealth;
         if (dmg > 0) //AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
 
-        if (health <= healthToSpawn && canSpawnEnemies == true && enemyToSpawn != null && enemyToSpawn.GetComponent<EnemyBrain>()!=null) 
-        {
-            for (var i = 0; i < enemiesToSpawn; i++)
-            {
-                Vector3 spawnLoc;
-                    do {
-                        Vector2 dir = Random.insideUnitCircle * spawnRadius;
-
-                        dir = dir.normalized;
-
-                        spawnLoc = transform.position;
-
-                        spawnLoc = spawnLoc + spawnRadius * (Vector3.right * dir.x + Vector3.forward * dir.y);
-                    }
-                    while (brain.CanSeePosition(spawnLoc));
-
-                Instantiate(enemyToSpawn, spawnLoc, Quaternion.identity).GetComponent<EnemyBrain>().Aggro();
-                canSpawnEnemies = false;
-            }
-            
-        }
 
         //Prevent overheal
         if (health > maxHealth) health = maxHealth;
@@ -114,7 +87,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         return (dmg >= health);
     }
 
-    private void Die()
+    protected void Die()
     {
         if (!dead)
         {
