@@ -144,7 +144,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     private void Primary(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
-            Toss();
+            WindUp();
         if (ctx.canceled)
             Return();
     }
@@ -234,6 +234,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         {
             if (isRetracting)
             {
+                
                 pulling = false;
                 if (lassoRB.isKinematic) { lassoRB.isKinematic = false; }
                 lassoRB.velocity = (lassoOrigin.transform.position - lasso.transform.position).normalized * lassoSpeed;
@@ -273,7 +274,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     }
 
     #region NEO Controls
-    private void Toss()
+    private void WindUp()
     {
         if (Time.timeScale != 0 && !pc.isStunned && !pc.isDead && !kicking)
         {
@@ -282,22 +283,28 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 if (!lasso.activeInHierarchy)
                 {
                     pc.attackState = Helpers.LASSOING;
-                    pc.LookAtMouse();
-                    lasso.SetActive(true);
-                    tendril.SetActive(true);
-                    lb.enabled = true;
-                    lasso.transform.parent = null;
-                    lassoRB.isKinematic = false;
-                    lassoRB.velocity = transform.forward * lassoSpeed;
-                    //float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
-                    lb.SetValues(maxThrowLassoDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
-                    lb.Launched();
-                    lasso.transform.forward = transform.forward;
+                    pc.LookAtMouse(true);
                     anim.SetTrigger("TendrilThrow");
-                    StartCoroutine(WaitUntilGrab());
+                    //Comment out when you add the animation call
+                    Toss();
                 }
             }
         }
+    }
+
+    public void Toss()
+    {
+        lasso.SetActive(true);
+        tendril.SetActive(true);
+        lb.enabled = true;
+        lasso.transform.parent = null;
+        lassoRB.isKinematic = false;
+        lassoRB.velocity = transform.forward * lassoSpeed;
+        //float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
+        lb.SetValues(maxThrowLassoDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
+        lb.Launched();
+        lasso.transform.forward = transform.forward;
+        StartCoroutine(WaitUntilGrab());
     }
 
     private IEnumerator WaitUntilGrab()
@@ -704,6 +711,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         if (!isRetracting)
         {
             isRetracting = true;
+            pc.attackState = Helpers.LASSOED;
             //Debug.Log("Start retracting");
             lb.StartRetracting();
             //lassoRB.isKinematic = false;

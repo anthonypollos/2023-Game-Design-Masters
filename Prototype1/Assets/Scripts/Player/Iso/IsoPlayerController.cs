@@ -45,6 +45,8 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
     [SerializeField] private EventReference footsteps;
     [SerializeField] private EventReference dashing;
 
+    Vector3 savedMousePos;
+
     private void Awake()
     {
         //jukebox.SetTransform(transform);
@@ -159,11 +161,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 
         if (attackState==Helpers.LASSOING)
         {
-            if (InputChecker.instance.IsController())
-                LookAtAim();
-            else
-                LookAtMouse();
-
+            LookAtMouse();
         }
         else if (_input != Vector3.zero && attackState==Helpers.NOTATTACKING)
         {
@@ -187,11 +185,18 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
         transform.forward = Helpers.ToIso(_aimInput.normalized);
     }
 
-    public void LookAtMouse()
+    public void LookAtMouse(bool bypass = false)
     {
+        if (!bypass && attackState == Helpers.LASSOING)
+        {
+            var direction = savedMousePos - transform.position;
+            transform.forward = direction.normalized;
+            return;
+        }
         var (success, position) = GetMousePosition();
         if (success)
         {
+            savedMousePos = position;
             var direction = position - transform.position;
 
             direction.y = 0;
@@ -341,5 +346,6 @@ public static class Helpers
     public const int ATTACKING = 2;
     public const int LASSOED = 3;
     public const int PULLING = 4;
+    public const int THROWN = 5;
     
 }
