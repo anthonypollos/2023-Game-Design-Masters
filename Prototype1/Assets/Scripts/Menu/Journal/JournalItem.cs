@@ -42,7 +42,7 @@ public class JournalItem : MonoBehaviour
     public ItemLocation itemLocation;
 
     //Change this value in realtion to the above locations to the scene name
-    private string[] levels = new string[4]{"Tutorial_new", "HubScene", "Town_Connor_Art_Pass", "railyard_v2"};
+    private string[] levels = new string[4]{"Tutorial_new", "HubScene", "Town_Connor_Art_Pass", "C_ArtPass_railyard_v2" };
 
     /// <summary>
     /// Description to display if player has not found item yet
