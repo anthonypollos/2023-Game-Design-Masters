@@ -286,7 +286,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                     pc.LookAtMouse(true);
                     anim.SetTrigger("TendrilThrow");
                     //Comment out when you add the animation call
-                    Toss();
+                    //Toss();
                 }
             }
         }
