@@ -10,5 +10,5 @@ public enum DamageTypes
 }
 public static class StoredValues
 {
-    public static string[] MovableTagsToIgnore = new string[] { "Ground", "Lasso", "FloorHazard" };
+    public static string[] MovableTagsToIgnore = new string[] { "Ground", "Lasso", "FloorHazard", "Gibs" };
 }

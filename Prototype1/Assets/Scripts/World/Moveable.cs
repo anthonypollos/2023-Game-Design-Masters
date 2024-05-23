@@ -238,7 +238,7 @@ public class Moveable : MonoBehaviour, ISlowable
                 tendrilOwner.ForceRelease();
                 tendrilOwner = null;
             }
-            Moveable moveable = collision.transform.GetComponent<Moveable>();
+            Moveable moveable = collision.transform.GetComponentInParent<Moveable>();
             OnClash();
             previousSpeed = speed;
             if (moveable != null)
@@ -275,13 +275,13 @@ public class Moveable : MonoBehaviour, ISlowable
                             moveable.Slammed(dir, 2 * moveable.GetMass() * speed / 2, myCollider);
                         }
                     }
-                    IKickable kickable = collision.transform.GetComponent<IKickable>();
+                    IKickable kickable = collision.transform.GetComponentInParent<IKickable>();
                     if (kickable != null)
                     {
                         kickable.Kicked();
                     }
                     if (!unstoppable)
-                        moveable.ForceReleaseDelayed();
+                        ForceReleaseDelayed();
 
                 }
             }
@@ -301,7 +301,7 @@ public class Moveable : MonoBehaviour, ISlowable
                         moveable.OnClash();
                 }
             }
-            IDamageable damageable = collision.transform.GetComponent<IDamageable>();
+            IDamageable damageable = collision.transform.GetComponentInParent<IDamageable>();
             if (damageable != null)
             {
                 damageable.TakeDamage(CalculateClashDamage());
@@ -309,8 +309,9 @@ public class Moveable : MonoBehaviour, ISlowable
             
             
             //if wall, hard stop
-            else if (!isStopping)
+            else if (!isStopping && collision.gameObject.activeInHierarchy)
             {
+                Debug.Log("Collision Name: " + collision.gameObject.name);
                 EnemyAttackTemplate at = transform.GetComponent<EnemyAttackTemplate>();
                 if(at != null)
                 {
@@ -381,7 +382,7 @@ public class Moveable : MonoBehaviour, ISlowable
                 tendrilOwner.ForceRelease();
                 tendrilOwner = null;
             }
-            Moveable moveable = collision.transform.GetComponent<Moveable>();
+            Moveable moveable = collision.transform.GetComponentInParent<Moveable>();
             OnClash();
             previousSpeed = speed;
             if (moveable != null)
@@ -401,13 +402,13 @@ public class Moveable : MonoBehaviour, ISlowable
                             ForceRelease();
                         }
                     }
-                    IKickable kickable = collision.transform.GetComponent<IKickable>();
+                    IKickable kickable = collision.transform.GetComponentInParent<IKickable>();
                     if (kickable != null)
                     {
                         kickable.Kicked();
                     }
                     if (!unstoppable)
-                        moveable.ForceReleaseDelayed();
+                        ForceReleaseDelayed();
 
                 }
             }
@@ -427,7 +428,7 @@ public class Moveable : MonoBehaviour, ISlowable
                         moveable.OnClash();
                 }
             }
-            IDamageable damageable = collision.transform.GetComponent<IDamageable>();
+            IDamageable damageable = collision.transform.GetComponentInParent<IDamageable>();
             if (damageable != null)
             {
                 damageable.TakeDamage(CalculateClashDamage());
@@ -435,8 +436,9 @@ public class Moveable : MonoBehaviour, ISlowable
             
 
             //if wall, hard stop
-            else if (!isStopping)
+            else if (!isStopping && collision.gameObject.activeInHierarchy)
             {
+                Debug.Log("Collision name: " + collision.gameObject.name);
                 EnemyAttackTemplate at = transform.GetComponent<EnemyAttackTemplate>();
                 if (at != null)
                 {
@@ -521,6 +523,8 @@ public class Moveable : MonoBehaviour, ISlowable
 
     private IEnumerator Stop()
     {
+        if (unstoppable)
+            Debug.Log("Test");
         buffer = 0;
         initialPull = false;
         flyingHitBox.SetActive(false);

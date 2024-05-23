@@ -83,11 +83,13 @@ public class BossEnemyBrain : EnemyBrain
 
     public void Enrage()
     {
+        bossAttacks.Enrage();
         state = EnemyStates.ENRAGED;
     }
 
     public void Calm()
     {
+        an.SetTrigger("Calmed");
         state = EnemyStates.NOTHING;
     }
 }

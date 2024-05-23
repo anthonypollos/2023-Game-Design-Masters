@@ -139,6 +139,12 @@ public class BossEnemyAttacks : EnemyAttackTemplate
             animationTimer = 0;
     }
 
+    public void Enrage()
+    {
+        animationTimer = float.MinValue;
+        count = 0;
+    }
+
     public override void AttackEnd()
     {
         

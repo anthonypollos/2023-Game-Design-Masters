@@ -39,7 +39,7 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
 
     protected float count = 0;
 
-    protected float animationTimer = float.MinValue;
+    [SerializeField] protected float animationTimer = float.MinValue;
 
     protected float currentWaitingTime = float.MaxValue;
 
@@ -102,7 +102,7 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
             return;
         }
         currentWaitingTime = attackWindUpSeconds[attack];
-        if(animationTimer<0)
+        if(animationTimer<0 && brain.an.GetBool("Attacking"))
             animationTimer = 0;
         windUp = true;
     }
@@ -118,7 +118,7 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
             return;
         }
         currentWaitingTime = attackWindDownSeconds[attack];
-        if(animationTimer<0)
+        if (animationTimer < 0 && brain.an.GetBool("Attacking"))
             animationTimer = 0;
     }
 
@@ -148,6 +148,7 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
             brain.state = EnemyStates.NOTHING;
         windUp = false;
         brain.an.SetBool("Attacking", false);
+        animationTimer = float.MinValue;
         //Debug.Log(Time.realtimeSinceStartup - timeTest);
     }
 

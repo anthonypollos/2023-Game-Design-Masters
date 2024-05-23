@@ -30,4 +30,9 @@ public class BossEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         Break();
     }
+
+    public void DashCollide()
+    {
+        return;
+    }
 }
