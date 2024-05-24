@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour
     [SerializeField] Button topButtonPause;
     [SerializeField] Button topButtonDead;
     [SerializeField] List<string> nonGameScenes;
-    bool inCombat = false;
+    bool inCombat = true;
 
     bool paused;
     bool journalOpen;
@@ -81,6 +81,7 @@ public class GameController : MonoBehaviour
         }
         if (CombatMusicManager != null)
         CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
+        CombatState(false);
     }
     private void OnEnable()
     {
@@ -91,7 +92,7 @@ public class GameController : MonoBehaviour
         mc.Main.ToggleLasso.performed += _ => ToggleLasso();
         mc.Main.Journal.performed += _ => ToggleJournal();
 
-        CombatState(true);
+        //CombatState(true);
     }
 
     private void OnDisable()
