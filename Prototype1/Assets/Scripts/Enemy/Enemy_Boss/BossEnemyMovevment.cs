@@ -31,6 +31,7 @@ public class BossEnemyMovevment : EnemyMovement
             }
             rb.AddForce(dir * rb.mass * chargeTurningMomentum, ForceMode.Impulse);
             float adjustedMS = chargeMaxSpeed * (1 - Mathf.Max(slowModsArray));
+            rb.velocity = new Vector3(rb.velocity.x, Mathf.Min(rb.velocity.y, 0), rb.velocity.z);
             rb.velocity = rb.velocity.normalized * adjustedMS;
             Vector3 velocityNoY = rb.velocity - new Vector3(0, rb.velocity.y);
             if(velocityNoY!=Vector3.zero)
