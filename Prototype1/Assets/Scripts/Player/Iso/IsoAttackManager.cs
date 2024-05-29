@@ -190,30 +190,6 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         yield return new WaitForSeconds(chargeTime);
         charged = false;
     }
-    private void Kick()
-    {
-        if (Time.timeScale != 0 && !pc.isStunned)
-        {
-            if (canKick && !kicking && !isCharging && !pc.moveable.isLaunched)
-            {
-                pc.attackState = Helpers.ATTACKING;
-                if (InputChecker.instance.IsController())
-                    pc.LookAtAim();
-                else
-                    pc.LookAtMouse();
-                kicking = true;
-                canKick = false;
-
-                kick.SetActive(true);
-                //jukebox.PlaySound(0);
-                //Debug.Log("I kick em!");
-                // could move kick anim trigger here?
-            }
-        }
-
-    }
-
-
 
     public void ActivateKick(GameObject target)
     {
@@ -381,94 +357,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     }
     #endregion
 
-    #region OG Controls
-    private void LassoCharge()
-    {
-        if (Time.timeScale != 0 && !pc.isStunned)
-        {
-            if (!pc.moveable.isLaunched)
-            {
-                //LassoBehavior lb = FindObjectOfType<LassoBehavior>();
-                if (!lasso.activeInHierarchy)
-                {
-                    currentLassoCharge = 0;
-                    lr.enabled = true;
-                    pc.attackState = Helpers.LASSOING;
-                    isCharging = true;
 
-                    if (outlineToggle != null)
-                        outlineToggle.ToggleOutline(true);
-                }
-                else
-                {
-                    if (lb.GetAttachment().Item1 != null)
-                        pulling = true;
-                    else
-                        ignoreRelease = true;
-                }
-            }
-        }
-    }
-
-
-
-
-    private void Lasso()
-    {
-        if (ignoreRelease)
-        {
-            ignoreRelease = false;
-            return;
-        }
-
-        if (Time.timeScale != 0 && !pc.isStunned && !pc.isDead)
-        {
-            currentTime = 0;
-            restTime = 0;
-            if (!lasso.activeInHierarchy && !kicking && isCharging)
-            {
-                isCharging = false;
-                if (!pc.moveable.isLaunched)
-                {
-                    pc.attackState = Helpers.LASSOED;
-                    //GameObject temp = Instantiate(lasso, transform.position, Quaternion.identity);
-                    lasso.SetActive(true);
-                    tendril.SetActive(true);
-                    lb.enabled = true;
-                    lasso.transform.parent = null;
-                    lassoRB.isKinematic = false;
-                    lassoRB.velocity = transform.forward * lassoSpeed;
-                    float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
-                    //LassoBehavior lb = temp.GetComponent<LassoBehavior>();
-                    lb.SetValues(currentDistance, maxLassoDistance, lassoRangeUIIndicator, sliderFill);
-                    lb.Launched();
-                    anim.SetTrigger("TendrilThrow");
-                }
-                else
-                {
-                    if (pc.attackState != Helpers.ATTACKING)
-                        pc.attackState = Helpers.NOTATTACKING;
-                }
-            }
-
-            if (lasso.activeInHierarchy && lb.GetAttachment().Item2 != null)
-            {
-                bool flick = pulling;
-                Moveable moveable = lb.GetAttachment().Item2;
-                ForceRelease();
-                if (flick)
-                {
-                    moveable.Tossed(tossSpeed);
-                }
-                //jukebox.PlaySound(Random.Range(1,4));
-                PickEffortSound(tendrilsound, Random.Range(1, 10));
-                //AudioManager.instance.PlayOneShot(tendrilsound, this.transform.position);
-            }
-        }
-
-
-    }
-    #endregion
 
     public void PickEffortSound(EventReference tendrilsound, int selection)
     {
@@ -632,6 +521,8 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                     //Debug.Log(calculatedDistance);
                     //Debug.Log(dir.magnitude);
                     moveable.Launched(dir * calculatedDistance, CalculatePullSpeed());
+                    Vector3 toPlayer = transform.position - moveable.transform.position;
+                    moveable.transform.forward = toPlayer.normalized;
                     currentTime = Mathf.Clamp(currentTime + Time.fixedDeltaTime, 0, timeToMax);
                     restTime = 0;
                 }
@@ -645,32 +536,15 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                     else
                         restTime += Time.fixedDeltaTime;
                 }
-                //lb.transform.position = moveable.transform.position;
-                //Rigidbody rb = target.GetComponent<Rigidbody>();
-                //var (success, position) = pc.GetMousePosition();
-                //if (success)
-                //{
-                // Vector3 dir = ((transform.position + (position - transform.position).normalized * (Vector3.Distance(transform.position, target.transform.position) / 1.5f)) - target.transform.position).normalized;
-                //dir.y = 0;
-                //rb.velocity = (dir * pullForce / rb.mass) + Vector3.up / 5 * pullForce;
-                //}
-                // else
-                //{
-                //Vector3 dir = ((transform.position + transform.forward * (Vector3.Distance(transform.position, target.transform.position) / 1.5f)) - target.transform.position).normalized;
-                //dir.y = 0;
-                //rb.velocity = (dir * pullForce / rb.mass) + Vector3.up / 5 * pullForce;
-                //}
-                //target.GetComponent<IPullable>().Pulled();
+
             }
-            //lassoRangeUIIndicator.gameObject.SetActive(false);
-            //lb.transform.parent = null;
+
             target.GetComponent<IPullable>().Pulled(this);
         }
         if (moveable == null)
         {
             ForceRelease();
         }
-        //Release();
     }
 
 

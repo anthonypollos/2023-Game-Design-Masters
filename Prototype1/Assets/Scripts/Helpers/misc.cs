@@ -18,3 +18,35 @@ public static class BasicMath
         return new Vector2(x, y);   
     }
 }
+
+public static class GameObjectSearcher
+{
+    public static GameObject FindChildObjectWithTag(this GameObject parent, string tag)
+    {
+        foreach(Transform t in parent.transform)
+        {
+            if(t.CompareTag(tag))
+            {
+                return t.gameObject;
+
+            }
+        }
+        return null;
+    }
+
+    public static T FindComponentInChildWithTag<T>(this GameObject parent, string tag)
+    {
+        foreach (Transform t in parent.transform)
+        {
+            if (t.CompareTag(tag))
+            {
+                T temp = t.GetComponent<T>();
+                if(temp!=null)
+                {
+                    return temp;
+                }
+            }
+        }
+        return default(T);
+    }
+}

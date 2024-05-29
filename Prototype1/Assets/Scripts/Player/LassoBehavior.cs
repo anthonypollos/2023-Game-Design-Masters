@@ -16,6 +16,8 @@ public class LassoBehavior : MonoBehaviour
     private float maxDistance = 999;
     private GameObject attached;
     private Rigidbody attachedRB;
+    private RigidbodyConstraints prevConstraints;
+    private GameObject attachedTendrilVisual;
     private bool grounded;
     private Vector3 startingPos;
     private Quaternion startingRot;
@@ -53,6 +55,7 @@ public class LassoBehavior : MonoBehaviour
         grounded = false;
         attached = null;
         attachedRB = null;
+        attachedTendrilVisual = null;
         moveable = null;
         startingPos = transform.position;
         startingRot = transform.rotation;
@@ -92,6 +95,7 @@ public class LassoBehavior : MonoBehaviour
         return (dir, calculatedDistance * attachedRB.mass);
     }
 
+
     public void Launched()
     {
         if(colliders == null)
@@ -117,9 +121,17 @@ public class LassoBehavior : MonoBehaviour
             }
             else if (temp.GetComponentInParent<IPullable>() != null)
             {
+                if (colliders == null)
+                    colliders = new List<Collider>(GetComponentsInChildren<Collider>(true));
+                foreach (Collider collider in colliders)
+                    collider.enabled = false;
                 attached = temp;
                 forwardVector = (player.position - attached.transform.position).normalized;
-                
+                attachedTendrilVisual = temp.FindChildObjectWithTag("Tendriled");
+                if(attachedTendrilVisual != null)
+                {
+                    attachedTendrilVisual.SetActive(true);
+                }
                 //Physics.IgnoreCollision(GetComponent<Collider>(), temp.GetComponent<Collider>(), true);
                 //gameObject.transform.parent = temp.transform;
                 //transform.localPosition = Vector3.zero;
@@ -130,9 +142,13 @@ public class LassoBehavior : MonoBehaviour
                     moveable.tendrilOwner = attackManager;
                     moveable.Grabbed();
                     attachedRB = temp.GetComponent<Rigidbody>();
+                    prevConstraints = attachedRB.constraints;
+                    temp.transform.up = Vector3.up;
+                    Vector3 toPlayer = player.transform.position - temp.transform.position;
+                    temp.transform.forward = toPlayer.normalized;
+                    attachedRB.freezeRotation = true;
                     //lassoRange.SetAttached(attached.transform, attachedRB);
                     lr.enabled = true;
-
                     adjustedPullRange = maxPullDistance / attachedRB.mass;
                 }
                 attached.GetComponentInParent<IPullable>().Lassoed();
@@ -308,18 +324,28 @@ public class LassoBehavior : MonoBehaviour
             attached.GetComponentInParent<IPullable>().Break();
             //jukebox.PlaySound(1);
         }
-        if(moveable!=null)
+        if (attachedRB != null)
+        {
+            attachedRB.freezeRotation = false;
+            attachedRB.constraints = prevConstraints;
+            
+        }
+        if(attachedTendrilVisual != null)
+        {
+            attachedTendrilVisual.SetActive(false);
+        }
+        if (moveable!=null)
         {
             moveable.ForceRelease();
             moveable.tendrilOwner = null;
         }
+        attachedRB = null;
+        prevConstraints = default;
+        attachedTendrilVisual = null;
         moveable = null;
         attached = null;
         lr.enabled = false;
-        if(colliders == null)
-            colliders = new List<Collider>(GetComponentsInChildren<Collider>(true));
-        foreach (Collider collider in colliders)
-            collider.enabled = false;
+        
     }
 
 
