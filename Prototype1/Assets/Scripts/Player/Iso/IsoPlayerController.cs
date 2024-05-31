@@ -5,8 +5,14 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using FMODUnity;
 
+
+public enum GroundTypes
+{
+    DEFAULT, DIRT, STONE, WOOD, METAL
+}
 public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 {
+
     [SerializeField] [Tooltip("The rigidbody used for movement")] private Rigidbody _rb;
     [SerializeField] [Tooltip("The player's movement speed")] private float _speed = 5;
     //[SerializeField][Tooltip("The player's turn speed")] private float _turnSpeed = 360;
@@ -42,6 +48,8 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
     List<float> slowMods;
     float[] slowModsArray;
 
+    [Header("Sound Variables")]
+    [SerializeField] GroundTypes currentGroundType = GroundTypes.DEFAULT;
     [SerializeField] private EventReference footsteps;
     [SerializeField] private EventReference dashing;
 
@@ -286,8 +294,11 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
             adjustedSpeed *= speedModWhenPulling;
         _rb.velocity = _input.ToIso().normalized * adjustedSpeed + (Vector3.up * Mathf.Clamp(_rb.velocity.y, Mathf.NegativeInfinity, 0));
 
+        Vector3 temp = _rb.velocity;
+        temp.y = 0;
+
         // Set forward/back movement float; will have to change
-        if (_rb.velocity.magnitude > 0.1)
+        if (temp.magnitude > 1)
             anim.SetFloat("YMov", 1);
         else
             anim.SetFloat("YMov", 0);
@@ -319,12 +330,42 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
         attackState = Helpers.NOTATTACKING;
     }
 
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            GroundTypeContainer gtc = collision.gameObject.GetComponent<GroundTypeContainer>();
+            if (gtc != null)
+                currentGroundType = gtc.GetGroundType();
+            else
+                currentGroundType = GroundTypes.DEFAULT;
+        }
+    }
+
 
     public void Footsteps()
     {
-
         //jukebox.PlaySound(1);
-        AudioManager.instance.PlayOneShot(footsteps, this.transform.position);
+        switch(currentGroundType)
+        {
+            case GroundTypes.DEFAULT:
+                AudioManager.instance.PlayOneShot(footsteps, this.transform.position);
+                break;
+            case GroundTypes.DIRT:
+                AudioManager.instance.PlayOneShot(footsteps, this.transform.position);
+                break;
+            case GroundTypes.METAL:
+                AudioManager.instance.PlayOneShot(footsteps, this.transform.position);
+                break;
+            case GroundTypes.STONE:
+                AudioManager.instance.PlayOneShot(footsteps, this.transform.position);
+                break;
+            case GroundTypes.WOOD:
+                AudioManager.instance.PlayOneShot(footsteps, this.transform.position);
+                break;
+
+
+        }
     }
 
 

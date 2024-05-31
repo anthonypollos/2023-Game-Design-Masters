@@ -86,7 +86,8 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
     //Set the windup time for the animation and begins the windup
     public void WindUpTrigger(int attack)
     {
-        
+
+        brain.an.ResetTrigger("NextState");
         brain.an.SetFloat("AttackMod", 1);
         attack = attack - 1;
         if (attack < 0 && attack >= attackWindUpSeconds.Length)
@@ -110,6 +111,7 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
     //Sets the wind down time for the animation and begins the winddown
     public void WindDownTrigger(int attack)
     {
+        brain.an.ResetTrigger("NextState");
         brain.an.SetFloat("AttackMod", 1);
         attack = attack - 1;
         if (attack < 0 && attack >= attackWindDownSeconds.Length)
@@ -125,6 +127,8 @@ public abstract class EnemyAttackTemplate : MonoBehaviour
     //triggers the attack and sets the speed of the animation to match
     public void AttackTrigger(int attack)
     {
+        animationTimer = float.MinValue;
+        brain.an.ResetTrigger("NextState");
         attack = attack - 1;
         if (attack < 0 && attack >= attackSeconds.Length)
         {

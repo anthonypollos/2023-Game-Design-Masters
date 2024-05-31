@@ -43,6 +43,7 @@ public class Moveable : MonoBehaviour, ISlowable
     public IsoAttackManager tendrilOwner;
     Vector3 dir;
     bool unstoppable = false;
+    List<Collider> collidersRubbed;
     List<Collider> collidersHit;
     Collider myCollider;
     List<Collider> myColliders;
@@ -77,6 +78,7 @@ public class Moveable : MonoBehaviour, ISlowable
         myColliders = new List<Collider>(GetComponentsInChildren<Collider>());
         playerCollider = GameController.GetPlayer().GetComponent<Collider>();
         collidersHit = new List<Collider>();
+        collidersRubbed = new List<Collider>();
         hasDamaged = new List<Moveable>();
         hold = false;
         string[] temp = { "Ground", "Ground_Transparent" };
@@ -197,8 +199,14 @@ public class Moveable : MonoBehaviour, ISlowable
     {
         if (!collision.transform.CompareTags(StoredValues.MovableTagsToIgnore) && isLaunched && buffer>.5f)
         {
-            if (collidersHit.Contains(collision.collider))
+            if (collidersHit.Contains(collision.collider) || collidersRubbed.Contains(collision.collider))
                 return;
+            Moveable temp = collision.gameObject.GetComponent<Moveable>();
+            if(temp != null)
+            {
+                collidersRubbed.Add(collision.collider);
+                return;
+            }
             Debug.Log("Broke on " + collision.gameObject.name);
             //Debug.Log("collide stay");
             if (tendrilOwner != null)
@@ -213,6 +221,7 @@ public class Moveable : MonoBehaviour, ISlowable
                 stopping = StartCoroutine(Stop());
         }
     }
+
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -253,8 +262,15 @@ public class Moveable : MonoBehaviour, ISlowable
                             Vector3 dir = collision.transform.position - collision.contacts[0].point;
                             dir.y = 0;
                             dir = dir.normalized;
-                            moveable.Slammed(dir, rb.mass * speed / 2, myCollider);
-                            speed /= 2;
+                            if (maxDamage > 0)
+                            {
+                                moveable.Slammed(dir, rb.mass * speed / 2, myCollider);
+                                speed /= 2;
+                            }
+                            else
+                            {
+                                speed = 0;
+                            }
                             ForceRelease();
                         }
                         else
@@ -338,8 +354,14 @@ public class Moveable : MonoBehaviour, ISlowable
     {
         if (!collision.transform.CompareTags(StoredValues.MovableTagsToIgnore) && isLaunched && buffer > .5f)
         {
-            if (collidersHit.Contains(collision))
+            if (collidersHit.Contains(collision) | collidersRubbed.Contains(collision))
                 return;
+            Moveable temp = collision.gameObject.GetComponent<Moveable>();
+            if (temp != null)
+            {
+                collidersRubbed.Add(collision);
+                return;
+            }
             Debug.Log("Broke on" +  collision.gameObject.name);
             //Debug.Log("collide stay");
             if (tendrilOwner != null)
@@ -397,8 +419,15 @@ public class Moveable : MonoBehaviour, ISlowable
                             Vector3 dir = collision.transform.position - collision.ClosestPointOnBounds(transform.position);
                             dir.y = 0;
                             dir = dir.normalized;
-                            moveable.Slammed(dir, rb.mass * speed / 2, myCollider);
-                            speed /= 2;
+                            if (maxDamage > 0)
+                            {
+                                moveable.Slammed(dir, rb.mass * speed / 2, myCollider);
+                                speed /= 2;
+                            }
+                            else
+                            {
+                                speed = 0;
+                            }
                             ForceRelease();
                         }
                     }
@@ -558,6 +587,7 @@ public class Moveable : MonoBehaviour, ISlowable
         }
         hasDamaged.Clear();
         collidersHit.Clear();
+        collidersRubbed.Clear();
     }
 
     public void Launched(Vector3 target, float force)

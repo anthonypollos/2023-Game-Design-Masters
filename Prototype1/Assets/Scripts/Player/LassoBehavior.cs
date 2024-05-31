@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using FMODUnity;
+using Unity.VisualScripting;
 
 public class LassoBehavior : MonoBehaviour
 {
@@ -142,6 +143,7 @@ public class LassoBehavior : MonoBehaviour
                     moveable.tendrilOwner = attackManager;
                     moveable.Grabbed();
                     attachedRB = temp.GetComponent<Rigidbody>();
+                    attached.GetComponentInParent<IPullable>().Lassoed();
                     prevConstraints = attachedRB.constraints;
                     temp.transform.up = Vector3.up;
                     Vector3 toPlayer = player.transform.position - temp.transform.position;
@@ -151,7 +153,8 @@ public class LassoBehavior : MonoBehaviour
                     lr.enabled = true;
                     adjustedPullRange = maxPullDistance / attachedRB.mass;
                 }
-                attached.GetComponentInParent<IPullable>().Lassoed();
+                else
+                    attached.GetComponentInParent<IPullable>().Lassoed();
                 if (gc.toggleLasso)
                 {
                     dir = forwardVector;
@@ -216,7 +219,7 @@ public class LassoBehavior : MonoBehaviour
             {
                 //Debug.Log(attached.transform.position);
                 transform.position = attached.transform.position;
-                if (!attached.activeInHierarchy)
+                if (!attached.activeInHierarchy || attached.IsDestroyed())
                 {
                     attackManager.ForceRelease();
                 }
@@ -307,7 +310,7 @@ public class LassoBehavior : MonoBehaviour
                 
                 
         }
-        //Debug.Log(returnValue);
+        Debug.Log(returnValue);
         return returnValue;
     }
 
@@ -317,9 +320,21 @@ public class LassoBehavior : MonoBehaviour
         thrown = false;
     }
 
-    public void StartRetracting()
+    public void Retracting()
     {
         if(attached!=null)
+        {
+            StartRetracting();
+        }
+    }
+
+    public void StartRetracting()
+    {
+        if (colliders == null)
+            colliders = new List<Collider>(GetComponentsInChildren<Collider>(true));
+        foreach (Collider collider in colliders)
+            collider.enabled = false;
+        if (attached!=null)
         {
             attached.GetComponentInParent<IPullable>().Break();
             //jukebox.PlaySound(1);
@@ -328,6 +343,7 @@ public class LassoBehavior : MonoBehaviour
         {
             attachedRB.freezeRotation = false;
             attachedRB.constraints = prevConstraints;
+
             
         }
         if(attachedTendrilVisual != null)

@@ -41,6 +41,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     private bool wasFrozen;
     //This float stores the mass of the object if frozenBeforeTendril is true.
     private float realMass;
+    bool justLassoed;
 
     //The following setup is for making stationary objects solid
     [Header("Stationary Object Settings")]
@@ -82,7 +83,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         //Staggering this check will help save on perf
         if (_freezeOnStationary)
         {
-            InvokeRepeating(nameof(checkStationary), Random.Range(0,1f) , stationaryCheckRate);
+            InvokeRepeating(nameof(CheckStationary), Random.Range(0,1f) , stationaryCheckRate);
         }
     }
 
@@ -145,7 +146,11 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
 
     public void Lassoed()
     {
-        
+        if(_frozenBeforeTendril)
+        {
+            justLassoed = true;
+            Unfreeze();
+        }
     }
 
     public void Break()
@@ -320,9 +325,16 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     }
 
     //If this object freezes when it's stationary, run this check every stationarycheckrate seconds
-    private void checkStationary()
+    private void CheckStationary()
     {
         //In order to make sure the mass doesn't repeatedly reset if this object is set to freeze while stationary, we check to make sure _frozenBeforeTendril is false before running this
-         if (GetComponent<Rigidbody>().IsSleeping() && !_frozenBeforeTendril) Freeze();
+        if (justLassoed && GetComponent<Rigidbody>().IsSleeping() && !_frozenBeforeTendril)
+        {
+            Freeze();
+        }
+        else if (justLassoed)
+        {
+            justLassoed = false;
+        }
     }
 }

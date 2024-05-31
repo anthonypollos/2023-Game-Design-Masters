@@ -38,6 +38,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     //[SerializeField] [Tooltip("Toggle lasso pull mechanic")] bool toggleLasso;
     float currentLassoCharge;
     bool isCharging;
+    bool releasedDuringCharge;
     LineRenderer lr;
     [Header("Kick Properties")]
     [SerializeField] [Tooltip("The force of the kick")] float kickForce;
@@ -210,7 +211,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         {
             if (isRetracting)
             {
-                
+                lb.Retracting();
                 pulling = false;
                 if (lassoRB.isKinematic) { lassoRB.isKinematic = false; }
                 lassoRB.velocity = (lassoOrigin.transform.position - lasso.transform.position).normalized * lassoSpeed;
@@ -229,23 +230,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                     Pull(lb);
                 }
             }
-            if (isCharging && !pc.moveable.isLaunched)
-            {
-                lr.enabled = true;
-                currentLassoCharge = Mathf.Clamp(currentLassoCharge + Time.deltaTime, 0, lassoChargeTime);
-                float currentDistance = minThrowLassoDistance + (maxThrowLassoDistance - minThrowLassoDistance) * currentLassoCharge / lassoChargeTime;
-                Vector3[] positions = { transform.position, transform.forward * currentDistance + transform.position };
-                lr.SetPositions(positions);
-            }
-            else
-            {
-                lr.enabled = false;
-            }
-        }
-        if (Time.timeScale == 0 && isCharging)
-        {
-            isCharging = false;
-            lr.enabled = false;
+
         }
     }
 
@@ -258,9 +243,19 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             {
                 if (!lasso.activeInHierarchy)
                 {
-                    pc.attackState = Helpers.LASSOING;
-                    pc.LookAtMouse(true);
-                    anim.SetTrigger("TendrilThrow");
+                    if (!isCharging)
+                    {
+                        pc.attackState = Helpers.LASSOING;
+                        pc.LookAtMouse(true);
+                        releasedDuringCharge = false;
+                        isCharging = true;
+                        anim.SetTrigger("TendrilThrow");
+                    }
+                    else
+                    {
+                        releasedDuringCharge = false;
+                    }
+                    
                     //Comment out when you add the animation call
                     //Toss();
                 }
@@ -270,6 +265,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     public void Toss()
     {
+        isCharging = false;
         lasso.SetActive(true);
         tendril.SetActive(true);
         lb.enabled = true;
@@ -281,6 +277,10 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         lb.Launched();
         lasso.transform.forward = transform.forward;
         StartCoroutine(WaitUntilGrab());
+        if(releasedDuringCharge)
+        {
+            Return();
+        }
     }
 
     private IEnumerator WaitUntilGrab()
@@ -298,7 +298,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
     {
         if (Time.timeScale != 0 && !pc.isStunned && !pc.isDead)
         {
-            Debug.Log("return");
+            //Debug.Log("return");
             if (lasso.activeInHierarchy)
             {
                 if (lb.GetAttachment().Item2 != null)
@@ -318,6 +318,10 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 {
                     StartCoroutine(WaitForRetraction());
                 }
+            }
+            else if (isCharging)
+            {
+                releasedDuringCharge = true;
             }
         }
     }
