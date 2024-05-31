@@ -105,17 +105,6 @@ public partial class @MenuControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""4890523f-318b-4992-83f3-d3737864e9be"",
-                    ""path"": ""<Keyboard>/p"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Menu"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""74196267-f22e-47fb-9f83-6f9adafb4e95"",
                     ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
