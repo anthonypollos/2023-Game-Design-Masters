@@ -21,6 +21,10 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
 
     //[SerializeField] private JukeBox jukebox;
     [SerializeField] private EventReference enemyShoot;
+
+    //TEMPORARY HACK UNTIL WE GET ANIMS IN!!!!!!!
+    [SerializeField] private GameObject muzzleFlash;
+
     private void Awake()
     {
         //jukebox.SetTransform(transform);
@@ -62,9 +66,12 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
         //jukebox.PlaySound(1);
         AudioManager.instance.PlayOneShot(enemyShoot, this.transform.position);
         //if (currentShot%multiShotInterval == 0) Debug.Log("trigger multi");
+        //TEMP HACK FOR SPAWNING THE MUZZLEFLASH
+        GameObject placeholderMuzzleflash = Instantiate(muzzleFlash,transform,false);
+        Destroy(placeholderMuzzleflash.gameObject, 3);
         for (int i = 0; i < projectilesToSpawn; i++)
         { 
-            IProjectile shot = Instantiate(projectile, shootLocation.position, Quaternion.identity).GetComponent<IProjectile>();
+            IProjectile shot = Instantiate(projectile, shootLocation.position, transform.rotation).GetComponent<IProjectile>();
             switch (i)
             {
                 case 0:

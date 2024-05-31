@@ -8,6 +8,8 @@ public class ThornBehavior : MonoBehaviour, IProjectile
     [SerializeField] float despawnTime = 20f;
     [SerializeField] int damage = 15;
     [SerializeField] float speed = 4f;
+
+    [SerializeField] GameObject impactFX;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,8 +33,12 @@ public class ThornBehavior : MonoBehaviour, IProjectile
                 id.TakeDamage(damage);
             Destroy(gameObject);
         }
-        if (gameObject.CompareTag("Wall") || gameObject.CompareTag("Ground"))
+        if (hit.CompareTag("Wall") || hit.CompareTag("Ground"))
+        {
+            GameObject Impact = Instantiate(impactFX, transform.position, Quaternion.identity);
+            Destroy(Impact, 3);
             Destroy(gameObject);
+        }
     }
 
     public void Shoot(Vector3 dir, Vector3 playerPos)
