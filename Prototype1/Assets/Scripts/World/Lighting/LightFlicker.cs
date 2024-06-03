@@ -14,9 +14,11 @@ public class LightFlicker : MonoBehaviour
     //[Tooltip("The Strength of the flickering. Default is 1.")]
     private float flickerScale = 1f;
     [Tooltip("The lowest intensity the flicker can go to. Default is 0.8.\nMultiplied by flickerScale.")]
-    public float flickerMin = 0.8f;
+    public float flickerMin = 0.9f;
     [Tooltip("The highest intensity the flicker can go to. Default is 1.2.\nMultiplied by flickerScale.")]
-    public float flickerMax = 1.2f;
+    public float flickerMax = 1.1f;
+    [Tooltip("The number of times this light changes per second.")]
+    public float rate = 30f;
     //The component of the light we're going to be flickering
     private Light Lightcomponent;
     //The light's original intensity;
@@ -27,11 +29,17 @@ public class LightFlicker : MonoBehaviour
     {
         Lightcomponent = GetComponent<Light>();
         LightIntensity = GetComponent<Light>().intensity;
+        InvokeRepeating("Flicker", Random.Range(0, 3f), (1f / rate));
     }
 
     // FixedUpdate so that the flickering isn't too fast. Also improves perf
     void FixedUpdate()
     {
-        Lightcomponent.intensity = LightIntensity * ( Random.Range(flickerMin,flickerMax) * flickerScale );
+        //Lightcomponent.intensity = LightIntensity * ( Random.Range(flickerMin,flickerMax) * flickerScale );
+    }
+
+    void Flicker()
+    {
+        Lightcomponent.intensity = LightIntensity * (Random.Range(flickerMin, flickerMax) * flickerScale);
     }
 }
