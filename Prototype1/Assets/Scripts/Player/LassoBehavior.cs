@@ -57,6 +57,7 @@ public class LassoBehavior : MonoBehaviour
         attached = null;
         attachedRB = null;
         attachedTendrilVisual = null;
+        prevConstraints = new RigidbodyConstraints();
         moveable = null;
         startingPos = transform.position;
         startingRot = transform.rotation;
@@ -116,16 +117,27 @@ public class LassoBehavior : MonoBehaviour
         GameObject temp = collision.gameObject;
         if (attached == null && !grounded)
         {
+            IPullable pullable = null;
             if (temp.CompareTag("Ground") || temp.CompareTag("Wall"))
             {
                 attackManager.Release();
             }
-            else if (temp.GetComponentInParent<IPullable>() != null)
+            else
+            {
+                pullable = temp.GetComponentInParent<IPullable>();
+            }
+            if (pullable!= null)
             {
                 if (colliders == null)
                     colliders = new List<Collider>(GetComponentsInChildren<Collider>(true));
                 foreach (Collider collider in colliders)
                     collider.enabled = false;
+                if (pullable.GetType() == typeof(BossEnemyInteractions))
+                {
+                    attackManager.Release();
+                    return;
+                }
+                
                 attached = temp;
                 forwardVector = (player.position - attached.transform.position).normalized;
                 attachedTendrilVisual = temp.FindChildObjectWithTag("Tendriled");
@@ -137,12 +149,12 @@ public class LassoBehavior : MonoBehaviour
                 //gameObject.transform.parent = temp.transform;
                 //transform.localPosition = Vector3.zero;
                 gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                moveable = temp.GetComponent<Moveable>();
+                moveable = temp.GetComponentInParent<Moveable>();
                 if (moveable != null)
                 {
                     moveable.tendrilOwner = attackManager;
                     moveable.Grabbed();
-                    attachedRB = temp.GetComponent<Rigidbody>();
+                    attachedRB = temp.GetComponentInParent<Rigidbody>();
                     attached.GetComponentInParent<IPullable>().Lassoed();
                     prevConstraints = attachedRB.constraints;
                     temp.transform.up = Vector3.up;
