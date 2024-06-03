@@ -9,7 +9,7 @@ public class JournalItem : MonoBehaviour
 {
     // THIS IS TEMP!!! UNTIL TIED IN W SAVE SYSTEM!!!
     public bool isFound = false;
-    [Tooltip("Nothing = always avalible, itemID = requires ID to be collected, levelCheck requires level (ItemLocation variable) to be completed")]
+    [Tooltip("Nothing = always available, itemID = requires ID to be collected, levelCheck requires level (ItemLocation variable) to be completed")]
     enum CollectedCheck {nothing, itemID, levelCheck}
     [SerializeField] CollectedCheck collectedCheck;
 
