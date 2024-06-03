@@ -49,7 +49,10 @@ public class pulseShader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        pulseMat = GetComponent<MeshRenderer>().material;
+        if(GetComponent<MeshRenderer>() != null)
+            pulseMat = GetComponent<MeshRenderer>().material;
+        else if(GetComponent<SkinnedMeshRenderer>() != null)
+            pulseMat = GetComponent<SkinnedMeshRenderer>().material;
 
         AssignVariables();
 
