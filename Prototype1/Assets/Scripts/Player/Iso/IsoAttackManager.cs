@@ -265,6 +265,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     public void Toss()
     {
+        anim.ResetTrigger("NextState");
         isCharging = false;
         lasso.SetActive(true);
         tendril.SetActive(true);
