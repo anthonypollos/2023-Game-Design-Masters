@@ -21,14 +21,11 @@ public class ParallaxObject : MonoBehaviour
     {
         startPos = transform.position;
 
-        inputChecker = FindObjectOfType<InputChecker>();
+        //inputChecker = FindObjectOfType<InputChecker>();
     }
 
     void Update()
     {
-        if (inputChecker.IsController())
-            ParallaxAxis();
-        else
             ParallaxMouse();
     }
 

@@ -54,7 +54,8 @@ public class CollectMissionBehavior : MissionBehavior
         string editedMissionText = missionText;
         if(!triggered)
         {
-            editedMissionText += " (" + collected + "/" + missionCollectables.Count + ")";
+            if(missionCollectables.Count > 1)
+                editedMissionText += " (" + collected + "/" + missionCollectables.Count + ")";
         }
         return (editedMissionText, base.GetMissionText().Item2);
     }

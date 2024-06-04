@@ -6,6 +6,7 @@ using TMPro;
 using Ink.Runtime;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using FMODUnity;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -38,8 +39,12 @@ public class DialogueManager : MonoBehaviour
     private const string NPC_SPEAKER = "ns";
     private const string PC_NAME = "pn";
     private const string NPC_NAME = "nn";
+    private const string PLAY_VOICE_CLIP = "vc";
+    private int lastVoiceClipValue;
     private string activeName;
 
+    private StudioEventEmitter studioEventEmitter;
+    [SerializeField] private EventReference[] voiceClips;
     private void Awake()
     {
         if (instance != null)
@@ -71,6 +76,9 @@ public class DialogueManager : MonoBehaviour
         choiceBuffer = false;
         choiceNeeded = false;
         currentStory = null;
+        studioEventEmitter = gameObject.GetComponent<StudioEventEmitter>();
+        if (studioEventEmitter != null)
+            studioEventEmitter.Stop();
         pcNameText.text = "Maria";
         npcNameText.text = "";
         //imageAnimator.Play("Default");
@@ -131,6 +139,10 @@ public class DialogueManager : MonoBehaviour
     {
         if (currentStory != null)
         {
+            if(studioEventEmitter!=null)
+            {
+                studioEventEmitter.Stop();
+            }
             if (currentStory.canContinue)
             {
                 StartCoroutine(Buffer());
@@ -194,6 +206,23 @@ public class DialogueManager : MonoBehaviour
                     break;
                 case PC_NAME:
                     pcNameText.text = splitTags[1];
+                    break;
+                case PLAY_VOICE_CLIP:
+                    int index2 = int.Parse(splitTags[1]);
+                    lastVoiceClipValue = index2;
+                    if (studioEventEmitter != null)
+                    {
+                        studioEventEmitter.Stop();
+                        if (index2 < voiceClips.Length)
+                        {
+                            studioEventEmitter.EventReference = voiceClips[index2];
+                            studioEventEmitter.Play();
+                        }
+                        else
+                        {
+                            Debug.LogError("Index doesn't match for voice clips");
+                        }
+                    }
                     break;
                 default: 
                     Debug.LogError("Tag not recognized");

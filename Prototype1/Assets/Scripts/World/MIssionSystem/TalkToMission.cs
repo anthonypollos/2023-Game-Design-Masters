@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TalkToMission : MissionBehavior
@@ -51,7 +52,10 @@ public class TalkToMission : MissionBehavior
         string editedMissionText = missionText;
         if (!triggered)
         {
-            editedMissionText += " (" + talkedTo + "/" + npcs.Count + ")";
+            if (npcs.Count > 1)
+            {
+                editedMissionText += " (" + talkedTo + "/" + npcs.Count + ")";
+            }
         }
         return (editedMissionText, base.GetMissionText().Item2);
     }

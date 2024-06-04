@@ -32,7 +32,7 @@ public class MenuManager : MonoBehaviour
         // if input changes, update start text to show right prompt
         SetText();
 
-        if ((Input.anyKeyDown || Input.GetButtonDown("Submit")))
+        if (Input.anyKeyDown)
             anim.SetTrigger("NextState");
 
         LookAtButtons();
@@ -51,10 +51,6 @@ public class MenuManager : MonoBehaviour
 
     private void SetText()
     {
-        if (inputChecker.IsController())
-            startText.GetComponent<TextMeshProUGUI>().text = controllerText;
-
-        else
             startText.GetComponent<TextMeshProUGUI>().text = mouseText;
     }
 
