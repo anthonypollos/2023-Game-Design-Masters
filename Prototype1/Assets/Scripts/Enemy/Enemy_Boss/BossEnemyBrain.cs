@@ -13,6 +13,8 @@ public class BossEnemyBrain : EnemyBrain
     [HideInInspector]
     public BossEnemyMovevment bossMovevment;
 
+    private NeoBossFightController bossManager;
+
     [SerializeField]
     bool debugToggleTrigger = false;
     protected override void Starting()
@@ -26,6 +28,7 @@ public class BossEnemyBrain : EnemyBrain
         bossInteractions.bossBrain = this;
         bossMovevment = movement.GetComponent<BossEnemyMovevment>();
         bossMovevment.bossBrain = this;
+        bossManager = FindObjectOfType<NeoBossFightController>();
     }
 
     private void FixedUpdate()
@@ -85,6 +88,7 @@ public class BossEnemyBrain : EnemyBrain
     {
         bossAttacks.Enrage();
         state = EnemyStates.ENRAGED;
+        bossManager.Enrage();  
     }
 
     public void Calm()
