@@ -41,27 +41,30 @@ public class JournalItem : MonoBehaviour
     public enum ItemLocation { Tutorial, Hub, Town, Railyard }
     public ItemLocation itemLocation;
 
+    [Tooltip("Should this item be the default selected entry in its sub-menu?")]
+    public bool selectOnStart = false;
+
     //Change this value in realtion to the above locations to the scene name
     private string[] levels = new string[4]{"Tutorial_new", "HubScene", "Town_Connor_Art_Pass", "C_ArtPass_railyard_v2" };
 
     /// <summary>
     /// Description to display if player has not found item yet
     /// </summary>
-    private string descriptionNotFound;
-    private string[] descriptionNotFoundArray;
+    private string[] descriptionNotFound = new string[1];
 
     [Header("Animator Variables")]
 
-    /// <summary>
-    /// Journal Menu animator controller
-    /// </summary>
-    private Animator anim;
 
     [Tooltip("Name of matching Index variable in Journal Controller BlendTree")]
     public string animVariableName;
 
     [Tooltip("Index of matching item in Journal Controller BlendTree")]
     public float animIndex;
+
+    /// <summary>
+    /// Journal Menu animator controller
+    /// </summary>
+    private Animator anim;
 
     private Color colorFound = new Color(0.95f, 0.9f, 0.84f, 1);
     private Color colorNotFound = new Color(0.25f, 0.2f, 0.15f, 0.75f);
@@ -70,6 +73,10 @@ public class JournalItem : MonoBehaviour
     public Image itemImage;
     public TextMeshProUGUI headerText, descriptionText;
 
+    private RectTransform underline;
+    [SerializeField] private float underlineLengthFound;
+    private float underlineLengthNotFound = 120;
+
     /// <summary>
     /// Dispaly text of item button
     /// </summary>
@@ -77,26 +84,24 @@ public class JournalItem : MonoBehaviour
 
     void Start()
     {
-        SetDescriptionNotFoundText();
-
-        multiPage = FindObjectOfType<MultiPageText>();
+        //SetDescriptionNotFoundText();
 
         anim = GameObject.Find("Journal Menu").GetComponent<Animator>();
         buttonText = GetComponentInChildren<TextMeshProUGUI>();
 
-        descriptionNotFoundArray = new string[itemDescription.Length];
-        for (int i = 0; i < itemDescription.Length; i++)
-        {
-            descriptionNotFoundArray[i] = descriptionNotFound;
-        }
-
-        /*
-         * IF ITEM NOT FOUND! Need to set button text to nameNotFound
-         */
+        //descriptionNotFoundArray = new string[itemDescription.Length];
+        //for (int i = 0; i < itemDescription.Length; i++)
+        //{
+        //    descriptionNotFoundArray[i] = descriptionNotFound;
+        //}
     }
 
     private void OnEnable()
     {
+        SetDescriptionNotFoundText();
+
+        underline = transform.Find("Underline").GetComponent<RectTransform>();
+
         SavedValues temp =
         GameController.instance.savedValuesInstance;
         bool exists;
@@ -124,10 +129,17 @@ public class JournalItem : MonoBehaviour
         if (itemName.CompareTo("") == 0)
             itemName = buttonText.text;
         if (!isFound)
-            buttonText.text = nameNotFound;
+        {
+            buttonText.text = "> " + nameNotFound;
+            underline.sizeDelta = new Vector2(underlineLengthNotFound, underline.sizeDelta.y);
+        }
         else if (collectedCheck != CollectedCheck.nothing)
-            buttonText.text = itemName;
+        {
+            buttonText.text = "> " + itemName;
+            underline.sizeDelta = new Vector2(underlineLengthFound, underline.sizeDelta.y);
+        }
 
+        if(selectOnStart)
         SelectItem();
     }
 
@@ -144,14 +156,17 @@ public class JournalItem : MonoBehaviour
         else //TEMP, if not found
         {
             headerText.text = nameNotFound;
-            descriptionText.text = descriptionNotFound;
+            descriptionText.text = descriptionNotFound[0];
 
             if (itemImage != null)
                 itemImage.color = colorNotFound;
         }
 
+        if (itemDescription.Length > 1)
+            SetPage(0);
+
         // temp fix
-        if(anim == null)
+        if (anim == null)
             anim = GameObject.Find("Journal Menu").GetComponent<Animator>();
 
         if (animVariableName != null)
@@ -171,7 +186,7 @@ public class JournalItem : MonoBehaviour
         if(isFound)
             multiPage.SetPage(value, itemDescription);
         else
-            multiPage.SetPage(value, descriptionNotFoundArray);
+            multiPage.SetPage(value, descriptionNotFound);
 
     }
 
@@ -214,6 +229,6 @@ public class JournalItem : MonoBehaviour
                 break;
         }
 
-        descriptionNotFound = text;
+        descriptionNotFound[0] = text;
     }
 }
