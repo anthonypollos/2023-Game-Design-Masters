@@ -162,7 +162,7 @@ public class JournalItem : MonoBehaviour
                 itemImage.color = colorNotFound;
         }
 
-        if (itemDescription.Length > 1)
+        //if (itemDescription.Length > 1)
             SetPage(0);
 
         // temp fix
