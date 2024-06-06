@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 //Josh Bonovich
@@ -43,6 +44,8 @@ public class Caltrops : MonoBehaviour
         for (int i = 0; i < values.Count; i++) 
         {
             Values v = values[i];
+            if (v.damageable == null)
+                continue;
             v.distance += Vector3.Distance(v.transform.position, v.previousPos);
             v.previousPos = v.transform.position;
             Debug.Log(v.distance);
