@@ -133,6 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flickerMin: 0.8
   flickerMax: 1.2
+  rate: 30
 --- !u!1001 &602110006095713108
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -377,7 +378,7 @@ PrefabInstance:
       objectReference: {fileID: -2501649847739633, guid: ac3e793ef3a66485ca3658939a68ea8b, type: 3}
     - target: {fileID: 919132149155446097, guid: b0b43e2a948b86f43bcc95e46caf0dad, type: 3}
       propertyPath: m_Name
-      value: Lantern_Flammable
+      value: Flame_Lantern
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b0b43e2a948b86f43bcc95e46caf0dad, type: 3}
       propertyPath: m_Layer
@@ -441,6 +442,8 @@ MonoBehaviour:
   neutralSpeed: 15
   rateOfChange: 1
   maxDamage: 10
+  speedTransferedOnHit: 0.5
+  speedLostOnHit: 0.5
   isEnemy: 0
   speed: 0
   isLaunched: 0
@@ -474,11 +477,11 @@ MonoBehaviour:
   effectsOnHit: []
   collideSound:
     Guid:
-      Data1: 1406587514
-      Data2: 1236993393
-      Data3: 458917249
-      Data4: 1615339013
-    Path: event:/Collide
+      Data1: -573655269
+      Data2: 1328980458
+      Data3: -1193412476
+      Data4: -1027707999
+    Path: event:/GlassCollide
   breakSound:
     Guid:
       Data1: -1025990378
