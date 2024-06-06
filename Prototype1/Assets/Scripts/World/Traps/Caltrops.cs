@@ -41,11 +41,15 @@ public class Caltrops : MonoBehaviour
 
     private void FixedUpdate()
     {
+        List<Values> itemsToRemove = new List<Values> ();
         for (int i = 0; i < values.Count; i++) 
         {
             Values v = values[i];
-            if (v.damageable == null)
+            if (v.transform == null)
+            {
+                itemsToRemove.Add(v);
                 continue;
+            }
             v.distance += Vector3.Distance(v.transform.position, v.previousPos);
             v.previousPos = v.transform.position;
             Debug.Log(v.distance);
@@ -66,6 +70,10 @@ public class Caltrops : MonoBehaviour
                 }
             }
             values[i] = v;
+        }
+        foreach(Values v in itemsToRemove)
+        {
+            values.Remove(v);
         }
     }
 
