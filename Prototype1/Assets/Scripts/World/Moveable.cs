@@ -265,8 +265,8 @@ public class Moveable : MonoBehaviour, ISlowable
                             dir = dir.normalized;
                             if (maxDamage > 0)
                             {
-                                moveable.Slammed(dir, rb.mass * speed / (1-speedTransferedOnHit), myCollider);
-                                speed /= speedLostOnHit;
+                                moveable.Slammed(dir, rb.mass * speed * speedTransferedOnHit, myCollider);
+                                speed *= (1-speedLostOnHit);
                             }
                             else
                             {
@@ -289,7 +289,7 @@ public class Moveable : MonoBehaviour, ISlowable
                                 mod = 1;
                             }
                             dir = Quaternion.Euler(0, mod * 45, 0) * dir;
-                            moveable.Slammed(dir, 2 * moveable.GetMass() * speed / (1-speedTransferedOnHit), myCollider);
+                            moveable.Slammed(dir, 2 * moveable.GetMass() * speed * speedTransferedOnHit, myCollider);
                         }
                     }
                     IKickable kickable = collision.transform.GetComponentInParent<IKickable>();
@@ -422,8 +422,8 @@ public class Moveable : MonoBehaviour, ISlowable
                             dir = dir.normalized;
                             if (maxDamage > 0)
                             {
-                                moveable.Slammed(dir, rb.mass * speed / speedTransferedOnHit, myCollider);
-                                speed /= speedLostOnHit;
+                                moveable.Slammed(dir, rb.mass * speed * speedTransferedOnHit, myCollider);
+                                speed *= (1-speedLostOnHit);
                             }
                             else
                             {
