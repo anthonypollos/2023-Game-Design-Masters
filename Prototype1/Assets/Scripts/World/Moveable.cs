@@ -19,7 +19,8 @@ public class Moveable : MonoBehaviour, ISlowable
     [SerializeField] float neutralSpeed = 15f;
     [SerializeField] float rateOfChange = 1f;
     [SerializeField] float maxDamage = 40f;
-
+    [SerializeField] [Range(0f, 1f)] float speedTransferedOnHit = .5f;
+    [SerializeField] [Range(0f, 1f)] float speedLostOnHit = .5f;
 
     [SerializeField] bool isEnemy = false;
     Rigidbody rb;
@@ -264,8 +265,8 @@ public class Moveable : MonoBehaviour, ISlowable
                             dir = dir.normalized;
                             if (maxDamage > 0)
                             {
-                                moveable.Slammed(dir, rb.mass * speed / 2, myCollider);
-                                speed /= 2;
+                                moveable.Slammed(dir, rb.mass * speed * speedTransferedOnHit, myCollider);
+                                speed *= (1-speedLostOnHit);
                             }
                             else
                             {
@@ -288,7 +289,7 @@ public class Moveable : MonoBehaviour, ISlowable
                                 mod = 1;
                             }
                             dir = Quaternion.Euler(0, mod * 45, 0) * dir;
-                            moveable.Slammed(dir, 2 * moveable.GetMass() * speed / 2, myCollider);
+                            moveable.Slammed(dir, 2 * moveable.GetMass() * speed * speedTransferedOnHit, myCollider);
                         }
                     }
                     IKickable kickable = collision.transform.GetComponentInParent<IKickable>();
@@ -421,8 +422,8 @@ public class Moveable : MonoBehaviour, ISlowable
                             dir = dir.normalized;
                             if (maxDamage > 0)
                             {
-                                moveable.Slammed(dir, rb.mass * speed / 2, myCollider);
-                                speed /= 2;
+                                moveable.Slammed(dir, rb.mass * speed * speedTransferedOnHit, myCollider);
+                                speed *= (1-speedLostOnHit);
                             }
                             else
                             {
