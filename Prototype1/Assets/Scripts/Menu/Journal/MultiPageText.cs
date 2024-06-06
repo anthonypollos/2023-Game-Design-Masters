@@ -9,7 +9,8 @@ public class MultiPageText : MonoBehaviour
     public string[] textList;
     public int currentPage = 0;
 
-    public TextMeshProUGUI descriptionText, pageDisplay;
+    [SerializeField] private TextMeshProUGUI descriptionText, pageDisplay;
+    [SerializeField] private GameObject backArrow, nextArrow;
 
     public void SetPage(int value, string[] text)
     {
@@ -18,7 +19,19 @@ public class MultiPageText : MonoBehaviour
 
         descriptionText.text = textList[0];
 
-        pageDisplay.text = (currentPage + 1) + " / " + (textList.Length);
+        if(textList.Length > 1)
+        {
+            backArrow.SetActive(true);
+            nextArrow.SetActive(true);
+            pageDisplay.gameObject.SetActive(true);
+            pageDisplay.text = (currentPage + 1) + " / " + (textList.Length);
+        }
+        else
+        {
+            backArrow.SetActive(false);
+            nextArrow.SetActive(false);
+            pageDisplay.gameObject.SetActive(false);
+        }
     }
 
     public void TurnPage(int value)
