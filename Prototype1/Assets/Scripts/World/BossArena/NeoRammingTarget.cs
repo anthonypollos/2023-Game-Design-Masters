@@ -21,7 +21,7 @@ public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
 
     private void Start()
     {
-        brain = FindObjectOfType<BossEnemyBrain>();
+        brain = FindObjectOfType<BossEnemyBrain>(true);
     }
 
     public int GetHealth()
