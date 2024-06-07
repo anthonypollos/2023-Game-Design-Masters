@@ -23,10 +23,12 @@ public class LightDistanceDisabler : MonoBehaviour
         Lightcomponent = gameObject.GetComponent<Light>();
         //Find the player by searching for them with the tag
         Player = GameObject.FindGameObjectWithTag("Player");
+        //start slowly checking once a second for lights outside of max distance
+        InvokeRepeating("SlowUpdate", Random.Range(0, 1f), 1f);
     }
 
-    // We use FixedUpdate instead of Update because we don't want *every* light in *every* map to run this *every* frame
-    void FixedUpdate()
+
+    void SlowUpdate()
     {
         //NOTE: This code is VERY inefficient.
         //Ideally, we want to enable or disable the lights only once, instead of checking constantly
@@ -34,7 +36,18 @@ public class LightDistanceDisabler : MonoBehaviour
 
         Distance = Vector3.Distance(Player.transform.position, transform.position);
 
-        if (Distance < availableDistance) Lightcomponent.enabled = true;
-        if (Distance > availableDistance) Lightcomponent.enabled = false;
+        if (Distance < availableDistance)
+        {
+            Lightcomponent.enabled = true;
+            if (Lightcomponent.GetComponent<LightFlicker>()) Lightcomponent.GetComponent<LightFlicker>().StartFlicker();
+            return; //Return just to save a little on perf
+        }
+            
+        if (Distance > availableDistance)
+        {
+            Lightcomponent.enabled = false;
+            if (Lightcomponent.GetComponent<LightFlicker>()) Lightcomponent.GetComponent<LightFlicker>().StopFlicker();
+            return;
+        }
     }
 }
