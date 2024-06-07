@@ -538,6 +538,7 @@ public class Moveable : MonoBehaviour, ISlowable
         {
             slowMods = new List<float>();
         }
+        speed *= (slowPercent*slowPercent);
         slowMods.Add(slowPercent);
         slowModsArray = slowMods.ToArray();
     }
