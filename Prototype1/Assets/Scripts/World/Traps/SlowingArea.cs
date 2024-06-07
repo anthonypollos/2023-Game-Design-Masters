@@ -46,6 +46,9 @@ public class SlowingArea : MonoBehaviour
     private void OnDestroy()
     {
         foreach (ISlowable slowable in slowables)
-            slowable.ExitSlowArea(slowingAmount);
+        {
+            if(slowable != null)
+                slowable.ExitSlowArea(slowingAmount);
+        }
     }
 }
