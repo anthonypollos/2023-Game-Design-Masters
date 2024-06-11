@@ -50,6 +50,17 @@ public class EnemyBrain : MonoBehaviour, IEnemy
     [Tooltip("What distance does the creature want to stay in from the player")]
     public float optimalRange;
 
+    [Space(5)]
+
+    [Header("Animator Settings")]
+
+    [Tooltip("Set the animator to another object?")]
+    [SerializeField] bool useOutsideAnimator = false;
+    [Tooltip("The outside animator to use.")]
+    [SerializeField] GameObject outsideAnimator;
+
+    [Space(5)]
+
     //[SerializeField] private JukeBox jukebox;
 
     [SerializeField] private EventReference enemyAmbient;
@@ -71,7 +82,8 @@ public class EnemyBrain : MonoBehaviour, IEnemy
         //Debug.Log(player);
         isAggro = false;
         moveable = GetComponent<Moveable>();
-        an = GetComponent<Animator>();
+        if (useOutsideAnimator && outsideAnimator != null) { an = outsideAnimator.GetComponent<Animator>(); }
+        else { an = GetComponent<Animator>(); }
         an.logWarnings = false;
         health = GetComponent<EnemyHealth>();
         health.brain = this;
