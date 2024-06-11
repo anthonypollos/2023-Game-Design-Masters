@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 {
     [SerializeField] bool isHub;
+    [SerializeField] bool isTutorial;
     [SerializeField] List<MissionBehavior> missions;
     MenuControls controls;
     [SerializeField] Transform player;
@@ -23,6 +24,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     public Vector3 checkPoint { get; private set; } = Vector3.zero;
 
     bool win = false;
+    bool toggle = false;
 
     private void OnEnable()
     {
@@ -41,7 +43,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     // Start is called before the first frame update
     void Start()
     {
-        if (isHub)
+        if (isHub || isTutorial)
             Win();
         if (missions.Count == 0)
         {
@@ -264,6 +266,10 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 
     private void Victory()
     {
+        if (!isHub && !win)
+        {
+            toggle = true;
+        }
         win = true;
         SaveLoadManager.instance.SaveGame();
         //Debug.Log("Victory!");
@@ -294,6 +300,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         {
             savedValues.levels.Remove(SceneManager.GetActiveScene().name);
         }
+        savedValues.hubReset = toggle;
         savedValues.levels.Add(SceneManager.GetActiveScene().name, win);
 
         savedValues.currentLevelMissionStatuses = missionsStatuses;
@@ -305,6 +312,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     public void LoadData(SavedValues savedValues)
     {
         savedValues.levels.TryGetValue(SceneManager.GetActiveScene().name, out win);
+        toggle = savedValues.hubReset;
         missionsCompleted = 0;
         if(savedValues.currentLevelMissionStatuses.Count == 0)
         {
@@ -337,6 +345,21 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
                 Debug.Log("Player Position: " + player.transform.position);
             }
             
+        }
+        if (isHub)
+        {
+            if (!toggle)
+            {
+                if (missionsCompleted == 0)
+                {
+                    missions[0].SetFolder(this);
+                    missions[0].OnComplete();
+                }
+            }
+            else
+            {
+                toggle = false;
+            }
         }
     }
 }

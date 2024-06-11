@@ -50,6 +50,7 @@ public class GameController : MonoBehaviour
         if (instance != null && instance != this)
         {
             Destroy(this);
+            return;
         }
         else
         {
@@ -67,6 +68,11 @@ public class GameController : MonoBehaviour
         //Debug.Log(player.transform.position);
         return player.transform;
 
+    }
+
+    public List<string> GetNonGameScenes()
+    {
+        return nonGameScenes;
     }
 
 

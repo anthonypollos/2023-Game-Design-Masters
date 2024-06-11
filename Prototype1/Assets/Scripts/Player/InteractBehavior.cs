@@ -30,8 +30,10 @@ public class InteractBehavior : MonoBehaviour
 
     private void Start()
     {
-        DialogueManager.instance.SetPlayerInteraction(this);
-        NoteManager.instance.SetPlayerInteraction(this);
+        if(DialogueManager.instance!=null)
+            DialogueManager.instance.SetPlayerInteraction(this);
+        if(NoteManager.instance!=null)
+            NoteManager.instance.SetPlayerInteraction(this);
     }
 
     private void LateUpdate()
