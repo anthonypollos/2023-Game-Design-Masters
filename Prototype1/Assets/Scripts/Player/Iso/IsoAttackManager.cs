@@ -292,6 +292,11 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             pulling = true;
             currentTime = 0;
             restTime = 0;
+            InertiaBehavior ib = lb.GetAttachment().Item1.GetComponent<InertiaBehavior>();
+            if (ib != null)
+            {
+                ib.massTimer = 0;
+            }
         }
     }
 
@@ -517,7 +522,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
         {
             if (moveable != null)
             {
-
+                InertiaBehavior ib = target.GetComponent<InertiaBehavior>();
                 Vector3 dir;
                 float calculatedDistance;
                 (dir, calculatedDistance) = lb.GetValues();
@@ -525,6 +530,11 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                 {
                     //Debug.Log(calculatedDistance);
                     //Debug.Log(dir.magnitude);
+                    if (ib != null)
+                    {
+                        ib.CalculateMass();
+                        ib.massTimer = Mathf.Clamp(ib.massTimer + Time.fixedDeltaTime, 0, ib.massDuration);
+                    }
                     moveable.Launched(dir * calculatedDistance, CalculatePullSpeed());
                     Vector3 toPlayer = transform.position - moveable.transform.position;
                     moveable.transform.forward = toPlayer.normalized;
@@ -537,6 +547,10 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
                     if (restTime >= timeToReset)
                     {
                         currentTime = 0f;
+                        if (ib != null)
+                        {
+                            ib.massTimer = 0;
+                        }
                     }
                     else
                         restTime += Time.fixedDeltaTime;
