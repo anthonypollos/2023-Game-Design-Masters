@@ -36,7 +36,7 @@ public class LightFlicker : MonoBehaviour
 
     public void StartFlicker()
     {
-        InvokeRepeating("Flicker", Random.Range(0, 3f), (1f / rate));
+        if (Lightcomponent != null) InvokeRepeating("Flicker", Random.Range(0, 3f), (1f / rate));
     }
 
     public void StopFlicker()
@@ -46,6 +46,6 @@ public class LightFlicker : MonoBehaviour
 
     void Flicker()
     {
-        Lightcomponent.intensity = LightIntensity * (Random.Range(flickerMin, flickerMax) * flickerScale);
+       Lightcomponent.intensity = LightIntensity * (Random.Range(flickerMin, flickerMax) * flickerScale);
     }
 }
