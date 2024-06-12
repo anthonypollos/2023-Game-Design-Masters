@@ -368,6 +368,11 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
         }
     }
 
+    public void ChangeSpeed(float speed)
+    {
+        _speed = speed;
+    }
+
 
 }
 
