@@ -35,17 +35,17 @@ public class JournalItem : MonoBehaviour
     /// <summary>
     /// Used to create descriptionNotFound
     /// </summary>
-    public enum ItemType { Note, Collectible, Character, Enemy };
+    public enum ItemType { Note, Collectible, Character, Enemy, Cutscene };
     public ItemType itemType;
 
-    public enum ItemLocation { Tutorial, Hub, Town, Railyard }
+    public enum ItemLocation { Tutorial, Hub, Town, Railyard, Final }
     public ItemLocation itemLocation;
 
     [Tooltip("Should this item be the default selected entry in its sub-menu?")]
     public bool selectOnStart = false;
 
-    //Change this value in realtion to the above locations to the scene name
-    private string[] levels = new string[4]{"Tutorial_new", "HubScene", "Town_Connor_Art_Pass", "C_ArtPass_railyard_v2" };
+    //Change this value in relation to the above locations to the scene name
+    private string[] levels = new string[5]{"Tutorial_new", "HubScene", "Town_Connor_Art_Pass", "C_ArtPass_railyard_v2", "Cutscene_Final"};
 
     /// <summary>
     /// Description to display if player has not found item yet
@@ -77,6 +77,8 @@ public class JournalItem : MonoBehaviour
     [SerializeField] private float underlineLengthFound;
     private float underlineLengthNotFound = 120;
 
+    [SerializeField] private GameObject cutsceneButton;
+
     /// <summary>
     /// Dispaly text of item button
     /// </summary>
@@ -105,6 +107,7 @@ public class JournalItem : MonoBehaviour
         SavedValues temp =
         GameController.instance.savedValuesInstance;
         bool exists;
+
         switch(collectedCheck)
         {
             case CollectedCheck.nothing:
@@ -124,10 +127,13 @@ public class JournalItem : MonoBehaviour
                 }
                 break;
         }
+
         if(buttonText==null)
             buttonText = GetComponentInChildren<TextMeshProUGUI>();
+
         if (itemName.CompareTo("") == 0)
             itemName = buttonText.text;
+
         if (!isFound)
         {
             buttonText.text = "> " + nameNotFound;
@@ -145,21 +151,27 @@ public class JournalItem : MonoBehaviour
 
     public void SelectItem()
     {
-        if(isFound) //TEMP; if found
+        if(isFound) //if found
         {
             headerText.text = itemName;
             descriptionText.text = itemDescription[0];
 
             if(itemImage != null)
                 itemImage.color = colorFound;
+
+            if(itemType == ItemType.Cutscene)
+                cutsceneButton.SetActive(true);
         }
-        else //TEMP, if not found
+        else //if not found
         {
             headerText.text = nameNotFound;
             descriptionText.text = descriptionNotFound[0];
 
             if (itemImage != null)
                 itemImage.color = colorNotFound;
+
+            if (itemType == ItemType.Cutscene)
+                cutsceneButton.SetActive(false);
         }
 
         //if (itemDescription.Length > 1)
@@ -211,24 +223,59 @@ public class JournalItem : MonoBehaviour
             case ItemType.Collectible:
                 text += "Find this item ";
                 break;
+            case ItemType.Cutscene:
+                text += "Unlock this cutscene by ";
+                break;
         }
 
-        switch (itemLocation)
+        if(itemType != ItemType.Cutscene)
         {
-            case ItemLocation.Tutorial:
-                text += "in the [Tutorial Name Here].";
-                break;
-            case ItemLocation.Hub:
-                text += "at The Last Spike.";
-                break;
-            case ItemLocation.Town:
-                text += "in the Town.";
-                break;
-            case ItemLocation.Railyard:
-                text += "in the Railyard.";
-                break;
+            switch (itemLocation)
+            {
+                case ItemLocation.Tutorial:
+                    text += "in the [Tutorial Name Here].";
+                    break;
+                case ItemLocation.Hub:
+                    text += "at The Last Spike.";
+                    break;
+                case ItemLocation.Town:
+                    text += "in the Town.";
+                    break;
+                case ItemLocation.Railyard:
+                    text += "in the Railyard.";
+                    break;
+            }
+        }
+
+        else
+        {
+            switch(itemLocation)
+            {
+                case ItemLocation.Tutorial:
+                    text += "rescuing Ezra.";
+                    break;
+                case ItemLocation.Town:
+                    text += "[exploring the town]";
+                    break;
+                case ItemLocation.Railyard:
+                    text += "defeating the Overseer.";
+                    break;
+                case ItemLocation.Final:
+                    text += "[winning the game].";
+                    break;
+            }
         }
 
         descriptionNotFound[0] = text;
+    }
+
+    public void QueueCutscene()
+    {
+        //queue cutscene
+    }
+
+    public void PlayCutscene()
+    {
+        //play queued cutscene
     }
 }
