@@ -41,6 +41,8 @@ public class LevelManager : MonoBehaviour
     /// <param name="sceneName">Scene to Load</param>
     public async void LoadScene(string sceneName)
     {
+        Time.timeScale = 1;
+
         fillTarget = 0;
         progressBar.fillAmount = 0;
 
