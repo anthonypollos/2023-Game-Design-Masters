@@ -13,6 +13,7 @@ public class Caltrops : MonoBehaviour
     [SerializeField] int maxDamageAvalible;
     [SerializeField] float distanceToDamage;
     [SerializeField] int damagePerInstance;
+    [SerializeField] bool destroyParent;
     private struct Values: IEquatable<Values>
     {
         public Values(Transform transform, IDamageable damageable)
@@ -66,7 +67,13 @@ public class Caltrops : MonoBehaviour
                 maxDamageAvalible -= damagePerInstance;
                 if(maxDamageAvalible<=0)
                 {
-                    Destroy(gameObject); break;
+                    //Due to parenting and scaling, I've made the caltrops part of broken glass a child of an empty gameobject so that I could keep the scale as 1 1 1
+                    //To factor this into the issue of destroying the object upon walking over it enough, I've added a boolean that destroys the parent instead
+                    if (destroyParent && transform.parent != null)
+                    {
+                        Destroy(transform.parent.gameObject); break;
+                    }
+                    else Destroy(gameObject); break;
                 }
             }
             values[i] = v;
