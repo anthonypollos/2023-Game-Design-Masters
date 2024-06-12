@@ -97,7 +97,8 @@ public class MultiMissionBehavior : MissionBehavior, IMissionContainer
 
     public void UpdateMissionText()
     {
-        folder.UpdateMissionText();
+        if(folder!=null)
+            folder.UpdateMissionText();
     }
 
     private string CombatText(CombatMissionBehavior combatObjective)

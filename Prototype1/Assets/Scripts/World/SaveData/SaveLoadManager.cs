@@ -13,6 +13,8 @@ public class SaveLoadManager : MonoBehaviour
     private FileDataHandler dataHandler;
 
     private List<ISaveable> saveableObjects;
+
+    bool isGameScene = false;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -129,7 +131,8 @@ public class SaveLoadManager : MonoBehaviour
 
                 temp.SaveData(ref savedValues);
             }
-            savedValues.currentLevel = SceneManager.GetActiveScene().name;
+            if(isGameScene)
+                savedValues.currentLevel = SceneManager.GetActiveScene().name;
         }
         else
         {
@@ -148,9 +151,23 @@ public class SaveLoadManager : MonoBehaviour
     private void NewScene(Scene scene, LoadSceneMode loadMode)
     {
         InitialLoad();
-        if(scene.name != savedValues.currentLevel)
+        isGameScene = false;
+        if(GameController.instance !=null)
+            isGameScene = !GameController.instance.GetNonGameScenes().Contains(scene.name);
+        if (scene.name == "HubScene" || !isGameScene)
+        {
+            Debug.Log("Check to set hubReset");
+            if (savedValues.currentLevel == "HubScene")
+            {
+                Debug.Log("set hubReset");
+                savedValues.hubReset = true;
+            }
+        }
+        if (scene.name != savedValues.currentLevel && isGameScene)
         {
             Debug.Log("Different Scene");
+            Debug.Log("currentLevel was " + savedValues.currentLevel);
+            Debug.Log("currentLevel now " + scene.name);
             savedValues.currentLevel = scene.name;
             savedValues.currentLevelMissionStatuses.Clear();
         }

@@ -9,6 +9,7 @@ public class SavedValues
     public SerializeableDictionary<string, bool> levels;
     public string currentLevel;
     public List<bool> currentLevelMissionStatuses;
+    public bool hubReset;
     //public Vector3 checkPointLocation;
 
     public SavedValues()
@@ -17,6 +18,7 @@ public class SavedValues
         levels = new SerializeableDictionary<string, bool>();
         //currentLevel = "";
         currentLevelMissionStatuses = new List<bool>();
+        hubReset = true;
         //checkPointLocation = Vector3.zero;
     }
 }

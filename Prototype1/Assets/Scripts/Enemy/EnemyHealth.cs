@@ -48,7 +48,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         ec = FindObjectOfType<EnemyContainer>();
         ec.AddEnemy(gameObject);
         maxHealth = health;
-        healthSlider.value = health / maxHealth;
+        if(healthSlider!=null)
+            healthSlider.value = health / maxHealth;
     }
     private void Update()
     {
@@ -74,7 +75,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
             brain.interaction.Stagger();
         }
         if (health <= 0) Die();
-        healthSlider.value = (float)health/ maxHealth;
+        if(healthSlider!=null)
+            healthSlider.value = (float)health/ maxHealth;
         if (dmg > 0) //AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
 
 

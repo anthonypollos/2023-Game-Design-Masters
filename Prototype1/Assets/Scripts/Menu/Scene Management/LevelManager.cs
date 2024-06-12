@@ -64,8 +64,8 @@ public class LevelManager : MonoBehaviour
         }
 
         await Task.Delay(1);
-
-        loadScreen.SetActive(false);
+        if(loadScreen!=null)
+            loadScreen.SetActive(false);
 
         //do {
         //    await Task.Delay(100);

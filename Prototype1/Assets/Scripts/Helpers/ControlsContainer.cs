@@ -30,6 +30,7 @@ public class ControlsContainer : MonoBehaviour, ISaveable
         else
         {
             Destroy(this);
+            return;
         }
 
         LoadBindings();
