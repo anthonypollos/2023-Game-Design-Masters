@@ -8,7 +8,8 @@ public class HubPortal : InteractableBehaviorTemplate, ISaveable
     [SerializeField] string worldName;
     public override bool Interact()
     {
-        SceneManager.LoadScene(worldName);
+        //SceneManager.LoadScene(worldName);
+        SceneLoader.Instance.LoadScene(worldName);
         return false;
     }
 

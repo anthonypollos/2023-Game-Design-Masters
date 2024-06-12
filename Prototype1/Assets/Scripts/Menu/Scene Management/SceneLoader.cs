@@ -6,6 +6,13 @@ using UnityEngine;
 public class SceneLoader : MonoBehaviour
 {
     private string sceneToLoad;
+    public static SceneLoader Instance;
+
+    private void Start()
+    {
+        if (Instance == null)
+            Instance = this;
+    }
 
     public void LoadScene(string scene)
     {

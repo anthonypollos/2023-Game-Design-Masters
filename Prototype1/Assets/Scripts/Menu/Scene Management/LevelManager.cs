@@ -24,10 +24,10 @@ public class LevelManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+//            DontDestroyOnLoad(gameObject);
         }
-        else
-            Destroy(gameObject);
+//        else
+//            Destroy(gameObject);
     }
 
     private void Update()
