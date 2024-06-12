@@ -2,10 +2,18 @@
  * Avery
  */
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
     private string sceneToLoad;
+    public static SceneLoader Instance;
+
+    private void Start()
+    {
+        if (Instance == null)
+            Instance = this;
+    }
 
     public void LoadScene(string scene)
     {
@@ -21,5 +29,10 @@ public class SceneLoader : MonoBehaviour
     {
         if (sceneToLoad != null)
             LoadScene(sceneToLoad);
+    }
+
+    public void ResetScene()
+    {
+        LevelManager.Instance.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

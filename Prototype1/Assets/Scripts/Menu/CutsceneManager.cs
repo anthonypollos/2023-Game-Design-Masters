@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 
 public class CutsceneManager : MonoBehaviour
 {
-    public MenuBehavior mb;
     public string sceneToLoad;
     MainControls mainControls;
 
@@ -14,7 +13,6 @@ public class CutsceneManager : MonoBehaviour
     {
         mainControls = ControlsContainer.instance.mainControls;
         mainControls.Main.Interact.performed += Interact;
-
     }
 
     private void OnDisable()
@@ -31,6 +29,6 @@ public class CutsceneManager : MonoBehaviour
     // Update is called once per frame
     void Skip()
     {
-        mb.LoadScene(sceneToLoad);
+        SceneLoader.Instance.LoadScene(sceneToLoad);
     }
 }

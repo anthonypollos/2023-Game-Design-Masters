@@ -24,10 +24,10 @@ public class LevelManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+//            DontDestroyOnLoad(gameObject);
         }
-        else
-            Destroy(gameObject);
+//        else
+//            Destroy(gameObject);
     }
 
     private void Update()
@@ -41,6 +41,8 @@ public class LevelManager : MonoBehaviour
     /// <param name="sceneName">Scene to Load</param>
     public async void LoadScene(string sceneName)
     {
+        Time.timeScale = 1;
+
         fillTarget = 0;
         progressBar.fillAmount = 0;
 
