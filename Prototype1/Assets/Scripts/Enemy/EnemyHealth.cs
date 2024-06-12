@@ -33,6 +33,16 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [Tooltip("How long the Death Particle lives before Despawning.\nSet to 0 or below for an immortal object.")]
     [SerializeField] protected float DeathParticleLifetime = 4;
 
+    [Tooltip("Does this enemy ALWAYS stagger?")]
+    [SerializeField] bool alwaysStagger = false;
+
+    [Space(5)]
+
+    [Header("Death Duration Overrides")]
+
+    [SerializeField] bool useDeathDuration = false;
+    [SerializeField] float deathDuration = 0f;
+
     protected bool dead = false;
 
     private void Awake()
@@ -48,8 +58,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         ec = FindObjectOfType<EnemyContainer>();
         ec.AddEnemy(gameObject);
         maxHealth = health;
-        if(healthSlider!=null)
-            healthSlider.value = health / maxHealth;
+        if (healthSlider != null) healthSlider.value = health / maxHealth;
     }
     private void Update()
     {
@@ -60,6 +69,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public virtual void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
     {
         health -= dmg;
+        if (alwaysStagger)
+        {
+            brain.an.SetTrigger("Damaged");
+        }
         if (dmg > staggerThreshold)
         {
             AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
@@ -75,8 +88,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
             brain.interaction.Stagger();
         }
         if (health <= 0) Die();
-        if(healthSlider!=null)
-            healthSlider.value = (float)health/ maxHealth;
+        if (healthSlider != null) healthSlider.value = (float)health/ maxHealth;
         if (dmg > 0) //AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
 
 
@@ -114,7 +126,17 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         }
         brain.state = EnemyStates.DEAD;
         brain.moveable.ForceStop();
-        brain.interaction.Death();
+
+        //If we have "useDeathDuration" turned on, we do not want the death to be handled by an Anim Event.
+        //Consequently, we run the "Death" command in here instead.
+        if (useDeathDuration)
+        {
+            //First, if we DO have a model that's disconnected from enemy, set the trigger on said model to play the Death anim
+            brain.an.SetTrigger("Death");
+            //Second, we call the Death void in here directly
+            StartCoroutine(DelayDeath());
+        }
+        else brain.interaction.Death();
     }
 
     public void Death()
@@ -125,11 +147,24 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         ec.RemoveAggro(gameObject);
         if (DeathParticle != null)
         {
-            //print("Attempting to spawn " + DeathParticle + " from " + this + " at " + transform.position);
             GameObject tempparticle = Instantiate(DeathParticle, transform.position, Quaternion.identity);
             if (DeathParticleLifetime > 0) Destroy(tempparticle, DeathParticleLifetime);
         }
-        Destroy(gameObject);
+         Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// Override coroutine that waits a set amount of time before destroying the object
+    /// We need to use this in case we have an "enemy" whose visible model cannot be tied to the enemy itself
+    /// I am implementing this specifically for the town square cysts, since their models are complex and have colliders not used for getting damaged.
+    /// Conseqeuently, the actual cyst "enemy" is an invisible object inside of the cyst model.
+    /// This is used so that it's not officially "dead" until the animation is done.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DelayDeath()
+    {
+        yield return new WaitForSeconds(deathDuration);
+        Death();
     }
 
     public int GetHealth()
