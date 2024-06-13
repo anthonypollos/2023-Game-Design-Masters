@@ -8,6 +8,11 @@ public class MissionCollectable : InteractableBehaviorTemplate, ISaveable
     [SerializeField] string id;
     CollectMissionBehavior mission;
     [SerializeField] TextAsset textToDisplay;
+    [SerializeField] bool isNote;
+
+    [SerializeField] int collectAnimIndex;
+    [SerializeField] string name;
+    [TextArea(5, 20)] [SerializeField] string[] description;
 
     public void SetMission(CollectMissionBehavior mission)
     {
@@ -16,10 +21,22 @@ public class MissionCollectable : InteractableBehaviorTemplate, ISaveable
 
     public override bool Interact()
     {
-        if (textToDisplay != null)
+        //if (textToDisplay != null)
+        //{
+        //    DialogueManager.instance.EnterDialogMode(textToDisplay);
+        //}
+
+        if (/*textToDisplay != null &&*/ !isNote && id != "")
         {
-            DialogueManager.instance.EnterDialogMode(textToDisplay);
+            //DialogueManager.instance.EnterDialogMode(textToDisplay);
+            CollectibleManager.instance.DisplayCollectible(collectAnimIndex, name, description[0]);
         }
+        else if (/*textToDisplay != null &&*/ isNote && id != "")
+        {
+            //NoteManager.instance.EnterDialogMode(textToDisplay);
+            CollectibleManager.instance.DisplayNote(16, name, description);
+        }
+
         else
         {
             Debug.Log("Play text here");

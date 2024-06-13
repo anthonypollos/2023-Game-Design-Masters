@@ -24,7 +24,7 @@ public class JournalItem : MonoBehaviour
     /// </summary>
     private string nameNotFound = "?????";
 
-    [TextArea(5, 10)]
+    [TextArea(5, 20)]
     public string[] itemDescription;
 
     /// <summary>
