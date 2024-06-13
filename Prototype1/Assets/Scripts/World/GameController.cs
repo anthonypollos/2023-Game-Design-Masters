@@ -27,6 +27,8 @@ public class GameController : MonoBehaviour
     [SerializeField] Button topButtonPause;
     [SerializeField] Button topButtonDead;
     [SerializeField] List<string> nonGameScenes;
+    [SerializeField] List<string> cutSceneScenes;
+    [SerializeField] List<string> levelTransitionScenes;
     bool inCombat = true;
 
     bool paused;
@@ -37,6 +39,7 @@ public class GameController : MonoBehaviour
     public static GameController instance;
 
     private OutlineToggle outlineManager;
+    [Header("FMOD")]
     public GameObject AManager;
     public GameObject CombatMusicManager;
     public SavedValues savedValuesInstance;
@@ -73,6 +76,16 @@ public class GameController : MonoBehaviour
     public List<string> GetNonGameScenes()
     {
         return nonGameScenes;
+    }
+
+    public List<string> GetCutSceneScenes()
+    {
+        return cutSceneScenes;
+    }
+
+    public List<string> GetLevelTransitionScenes()
+    {
+        return levelTransitionScenes;
     }
 
 

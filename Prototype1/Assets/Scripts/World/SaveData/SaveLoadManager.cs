@@ -15,6 +15,8 @@ public class SaveLoadManager : MonoBehaviour
     private List<ISaveable> saveableObjects;
 
     bool isGameScene = false;
+    bool isCutScene = false;
+    bool isLevelTransition = false;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -152,8 +154,12 @@ public class SaveLoadManager : MonoBehaviour
     {
         InitialLoad();
         isGameScene = false;
-        if(GameController.instance !=null)
+        if (GameController.instance != null)
+        {
             isGameScene = !GameController.instance.GetNonGameScenes().Contains(scene.name);
+            isCutScene = GameController.instance.GetCutSceneScenes().Contains(scene.name);
+            isLevelTransition = GameController.instance.GetLevelTransitionScenes().Contains(scene.name);
+        }
         if (scene.name == "HubScene" || !isGameScene)
         {
             Debug.Log("Check to set hubReset");
@@ -163,7 +169,7 @@ public class SaveLoadManager : MonoBehaviour
                 savedValues.hubReset = true;
             }
         }
-        if (scene.name != savedValues.currentLevel && isGameScene)
+        if (scene.name != savedValues.currentLevel && isGameScene && !isCutScene)
         {
             Debug.Log("Different Scene");
             Debug.Log("currentLevel was " + savedValues.currentLevel);
