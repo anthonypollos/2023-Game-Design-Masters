@@ -9,12 +9,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 7534139360468380401}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 3812ca5d1862a4d898a050c5875c6512, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5479
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3812ca5d1862a4d898a050c5875c6512, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.0887
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3812ca5d1862a4d898a050c5875c6512, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.109
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3812ca5d1862a4d898a050c5875c6512, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.289
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3812ca5d1862a4d898a050c5875c6512, type: 3}
       propertyPath: m_LocalPosition.z
@@ -445,10 +453,10 @@ PrefabInstance:
     - target: {fileID: -5754084199372789682, guid: cf36f0e5eecce1e4498526a13ebf8f56, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 7700595187602685462, guid: cb03fdc9461ac4181883daaa3ecb0516, type: 3}
+      objectReference: {fileID: -2963663013952388857, guid: bde211ea195a3694395983b97ffde771, type: 3}
     - target: {fileID: 919132149155446097, guid: cf36f0e5eecce1e4498526a13ebf8f56, type: 3}
       propertyPath: m_Name
-      value: tombstone_throwable_01
+      value: Tombstone_04_gib2
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cf36f0e5eecce1e4498526a13ebf8f56, type: 3}
       propertyPath: m_Layer
@@ -511,8 +519,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.25, y: 2.5, z: 0.75}
-  m_Center: {x: 0, y: 0.25, z: 0}
+  m_Size: {x: 2.0244775, y: 1.7303562, z: 0.45848632}
+  m_Center: {x: -0.108640164, y: 0.1072602, z: -0.014624074}
 --- !u!54 &2186640944257366280
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -596,10 +604,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   immuneTypes: 
-  _frozenBeforeTendril: 1
-  maxHealth: 20
-  DestructionParticle: {fileID: 8346624640395579597, guid: 42b4c11629687404a8b88247e6643c6b, type: 3}
-  DestructionParticleLifetime: 0
+  _frozenBeforeTendril: 0
+  maxHealth: 5
+  DestructionParticle: {fileID: 7141866554852115599, guid: f4dd0353250b5da46ae4c4d71bf92e5b, type: 3}
+  DestructionParticleLifetime: 4
   ParticleOffset: {x: 0, y: 0, z: 0}
   KickedParticle: {fileID: 4099935107488988707, guid: 475177061e152d94d9152afea2efcd7d, type: 3}
   effectsOnHit: []
@@ -619,7 +627,7 @@ MonoBehaviour:
     Path: event:/Tombstone-break
   respawning: 0
   respawnDelay: 5
-  _freezeOnStationary: 0
+  _freezeOnStationary: 1
   stationaryCheckRate: 1
 --- !u!208 &1279281530656789245
 NavMeshObstacle:
@@ -631,11 +639,11 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.65, y: 1.2, z: 0.24}
+  m_Extents: {x: 1.0120001, y: 0.86500007, z: 0.22900002}
   m_MoveThreshold: 0.1
-  m_Carve: 1
+  m_Carve: 0
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0.19, z: 0}
+  m_Center: {x: -0.109000005, y: 0.10700001, z: -0.015000001}
   m_TimeToStationary: 0.5
 --- !u!114 &4232293778303179042
 MonoBehaviour:
