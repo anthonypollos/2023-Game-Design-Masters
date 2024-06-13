@@ -26,6 +26,11 @@ public class CollectibleManager : MonoBehaviour
         instance = this;
     }
 
+    int tempIndex;
+    string tempName;
+    string tempDesc;
+    string[] tempDescList;
+
     /// <summary>
     /// 
     /// </summary>
@@ -34,13 +39,22 @@ public class CollectibleManager : MonoBehaviour
     /// <param name="desc"></param>
     public void DisplayCollectible(int index, string name, string desc)
     {
+        tempIndex = index;
+        tempName = name;
+        tempDesc = desc;
+
+        Invoke("DisplayCollectible", 0.15f);
+    }
+
+    private void DisplayCollectible()
+    {
         pickupUI.SetActive(true);
 
-        collectName.text = name;
-        collectDesc.text = desc;
+        collectName.text = tempName;
+        collectDesc.text = tempDesc;
 
         anim.SetBool("Collectible", true);
-        anim.SetInteger("CollectIndex", index);
+        anim.SetInteger("CollectIndex", tempIndex);
 
 
         anim.SetTrigger("StartAnim");
@@ -53,15 +67,24 @@ public class CollectibleManager : MonoBehaviour
     /// <param name="desc"></param>
     public void DisplayNote(int index, string name, string[] desc)
     {
+        tempIndex = index;
+        tempName = name;
+        tempDescList = desc;
+
+        Invoke("DisplayNote", 0.15f);
+    }
+
+    private void DisplayNote()
+    {
         pickupUI.SetActive(true);
 
         noteName.text = name;
 
-        if(multiPage != null)
-            multiPage.SetPage(0, desc);
+        if (multiPage != null)
+            multiPage.SetPage(0, tempDescList);
 
         anim.SetBool("Collectible", false);
-        anim.SetInteger("CollectIndex", index);
+        anim.SetInteger("CollectIndex", tempIndex);
 
         anim.SetTrigger("StartAnim");
     }
