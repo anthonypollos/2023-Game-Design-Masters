@@ -3047,12 +3047,12 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 8403303432957525950}
   - {fileID: 1934924604604014953}
   - {fileID: 4745070913496534621}
   - {fileID: 3967844966866004172}
   - {fileID: 8040929965563342768}
   - {fileID: 6709310731108677778}
-  - {fileID: 8403303432957525950}
   - {fileID: 3623291788032548167}
   - {fileID: 9136409471872351716}
   m_Father: {fileID: 0}
@@ -3149,6 +3149,9 @@ MonoBehaviour:
     Path: event:/MeleeDeath
   DeathParticle: {fileID: 7868570016504769516, guid: 527275d7497d3104f88ae162d22e06e3, type: 3}
   DeathParticleLifetime: 4
+  alwaysStagger: 0
+  useDeathDuration: 0
+  deathDuration: 0
 --- !u!114 &280033319173011503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3166,6 +3169,8 @@ MonoBehaviour:
   neutralSpeed: 15
   rateOfChange: 1
   maxDamage: 10
+  speedTransferedOnHit: 0.5
+  speedLostOnHit: 0.5
   isEnemy: 1
   speed: 10
   isLaunched: 0
@@ -3201,6 +3206,8 @@ MonoBehaviour:
     m_Bits: 24841
   state: 0
   optimalRange: 2
+  useOutsideAnimator: 0
+  outsideAnimator: {fileID: 0}
   enemyAmbient:
     Guid:
       Data1: 1722158306
