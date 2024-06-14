@@ -293,8 +293,13 @@ public class GameController : MonoBehaviour
     private IEnumerator DelayedRespawn(GameObject go, float delay)
     {
         yield return new WaitForSeconds(delay);
-        
+
+        GameObject temp = go.FindChildObjectWithTag("Tendriled");
         go.SetActive(true);
+        if (temp != null)
+        {
+            temp.SetActive(false);
+        }
         //Add the respawned object to the outline manager
         foreach (Transform child in go.transform)
         {
@@ -314,7 +319,12 @@ public class GameController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
+        GameObject temp = go.FindChildObjectWithTag("Tendriled");
         go.SetActive(true);
+        if(temp!= null)
+        {
+            temp.SetActive(false);
+        }
         //Add the respawned object to the outline manager
         foreach (Transform child in go.transform)
         {
