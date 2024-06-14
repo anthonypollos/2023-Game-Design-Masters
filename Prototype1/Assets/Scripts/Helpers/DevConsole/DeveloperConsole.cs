@@ -67,6 +67,8 @@ public class DeveloperConsole : MonoBehaviour
     public Rigidbody playerRB { get; private set; }
     public MissionFolder missionFolder { get; private set; }
 
+    public IsoPlayerController playerController { get; private set; }
+
 
     #region Variable Initializations
     private void Awake()
@@ -102,6 +104,7 @@ public class DeveloperConsole : MonoBehaviour
     public void SetPlayer(GameObject player, Rigidbody playerRB)
     {
         this.player = player;
+        this.playerController = player.GetComponent<IsoPlayerController>();
         this.playerRB = playerRB;
     }
 

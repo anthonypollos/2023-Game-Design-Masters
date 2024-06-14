@@ -215,7 +215,7 @@ public class DialogueManager : MonoBehaviour
                         studioEventEmitter.Stop();
                         if (index2 < voiceClips.Length)
                         {
-                            studioEventEmitter.EventReference = voiceClips[index2];
+                            studioEventEmitter.ChangeEvent(voiceClips[index2]);
                             studioEventEmitter.Play();
                         }
                         else

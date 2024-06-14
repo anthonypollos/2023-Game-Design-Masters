@@ -383,5 +383,11 @@ namespace FMODUnity
             }
             return false;
         }
+
+        public void ChangeEvent(EventReference newEvent)
+        {
+            EventReference = newEvent;
+            Lookup();
+        }
     }
 }

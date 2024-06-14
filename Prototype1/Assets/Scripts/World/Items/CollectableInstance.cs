@@ -9,6 +9,10 @@ public class CollectableInstance : InteractableBehaviorTemplate, ISaveable
     [SerializeField] TextAsset textToDisplay;
     [SerializeField] bool isNote;
 
+    [SerializeField] int collectAnimIndex;
+    [SerializeField] string name;
+    [TextArea(5, 20)] [SerializeField] string[] description;
+
     [SerializeField] private JukeBox jukebox;
 
     [ContextMenu("Generate guid for id")]
@@ -23,13 +27,15 @@ public class CollectableInstance : InteractableBehaviorTemplate, ISaveable
     }
     public override bool Interact()
     {
-        if (textToDisplay != null && !isNote)
+        if (/*textToDisplay != null &&*/ !isNote)
         {
-            DialogueManager.instance.EnterDialogMode(textToDisplay);
+            //DialogueManager.instance.EnterDialogMode(textToDisplay);
+            CollectibleManager.instance.DisplayCollectible(collectAnimIndex, name, description[0]);
         }
-        else if (textToDisplay != null && isNote)
+        else if (/*textToDisplay != null &&*/ isNote)
         {
-            NoteManager.instance.EnterDialogMode(textToDisplay);
+            //NoteManager.instance.EnterDialogMode(textToDisplay);
+            CollectibleManager.instance.DisplayNote(16, name, description);
         }
         else
         {

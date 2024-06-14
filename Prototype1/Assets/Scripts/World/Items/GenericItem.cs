@@ -328,7 +328,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
     private void CheckStationary()
     {
         //In order to make sure the mass doesn't repeatedly reset if this object is set to freeze while stationary, we check to make sure _frozenBeforeTendril is false before running this
-        if (justLassoed && GetComponent<Rigidbody>().IsSleeping() && !_frozenBeforeTendril)
+        if (GetComponent<Rigidbody>().IsSleeping() && !_frozenBeforeTendril)
         {
             Freeze();
         }
