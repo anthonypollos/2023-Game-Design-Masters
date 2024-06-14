@@ -37,10 +37,10 @@ public class CollectibleManager : MonoBehaviour
     /// <param name="index"></param>
     /// <param name="name"></param>
     /// <param name="desc"></param>
-    public void DisplayCollectible(int index, string name, string desc)
+    public void DisplayCollectible(int index, string itemName, string desc)
     {
         tempIndex = index;
-        tempName = name;
+        tempName = itemName;
         tempDesc = desc;
 
         Invoke("DisplayCollectible", 0.15f);
@@ -65,10 +65,10 @@ public class CollectibleManager : MonoBehaviour
     /// </summary>
     /// <param name="name"></param>
     /// <param name="desc"></param>
-    public void DisplayNote(int index, string name, string[] desc)
+    public void DisplayNote(int index, string itemName, string[] desc)
     {
         tempIndex = index;
-        tempName = name;
+        tempName = itemName;
         tempDescList = desc;
 
         Invoke("DisplayNote", 0.15f);
@@ -78,7 +78,7 @@ public class CollectibleManager : MonoBehaviour
     {
         pickupUI.SetActive(true);
 
-        noteName.text = name;
+        noteName.text = tempName;
 
         if (multiPage != null)
             multiPage.SetPage(0, tempDescList);
