@@ -277,7 +277,10 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         win = true;
         SaveLoadManager.instance.SaveGame();
         Debug.Log("Victory!");
-        StartCoroutine(FadeOut(fadeDelay));
+        if (!isHub)
+        {
+            StartCoroutine(FadeOut(fadeDelay));
+        }
     }
 
     IEnumerator FadeOut(float fadeDelay)
