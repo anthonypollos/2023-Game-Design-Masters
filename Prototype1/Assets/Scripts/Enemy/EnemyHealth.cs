@@ -105,11 +105,14 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         if (!dead)
         {
+            brain.state = EnemyStates.DEAD;
             Collider[] colliders = GetComponentsInChildren<Collider>();
             foreach (Collider collider in colliders)
             {
                 if (collider.gameObject.layer == 7)
                     collider.enabled = false;
+                else
+                    collider.gameObject.layer = LayerMask.NameToLayer("Dead");
             }
             StartCoroutine(WaitUntilStop(colliders));
         }
