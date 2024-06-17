@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 {
     [SerializeField] bool isHub;
+    
     [SerializeField] bool isTutorial;
     [SerializeField] List<MissionBehavior> missions;
     MenuControls controls;
@@ -21,10 +22,19 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     //[SerializeField] GameObject victoryMenu;
     int missionsCompleted;
     int currentDisplayedMission = 0;
+
+    [SerializeField] string cutSceneOnFinishName;
+    [SerializeField]
+    private float fadeDelay = 1.0f;
+    [Header("Needed only for Hub")]
+    [SerializeField] string finalLevelName;
     public Vector3 checkPoint { get; private set; } = Vector3.zero;
 
     bool win = false;
     bool toggle = false;
+
+
+    Coroutine coroutineCheck;
 
     private void OnEnable()
     {
@@ -43,7 +53,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     // Start is called before the first frame update
     void Start()
     {
-        if (isHub || isTutorial)
+        if (isHub)
             Win();
         if (missions.Count == 0)
         {
@@ -152,6 +162,13 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         missionsStatuses[idx] = true;
         SetMission();
         checkPoint = mission.checkPointLocation;
+        StartCoroutine(WaitTillNotFrozenCompletion(idx));
+    }
+
+    private IEnumerator WaitTillNotFrozenCompletion(int idx)
+    {
+        yield return new WaitUntil(() => Time.timeScale != 0);
+       
         //SaveLoadManager.instance.SaveGame();
         if (missionsCompleted >= missions.Count)
             Victory();
@@ -185,6 +202,12 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 
     public void UpdateMissionText()
     {
+        StartCoroutine(WaitTillNotFrozenText());
+    }
+
+    private IEnumerator WaitTillNotFrozenText()
+    {
+        yield return new WaitUntil(() => Time.timeScale != 0);
         string message = "";
         bool temp = missionsStatuses[currentDisplayedMission];
         if (!missions[currentDisplayedMission].GetMissionText().Item2)
@@ -261,18 +284,45 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     public void Win()
     {
         if (!win)
-            Victory();
+        {
+            win = true;
+            SaveLoadManager.instance.SaveGame();
+        };
     }
 
     private void Victory()
     {
+        
         if (!isHub && !win)
         {
             toggle = true;
         }
         win = true;
         SaveLoadManager.instance.SaveGame();
-        //Debug.Log("Victory!");
+        Debug.Log("Victory!");
+        if (!isHub)
+        {
+            if(coroutineCheck==null)
+                coroutineCheck = StartCoroutine(FadeOut());
+        }
+        
+        else
+        {
+            bool temp;
+            SaveLoadManager.instance.GetCopy().levels.TryGetValue(finalLevelName, out temp);
+            if(temp)
+            {
+                if (coroutineCheck == null)
+                    coroutineCheck = StartCoroutine(FadeOut());
+            }
+        }
+    }
+
+    IEnumerator FadeOut()
+    {
+        yield return new WaitForSeconds(fadeDelay);
+        coroutineCheck = null;
+        SceneLoader.Instance.LoadCutscene(cutSceneOnFinishName);
     }
 
     public bool SetComplete(int mission)
