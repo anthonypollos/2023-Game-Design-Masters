@@ -106,6 +106,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         if (!dead)
         {
             brain.state = EnemyStates.DEAD;
+            brain.an.SetTrigger("Damaged");
             Collider[] colliders = GetComponentsInChildren<Collider>();
             foreach (Collider collider in colliders)
             {
