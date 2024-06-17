@@ -26,6 +26,9 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     bool win = false;
     bool toggle = false;
 
+    [SerializeField] string worldName;
+    private float fadeDelay = 1.0f;
+
     private void OnEnable()
     {
         controls = new MenuControls();
@@ -154,7 +157,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         checkPoint = mission.checkPointLocation;
         //SaveLoadManager.instance.SaveGame();
         if (missionsCompleted >= missions.Count)
-            Victory();
+            Victory(fadeDelay);
         else if (currentDisplayedMission == idx)
             NextUnfinished();
     }
@@ -261,18 +264,27 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     public void Win()
     {
         if (!win)
-            Victory();
+            Victory(fadeDelay);
     }
 
-    private void Victory()
+    private void Victory(float fadeDelay)
     {
+        
         if (!isHub && !win)
         {
             toggle = true;
         }
         win = true;
         SaveLoadManager.instance.SaveGame();
-        //Debug.Log("Victory!");
+        Debug.Log("Victory!");
+        StartCoroutine(FadeOut(fadeDelay));
+    }
+
+    IEnumerator FadeOut(float fadeDelay)
+    {
+        yield return new WaitForSeconds(fadeDelay);
+
+        SceneLoader.Instance.LoadCutscene(worldName);
     }
 
     public bool SetComplete(int mission)
