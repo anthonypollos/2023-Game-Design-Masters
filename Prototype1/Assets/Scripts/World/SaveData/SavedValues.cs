@@ -10,6 +10,7 @@ public class SavedValues
     public string currentLevel;
     public List<bool> currentLevelMissionStatuses;
     public bool hubReset;
+    public bool finalCutsceneWatched;
     //public Vector3 checkPointLocation;
 
     public SavedValues()
@@ -19,6 +20,7 @@ public class SavedValues
         //currentLevel = "";
         currentLevelMissionStatuses = new List<bool>();
         hubReset = true;
+        finalCutsceneWatched = false;
         //checkPointLocation = Vector3.zero;
     }
 }

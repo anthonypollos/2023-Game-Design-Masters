@@ -32,6 +32,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 
     bool win = false;
     bool toggle = false;
+    bool finalCutsceneWatched = false;
 
 
     Coroutine coroutineCheck;
@@ -174,6 +175,13 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
             Victory();
         else if (currentDisplayedMission == idx)
             NextUnfinished();
+        if(isHub)
+        {
+            if(missionsCompleted >= 1 && !finalCutsceneWatched)
+            {
+                Victory();
+            }
+        }
     }
 
     void SetMission()
@@ -312,6 +320,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
             SaveLoadManager.instance.GetCopy().levels.TryGetValue(finalLevelName, out temp);
             if(temp)
             {
+                finalCutsceneWatched = true;
                 if (coroutineCheck == null)
                     coroutineCheck = StartCoroutine(FadeOut());
             }
@@ -354,6 +363,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         savedValues.levels.Add(SceneManager.GetActiveScene().name, win);
 
         savedValues.currentLevelMissionStatuses = missionsStatuses;
+        savedValues.finalCutsceneWatched = finalCutsceneWatched;
 
     }
 
@@ -361,6 +371,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 
     public void LoadData(SavedValues savedValues)
     {
+        finalCutsceneWatched = savedValues.finalCutsceneWatched;
         savedValues.levels.TryGetValue(SceneManager.GetActiveScene().name, out win);
         toggle = savedValues.hubReset;
         missionsCompleted = 0;
