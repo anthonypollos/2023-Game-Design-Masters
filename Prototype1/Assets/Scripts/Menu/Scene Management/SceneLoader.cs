@@ -20,6 +20,11 @@ public class SceneLoader : MonoBehaviour
         LevelManager.Instance.LoadScene(scene);
     }
 
+    public void LoadCutscene(string scene)
+    {
+        LevelManager.Instance.LoadCutscene(scene);
+    }
+
     public void QueueScene(string scene)
     {
         sceneToLoad = scene;
