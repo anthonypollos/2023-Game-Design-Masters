@@ -43,13 +43,18 @@ public class DialogueManager : MonoBehaviour
     private int lastVoiceClipValue;
     private string activeName;
 
+    // Scrolling Text Variables
+    private bool isScrolling, playDialogue;
+    private Coroutine scrollText;
+    [SerializeField] private float scrollTextDelay;
+
     private StudioEventEmitter studioEventEmitter;
     [SerializeField] private EventReference[] voiceClips;
     private void Awake()
     {
         if (instance != null)
         {
-            Debug.LogWarning("Found more than one dialog manager");
+            Debug.LogWarning("Found more than one dialogue manager");
             Destroy(this);
         }
         instance = this;
@@ -119,7 +124,7 @@ public class DialogueManager : MonoBehaviour
         choiceBox.SetActive(false);
         backgroundPanel.SetActive(true);
         pcPortrait.SetActive(true);
-        npcPortrait.SetActive(false);
+        npcPortrait.SetActive(true);
         portraitAnimator.SetTrigger("pcSpeak");
         portraitAnimator.ResetTrigger("npcSpeak");
         portraitAnimator.ResetTrigger("pcChoice");
@@ -135,29 +140,61 @@ public class DialogueManager : MonoBehaviour
             ContinueStory();
     }
 
+    private string textToDisplay;
+
     private void ContinueStory()
     {
         if (currentStory != null)
         {
-            if(studioEventEmitter!=null)
+            // if text isn't scrolling, stop current audio
+            if (studioEventEmitter!=null && !isScrolling)
             {
                 studioEventEmitter.Stop();
             }
             if (currentStory.canContinue)
             {
                 StartCoroutine(Buffer());
-                mainText.text = currentStory.Continue();
+                //mainText.text = currentStory.Continue();
+
+                // if story can be continued and text is not scrolling, start scrolling text for current line
+                if (!isScrolling)
+                {
+                    playDialogue = true;
+                    mainText.text = "";
+                    textToDisplay = currentStory.Continue();
+                    scrollText = StartCoroutine(ScrollText(textToDisplay));
+                }
+                // if story can be continued and text is scrolling, display current line's full text
+                else if (isScrolling)
+                {
+                    StopCoroutine(scrollText);
+                    mainText.maxVisibleCharacters = mainText.text.ToCharArray().Length;
+                    isScrolling = false;
+                }
+
                 dialogBox.SetActive(true);
                 HandleTags();
                 DisplayChoices();
             }
+
             else
             {
-                //Debug.Log("Set to false");
-                storyStarted = false;
-                currentStory = null;
-                mainText.text = "";
-                StartCoroutine(EndStory());
+                // if on final line in current convo and text is scrolling, display final line's full text
+                if(isScrolling)
+                {
+                    StopCoroutine(scrollText);
+                    mainText.maxVisibleCharacters = mainText.text.ToCharArray().Length;
+                    isScrolling = false;
+                }
+                // if on final line in current convo and text is fully displayed, end dialogue
+                else
+                {
+                    //Debug.Log("Set to false");
+                    storyStarted = false;
+                    currentStory = null;
+                    mainText.text = "";
+                    StartCoroutine(EndStory());
+                }
             }
         }
     }
@@ -210,13 +247,14 @@ public class DialogueManager : MonoBehaviour
                 case PLAY_VOICE_CLIP:
                     int index2 = int.Parse(splitTags[1]);
                     lastVoiceClipValue = index2;
-                    if (studioEventEmitter != null)
+                    if (studioEventEmitter != null && playDialogue) //prevents dialogue lines from playing twice when skipping scrolling text
                     {
                         studioEventEmitter.Stop();
                         if (index2 < voiceClips.Length)
                         {
                             studioEventEmitter.ChangeEvent(voiceClips[index2]);
                             studioEventEmitter.Play();
+                            playDialogue = false;
                         }
                         else
                         {
@@ -274,7 +312,7 @@ public class DialogueManager : MonoBehaviour
             portraitAnimator.SetTrigger("pcChoice");
             portraitAnimator.ResetTrigger("pcSpeak");
             portraitAnimator.ResetTrigger("npcSpeak");
-            topButton.Select();
+            //topButton.Select();
             StartCoroutine(ChoiceBuffer());
             choiceNeeded = true;
         }
@@ -306,7 +344,25 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    private IEnumerator ScrollText(string text)
+    {
+        isScrolling = true;
 
+        int maxVisibleChars = 0;
+
+        mainText.text = text;
+        mainText.maxVisibleCharacters = maxVisibleChars;
+
+        foreach (char c in text.ToCharArray())
+        {
+            maxVisibleChars++;
+            mainText.maxVisibleCharacters = maxVisibleChars;
+
+            yield return new WaitForSecondsRealtime(scrollTextDelay);
+        }
+
+        isScrolling = false;
+    }
 }
 
 
