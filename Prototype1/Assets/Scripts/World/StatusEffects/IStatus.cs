@@ -61,6 +61,20 @@ public abstract class IStatus : MonoBehaviour
         timerCoroutine = null;
     }
     
+    public float getDefaultEffectDuration()
+    {
+        return defaultEffectDuration;
+    }
+
+    public float getCurrentTime()
+    {
+        return currentTime;
+    }
+
+    public float getAdjustedEffectDuration()
+    {
+        return adjustedEffectDuration;
+    }
     
     // Start is called before the first frame update
     void Start()

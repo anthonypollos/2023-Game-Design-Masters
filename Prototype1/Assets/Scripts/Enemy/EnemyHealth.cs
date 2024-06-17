@@ -15,6 +15,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [SerializeField] protected GameObject bloodParticle;
     protected int maxHealth;
     [SerializeField] protected Slider healthSlider;
+    [SerializeField] protected Slider fireSlider;
     //enemy container for controlling how many enemies are in the scene
     [HideInInspector]
     public EnemyContainer ec;
@@ -59,6 +60,9 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         ec.AddEnemy(gameObject);
         maxHealth = health;
         if (healthSlider != null) healthSlider.value = health / maxHealth;
+
+        //Fire Slider on spawn should be empty
+        if (fireSlider != null) fireSlider.value = 0;
     }
     private void Update()
     {
@@ -89,6 +93,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         }
         if (health <= 0) Die();
         if (healthSlider != null) healthSlider.value = (float)health/ maxHealth;
+        if (fireSlider != null && damageType == DamageTypes.FIRE)
+        {
+            fireSlider.value = (1 / (GetComponent<Flammable>().getDefaultEffectDuration() - GetComponent<Flammable>().getCurrentTime()));
+            //print(fireSlider.value);
+        }
         if (dmg > 0) //AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
 
 
@@ -201,6 +210,16 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     private void OnSceneChange(Scene scene)
     {
         quitting = true;
+    }
+
+    public Slider GetFireSlider()
+    {
+        return fireSlider;
+    }
+
+    public void ClearFireSlider()
+    {
+        fireSlider.value = 0;
     }
 
     public int GetMaxHealth()

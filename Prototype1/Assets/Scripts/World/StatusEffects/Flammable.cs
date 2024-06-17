@@ -47,6 +47,9 @@ public class Flammable : IStatus
         }
         StopCoroutine(onFire);
         onFire = null;
+
+        //If we're an enemy and we have a fire slider, clear the fire slider.
+        if (GetComponent<EnemyHealth>() != null && GetComponent<EnemyHealth>().GetFireSlider() != null) GetComponent<EnemyHealth>().ClearFireSlider();
         //throw new System.NotImplementedException();
     }
 
