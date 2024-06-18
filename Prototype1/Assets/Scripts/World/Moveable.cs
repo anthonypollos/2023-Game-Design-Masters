@@ -67,6 +67,7 @@ public class Moveable : MonoBehaviour, ISlowable
     [SerializeField] bool debug = false;
 
     GenericItem gi;
+    EnemyHealth enemyHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -81,6 +82,7 @@ public class Moveable : MonoBehaviour, ISlowable
         collidersHit = new List<Collider>();
         collidersRubbed = new List<Collider>();
         hasDamaged = new List<Moveable>();
+        enemyHealth = GetComponent<EnemyHealth>();
         hold = false;
         string[] temp = { "Ground", "Ground_Transparent" };
         groundLayers = LayerMask.GetMask(temp);
@@ -265,7 +267,7 @@ public class Moveable : MonoBehaviour, ISlowable
                             dir = dir.normalized;
                             if (maxDamage > 0)
                             {
-                                moveable.Slammed(dir, rb.mass * speed * speedTransferedOnHit, myCollider);
+                                moveable.Slammed(dir, rb.mass * speed * speedTransferedOnHit, myCollider, CalculateClashDamage());
                                 speed *= (1-speedLostOnHit);
                             }
                             else
@@ -289,7 +291,7 @@ public class Moveable : MonoBehaviour, ISlowable
                                 mod = 1;
                             }
                             dir = Quaternion.Euler(0, mod * 45, 0) * dir;
-                            moveable.Slammed(dir, 2 * moveable.GetMass() * speed * speedTransferedOnHit, myCollider);
+                            moveable.Slammed(dir, 2 * moveable.GetMass() * speed * speedTransferedOnHit, myCollider, CalculateClashDamage());
                         }
                     }
                     IKickable kickable = collision.transform.GetComponentInParent<IKickable>();
@@ -422,7 +424,7 @@ public class Moveable : MonoBehaviour, ISlowable
                             dir = dir.normalized;
                             if (maxDamage > 0)
                             {
-                                moveable.Slammed(dir, rb.mass * speed * speedTransferedOnHit, myCollider);
+                                moveable.Slammed(dir, rb.mass * speed * speedTransferedOnHit, myCollider, CalculateClashDamage());
                                 speed *= (1-speedLostOnHit);
                             }
                             else
@@ -620,11 +622,18 @@ public class Moveable : MonoBehaviour, ISlowable
         IgnorePlayer();
     }
 
-    public void Slammed(Vector3 target, float force, Collider collider)
+    public void Slammed(Vector3 target, float force, Collider collider, int damage)
     {
         if (unstoppable)
             return;
         flyingHitBox.SetActive(false);
+        if (enemyHealth != null)
+        {
+            if(damage < enemyHealth.GetStaggerValue())
+            {
+                return;
+            }
+        }
         isStopping = false;
         isDashing = false;
         buffer = 0;

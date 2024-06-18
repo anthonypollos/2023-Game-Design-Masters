@@ -92,7 +92,7 @@ public class BossEnemyAttacks : EnemyAttackTemplate
             Vector3 dir = collision.transform.position - collision.contacts[0].point;
             dir.y = 0;
             dir = dir.normalized;
-            collision.gameObject.GetComponent<Moveable>().Slammed(dir, rb.mass * brain.moveable.GetSpeed(), myCollider);
+            collision.gameObject.GetComponent<Moveable>().Slammed(dir, rb.mass * brain.moveable.GetSpeed(), myCollider, 0);
             if (!playerInvulnerable)
             {
                 collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(damageToPlayerOnHit);

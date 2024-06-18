@@ -110,6 +110,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         return (dmg >= health);
     }
 
+    public int GetStaggerValue()
+    {
+        return staggerThreshold;
+    }
+
     protected void Die()
     {
         if (!dead)
