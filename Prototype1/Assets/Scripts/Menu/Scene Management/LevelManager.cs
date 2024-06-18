@@ -32,7 +32,7 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
-        progressBar.fillAmount = Mathf.MoveTowards(progressBar.fillAmount, fillTarget, 1 * Time.deltaTime);
+        progressBar.fillAmount = Mathf.MoveTowards(progressBar.fillAmount, fillTarget, 1 * Time.unscaledDeltaTime);
     }
 
     /// <summary>
@@ -41,7 +41,7 @@ public class LevelManager : MonoBehaviour
     /// <param name="sceneName">Scene to Load</param>
     public async void LoadScene(string sceneName)
     {
-        Time.timeScale = 1;
+        Time.timeScale = 0;
 
         fillTarget = 0;
         progressBar.fillAmount = 0;
@@ -57,6 +57,8 @@ public class LevelManager : MonoBehaviour
         {
             fillTarget = scene.progress + 0.1f;
 
+            print(fillTarget);
+
             if (scene.progress >= 0.9f)
             {
                 await Task.Delay(1);
@@ -65,9 +67,11 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-        await Task.Delay(1);
+        await Task.Delay(2);
         if(loadScreen!=null)
             loadScreen.SetActive(false);
+
+        Time.timeScale = 1;
 
         //do {
         //    await Task.Delay(100);
@@ -89,7 +93,7 @@ public class LevelManager : MonoBehaviour
     /// <param name="sceneName">Scene to Load</param>
     public async void LoadCutscene(string sceneName)
     {
-        Time.timeScale = 1;
+        Time.timeScale = 0;
 
         fillTarget = 0;
         progressBar.fillAmount = 0;
@@ -113,9 +117,11 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-        await Task.Delay(1);
+        await Task.Delay(2);
         if (loadScreen != null)
             loadScreen.SetActive(false);
+
+        Time.timeScale = 1;
 
         //do {
         //    await Task.Delay(100);
