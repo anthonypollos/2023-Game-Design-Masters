@@ -16,6 +16,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     protected int maxHealth;
     [SerializeField] protected Slider healthSlider;
     [SerializeField] protected Slider fireSlider;
+    [SerializeField] protected Slider bleedSlider;
     //enemy container for controlling how many enemies are in the scene
     [HideInInspector]
     public EnemyContainer ec;
@@ -63,6 +64,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
         //Fire Slider on spawn should be empty
         if (fireSlider != null) fireSlider.value = 0;
+        //same for bleed slider
+        if (bleedSlider != null) bleedSlider.value = 0;
     }
     private void Update()
     {
@@ -93,12 +96,20 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         }
         if (health <= 0) Die();
         if (healthSlider != null) healthSlider.value = (float)health/ maxHealth;
+
+        //If we have a fire slider and are taking fire damage, update the fire slider
         if (fireSlider != null && damageType == DamageTypes.FIRE)
         {
             fireSlider.value = (1 / (GetComponent<Flammable>().getDefaultEffectDuration() - GetComponent<Flammable>().getCurrentTime()));
-            //print(fireSlider.value);
         }
-        if (dmg > 0) //AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
+        //If we have a bleed slider and are taking bleed damage, update the bleed slider
+        if (bleedSlider != null && damageType == DamageTypes.BLEED)
+        {
+            bleedSlider.value = (1 / (GetComponent<Bleedable>().getDefaultEffectDuration() - GetComponent<Bleedable>().getCurrentTime()));
+        }
+
+        //DEPRECATED! Used to be used to play a sound upon damage before we switched to FMod
+        //if (dmg > 0) //AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
 
 
         //Prevent overheal
@@ -220,6 +231,16 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public void ClearFireSlider()
     {
         fireSlider.value = 0;
+    }
+
+    public Slider GetBleedSlider()
+    {
+        return bleedSlider;
+    }
+
+    public void ClearBleedSlider()
+    {
+        bleedSlider.value = 0;
     }
 
     public int GetMaxHealth()
