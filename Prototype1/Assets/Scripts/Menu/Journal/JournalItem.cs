@@ -10,7 +10,7 @@ public class JournalItem : MonoBehaviour
     // THIS IS TEMP!!! UNTIL TIED IN W SAVE SYSTEM!!!
     public bool isFound = false;
     [Tooltip("Nothing = always available, itemID = requires ID to be collected, levelCheck requires level (ItemLocation variable) to be completed")]
-    enum CollectedCheck {nothing, itemID, levelCheck}
+    enum CollectedCheck {nothing, itemID, levelCheck, finalCutscene}
     [SerializeField] CollectedCheck collectedCheck;
 
     [Header("General Variables")]
@@ -41,11 +41,12 @@ public class JournalItem : MonoBehaviour
     public enum ItemLocation { Tutorial, Hub, Town, Railyard, Final }
     public ItemLocation itemLocation;
 
+
     [Tooltip("Should this item be the default selected entry in its sub-menu?")]
     public bool selectOnStart = false;
 
     //Change this value in relation to the above locations to the scene name
-    private string[] levels = new string[5]{"Tutorial_new", "HubScene", "Town_Connor_Art_Pass", "C_ArtPass_railyard_v2", "Cutscene_Final"};
+    private string[] levels = new string[4]{"Tutorial_new", "HubScene", "Town_Connor_Art_Pass", "C_ArtPass_railyard_v2"};
 
     /// <summary>
     /// Description to display if player has not found item yet
@@ -125,6 +126,11 @@ public class JournalItem : MonoBehaviour
                     Debug.Log(levels[(int)itemLocation] + ": not found");
                     isFound = false;
                 }
+                break;
+            case CollectedCheck.finalCutscene:
+                exists = temp.finalCutsceneWatched;
+                if (!exists)
+                    isFound = false;
                 break;
         }
 
