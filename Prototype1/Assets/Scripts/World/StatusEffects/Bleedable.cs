@@ -28,6 +28,10 @@ public class Bleedable : IStatus
         } */
         StopCoroutine(isBleeding);
         isBleeding = null;
+
+        //If we're an enemy and we have a bleed slider, clear the bleed slider.
+        if (GetComponent<EnemyHealth>() != null && GetComponent<EnemyHealth>().GetBleedSlider() != null) GetComponent<EnemyHealth>().ClearBleedSlider();
+
         //throw new System.NotImplementedException();
     }
 
@@ -60,7 +64,7 @@ public class Bleedable : IStatus
             //Debug.Log("Tick Damage");
             if (iDamageable != null)
             {
-                iDamageable.TakeDamage(damagePerTick);
+                iDamageable.TakeDamage(damagePerTick,DamageTypes.BLEED);
                 //Force blood to spawn specifically on enemies
                 if (GetComponent<EnemyHealth>() != null) GetComponent<EnemyHealth>().ForceSpawnBlood();
             }
