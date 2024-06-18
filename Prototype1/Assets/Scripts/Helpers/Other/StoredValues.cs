@@ -6,7 +6,7 @@ using UnityEngine;
 [SerializeField]
 public enum DamageTypes
 {
-    BLUGEONING = 1, EXPLOSION = 2, ENERGY = 3, PIERCING = 4, FIRE = 5
+    BLUGEONING = 1, EXPLOSION = 2, ENERGY = 3, PIERCING = 4, FIRE = 5, BLEED = 6
 }
 public static class StoredValues
 {
