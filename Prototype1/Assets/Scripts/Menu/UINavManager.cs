@@ -49,11 +49,31 @@ public class UINavManager : MonoBehaviour
 
         mainMenu.SetActive(false);
 
-        if(!isMainMenu)
+        if (!isMainMenu)
         {
             Cursor.lockState = CursorLockMode.None;
             Time.timeScale = 1;
         }
+    }
+
+    public void CloseMainMenu(string animTrigger)
+    {
+        anim.SetTrigger(animTrigger);
+
+        isClosed = true;
+        subMenuActive = false;
+        popUpActive = false;
+
+        if (!isMainMenu)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Time.timeScale = 1;
+        }
+    }
+
+    public void DisableMain()
+    {
+        mainMenu.SetActive(false);
     }
 
     /// <summary>

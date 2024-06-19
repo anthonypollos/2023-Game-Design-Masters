@@ -10,6 +10,8 @@ public class CollectibleManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI collectName, collectDesc;
     [SerializeField] private TextMeshProUGUI noteName;
 
+    [SerializeField] private UINavManager navManager;
+
     [SerializeField] private GameObject pickupUI;
 
     [SerializeField] private Animator anim;
@@ -48,7 +50,9 @@ public class CollectibleManager : MonoBehaviour
 
     private void DisplayCollectible()
     {
-        pickupUI.SetActive(true);
+        //pickupUI.SetActive(true);
+        navManager.CloseMainMenu();
+        navManager.OpenMainMenu();
 
         collectName.text = tempName;
         collectDesc.text = tempDesc;
@@ -76,7 +80,10 @@ public class CollectibleManager : MonoBehaviour
 
     private void DisplayNote()
     {
-        pickupUI.SetActive(true);
+        //pickupUI.SetActive(true);
+
+        navManager.CloseMainMenu();
+        navManager.OpenMainMenu();
 
         noteName.text = tempName;
 
@@ -87,15 +94,5 @@ public class CollectibleManager : MonoBehaviour
         anim.SetInteger("CollectIndex", tempIndex);
 
         anim.SetTrigger("StartAnim");
-    }
-
-    public void CloseMenu()
-    {
-        Invoke("DisableMenu", 1.0f);
-    }
-
-    private void DisableMenu()
-    {
-        pickupUI.SetActive(false);
     }
 }

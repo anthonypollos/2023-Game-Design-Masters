@@ -35,7 +35,7 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private UINavManager pauseMenuNav;
     [SerializeField] private UINavManager journalMenuNav,levelSelectMenuNav, dialogueMenuNav,
-                                           optionsMenuNav, pickupMenuNav, deathMenuNav;
+                                           optionsMenuNav, collectMenuNav, deathMenuNav;
 
     bool inCombat = true;
 
@@ -123,6 +123,8 @@ public class GameController : MonoBehaviour
         mc.Main.Menu.performed += _ => CloseJournal();
         if (levelSelectMenuNav != null)
             mc.Main.Menu.performed += _ => ToggleLevelSelect();
+        if (collectMenuNav != null)
+            mc.Main.Menu.performed += _ => ToggleCollectibleView();
 
         //CombatState(true);
     }
@@ -152,7 +154,7 @@ public class GameController : MonoBehaviour
                     pauseMenuNav.CloseMainMenu();
 
                 //paused = false;
-                //Cursor.lockState = CursorLockMode.Confined;
+                //Cursor.lockState = CursorLockMode.Confined;                     // previous/commented code moved to UINavManager script
                 //pauseMenu.SetActive(false);
                 //foreach (GameObject menu in menus)
                 //    menu.SetActive(false);
@@ -196,7 +198,7 @@ public class GameController : MonoBehaviour
                 }
             }
         }
-        // if on main menu
+        // if on main menu; maybe TEMP, use less redundant way to do this
         else if(nonGameScenes.Contains(SceneManager.GetActiveScene().name))
         {
             if (!optionsMenuNav.isClosed)
@@ -238,10 +240,6 @@ public class GameController : MonoBehaviour
             else if (!journalMenuNav.isClosed && !journalMenuNav.subMenuActive)
             {
                 journalMenuNav.CloseMainMenu();
-                /*journalOpen = false;
-                Cursor.lockState = CursorLockMode.Confined;                     // commented code moved to UINavManager script
-                journalMenu.SetActive(false);
-                Time.timeScale = 1;*/
             }
             // if journal is on sub-menu, return to main contents page
             else if (journalMenuNav.subMenuActive)
@@ -280,6 +278,15 @@ public class GameController : MonoBehaviour
                 else
                     levelSelectMenuNav.CloseMainMenu();
             }
+        }
+    }
+
+    public void ToggleCollectibleView()
+    {
+        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
+        {
+            if (!collectMenuNav.isClosed)
+                collectMenuNav.CloseMainMenu("NextState");
         }
     }
 
