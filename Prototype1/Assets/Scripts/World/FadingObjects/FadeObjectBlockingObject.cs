@@ -55,12 +55,12 @@ public class FadeObjectBlockingObject : MonoBehaviour
                 Vector3.Distance(cam.transform.position, target.transform.position + targetPositionOffset),
                 layermask);
 
-            ExtDebug.DrawBoxCastBox(cam.transform.position,
+            /*ExtDebug.DrawBoxCastBox(cam.transform.position,
                 new Vector3(fadeAOEX, fadeAOEY, fadeAOEZ),
                 Quaternion.identity,
                 (target.transform.position + targetPositionOffset - cam.transform.position).normalized,
                 Vector3.Distance(cam.transform.position, target.transform.position + targetPositionOffset),
-                Color.red);
+                Color.red);*/
 
 
             //Debug.Log("Target's hit: " + targets);
