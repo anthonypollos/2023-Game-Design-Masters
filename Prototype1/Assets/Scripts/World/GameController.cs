@@ -12,8 +12,8 @@ public class GameController : MonoBehaviour
     MenuControls mc;
     List<Camera> mainCameras;
     [SerializeField] bool isThirdPerson = false;
-    [SerializeField][Tooltip("First value = orhographic zoom, Second value = vertical FOV")] float[] nonCombatZoom = { 5, 15 };
-    [SerializeField][Tooltip("First value = orhographic zoom, Second value = vertical FOV")] float[] combatZoom = { 10, 40 };
+    [SerializeField] [Tooltip("First value = orhographic zoom, Second value = vertical FOV")] float[] nonCombatZoom = { 5, 15 };
+    [SerializeField] [Tooltip("First value = orhographic zoom, Second value = vertical FOV")] float[] combatZoom = { 10, 40 };
     [SerializeField] float zoomTime = 1;
     float[] targetZoom;
     private float velocity = 0;
@@ -23,16 +23,25 @@ public class GameController : MonoBehaviour
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject[] menus;
     [SerializeField] GameObject deathMenu;
-    [SerializeField] GameObject journalMenu;
-    [SerializeField] Button topButtonPause;
-    [SerializeField] Button topButtonDead;
+    //[SerializeField] GameObject journalMenu;
+    //[SerializeField] Button topButtonPause;   //not currently needed with no controller support
+    //[SerializeField] Button topButtonDead;
     [SerializeField] List<string> nonGameScenes;
     [SerializeField] List<string> cutSceneScenes;
     [SerializeField] List<string> levelTransitionScenes;
+
+    [Header("UI Navigvation")]
+    //[SerializeField] private LevelSelectManager levelSelectManager;
+
+    [SerializeField] private UINavManager pauseMenuNav;
+    [SerializeField] private UINavManager journalMenuNav,levelSelectMenuNav, dialogueMenuNav,
+                                           optionsMenuNav, pickupMenuNav, deathMenuNav;
+
     bool inCombat = true;
 
     bool paused;
-    bool journalOpen;
+    bool journal;
+
 
     static GameObject player;
 
@@ -48,7 +57,7 @@ public class GameController : MonoBehaviour
     {
         outlineManager = FindObjectOfType<OutlineToggle>();
         paused = false;
-        journalOpen = false;
+        //journalOpen = false;
         Cursor.lockState = CursorLockMode.Confined;
         if (instance != null && instance != this)
         {
@@ -99,7 +108,7 @@ public class GameController : MonoBehaviour
             mainCameras.Add(go.GetComponent<Camera>());
         }
         if (CombatMusicManager != null)
-        CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
+            CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
         CombatState(false);
     }
     private void OnEnable()
@@ -107,9 +116,13 @@ public class GameController : MonoBehaviour
         mc = new MenuControls();
         mc.Main.Enable();
         mc.Main.Menu.performed += _ => TogglePauseMenu();
+        mc.Main.Menu.performed += _ => ToggleOptionsMenu();
         mc.Main.Restart.performed += _ => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         mc.Main.ToggleLasso.performed += _ => ToggleLasso();
         mc.Main.Journal.performed += _ => ToggleJournal();
+        mc.Main.Menu.performed += _ => CloseJournal();
+        if (levelSelectMenuNav != null)
+            mc.Main.Menu.performed += _ => ToggleLevelSelect();
 
         //CombatState(true);
     }
@@ -120,56 +133,152 @@ public class GameController : MonoBehaviour
         mc.Disable();
     }
 
+    #region UI Navigation
+
     public void TogglePauseMenu()
     {
         if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
         {
-            if(journalOpen)
+            if (!pauseMenuNav.isClosed)
             {
-                journalOpen = false;
-                Cursor.lockState = CursorLockMode.Confined;
-                journalMenu.SetActive(false);
-                Time.timeScale = 1;
+                // if pause menu pop-up is active, close pop-up
+                if (pauseMenuNav.popUpActive)
+                    pauseMenuNav.ClosePopUp("Main");
+                // if pause menu is open to a sub-menu (ie options), close sub-menu and return to main pause menu
+                else if (pauseMenuNav.subMenuActive)
+                    pauseMenuNav.CloseSubMenu("Main");
+                // if pause menu is on main pause menu, close pause menu
+                else
+                    pauseMenuNav.CloseMainMenu();
+
+                //paused = false;
+                //Cursor.lockState = CursorLockMode.Confined;
+                //pauseMenu.SetActive(false);
+                //foreach (GameObject menu in menus)
+                //    menu.SetActive(false);
+                //Time.timeScale = 1;
             }
-            if (paused)
+            // if pause menu/other UI not open, open pause menu
+            else if (Time.timeScale != 0) //|| !dialogueMenuNav.isClosed)
             {
-                paused = false;
-                Cursor.lockState = CursorLockMode.Confined;
-                pauseMenu.SetActive(false);
-                foreach (GameObject menu in menus)
-                    menu.SetActive(false);
-                Time.timeScale = 1;
-            }
-            else if (Time.timeScale != 0)
-            {
-                paused = true;
-                Cursor.lockState = CursorLockMode.None;
-                pauseMenu.SetActive(true);
-                //topButtonPause.Select();
-                Time.timeScale = 0;
+                pauseMenuNav.OpenMainMenu();
+                //paused = true;
+                //Cursor.lockState = CursorLockMode.None;
+                //pauseMenu.SetActive(true);
+                ////topButtonPause.Select();
+                //print("help");
+                //Time.timeScale = 0;
             }
         }
     }
 
+    // Options Nav using Menu Key; Menu Key will only close options (sub)menus and pop-ups
+    public void ToggleOptionsMenu()
+    {
+        // if not on main menu
+        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
+        {
+            if(!optionsMenuNav.isClosed)
+            {
+                // if options menu is on a pop-up within a sub-menu, close pop-up and return to sub-menu
+                if (optionsMenuNav.subMenuActive && optionsMenuNav.popUpActive)
+                    optionsMenuNav.ClosePopUp("SubMenu");
+                // if options menu open to sub-menu, close sub-menu and return to main
+                else if (optionsMenuNav.subMenuActive)
+                    optionsMenuNav.CloseSubMenu("Main");
+                // if options menu open to pop-up, close pop-up
+                else if (optionsMenuNav.popUpActive)
+                    optionsMenuNav.ClosePopUp("Main");
+                else
+                {
+                    optionsMenuNav.CloseMainMenu();
+                    pauseMenuNav.OpenMainMenu();
+                }
+            }
+        }
+        // if on main menu
+        else if(nonGameScenes.Contains(SceneManager.GetActiveScene().name))
+        {
+            if (!optionsMenuNav.isClosed)
+            {
+                // if options menu is on a pop-up within a sub-menu
+                if (optionsMenuNav.subMenuActive && optionsMenuNav.popUpActive)
+                    optionsMenuNav.ClosePopUp("SubMenu");
+                // if options menu open to sub-menu, close sub-menu and return to main
+                else if (optionsMenuNav.subMenuActive)
+                    optionsMenuNav.CloseSubMenu("Main");
+                // if options menu open to pop-up, close pop-up
+                else if (optionsMenuNav.popUpActive)
+                    optionsMenuNav.ClosePopUp("Main");
+                else
+                {
+                    optionsMenuNav.CloseMainMenu();
+                    // open main menu again
+                }
+            }
+        }
+    }
+
+    // Journal Nav using Journal Key
     public void ToggleJournal()
     {
         if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
         {
-            if (journalOpen)
+            if(Time.timeScale != 0)
             {
-                journalOpen = false;
-                Cursor.lockState = CursorLockMode.Confined;
-                journalMenu.SetActive(false);
-                Time.timeScale = 1;
+                // if journal/other UI not open, open to main contents page
+                if (journalMenuNav.isClosed)
+                {
+                    savedValuesInstance = SaveLoadManager.instance.GetCopy();
+
+                    journalMenuNav.OpenMainMenu();
+                }
             }
-            else if (Time.timeScale != 0)
+            // if journal is on main contents page, close journal
+            else if (!journalMenuNav.isClosed && !journalMenuNav.subMenuActive)
             {
-                savedValuesInstance = SaveLoadManager.instance.GetCopy();
-                journalOpen = true;
-                Cursor.lockState = CursorLockMode.None;
-                journalMenu.SetActive(true);
-                //topButtonPause.Select();
-                Time.timeScale = 0;
+                journalMenuNav.CloseMainMenu();
+                /*journalOpen = false;
+                Cursor.lockState = CursorLockMode.Confined;                     // commented code moved to UINavManager script
+                journalMenu.SetActive(false);
+                Time.timeScale = 1;*/
+            }
+            // if journal is on sub-menu, return to main contents page
+            else if (journalMenuNav.subMenuActive)
+                journalMenuNav.ReturnToMain("Main");
+        }
+    }
+
+    // Journal Nav using Menu Key; Menu Key will only close journal (sub)menus
+    public void CloseJournal()
+    {
+        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
+        {
+            if(!journalMenuNav.isClosed)
+            {
+                // if journal is on main contents page, close journal
+                if (!journalMenuNav.subMenuActive)
+                    journalMenuNav.CloseMainMenu();
+                // if journal is on sub-menu, return to main contents page
+                else if (journalMenuNav.subMenuActive)
+                    journalMenuNav.ReturnToMain("Main");
+            }
+        }
+    }
+
+    // Level Select Navigation; Menu Key will only close level select (sub)menus and pop-ups
+    public void ToggleLevelSelect()
+    {
+        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
+        {
+            if(!levelSelectMenuNav.isClosed)
+            {
+                // if level select extras menu or confirmation pop-up active, return to main level select menu
+                if (levelSelectMenuNav.subMenuActive || levelSelectMenuNav.popUpActive)
+                    levelSelectMenuNav.ReturnToMain("Main");
+                // else if not ^, close level select menu
+                else
+                    levelSelectMenuNav.CloseMainMenu();
             }
         }
     }
@@ -178,9 +287,11 @@ public class GameController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         deathMenu.SetActive(true);
-        topButtonDead.Select();
+        //topButtonDead.Select();
         Time.timeScale = 0;
     }
+
+    #endregion
 
     public void SetScene(string scene)
     {

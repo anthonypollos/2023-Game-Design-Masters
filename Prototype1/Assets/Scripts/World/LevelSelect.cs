@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class LevelSelect : InteractableBehaviorTemplate//, ISaveable
 {
-    [SerializeField] private GameObject levelSelectUI;
+    //[SerializeField] private GameObject levelSelectUI;
+    [SerializeField] private UINavManager levelSelectMenuNav;
     // [SerializeField] private GameObject[] menus;
 
     public override bool Interact()
     {
-        ToggleLevelSelect();
+        levelSelectMenuNav.OpenMainMenu();
+
+        //ToggleLevelSelect();
         return false;
     }
 
+    /*
     public void ToggleLevelSelect()
     {
         bool levelSelectActive = levelSelectUI.activeInHierarchy;
@@ -33,6 +37,7 @@ public class LevelSelect : InteractableBehaviorTemplate//, ISaveable
         }
 
     }
+    */
 
     //public void LoadData(SavedValues savedValues)
     //{
