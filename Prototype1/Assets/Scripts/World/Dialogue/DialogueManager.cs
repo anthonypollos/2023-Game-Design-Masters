@@ -11,11 +11,12 @@ using FMODUnity;
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager instance { get; private set; }
-    [SerializeField] GameObject dialogBox;
-    [SerializeField] GameObject choiceBox;
-    [SerializeField] GameObject backgroundPanel;
-    [SerializeField] GameObject pcPortrait;
-    [SerializeField] GameObject npcPortrait;
+    [SerializeField] GameObject dialogueMenu;
+    //[SerializeField] GameObject dialogBox;
+    //[SerializeField] GameObject choiceBox;
+    //[SerializeField] GameObject backgroundPanel;
+    //[SerializeField] GameObject pcPortrait;
+    //[SerializeField] GameObject npcPortrait;
     [SerializeField] TextMeshProUGUI mainText;
     [SerializeField] List<GameObject> choiceButtons;
     Button topButton;
@@ -30,7 +31,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI pcNameText;
     [SerializeField] TextMeshProUGUI npcNameText;
     //[SerializeField] Animator imageAnimator;
-    [SerializeField] Animator portraitAnimator;
+    [SerializeField] Animator dialogueAnim;
     
     private const string IMAGE_TAG = "i";
     private const string PC_PORTRAIT = "pp";
@@ -99,7 +100,7 @@ public class DialogueManager : MonoBehaviour
                 i++;
             }
         }
-        dialogBox.gameObject.SetActive(false);
+        //dialogBox.gameObject.SetActive(false);
         Debug.Log("disabling db");
     }
 
@@ -119,15 +120,16 @@ public class DialogueManager : MonoBehaviour
         currentStory = new Story(inkJSON.text);
         Time.timeScale = 0f;
         playerInteraction.Toggle();
-        dialogBox.SetActive(true);
+        dialogueMenu.SetActive(true);
+        //dialogBox.SetActive(true);
         //Debug.Log("enabling db");
-        choiceBox.SetActive(false);
-        backgroundPanel.SetActive(true);
-        pcPortrait.SetActive(true);
-        npcPortrait.SetActive(true);
-        portraitAnimator.ResetTrigger("pcSpeak");
-        portraitAnimator.ResetTrigger("npcSpeak");
-        portraitAnimator.ResetTrigger("pcChoice");
+        //choiceBox.SetActive(false);
+        //backgroundPanel.SetActive(true);
+        //pcPortrait.SetActive(true);
+        //npcPortrait.SetActive(true);
+        dialogueAnim.SetTrigger("pcSpeak");
+        dialogueAnim.ResetTrigger("npcSpeak");
+        dialogueAnim.ResetTrigger("pcChoice");
         ContinueStory();
 
 
@@ -175,7 +177,7 @@ public class DialogueManager : MonoBehaviour
                 }
 
                 Debug.Log("enabling db");
-                dialogBox.SetActive(true);    
+                //dialogBox.SetActive(true);    
             }
 
             else
@@ -224,20 +226,20 @@ public class DialogueManager : MonoBehaviour
                     break;
                 */
                 case PC_SPEAKER:
-                    portraitAnimator.SetTrigger("pcSpeak");
-                    portraitAnimator.ResetTrigger("npcSpeak");
-                    portraitAnimator.ResetTrigger("pcChoice");
+                    dialogueAnim.SetTrigger("pcSpeak");
+                    dialogueAnim.ResetTrigger("npcSpeak");
+                    dialogueAnim.ResetTrigger("pcChoice");
                     break;
                 case NPC_SPEAKER:
-                    npcPortrait.SetActive(true);
-                    portraitAnimator.SetTrigger("npcSpeak");
-                    portraitAnimator.ResetTrigger("pcSpeak");
-                    portraitAnimator.ResetTrigger("pcChoice");
+                    //npcPortrait.SetActive(true);
+                    dialogueAnim.SetTrigger("npcSpeak");
+                    dialogueAnim.ResetTrigger("pcSpeak");
+                    dialogueAnim.ResetTrigger("pcChoice");
                     break;
                 case NPC_PORTRAIT:
-                    npcPortrait.SetActive(true);
+                    //npcPortrait.SetActive(true);
                     float index = float.Parse(splitTags[1]);
-                    portraitAnimator.SetFloat("npcIndex", index);
+                    dialogueAnim.SetFloat("npcIndex", index);
                     break;
                 case NPC_NAME:
                     npcNameText.text = splitTags[1];
@@ -279,16 +281,18 @@ public class DialogueManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.05f);
         foreach (GameObject button in choiceButtons)
             button.SetActive(false);
-        portraitAnimator.ResetTrigger("pcSpeak");
-        portraitAnimator.ResetTrigger("pcChoice");
-        portraitAnimator.ResetTrigger("npcSpeak");
-        portraitAnimator.Play("Empty");
-        dialogBox.SetActive(false);
+        dialogueAnim.ResetTrigger("pcSpeak");
+        dialogueAnim.ResetTrigger("pcChoice");
+        dialogueAnim.ResetTrigger("npcSpeak");
+        dialogueAnim.Play("Empty");
+        dialogueMenu.SetActive(false);
+
+        //dialogBox.SetActive(false);
         //Debug.Log("disabling db");
-        choiceBox.SetActive(false);
-        backgroundPanel.SetActive(false);
-        pcPortrait.SetActive(false);
-        npcPortrait.SetActive(false);
+        //choiceBox.SetActive(false);
+        //backgroundPanel.SetActive(false);
+        //pcPortrait.SetActive(false);
+        //npcPortrait.SetActive(false);
         Time.timeScale = 1f;
 
     }
@@ -314,9 +318,9 @@ public class DialogueManager : MonoBehaviour
         }
         if (currentChoices.Count > 0)
         {
-            portraitAnimator.SetTrigger("pcChoice");
-            portraitAnimator.ResetTrigger("pcSpeak");
-            portraitAnimator.ResetTrigger("npcSpeak");
+            dialogueAnim.SetTrigger("pcChoice");
+            dialogueAnim.ResetTrigger("pcSpeak");
+            dialogueAnim.ResetTrigger("npcSpeak");
             //topButton.Select();
             StartCoroutine(ChoiceBuffer());
             choiceNeeded = true;
@@ -342,9 +346,9 @@ public class DialogueManager : MonoBehaviour
             choiceBuffer = false;
             currentStory.ChooseChoiceIndex(choice);
             choiceNeeded = false;
-            portraitAnimator.SetTrigger("pcSpeak");
-            portraitAnimator.ResetTrigger("npcSpeak");
-            portraitAnimator.ResetTrigger("pcChoice");
+            dialogueAnim.SetTrigger("pcSpeak");
+            dialogueAnim.ResetTrigger("npcSpeak");
+            dialogueAnim.ResetTrigger("pcChoice");
             ContinueStory();
         }
     }
