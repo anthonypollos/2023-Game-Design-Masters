@@ -12,7 +12,8 @@ public class Caltrops : MonoBehaviour
 {
     [SerializeField] int maxDamageAvalible;
     [SerializeField] float distanceToDamage;
-    [SerializeField] int damagePerInstance;
+    [SerializeField] int dmgPerInstance;
+    [SerializeField] int PlayerDmgPerInstance;
     [SerializeField] bool destroyParent;
     private struct Values: IEquatable<Values>
     {
@@ -63,8 +64,16 @@ public class Caltrops : MonoBehaviour
                 v.distance -= distanceToDamage;
                 Debug.Log("Deal damage and subtract");
                 Debug.Log(v.distance);
-                v.damageable.TakeDamage(damagePerInstance);
-                maxDamageAvalible -= damagePerInstance;
+                if (v.transform.gameObject.CompareTag("Player"))
+                {
+                    v.damageable.TakeDamage(PlayerDmgPerInstance);
+                }
+
+                else
+                {
+                    v.damageable.TakeDamage(dmgPerInstance);
+                }
+                maxDamageAvalible -= dmgPerInstance;
                 if(maxDamageAvalible<=0)
                 {
                     //Due to parenting and scaling, I've made the caltrops part of broken glass a child of an empty gameobject so that I could keep the scale as 1 1 1
