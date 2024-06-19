@@ -18,6 +18,10 @@ public class LightFlicker : MonoBehaviour
     public float flickerMax = 1.1f;
     [Tooltip("The number of times this light changes per second.")]
     public float rate = 30f;
+    [Tooltip("DEBUG:\nPrint verbose information about this light flicker to the console.")]
+    [SerializeField] protected bool debugVerbose = false;
+
+    private bool isFlickering = false;
 
     //The component of the light we're going to be flickering
     private Light Lightcomponent;
@@ -36,16 +40,23 @@ public class LightFlicker : MonoBehaviour
 
     public void StartFlicker()
     {
-        if (Lightcomponent != null) InvokeRepeating("Flicker", Random.Range(0, 3f), (1f / rate));
+        if (Lightcomponent != null && !isFlickering)
+        {
+            if (debugVerbose) print("StartFlicker called on " + gameObject + "\nRate is " + rate + " flickers per second.");
+            InvokeRepeating(nameof(Flicker), Random.Range(0, 3f), 1f / rate);
+            isFlickering = true;
+        }
     }
 
     public void StopFlicker()
     {
         CancelInvoke("Flicker");
+        isFlickering = false;
     }
 
     void Flicker()
     {
        Lightcomponent.intensity = LightIntensity * (Random.Range(flickerMin, flickerMax) * flickerScale);
+        if (debugVerbose) print(gameObject + " intensity: " + Lightcomponent.intensity);
     }
 }
