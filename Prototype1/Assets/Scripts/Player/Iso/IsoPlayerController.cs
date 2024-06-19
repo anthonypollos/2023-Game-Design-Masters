@@ -133,7 +133,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 
             if (gameObject.layer == LayerMask.NameToLayer("PlayerDashing") && !moveable.isLaunched)
             {
-                Debug.Log("PlayerDash revert");
+                //Debug.Log("PlayerDash revert");
                 gameObject.layer = previousLayer;
             }
         }
@@ -216,7 +216,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
     {
         if(canDash && !moveable.isLaunched && !isDead && Time.timeScale != 0)
         {
-            Debug.Log("Transform.forward: " + transform.forward);
+            //Debug.Log("Transform.forward: " + transform.forward);
             if (flammable.isBurning)
             {
                 flammable.StopDropAndRoll();
@@ -293,6 +293,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
         if (attackState == Helpers.PULLING)
             adjustedSpeed *= speedModWhenPulling;
         _rb.velocity = _input.ToIso().normalized * adjustedSpeed + (Vector3.up * Mathf.Clamp(_rb.velocity.y, Mathf.NegativeInfinity, 0));
+        //if grounded & _input == Vector3.zero set velocity.y to 0
 
         Vector3 temp = _rb.velocity;
         temp.y = 0;

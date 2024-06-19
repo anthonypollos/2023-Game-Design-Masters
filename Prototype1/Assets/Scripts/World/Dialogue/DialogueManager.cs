@@ -110,8 +110,8 @@ public class DialogueManager : MonoBehaviour
     }
     public void EnterDialogMode(TextAsset inkJSON)
     {
-        Debug.Log(currentStory);
-        Debug.Log("Starting Dialog");
+        //Debug.Log(currentStory);
+        //Debug.Log("Starting Dialog");
         pcNameText.text = "Maria";
         npcNameText.text = "";
         //imageAnimator.Play("Default");
@@ -120,12 +120,12 @@ public class DialogueManager : MonoBehaviour
         Time.timeScale = 0f;
         playerInteraction.Toggle();
         dialogBox.SetActive(true);
-        Debug.Log("enabling db");
+        //Debug.Log("enabling db");
         choiceBox.SetActive(false);
         backgroundPanel.SetActive(true);
         pcPortrait.SetActive(true);
         npcPortrait.SetActive(true);
-        portraitAnimator.SetTrigger("pcSpeak");
+        portraitAnimator.ResetTrigger("pcSpeak");
         portraitAnimator.ResetTrigger("npcSpeak");
         portraitAnimator.ResetTrigger("pcChoice");
         ContinueStory();
@@ -135,7 +135,7 @@ public class DialogueManager : MonoBehaviour
 
     private void AttemptContinue()
     {
-        Debug.Log(storyStarted);
+        //Debug.Log(storyStarted);
         if (storyStarted && !choiceNeeded)
             ContinueStory();
     }
@@ -162,6 +162,8 @@ public class DialogueManager : MonoBehaviour
                     playDialogue = true;
                     mainText.text = "";
                     textToDisplay = currentStory.Continue();
+                    HandleTags();
+                    DisplayChoices();
                     scrollText = StartCoroutine(ScrollText(textToDisplay));
                 }
                 // if story can be continued and text is scrolling, display current line's full text
@@ -172,9 +174,8 @@ public class DialogueManager : MonoBehaviour
                     isScrolling = false;
                 }
 
-                dialogBox.SetActive(true);
-                HandleTags();
-                DisplayChoices();
+                Debug.Log("enabling db");
+                dialogBox.SetActive(true);    
             }
 
             else
@@ -272,14 +273,18 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator EndStory()
     {
+        currentStory = null;
         playerInteraction.Toggle();
-        Debug.Log("Ending Dialog");
+        //Debug.Log("Ending Dialog");
         yield return new WaitForSecondsRealtime(0.05f);
         foreach (GameObject button in choiceButtons)
             button.SetActive(false);
+        portraitAnimator.ResetTrigger("pcSpeak");
+        portraitAnimator.ResetTrigger("pcChoice");
+        portraitAnimator.ResetTrigger("npcSpeak");
         portraitAnimator.Play("Empty");
         dialogBox.SetActive(false);
-        Debug.Log("disabling db");
+        //Debug.Log("disabling db");
         choiceBox.SetActive(false);
         backgroundPanel.SetActive(false);
         pcPortrait.SetActive(false);

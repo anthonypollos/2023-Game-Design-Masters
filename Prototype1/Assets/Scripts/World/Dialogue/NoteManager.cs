@@ -101,7 +101,7 @@ public class NoteManager : MonoBehaviour
 
     private void AttemptContinue()
     {
-        Debug.Log(storyStarted);
+        //Debug.Log(storyStarted);
         if (storyStarted && !choiceNeeded)
             ContinueStory();
     }
