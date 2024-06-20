@@ -2594,6 +2594,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rb: {fileID: 6157092007949576416}
   _speed: 13
+  groundedRayLength: 1.1
+  groundedMask:
+    serializedVersion: 2
+    m_Bits: 256
   _aimInput: {x: 0, y: 0, z: 0}
   groundMask:
     serializedVersion: 2
@@ -2609,6 +2613,7 @@ MonoBehaviour:
   speedModWhenLassoOut: 1
   speedModWhenPulling: 0.8
   anim: {fileID: 7268124728826437991}
+  currentGroundType: 0
   footsteps:
     Guid:
       Data1: -391403363
@@ -2946,6 +2951,8 @@ MonoBehaviour:
   neutralSpeed: 15
   rateOfChange: 1
   maxDamage: 40
+  speedTransferedOnHit: 0.5
+  speedLostOnHit: 0.5
   isEnemy: 0
   speed: 0
   isLaunched: 0

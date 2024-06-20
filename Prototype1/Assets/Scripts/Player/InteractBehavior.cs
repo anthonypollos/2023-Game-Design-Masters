@@ -57,7 +57,7 @@ public class InteractBehavior : MonoBehaviour
 
     private void Interact()
     {
-        Debug.Log("Interact");
+        //Debug.Log("Interact");
         if (Time.timeScale != 0)
         {
             if (currentInteractables.Count > 0)

@@ -15,6 +15,8 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 
     [SerializeField] [Tooltip("The rigidbody used for movement")] private Rigidbody _rb;
     [SerializeField] [Tooltip("The player's movement speed")] private float _speed = 5;
+    [SerializeField] float groundedRayLength = 1.1f;
+    [SerializeField] LayerMask groundedMask;
     //[SerializeField][Tooltip("The player's turn speed")] private float _turnSpeed = 360;
     private Vector3 _input;
     public Vector3 _aimInput;
@@ -133,7 +135,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 
             if (gameObject.layer == LayerMask.NameToLayer("PlayerDashing") && !moveable.isLaunched)
             {
-                Debug.Log("PlayerDash revert");
+                //Debug.Log("PlayerDash revert");
                 gameObject.layer = previousLayer;
             }
         }
@@ -216,7 +218,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
     {
         if(canDash && !moveable.isLaunched && !isDead && Time.timeScale != 0)
         {
-            Debug.Log("Transform.forward: " + transform.forward);
+            //Debug.Log("Transform.forward: " + transform.forward);
             if (flammable.isBurning)
             {
                 flammable.StopDropAndRoll();
@@ -292,17 +294,43 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
             adjustedSpeed *= speedModWhenLassoOut;
         if (attackState == Helpers.PULLING)
             adjustedSpeed *= speedModWhenPulling;
-        _rb.velocity = _input.ToIso().normalized * adjustedSpeed + (Vector3.up * Mathf.Clamp(_rb.velocity.y, Mathf.NegativeInfinity, 0));
 
         Vector3 temp = _rb.velocity;
         temp.y = 0;
+        Debug.Log("Velocity magnitude: " + temp.magnitude);
 
         // Set forward/back movement float; will have to change
         if (temp.magnitude > 1)
             anim.SetFloat("YMov", 1);
         else
             anim.SetFloat("YMov", 0);
+        Vector3 yVel = Vector3.up * Mathf.Clamp(_rb.velocity.y, Mathf.NegativeInfinity, 0);
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(_input.ToIso() * adjustedSpeed, ForceMode.VelocityChange);
+        _rb.velocity += yVel;
+        
+        //if grounded & _input == Vector3.zero set velocity.y to 0
+        if(_input == Vector3.zero && IsGrounded())
+        {
+            Debug.Log("Is grounded: " + IsGrounded());
+            _rb.useGravity = false;
+            _rb.velocity = Vector3.zero;
+        }
+        else
+        {
+            _rb.useGravity = true;
+        }
 
+        
+
+    }
+
+    private bool IsGrounded()
+    {
+        ExtDebug.DrawBoxCastBox(transform.position, new Vector3(0.5f, 0f, 0.5f), Quaternion.identity, -transform.up, groundedRayLength, Color.red);
+        bool temp =  Physics.BoxCast(transform.position, new Vector3(0.5f, 0f, 0.5f), -transform.up, Quaternion.identity, groundedRayLength, groundedMask);
+        Debug.Log("Is grounded: " + temp);
+        return temp;
     }
 
     public void EnterSlowArea(float slowPercent)
