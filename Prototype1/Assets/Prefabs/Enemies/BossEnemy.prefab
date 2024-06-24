@@ -547,7 +547,6 @@ GameObject:
   - component: {fileID: 3363318246662070815}
   - component: {fileID: 1326481809181737158}
   - component: {fileID: 2661496155728209727}
-  - component: {fileID: 6043859568060853579}
   - component: {fileID: 4210578746779264482}
   - component: {fileID: 1726951387335756835}
   - component: {fileID: 6881284722730859655}
@@ -654,6 +653,8 @@ MonoBehaviour:
   staggerThreshold: 15
   bloodParticle: {fileID: 3819351497248801758, guid: 825a543a483823647818e91c51585d77, type: 3}
   healthSlider: {fileID: 3133428222812396121}
+  fireSlider: {fileID: 0}
+  bleedSlider: {fileID: 0}
   ec: {fileID: 0}
   brain: {fileID: 0}
   enemyDamaged:
@@ -672,6 +673,9 @@ MonoBehaviour:
     Path: event:/HeavyDeath
   DeathParticle: {fileID: 7868570016504769516, guid: 458447ad92a2070419673f4cb9b1edf9, type: 3}
   DeathParticleLifetime: 4
+  alwaysStagger: 0
+  useDeathDuration: 0
+  deathDuration: 0
   bossBrain: {fileID: 0}
   healthThresholds: 2c010000c800000064000000
 --- !u!114 &1928893177864610532
@@ -691,6 +695,8 @@ MonoBehaviour:
   neutralSpeed: 15
   rateOfChange: 1
   maxDamage: 15
+  speedTransferedOnHit: 0.5
+  speedLostOnHit: 0.5
   isEnemy: 1
   speed: 0
   isLaunched: 0
@@ -726,6 +732,8 @@ MonoBehaviour:
     m_Bits: 1073417
   state: 0
   optimalRange: 0
+  useOutsideAnimator: 0
+  outsideAnimator: {fileID: 0}
   enemyAmbient:
     Guid:
       Data1: 0
@@ -744,6 +752,8 @@ MonoBehaviour:
   bossHealth: {fileID: 0}
   bossInteractions: {fileID: 0}
   bossMovevment: {fileID: 0}
+  enragedMaterial: {fileID: 2100000, guid: 843146608b672d44084a29668869cf23, type: 2}
+  model: {fileID: 4599083139697302085}
   debugToggleTrigger: 0
 --- !u!114 &1326481809181737158
 MonoBehaviour:
@@ -794,24 +804,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6043859568060853579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3523243525721501989}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41c6abad749d3f645b6bdb822862d427, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultEffectDuration: 3
-  damagePerTick: 2
-  tickInterval: 0.5
-  startOnFire: 0
-  isBurning: 0
-  an: {fileID: 0}
 --- !u!114 &4210578746779264482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1507,6 +1499,11 @@ PrefabInstance:
 --- !u!4 &3790035355195212031 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 10a49911dd441451e87a72f8364d0810, type: 3}
+  m_PrefabInstance: {fileID: 3680092280068794132}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4599083139697302085 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 10a49911dd441451e87a72f8364d0810, type: 3}
   m_PrefabInstance: {fileID: 3680092280068794132}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3845721581849960182
