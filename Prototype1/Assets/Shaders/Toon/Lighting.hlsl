@@ -8,12 +8,12 @@
 #pragma multi_compile _ _SHADOWS_SOFT
 #endif
 
-void CalculateMainLight_float(float3 WorldPos, out float3 Direction, out float3 Color,
+void CalculateMainLight_float(float3 WorldPos, float3 LightColor, float3 LightDirection, out float3 Direction, out float3 Color,
                               out half DistanceAtten, out half ShadowAtten)
 {
 #if defined(SHADERGRAPH_PREVIEW)
     Direction = float3(0.5, 0.5, 0);
-    Color = 1;
+    Color = 1; 
     DistanceAtten = 1;
     ShadowAtten = 1;
 #else
@@ -26,12 +26,14 @@ void CalculateMainLight_float(float3 WorldPos, out float3 Direction, out float3 
 
     //Direction = float3(0.5, 0.5, 0);
     //Color = 1;
+    Direction = LightDirection;
+    Color = LightColor;
     DistanceAtten = 1;
     ShadowAtten = 1;
 
-    Light mainLight = GetMainLight(0);
-    Direction = mainLight.direction;
-    Color = mainLight.color;
+    //Light mainLight = GetMainLight(0);
+    //Direction = mainLight.direction;
+    //Color = mainLight.color;
     //DistanceAtten = mainLight.distanceAttenuation;
     //ShadowAtten = mainLight.shadowAttenuation;
 #endif
