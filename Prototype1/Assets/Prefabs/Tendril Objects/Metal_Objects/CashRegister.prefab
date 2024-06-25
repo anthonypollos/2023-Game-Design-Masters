@@ -427,9 +427,13 @@ GameObject:
   - component: {fileID: 3637459988816114053}
   - component: {fileID: 6430512294798181798}
   - component: {fileID: 8930799402205547743}
-  m_Layer: 0
+  - component: {fileID: -4820407505112490742}
+  - component: {fileID: -636253332233579642}
+  - component: {fileID: 7247745218285076117}
+  - component: {fileID: -6867397889875825363}
+  m_Layer: 9
   m_Name: CashRegister
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -444,8 +448,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000029504295}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 7.988129, y: 3.5286314, z: 5.274015}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 10.1, y: 4.4615173, z: 6.668339}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3303322774792990366}
   - {fileID: 5112155659368449164}
@@ -526,6 +530,117 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.19982998, y: 0.50494784, z: 0.19825982}
   m_Center: {x: 0.0018084957, y: 0.08202328, z: 0.00087007956}
+--- !u!54 &-4820407505112490742
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7169449593251729291}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &-636253332233579642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7169449593251729291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPickup: 0
+  clashDamage: 10
+  neutralSpeed: 15
+  rateOfChange: 1
+  maxDamage: 40
+  speedTransferedOnHit: 0.5
+  speedLostOnHit: 0.5
+  isEnemy: 0
+  speed: 0
+  isLaunched: 0
+  slowdownPerSecond: 50
+  isDashing: 0
+  tendrilOwner: {fileID: 0}
+  flyingHitBox: {fileID: 0}
+  piercing: 0
+  uses: 0
+  flyingHitBoxMod: 1.25
+  debug: 0
+--- !u!114 &7247745218285076117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7169449593251729291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a12c10e85cb88c4ab2ee8a95cf9a91a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  immuneTypes: 
+  _frozenBeforeTendril: 0
+  maxHealth: 40
+  DestructionParticle: {fileID: 4936532240143131715, guid: e40e79d820639b14b8fcf4d688bde323, type: 3}
+  DestructionParticleLifetime: 4
+  ParticleOffset: {x: 0, y: 0, z: 0}
+  KickedParticle: {fileID: 0}
+  effectsOnHit: []
+  collideSound:
+    Guid:
+      Data1: 1406587514
+      Data2: 1236993393
+      Data3: 458917249
+      Data4: 1615339013
+    Path: event:/Collide
+  breakSound:
+    Guid:
+      Data1: -397892180
+      Data2: 1263299277
+      Data3: 882491830
+      Data4: 1818749134
+    Path: event:/Break
+  respawning: 0
+  respawnDelay: 5
+  _freezeOnStationary: 0
+  stationaryCheckRate: 1
+--- !u!114 &-6867397889875825363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7169449593251729291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d2f806cd6997d445991169e23e3cfde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingMass: 3
+  endingMass: 1
+  massDuration: 1
+  massTimer: 0
 --- !u!1 &9152150279583232261
 GameObject:
   m_ObjectHideFlags: 0

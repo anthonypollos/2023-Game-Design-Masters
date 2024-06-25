@@ -12,9 +12,13 @@ GameObject:
   - component: {fileID: 3250855437821694406}
   - component: {fileID: 1072376927584414257}
   - component: {fileID: 1043317757965760401}
-  m_Layer: 0
+  - component: {fileID: 6043684271031718942}
+  - component: {fileID: -1665303602271522943}
+  - component: {fileID: 4618553267105272787}
+  - component: {fileID: -7383260968616932593}
+  m_Layer: 9
   m_Name: Cauldron_Empty
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,8 +33,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.12521893, z: -0, w: 0.99212915}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 8.060716, y: 6.991243, z: 8.060716}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.97, y: 1.708626, z: 1.97}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 9161933171244012199}
   - {fileID: 6557913549678780555}
@@ -107,6 +111,117 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.20912558
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &6043684271031718942
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987740397554177671}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &-1665303602271522943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987740397554177671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 708bc45f2274f884a9cbce47ea8d2f05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPickup: 0
+  clashDamage: 10
+  neutralSpeed: 15
+  rateOfChange: 1
+  maxDamage: 40
+  speedTransferedOnHit: 0.5
+  speedLostOnHit: 0.5
+  isEnemy: 0
+  speed: 0
+  isLaunched: 0
+  slowdownPerSecond: 50
+  isDashing: 0
+  tendrilOwner: {fileID: 0}
+  flyingHitBox: {fileID: 0}
+  piercing: 0
+  uses: 0
+  flyingHitBoxMod: 1.25
+  debug: 0
+--- !u!114 &4618553267105272787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987740397554177671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a12c10e85cb88c4ab2ee8a95cf9a91a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  immuneTypes: 
+  _frozenBeforeTendril: 0
+  maxHealth: 40
+  DestructionParticle: {fileID: 4936532240143131715, guid: e40e79d820639b14b8fcf4d688bde323, type: 3}
+  DestructionParticleLifetime: 4
+  ParticleOffset: {x: 0, y: 0, z: 0}
+  KickedParticle: {fileID: 0}
+  effectsOnHit: []
+  collideSound:
+    Guid:
+      Data1: 1406587514
+      Data2: 1236993393
+      Data3: 458917249
+      Data4: 1615339013
+    Path: event:/Collide
+  breakSound:
+    Guid:
+      Data1: -397892180
+      Data2: 1263299277
+      Data3: 882491830
+      Data4: 1818749134
+    Path: event:/Break
+  respawning: 0
+  respawnDelay: 5
+  _freezeOnStationary: 0
+  stationaryCheckRate: 1
+--- !u!114 &-7383260968616932593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987740397554177671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d2f806cd6997d445991169e23e3cfde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingMass: 3
+  endingMass: 1
+  massDuration: 1
+  massTimer: 0
 --- !u!1 &2256045675099347884
 GameObject:
   m_ObjectHideFlags: 0
