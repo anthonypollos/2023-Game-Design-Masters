@@ -126,10 +126,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         return staggerThreshold;
     }
 
-    protected void Die()
+    protected virtual void Die()
     {
         if (!dead)
         {
+            dead = true;
             brain.state = EnemyStates.DEAD;
             brain.an.SetTrigger("Damaged");
             Collider[] colliders = GetComponentsInChildren<Collider>();
