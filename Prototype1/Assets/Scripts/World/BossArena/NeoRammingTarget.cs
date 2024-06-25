@@ -14,6 +14,11 @@ public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
     [SerializeField] GameObject organ;
     [SerializeField] int health = 10;
 
+    [SerializeField] GameObject damageParticle;
+    [SerializeField] Vector3 damageParticleSpawnPosition;
+    //Just gonna set this manually in here for now, I doubt we'll EVER need to change this past 3
+    private float damageParticleLifetime = 3f;
+
     private int twothirds;
     private int onethird;
     private Animator organAnim;
@@ -42,6 +47,11 @@ public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
     public void TakeDamage(int dmg, DamageTypes damageType = DamageTypes.BLUGEONING)
     {
         health -= dmg;
+
+        if (damageParticle != null)
+        {
+            Instantiate(damageParticle, damageParticleSpawnPosition, Quaternion.identity);
+        }
 
 
         //TODO: Can this be a Switch-Case or is this fine as nested ifs?
