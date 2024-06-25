@@ -9,7 +9,10 @@ public class TownSquareCysts : EnemyHealth
     {
         if (!dead)
         {
-            centerTownSquareObject.CystDestroyed();
+            if (centerTownSquareObject != null)
+            {
+                centerTownSquareObject.CystDestroyed();
+            }
             base.Die();
         }
     }
