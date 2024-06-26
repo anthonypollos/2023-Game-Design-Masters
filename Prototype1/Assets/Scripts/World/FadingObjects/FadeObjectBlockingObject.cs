@@ -74,22 +74,26 @@ public class FadeObjectBlockingObject : MonoBehaviour
                     FadingObject fadingObject = hit.transform.GetComponent<FadingObject>();
                     if (fadingObject != null && fadingObject.enabled)
                     {
-                        tempDic.Add(fadingObject, hit.distance);
-                        hitFadingObjects.Add(fadingObject);
-                        if (!objectsBlockingView.Contains(fadingObject))
+                        if (!tempDic.ContainsKey(fadingObject))
                         {
-                            //Debug.Log("Starting Fading Coroutine on: " + fadingObject.name);
-                            if (runningCoroutines.ContainsKey(fadingObject))
+                            tempDic.Add(fadingObject, hit.distance);
+                            if(!hitFadingObjects.Contains(fadingObject)) 
+                                hitFadingObjects.Add(fadingObject);
+                            if (!objectsBlockingView.Contains(fadingObject))
                             {
-                                if (runningCoroutines[fadingObject] != null)
+                                //Debug.Log("Starting Fading Coroutine on: " + fadingObject.name);
+                                if (runningCoroutines.ContainsKey(fadingObject))
                                 {
-                                    StopCoroutine(runningCoroutines[fadingObject]);
+                                    if (runningCoroutines[fadingObject] != null)
+                                    {
+                                        StopCoroutine(runningCoroutines[fadingObject]);
 
+                                    }
+                                    runningCoroutines.Remove(fadingObject);
                                 }
-                                runningCoroutines.Remove(fadingObject);
+                                runningCoroutines.Add(fadingObject, StartCoroutine(FadeObjectOut(fadingObject)));
+                                objectsBlockingView.Add(fadingObject);
                             }
-                            runningCoroutines.Add(fadingObject, StartCoroutine(FadeObjectOut(fadingObject)));
-                            objectsBlockingView.Add(fadingObject);
                         }
 
                     }
