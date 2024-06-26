@@ -19,6 +19,9 @@ public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
     //Just gonna set this manually in here for now, I doubt we'll EVER need to change this past 3
     private float damageParticleLifetime = 3f;
 
+    [SerializeField] GameObject overseer;
+    private Animator overseerAnim;
+
     private int twothirds;
     private int onethird;
     private Animator organAnim;
@@ -37,6 +40,7 @@ public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
         twothirds = health * (2 / 3);
         onethird = health / 3;
         organAnim = organ.GetComponent<Animator>();
+        overseerAnim = overseer.GetComponent<Animator>();
     }
 
     public int GetHealth()
@@ -94,6 +98,16 @@ public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
             isDestroyed = true;
             an.SetTrigger("Hit");
             if (organAnim != null) organ.GetComponent<Animator>().SetTrigger("Die");
+            //If the overseer is attached
+            if (overseerAnim)
+            {
+                //Overseer's "health" is reduced by one to switch to a different idle
+                //We do this just before setting the hit trigger just to make sure that when the hit animation is done, it transitions to the new idle
+                //This is easier than manually setting up interlaced transitions between all 4 idles.
+                overseerAnim.SetInteger("health", overseerAnim.GetInteger("health") - 1);
+                //Overseer plays hit animation
+                overseerAnim.SetTrigger("Hit");
+            }
             bfm.TargetHit();
             brain.Calm();
         }
