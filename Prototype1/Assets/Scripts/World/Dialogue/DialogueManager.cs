@@ -174,10 +174,11 @@ public class DialogueManager : MonoBehaviour
                 // if story can be continued and text is not scrolling, start scrolling text for current line
                 if (!isScrolling)
                 {
-                    HandleTags();
+                    
                     playDialogue = true;
                     mainText.text = "";
                     textToDisplay = currentStory.Continue();
+                    HandleTags();
                     DisplayChoices();
                     scrollText = StartCoroutine(ScrollText(textToDisplay));
                 }
