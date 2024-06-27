@@ -32,6 +32,9 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI npcNameText;
     //[SerializeField] Animator imageAnimator;
     [SerializeField] Animator dialogueAnim;
+
+    [SerializeField] TextMeshProUGUI nextText;
+    [SerializeField] TextMeshProUGUI choiceText;
     
     private const string IMAGE_TAG = "i";
     private const string PC_PORTRAIT = "pp";
@@ -41,8 +44,10 @@ public class DialogueManager : MonoBehaviour
     private const string PC_NAME = "pn";
     private const string NPC_NAME = "nn";
     private const string PLAY_VOICE_CLIP = "vc";
+    private const string SET_VARIABLE = "v";
     private int lastVoiceClipValue;
     private string activeName;
+
 
     // Scrolling Text Variables
     private bool isScrolling, playDialogue;
@@ -55,6 +60,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (instance != null)
         {
+            instance.UpdateKeybinds();
             Debug.LogWarning("Found more than one dialogue manager");
             Destroy(this);
         }
@@ -63,8 +69,15 @@ public class DialogueManager : MonoBehaviour
 
     private void OnEnable()
     {
+        UpdateKeybinds();
+    }
+
+    public void UpdateKeybinds()
+    {
         mc = ControlsContainer.instance.mainControls;
         mc.Main.Interact.performed += Interact;
+        nextText.text = "["+mc.Main.Interact.bindings[0].ToDisplayString().ToUpper() + "/" + mc.Main.Interact.bindings[1].ToDisplayString().ToUpper() + "] NEXT";
+        choiceText.text = "[" + mc.Main.Interact.bindings[0].ToDisplayString().ToUpper() + "/" + mc.Main.Interact.bindings[1].ToDisplayString().ToUpper() + "] SELECT CHOICE";
     }
     private void OnDisable()
     {
@@ -263,6 +276,26 @@ public class DialogueManager : MonoBehaviour
                         {
                             Debug.LogError("Index doesn't match for voice clips");
                         }
+                    }
+                    break;
+                case SET_VARIABLE:
+                    string index3 = splitTags[1];
+                    //currentStory.variablesState[variableName] = variableHere
+                    switch(index3)
+                    {
+                        case "primary":
+                            currentStory.variablesState["primary"] = "[" +mc.Main.Primary.bindings[0].ToDisplayString().ToUpper()+"]";
+                            break;
+                        case "secondary":
+                            currentStory.variablesState["secondary"] = "[" +mc.Main.Secondary.bindings[0].ToDisplayString().ToUpper()+"]";
+                            break;
+                        case "dash":
+                            currentStory.variablesState["dash"] = "["+mc.Main.Dash.bindings[0].ToDisplayString().ToUpper()+"]";
+                            break;
+                        default:
+                            Debug.LogError("Variable name not found for ink file");
+                            Debug.LogError(index3);
+                            break;
                     }
                     break;
                 default: 

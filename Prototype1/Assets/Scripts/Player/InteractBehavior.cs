@@ -22,7 +22,7 @@ public class InteractBehavior : MonoBehaviour
         //Debug.Log(mc.Main.Interact.bindings.Count);
         foreach (InputBinding action in mc.Main.Interact.bindings)
         {
-            buttons.Add(action.ToDisplayString());
+            buttons.Add(action.ToDisplayString().ToUpper());
             //Debug.Log(action.ToDisplayString());
         }
         Changed();
@@ -117,7 +117,7 @@ public class InteractBehavior : MonoBehaviour
     {
         if(currentInteractables.Count>0)
         {
-            string one = "[" + buttons[(int)InputChecker.instance.GetInputType()].ToString() + "]";
+            string one = "[" + buttons[0] + "/" + buttons[1] + "]";
             string two = currentInteractables[0].Activate();
             textBox.text = "Press " + one + " to " + two;
             textBox.gameObject.SetActive(true);
