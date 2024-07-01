@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
 {
@@ -21,6 +22,19 @@ public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
 
     [SerializeField] GameObject overseer;
     private Animator overseerAnim;
+
+    [Space(5)]
+
+    [Header("Sound Settings")]
+
+    [Tooltip("The sound that plays when a cyst is Damaged")]
+    [SerializeField] protected EventReference cystDamagedSound;
+
+    [Tooltip("The sound that plays when a cyst is Killed")]
+    [SerializeField] protected EventReference cystKilledSound;
+
+    [Tooltip("The Manually set offset after a Cyst is 'killed' for the killed sound to play")]
+    [SerializeField] protected float timeToKillSound;
 
     private int twothirds;
     private int onethird;
@@ -52,13 +66,13 @@ public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
     {
         health -= dmg;
 
+        //If we have a damaged sound, play it
+        if (cystDamagedSound.Path.Length != 0) AudioManager.instance.PlayOneShot(cystDamagedSound, transform.position);
+
         if (damageParticle != null)
         {
             Instantiate(damageParticle, damageParticleSpawnPosition, Quaternion.identity);
         }
-
-
-        //TODO: Can this be a Switch-Case or is this fine as nested ifs?
 
         //No more HP, die
         if (health <= 0)
@@ -96,6 +110,10 @@ public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
         if (!isDestroyed)
         {
             isDestroyed = true;
+
+            //If we have a cyst death sound, start the coroutine to play it after the set number of seconds we input
+            if (cystDamagedSound.Path.Length != 0) StartCoroutine(DelayDeathSound());
+
             an.SetTrigger("Hit");
             if (organAnim != null) organ.GetComponent<Animator>().SetTrigger("Die");
             //If the overseer is attached
@@ -111,5 +129,11 @@ public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
             bfm.TargetHit();
             brain.Calm();
         }
+    }
+
+    private IEnumerator DelayDeathSound()
+    {
+        yield return new WaitForSeconds(timeToKillSound);
+        AudioManager.instance.PlayOneShot(cystKilledSound, transform.position);
     }
 }
