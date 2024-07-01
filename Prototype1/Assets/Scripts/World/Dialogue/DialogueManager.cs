@@ -76,8 +76,8 @@ public class DialogueManager : MonoBehaviour
     {
         mc = ControlsContainer.instance.mainControls;
         mc.Main.Interact.performed += Interact;
-        nextText.text = "["+mc.Main.Interact.bindings[0].ToDisplayString().ToUpper() + "/" + mc.Main.Interact.bindings[1].ToDisplayString().ToUpper() + "] NEXT";
-        choiceText.text = "[" + mc.Main.Interact.bindings[0].ToDisplayString().ToUpper() + "/" + mc.Main.Interact.bindings[1].ToDisplayString().ToUpper() + "] SELECT CHOICE";
+        nextText.text = mc.Main.Interact.bindings[0].ToDisplayString().ToUpper().TranslateToSprite() + "/" + mc.Main.Interact.bindings[1].ToDisplayString().ToUpper().TranslateToSprite() + " NEXT";
+        choiceText.text = mc.Main.Interact.bindings[0].ToDisplayString().ToUpper().TranslateToSprite() + "/" + mc.Main.Interact.bindings[1].ToDisplayString().ToUpper().TranslateToSprite() + " SELECT CHOICE";
     }
     private void OnDisable()
     {
@@ -285,13 +285,13 @@ public class DialogueManager : MonoBehaviour
                     switch(index3)
                     {
                         case "primary":
-                            currentStory.variablesState["primary"] = "[" +mc.Main.Primary.bindings[0].ToDisplayString().ToUpper()+"]";
+                            currentStory.variablesState["primary"] = mc.Main.Primary.bindings[0].ToDisplayString().ToUpper().TranslateToSprite();
                             break;
                         case "secondary":
-                            currentStory.variablesState["secondary"] = "[" +mc.Main.Secondary.bindings[0].ToDisplayString().ToUpper()+"]";
+                            currentStory.variablesState["secondary"] = mc.Main.Secondary.bindings[0].ToDisplayString().ToUpper().TranslateToSprite();
                             break;
                         case "dash":
-                            currentStory.variablesState["dash"] = "["+mc.Main.Dash.bindings[0].ToDisplayString().ToUpper()+"]";
+                            currentStory.variablesState["dash"] = mc.Main.Dash.bindings[0].ToDisplayString().ToUpper().TranslateToSprite();
                             break;
                         default:
                             Debug.LogError("Variable name not found for ink file");
