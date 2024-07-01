@@ -6,6 +6,10 @@ public class UILook : MonoBehaviour
 {
     private void LateUpdate()
     {
-        transform.LookAt(Camera.main.transform);
+        Transform target = transform.parent;
+
+        transform.rotation = Quaternion.Euler(-50, (-target.rotation.y + 180), 0);
+
+        //transform.LookAt(Camera.main.transform);
     }
 }
