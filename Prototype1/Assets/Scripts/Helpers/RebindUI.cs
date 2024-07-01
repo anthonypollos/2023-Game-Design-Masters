@@ -89,11 +89,11 @@ public class RebindUI : MonoBehaviour
         {
             if (Application.isPlaying)
             {
-                rebindText.text = ControlsContainer.instance.GetBindingName(actionName, bindingIndex, displayStringOptions);
+                rebindText.text = ControlsContainer.instance.GetBindingName(actionName, bindingIndex, displayStringOptions).TranslateToSprite();
             }
             else
             {
-                rebindText.text = inputActionReference.action.GetBindingDisplayString(bindingIndex, displayStringOptions);
+                rebindText.text = inputActionReference.action.GetBindingDisplayString(bindingIndex, displayStringOptions).TranslateToSprite();
             }
         }
     }
