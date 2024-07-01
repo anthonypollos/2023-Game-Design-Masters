@@ -19,6 +19,9 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     public EnemyBrain brain;
     [SerializeField] float breakOutTime = 5f;
     [SerializeField] Image lassoImage;
+    [SerializeField] GameObject grabTimerUI;
+    [SerializeField] Image grabTimerFill;
+
     [HideInInspector]
     public IsoAttackManager lassoOwner;
     [Tooltip("Stun time when taking damage")]
@@ -30,10 +33,14 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     public virtual void Lassoed()
     {
         lassoed = true;
-        if (lassoImage != null)
+
+        if (grabTimerFill != null) //(lassoImage != null)
         {
-            lassoImage.fillAmount = 0;
-            lassoImage.gameObject.SetActive(true);
+            //lassoImage.fillAmount = 0;
+            //lassoImage.gameObject.SetActive(true);
+
+            grabTimerFill.fillAmount = 1;
+            grabTimerUI.SetActive(true);
         }
         StartCoroutine(BreakOut());
     }
@@ -43,8 +50,11 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
     }
     public virtual void Break()
     {
-        if(lassoImage!= null)
-            lassoImage.gameObject.SetActive(false);
+        //if(lassoImage!= null)
+        //lassoImage.gameObject.SetActive(false);
+        if (grabTimerUI != null)
+            grabTimerUI.SetActive(false);
+
         if (brain.moveable.tendrilOwner != null) brain.moveable.tendrilOwner.ForceRelease();
         else Debug.Log("LassoOwner = null");
     }
@@ -87,7 +97,8 @@ public abstract class EnemyInteractionBehaviorTemplate : MonoBehaviour, IPullabl
         while (lassoed)
         {
             timer += Time.deltaTime;
-            lassoImage.fillAmount = timer / breakOutTime;
+            //lassoImage.fillAmount = timer / breakOutTime;
+            grabTimerFill.fillAmount = (1 - (timer / breakOutTime));
             if (timer >= breakOutTime) Break();
             yield return null;
         }

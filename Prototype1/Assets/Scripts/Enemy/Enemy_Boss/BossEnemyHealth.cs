@@ -31,7 +31,9 @@ public class BossEnemyHealth : EnemyHealth
             }
         }
         if (health <= 0) Die();
-        healthSlider.value = (float)health / maxHealth;
+        //healthSlider.value = (float)health / maxHealth;
+        healthFill.fillAmount = (float)health / maxHealth;
+
         //if (dmg > 0) //AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
 
         //Prevent overheal

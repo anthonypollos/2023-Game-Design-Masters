@@ -46,7 +46,8 @@ public class ProtoFinalBossHealth : EnemyHealth
         ec = FindObjectOfType<EnemyContainer>();
         ec.AddEnemy(gameObject);
         maxHealth = health;
-        healthSlider.value = health / maxHealth;
+        //healthSlider.value = health / maxHealth;
+        healthFill.fillAmount = health / maxHealth;
 
         //If this is the proto final boss, set the health threshholds
         if (bossThreshholds)
@@ -82,7 +83,8 @@ public class ProtoFinalBossHealth : EnemyHealth
             brain.interaction.Stagger();
         }
         if (health <= 0) Die();
-        healthSlider.value = (float)health / maxHealth;
+        //healthSlider.value = (float)health / maxHealth;
+        healthFill.fillAmount = (float)health / maxHealth;
         if (dmg > 0) //AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
 
         //if this is the proto final boss, run the checks for its health threshholds
