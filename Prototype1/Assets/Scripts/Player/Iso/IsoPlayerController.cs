@@ -54,6 +54,8 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
     [SerializeField] GroundTypes currentGroundType = GroundTypes.DEFAULT;
     [SerializeField] private EventReference footsteps;
     [SerializeField] private EventReference dashing;
+    [SerializeField] private EventReference dashing2;
+    [SerializeField] private EventReference dashing3;
 
     Vector3 savedMousePos;
 
@@ -229,7 +231,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
                 //jukebox.PlaySound(0);
-                AudioManager.instance.PlayOneShot(dashing, this.transform.position);
+                //PickDashSound(Random.Range(1, 4));
                 if (_input == Vector3.zero)
                     moveable.Dash(transform.forward * dashRange, dashTime);
                 else
@@ -248,7 +250,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
                 gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
                 canDash = false;
                 //jukebox.PlaySound(0);
-                AudioManager.instance.PlayOneShot(dashing, this.transform.position);
+                PickDashSound(Random.Range(1, 4));
                 moveable.Dash(transform.forward * dashRange, dashTime);
                 anim.SetFloat("DashSpeed", 32f / (24 * dashTime));
                 anim.SetTrigger("Dash");
@@ -370,8 +372,23 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
         }
     }
 
-
-    public void Footsteps()
+    public void PickDashSound(int selection)
+    {
+        print(selection);
+        switch (selection)
+        {
+            case 3:
+                AudioManager.instance.PlayOneShot(dashing3, this.transform.position);
+                break;
+            case 2:
+                AudioManager.instance.PlayOneShot(dashing2, this.transform.position);
+                break;
+            default:
+                AudioManager.instance.PlayOneShot(dashing, this.transform.position);
+                break;
+        }
+    }
+        public void Footsteps()
     {
         //jukebox.PlaySound(1);
         switch(currentGroundType)
