@@ -96,9 +96,17 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         {
             brain.an.SetTrigger("Damaged");
         }
-        if (dmg > staggerThreshold)
+        //If we're staggering, spawn blood.
+        //Also: If we're taking spike damage, spawn blood no matter what
+        if (dmg > staggerThreshold || damageType == DamageTypes.SPIKE)
         {
-            AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);
+            //We don't want to stagger for every Spike damage, so check for stagger again here
+            if (dmg > staggerThreshold)
+            {
+                AudioManager.instance.PlayOneShot(enemyDamaged, transform.position);
+                brain.interaction.Stagger();
+            }
+                
             //If there is a blood particle, create it.
             if (bloodParticle != null)
             {
@@ -107,8 +115,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable
                 //destroy the particle
                 Destroy(vfxobj, 4);
             }
-
-            brain.interaction.Stagger();
         }
         if (health <= 0) Die();
         //if (healthSlider != null) healthSlider.value = (float)health/ maxHealth;
@@ -142,6 +148,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
             //bleedSlider.value = (1 / (GetComponent<Bleedable>().getDefaultEffectDuration() - GetComponent<Bleedable>().getCurrentTime()));
         }
+
 
         //DEPRECATED! Used to be used to play a sound upon damage before we switched to FMod
         //if (dmg > 0) //AudioManager.instance.PlayOneShot(enemyDamaged, this.transform.position);

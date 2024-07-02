@@ -66,12 +66,12 @@ public class Caltrops : MonoBehaviour
                 Debug.Log(v.distance);
                 if (v.transform.gameObject.CompareTag("Player"))
                 {
-                    v.damageable.TakeDamage(PlayerDmgPerInstance);
+                    v.damageable.TakeDamage(PlayerDmgPerInstance, DamageTypes.SPIKE);
                 }
 
                 else
                 {
-                    v.damageable.TakeDamage(dmgPerInstance);
+                    v.damageable.TakeDamage(dmgPerInstance, DamageTypes.SPIKE);
                 }
                 maxDamageAvalible -= dmgPerInstance;
                 if(maxDamageAvalible<=0)
