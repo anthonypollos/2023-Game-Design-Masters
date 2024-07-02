@@ -152,12 +152,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPickup: 0
+  dontRelease: 1
   clashDamage: 10
   neutralSpeed: 15
   rateOfChange: 1
   maxDamage: 40
-  speedTransferedOnHit: 0.5
-  speedLostOnHit: 0.5
+  speedTransferedOnHit: 0.6
+  speedLostOnHit: 0.1
   isEnemy: 0
   speed: 0
   isLaunched: 0
@@ -165,7 +166,7 @@ MonoBehaviour:
   isDashing: 0
   tendrilOwner: {fileID: 0}
   flyingHitBox: {fileID: 0}
-  piercing: 1
+  piercing: 0
   uses: 4
   flyingHitBoxMod: 1.25
   debug: 0
@@ -183,8 +184,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   immuneTypes: 
   _frozenBeforeTendril: 0
-  maxHealth: 25
-  DestructionParticle: {fileID: 7141866554852115599, guid: f4dd0353250b5da46ae4c4d71bf92e5b, type: 3}
+  maxHealth: 100
+  DestructionParticle: {fileID: 4099935107488988707, guid: 96fb81890a7dde74baa069a090d96dfb, type: 3}
   DestructionParticleLifetime: 4
   ParticleOffset: {x: 0, y: 0, z: 0}
   KickedParticle: {fileID: 0}
@@ -204,7 +205,7 @@ MonoBehaviour:
       Data4: -393009950
     Path: event:/Anvil Break
   respawning: 0
-  respawnDelay: 5
+  respawnDelay: 1
   _freezeOnStationary: 0
   stationaryCheckRate: 1
 --- !u!114 &4704587980962981713
@@ -220,8 +221,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingMass: 2
-  endingMass: 1
-  massDuration: 1
+  endingMass: 0.75
+  massDuration: 2
   massTimer: 0
 --- !u!208 &935386544794252410
 NavMeshObstacle:

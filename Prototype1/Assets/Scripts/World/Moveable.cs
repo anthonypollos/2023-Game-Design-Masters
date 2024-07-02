@@ -15,6 +15,7 @@ public class Moveable : MonoBehaviour, ISlowable
 {
 
     [SerializeField] bool isPickup = false;
+    [SerializeField] bool dontRelease = false;
     [SerializeField] int clashDamage = 10;
     [SerializeField] float neutralSpeed = 15f;
     [SerializeField] float rateOfChange = 1f;
@@ -244,7 +245,7 @@ public class Moveable : MonoBehaviour, ISlowable
             }
 
             //tendril lets go
-            if (tendrilOwner != null)
+            if (tendrilOwner != null && !dontRelease)
             {
                 //Debug.Log("Force release");
                 tendrilOwner.ForceRelease();
@@ -274,7 +275,7 @@ public class Moveable : MonoBehaviour, ISlowable
                             {
                                 speed = 0;
                             }
-                            ForceRelease();
+                            if (!dontRelease) ForceRelease();
                         }
                         else
                         {
@@ -299,7 +300,7 @@ public class Moveable : MonoBehaviour, ISlowable
                     {
                         kickable.Kicked();
                     }
-                    if (!unstoppable)
+                    if (!unstoppable && !dontRelease)
                         ForceReleaseDelayed();
 
                 }
@@ -367,7 +368,7 @@ public class Moveable : MonoBehaviour, ISlowable
             }
             Debug.Log("Broke on" +  collision.gameObject.name);
             //Debug.Log("collide stay");
-            if (tendrilOwner != null)
+            if (tendrilOwner != null && !dontRelease)
             {
                 //Debug.Log("Force release");
                 tendrilOwner.ForceRelease();
@@ -401,7 +402,7 @@ public class Moveable : MonoBehaviour, ISlowable
             }
 
             //tendril lets go
-            if (tendrilOwner != null)
+            if (tendrilOwner != null && !dontRelease)
             {
                 //Debug.Log("Force release");
                 tendrilOwner.ForceRelease();
@@ -431,7 +432,7 @@ public class Moveable : MonoBehaviour, ISlowable
                             {
                                 speed = 0;
                             }
-                            ForceRelease();
+                            if (!dontRelease) ForceRelease();
                         }
                     }
                     IKickable kickable = collision.transform.GetComponentInParent<IKickable>();
@@ -439,7 +440,7 @@ public class Moveable : MonoBehaviour, ISlowable
                     {
                         kickable.Kicked();
                     }
-                    if (!unstoppable)
+                    if (!unstoppable && !dontRelease)
                         ForceReleaseDelayed();
 
                 }

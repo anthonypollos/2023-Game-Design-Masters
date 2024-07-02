@@ -8,7 +8,7 @@ public class WallSpikes : MonoBehaviour, ITrap
     [SerializeField] int dmg = 20;
     [SerializeField] float bleedTime = 3f;
     [SerializeField] [Tooltip("<=0 means infinite")] int uses = 0;
-
+    [SerializeField] [Tooltip("(Enemy Only) How long a stabbed enemy is stunned for")] float stunTime = 1f;
     //[SerializeField] private JukeBox jukebox;
     [SerializeField] private EventReference stab;
 
@@ -35,6 +35,13 @@ public class WallSpikes : MonoBehaviour, ITrap
         if(bleedable!=null)
         {
             bleedable.Activate(bleedTime/mod);
+        }
+
+
+        //If an enemy hits this, stun them for an amount of time
+        if (target.CompareTag("Enemy"))
+        {
+            target.GetComponent<EnemyBrain>().interaction.Stun(stunTime);
         }
         //jukebox.PlaySound(0);
         AudioManager.instance.PlayOneShot(stab, this.transform.position);

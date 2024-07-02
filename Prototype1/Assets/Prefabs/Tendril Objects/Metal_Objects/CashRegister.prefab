@@ -573,12 +573,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPickup: 0
+  dontRelease: 1
   clashDamage: 10
   neutralSpeed: 15
   rateOfChange: 1
   maxDamage: 40
-  speedTransferedOnHit: 0.5
-  speedLostOnHit: 0.5
+  speedTransferedOnHit: 0.6
+  speedLostOnHit: 0.1
   isEnemy: 0
   speed: 0
   isLaunched: 0
@@ -586,7 +587,7 @@ MonoBehaviour:
   isDashing: 0
   tendrilOwner: {fileID: 0}
   flyingHitBox: {fileID: 0}
-  piercing: 1
+  piercing: 0
   uses: 4
   flyingHitBoxMod: 1.25
   debug: 0
@@ -604,7 +605,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   immuneTypes: 
   _frozenBeforeTendril: 0
-  maxHealth: 25
+  maxHealth: 100
   DestructionParticle: {fileID: 4099935107488988707, guid: 96fb81890a7dde74baa069a090d96dfb, type: 3}
   DestructionParticleLifetime: 4
   ParticleOffset: {x: 0, y: 0, z: 0}
@@ -612,21 +613,21 @@ MonoBehaviour:
   effectsOnHit: []
   collideSound:
     Guid:
-      Data1: -422376347
-      Data2: 1150106260
-      Data3: 277033405
-      Data4: -852633962
-    Path: event:/CashCollide
+      Data1: -245638385
+      Data2: 1304396479
+      Data3: 1320263590
+      Data4: -807366195
+    Path: event:/MetalCollide
   breakSound:
     Guid:
-      Data1: -766606268
-      Data2: 1087029335
-      Data3: 580024475
-      Data4: -775281924
-    Path: event:/Cash register Break
+      Data1: 90197676
+      Data2: 1179206613
+      Data3: 1586967452
+      Data4: -393009950
+    Path: event:/Anvil Break
   respawning: 0
-  respawnDelay: 5
-  _freezeOnStationary: 1
+  respawnDelay: 1
+  _freezeOnStationary: 0
   stationaryCheckRate: 1
 --- !u!114 &-6867397889875825363
 MonoBehaviour:
@@ -641,8 +642,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingMass: 2
-  endingMass: 1
-  massDuration: 1
+  endingMass: 0.75
+  massDuration: 2
   massTimer: 0
 --- !u!114 &2605723566259915011
 MonoBehaviour:
