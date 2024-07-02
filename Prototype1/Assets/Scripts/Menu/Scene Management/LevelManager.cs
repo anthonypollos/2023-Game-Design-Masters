@@ -57,7 +57,7 @@ public class LevelManager : MonoBehaviour
         {
             fillTarget = scene.progress + 0.1f;
 
-            print(fillTarget);
+            //print(fillTarget);
 
             if (scene.progress >= 0.9f)
             {
