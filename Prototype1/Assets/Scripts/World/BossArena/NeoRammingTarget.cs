@@ -67,7 +67,7 @@ public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
         health -= dmg;
 
         //If we have a damaged sound, play it
-        if (cystDamagedSound.Path.Length != 0) AudioManager.instance.PlayOneShot(cystDamagedSound, transform.position);
+        AudioManager.instance.PlayOneShot(cystDamagedSound, transform.position);
 
         if (damageParticle != null)
         {
@@ -112,7 +112,7 @@ public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
             isDestroyed = true;
 
             //If we have a cyst death sound, start the coroutine to play it after the set number of seconds we input
-            if (cystDamagedSound.Path.Length != 0) StartCoroutine(DelayDeathSound());
+            StartCoroutine(DelayDeathSound());
 
             an.SetTrigger("Hit");
             if (organAnim != null) organ.GetComponent<Animator>().SetTrigger("Die");

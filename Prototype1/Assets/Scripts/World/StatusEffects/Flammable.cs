@@ -11,25 +11,102 @@ public class Flammable : IStatus
     [SerializeField] bool startOnFire;
     public bool isBurning = false;
     [HideInInspector] public Animator an;
+    [Tooltip("An array of game objects that you want to enable or disable upon burning.\nIf no array is specified, we'll assume the first particle system we find is a fire effect instead")]
+    [SerializeField] private GameObject[] fireEffects;
     private ParticleSystem fireEffect;
     private ParticleSystem.EmissionModule em;
     private Light glow;
     private int mod = 1;
     Coroutine coroutine = null;
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        an = GetComponent<Animator>();
+        iDamageable = GetComponent<IDamageable>();
+        onFire = null;
+
+        //If the effects are not serialized, look for a particle system gameobject that's a child of this
+        if (fireEffects.Length <= 0) fireEffect = GetComponentInChildren<ParticleSystem>(true);
+
+        //if we use the serialized array, deactivate all objects
+        if (fireEffects.Length > 0)
+        {
+            foreach (GameObject g in fireEffects)
+            {
+                g.SetActive(false);
+            }
+        }
+
+        //if we use the old system, get the emission and glow, then deactivate them
+        if (fireEffect != null)
+        {
+            //Debug.Log("got fire on" + name);
+            em = fireEffect.emission;
+            em.enabled = false;
+
+            glow = fireEffect.gameObject.GetComponentInChildren<Light>(true);
+
+            if (glow != null)
+            {
+                glow.enabled = false;
+            }
+        }
+
+        //Finally, if we start on fire, activate
+        if (startOnFire)
+        {
+            defaultEffectDuration = Mathf.Infinity;
+            Activate();
+        }
+    }
+
     public void StopDropAndRoll()
     {
         Deactivate();
     }
-    
+
+    public override void Activate()
+    {
+
+        //if we use the serialized array, activate all objects
+        if (fireEffects.Length > 0)
+        {
+            foreach (GameObject g in fireEffects)
+            {
+                g.SetActive(true);
+            }
+        }
+
+        //if we're using the old system, let's make sure that the fire Effect object is active.
+        if (fireEffect != null) fireEffect.gameObject.SetActive(true);
+        //Ditto for the glow effect
+        if (glow != null) glow.gameObject.SetActive(true);
+
+        Effect();
+        currentTime = 0;
+        adjustedEffectDuration = 0;
+        if (timerCoroutine == null)
+        {
+            timerCoroutine = StartCoroutine(Timer());
+        }
+        //Debug.Log("Activate Status On " + name);
+    }
+
     protected override void Deactivate()
     {
-        /*
-        if(an != null) 
-            an.SetBool("Burning", false);
-        */
         effectOn = false;
         isBurning = false;
+
+        //if we use the serialized array, deactivate all objects
+        if (fireEffects.Length > 0)
+        {
+            foreach (GameObject g in fireEffects)
+            {
+                g.SetActive(false);
+            }
+        }
+
         if (fireEffect != null)
         {
             fireEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
@@ -50,12 +127,10 @@ public class Flammable : IStatus
 
         //If we're an enemy and we have a fire slider, clear the fire slider.
         if (GetComponent<EnemyHealth>() != null && GetComponent<EnemyHealth>().GetFireSlider() != null) GetComponent<EnemyHealth>().ClearFireSlider();
-        //throw new System.NotImplementedException();
     }
 
     protected override void Effect()
     {
-        //Debug.Log("be on fire now");
         if(fireEffect != null)
         {
             fireEffect.Play(true);
@@ -132,38 +207,6 @@ public class Flammable : IStatus
         {
             flammable.Activate();
         }
-    }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        an = GetComponent<Animator>();
-        iDamageable = GetComponent<IDamageable>();
-        onFire = null;
-        fireEffect = GetComponentInChildren<ParticleSystem>(true);
-        if (fireEffect != null)
-        {
-            //Debug.Log("got fire on" + name);
-            em = fireEffect.emission;
-            em.enabled = false;
-            glow = fireEffect.gameObject.GetComponentInChildren<Light>(true);
-            if (glow != null)
-            {
-                glow.enabled = false;
-            }
-        }
-        if (startOnFire)
-        {
-            defaultEffectDuration = Mathf.Infinity;
-            Activate();
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void FireVulnerable(float duration)
