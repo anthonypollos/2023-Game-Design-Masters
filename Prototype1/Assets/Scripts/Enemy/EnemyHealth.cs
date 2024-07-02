@@ -14,9 +14,19 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [SerializeField] protected int staggerThreshold = 15;
     [SerializeField] protected GameObject bloodParticle;
     protected int maxHealth;
-    [SerializeField] protected Slider healthSlider;
+
+    [Header("Enemy HUD")]
+    //[SerializeField] protected Slider healthSlider;
+    [SerializeField] protected Image healthFill;
+
     [SerializeField] protected Slider fireSlider;
+    [SerializeField] protected GameObject fireTimerUI;
+    [SerializeField] protected Image fireTimerFill;
+
     [SerializeField] protected Slider bleedSlider;
+    [SerializeField] protected GameObject bleedTimerUI;
+    [SerializeField] protected Image bleedTimerFill;
+
     //enemy container for controlling how many enemies are in the scene
     [HideInInspector]
     public EnemyContainer ec;
@@ -54,19 +64,25 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         //jukebox.SetTransform(transform);
         SceneManager.sceneUnloaded += OnSceneChange;
     }
+
     private void Start()
     {
         dead = false;
         ec = FindObjectOfType<EnemyContainer>();
         ec.AddEnemy(gameObject);
         maxHealth = health;
-        if (healthSlider != null) healthSlider.value = health / maxHealth;
+        //if (healthSlider != null) healthSlider.value = health / maxHealth;
+        if (healthFill != null) healthFill.fillAmount = health / maxHealth;
 
-        //Fire Slider on spawn should be empty
-        if (fireSlider != null) fireSlider.value = 0;
-        //same for bleed slider
-        if (bleedSlider != null) bleedSlider.value = 0;
+        // Fire timer on spawn should be empty/disabled
+        //if (fireSlider != null) fireSlider.value = 0;
+        if (fireTimerUI != null) fireTimerUI.SetActive(false);
+
+        // Same for bleed slider
+        //if (bleedSlider != null) bleedSlider.value = 0;
+        if (bleedTimerUI != null) bleedTimerUI.SetActive(false);
     }
+
     private void Update()
     {
         if (transform.position.y < -20f)
@@ -95,17 +111,36 @@ public class EnemyHealth : MonoBehaviour, IDamageable
             brain.interaction.Stagger();
         }
         if (health <= 0) Die();
-        if (healthSlider != null) healthSlider.value = (float)health/ maxHealth;
+        //if (healthSlider != null) healthSlider.value = (float)health/ maxHealth;
+        if (healthFill != null) healthFill.fillAmount = (float)health / maxHealth;
 
         //If we have a fire slider and are taking fire damage, update the fire slider
-        if (fireSlider != null && damageType == DamageTypes.FIRE)
+        if (/*fireSlider != null*/ fireTimerUI != null && damageType == DamageTypes.FIRE)
         {
-            fireSlider.value = (1 / (GetComponent<Flammable>().getDefaultEffectDuration() - GetComponent<Flammable>().getCurrentTime()));
+            if (fireTimerUI.activeInHierarchy != true)
+                fireTimerUI.SetActive(true);
+
+            fireTimerFill.fillAmount = (1 - (1 / (GetComponent<Flammable>().getDefaultEffectDuration() - GetComponent<Flammable>().getCurrentTime())));
+
+            // should redo if keeping fire timer; for now, disables UI once close enough to 0
+            if (fireTimerFill.fillAmount < 0.1f)
+                fireTimerUI.SetActive(false);
+
+            //fireSlider.value = (1 / (GetComponent<Flammable>().getDefaultEffectDuration() - GetComponent<Flammable>().getCurrentTime()));
         }
         //If we have a bleed slider and are taking bleed damage, update the bleed slider
-        if (bleedSlider != null && damageType == DamageTypes.BLEED)
+        if (/*bleedSlider != null*/ bleedTimerUI != null && damageType == DamageTypes.BLEED)
         {
-            bleedSlider.value = (1 / (GetComponent<Bleedable>().getDefaultEffectDuration() - GetComponent<Bleedable>().getCurrentTime()));
+            if (bleedTimerUI.activeInHierarchy != true)
+                bleedTimerUI.SetActive(true);
+
+            bleedTimerFill.fillAmount = (1 - (1 / (GetComponent<Bleedable>().getDefaultEffectDuration() - GetComponent<Bleedable>().getCurrentTime())));
+
+            // should redo if keeping bleed timer; for now, disables UI once close enough to 0
+            if (bleedTimerFill.fillAmount < 0.1f)
+                bleedTimerUI.SetActive(false);
+
+            //bleedSlider.value = (1 / (GetComponent<Bleedable>().getDefaultEffectDuration() - GetComponent<Bleedable>().getCurrentTime()));
         }
 
         //DEPRECATED! Used to be used to play a sound upon damage before we switched to FMod
