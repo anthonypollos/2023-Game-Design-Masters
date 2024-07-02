@@ -32,6 +32,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         pc = GetComponent<IsoPlayerController>();
         //maxHealth = health;
         hpBar.value = (float)health / (float)maxHealth;
+        DeveloperConsole.instance.SetHealth(this);
     }
 
     private void Update()

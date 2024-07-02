@@ -350,7 +350,22 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
                 }
             }
         }
+        if (checkPoint != Vector3.zero)
+            DeveloperConsole.instance.playerRB.position = checkPoint;
         return true;
+    }
+
+    public void SetComplete()
+    {
+        for (int i = 0; i <= currentDisplayedMission; i++)
+        {
+            if (!missionsStatuses[i])
+            {
+                missions[i].OnComplete();
+            }
+        }
+        if(checkPoint != Vector3.zero)
+            DeveloperConsole.instance.playerRB.position = checkPoint;
     }
 
     public void SaveData(ref SavedValues savedValues)

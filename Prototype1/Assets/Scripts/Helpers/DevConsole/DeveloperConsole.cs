@@ -69,6 +69,8 @@ public class DeveloperConsole : MonoBehaviour
 
     public IsoPlayerController playerController { get; private set; }
 
+    public PlayerHealth playerHealth { get; private set; }
+
 
     #region Variable Initializations
     private void Awake()
@@ -111,6 +113,11 @@ public class DeveloperConsole : MonoBehaviour
     public void SetMissionFolder(MissionFolder missionFolder)
     {
         this.missionFolder = missionFolder;
+    }
+
+    public void SetHealth(PlayerHealth playerHealth)
+    {
+        this.playerHealth = playerHealth;
     }
     #endregion
     #region CommandHandling

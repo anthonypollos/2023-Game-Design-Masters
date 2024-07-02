@@ -8,6 +8,11 @@ public class CompleteMissionCommand : ConsoleCommand
     public override (bool, string) ActivateCommand(string[] args)
     {
         int arg;
+        if(args.Length == 0)
+        {
+            DeveloperConsole.instance.missionFolder.SetComplete();
+            return (true, validCommandMessage);
+        }
         if (!int.TryParse(args[0], out arg))
         {
             return (false, "");
