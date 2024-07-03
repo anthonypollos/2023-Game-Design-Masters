@@ -2832,6 +2832,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPickup: 0
+  dontRelease: 0
   clashDamage: 5
   neutralSpeed: 15
   rateOfChange: 1
@@ -2975,8 +2976,7 @@ MonoBehaviour:
   startOnFire: 0
   isBurning: 0
   an: {fileID: 0}
-  fireEffect: {fileID: 1591465311184439230}
-  glow: {fileID: 251653125733749269}
+  fireEffects: []
 --- !u!114 &7541057766481440045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4719,7 +4719,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6468186370293683984, guid: 7c02b01a232440e42a372c6c60d6d11f, type: 3}
       propertyPath: m_Name
-      value: barrel_onFire_VFX
+      value: Fire_Effect
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468186370293683984, guid: 7c02b01a232440e42a372c6c60d6d11f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7869422926221549199, guid: 7c02b01a232440e42a372c6c60d6d11f, type: 3}
       propertyPath: m_LocalScale.x
@@ -4774,16 +4778,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c02b01a232440e42a372c6c60d6d11f, type: 3}
---- !u!108 &251653125733749269 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: 1933527108613239588, guid: 7c02b01a232440e42a372c6c60d6d11f, type: 3}
-  m_PrefabInstance: {fileID: 1849652911932498225}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &1591465311184439230 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 1134147080563041935, guid: 7c02b01a232440e42a372c6c60d6d11f, type: 3}
-  m_PrefabInstance: {fileID: 1849652911932498225}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8403303432957525950 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7869422926221549199, guid: 7c02b01a232440e42a372c6c60d6d11f, type: 3}
