@@ -322,7 +322,7 @@ public class LassoBehavior : MonoBehaviour
                 
                 
         }
-        Debug.Log(returnValue);
+        //Debug.Log(returnValue);
         return returnValue;
     }
 

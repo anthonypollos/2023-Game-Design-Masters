@@ -299,7 +299,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
 
         Vector3 temp = _rb.velocity;
         temp.y = 0;
-        Debug.Log("Velocity magnitude: " + temp.magnitude);
+        //Debug.Log("Velocity magnitude: " + temp.magnitude);
 
         // Set forward/back movement float; will have to change
         if (temp.magnitude > 1)
@@ -314,7 +314,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
         //if grounded & _input == Vector3.zero set velocity.y to 0
         if(_input == Vector3.zero && IsGrounded())
         {
-            Debug.Log("Is grounded: " + IsGrounded());
+            //Debug.Log("Is grounded: " + IsGrounded());
             _rb.useGravity = false;
             _rb.velocity = Vector3.zero;
         }
@@ -331,7 +331,7 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
     {
         ExtDebug.DrawBoxCastBox(transform.position, new Vector3(0.5f, 0f, 0.5f), Quaternion.identity, -transform.up, groundedRayLength, Color.red);
         bool temp =  Physics.BoxCast(transform.position, new Vector3(0.5f, 0f, 0.5f), -transform.up, Quaternion.identity, groundedRayLength, groundedMask);
-        Debug.Log("Is grounded: " + temp);
+        //Debug.Log("Is grounded: " + temp);
         return temp;
     }
 

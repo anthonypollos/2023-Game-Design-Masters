@@ -28,13 +28,13 @@ public class MeleeAttackBehavior : MonoBehaviour
 
     public void IgnoreAllInteractables()
     {
-        Debug.Log("Changing layer to ignore");
+        //Debug.Log("Changing layer to ignore");
         gameObject.layer = LAYER2;
     }
 
     public void RecognizeAllInteractables()
     {
-        Debug.Log("Resetting layer");
+        //Debug.Log("Resetting layer");
         gameObject.layer = LAYER1;
     }
 

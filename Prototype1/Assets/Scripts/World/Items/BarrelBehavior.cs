@@ -35,7 +35,7 @@ public class BarrelBehavior : MonoBehaviour, IKickable, IPullable, IDamageable
 
     public void Kicked()
     {
-        primed = true;
+        //primed = true;
     }
 
     public void Pulled(IsoAttackManager player = null)
