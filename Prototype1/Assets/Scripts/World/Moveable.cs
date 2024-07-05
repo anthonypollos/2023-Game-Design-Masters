@@ -16,6 +16,7 @@ public class Moveable : MonoBehaviour, ISlowable
 
     [SerializeField] bool isPickup = false;
     [SerializeField] bool dontRelease = false;
+    [SerializeField] float dontReleaseBufferTimer = 1.0f;
     [SerializeField] int clashDamage = 10;
     [SerializeField] float neutralSpeed = 15f;
     [SerializeField] float rateOfChange = 1f;
@@ -211,9 +212,9 @@ public class Moveable : MonoBehaviour, ISlowable
                 collidersRubbed.Add(collision.collider);
                 return;
             }
-            Debug.Log("Broke on " + collision.gameObject.name);
+            //Debug.Log("Broke on " + collision.gameObject.name);
             //Debug.Log("collide stay");
-            if (tendrilOwner != null)
+            if (tendrilOwner != null && !dontRelease)
             {
                 //Debug.Log("Force release");
                 tendrilOwner.ForceRelease();
@@ -221,7 +222,7 @@ public class Moveable : MonoBehaviour, ISlowable
             }
             //Debug.Log(collision.gameObject.name);
             //Debug.Log("Hit object");
-            if (!isStopping)
+            if (!isStopping && !dontRelease)
                 stopping = StartCoroutine(Stop());
         }
     }
@@ -233,14 +234,25 @@ public class Moveable : MonoBehaviour, ISlowable
             (stopping != null || buffer>0.2f))
         {
             Collider[] colliders = collision.gameObject.GetComponentsInChildren<Collider>();
-            foreach (Collider collider in colliders)
+            Moveable moveable = collision.transform.GetComponentInParent<Moveable>();
+            if (moveable != null)
             {
-                if (collidersHit.Contains(collider))
-                    return;
-                foreach (Collider myCollider in myColliders)
+                foreach (Collider collider in colliders)
                 {
+                    if (collidersHit.Contains(collider))
+                    {
+                        Debug.Log("collider " + collider + " found in " + this);
+                        return;
+                    }
                     collidersHit.Add(collider);
-                    Physics.IgnoreCollision(myCollider, collider, true);
+                    foreach (Collider myCollider in myColliders)
+                    {
+                        Physics.IgnoreCollision(myCollider, collider, true);
+                    }
+                    if (dontRelease)
+                    {
+                        StartCoroutine(ResetColliderDelayed(collider, moveable));
+                    }
                 }
             }
 
@@ -251,7 +263,8 @@ public class Moveable : MonoBehaviour, ISlowable
                 tendrilOwner.ForceRelease();
                 tendrilOwner = null;
             }
-            Moveable moveable = collision.transform.GetComponentInParent<Moveable>();
+            //Moveable moveable = collision.transform.GetComponentInParent<Moveable>();
+            
             OnClash();
             previousSpeed = speed;
             if (moveable != null)
@@ -331,13 +344,13 @@ public class Moveable : MonoBehaviour, ISlowable
             //if wall, hard stop
             else if (!isStopping && collision.gameObject.activeInHierarchy)
             {
-                Debug.Log("Collision Name: " + collision.gameObject.name);
+                //Debug.Log("Collision Name: " + collision.gameObject.name);
                 EnemyAttackTemplate at = transform.GetComponent<EnemyAttackTemplate>();
                 if(at != null)
                 {
                     at.ForceAnimationChange();
                 }
-                if(gameObject.activeInHierarchy)
+                if(gameObject.activeInHierarchy && !dontRelease)
                     stopping = StartCoroutine(Stop());
             }
             
@@ -358,7 +371,7 @@ public class Moveable : MonoBehaviour, ISlowable
     {
         if (!collision.transform.CompareTags(StoredValues.MovableTagsToIgnore) && isLaunched && buffer > .5f)
         {
-            if (collidersHit.Contains(collision) | collidersRubbed.Contains(collision))
+            if (collidersHit.Contains(collision) || collidersRubbed.Contains(collision))
                 return;
             Moveable temp = collision.gameObject.GetComponent<Moveable>();
             if (temp != null)
@@ -366,7 +379,7 @@ public class Moveable : MonoBehaviour, ISlowable
                 collidersRubbed.Add(collision);
                 return;
             }
-            Debug.Log("Broke on" +  collision.gameObject.name);
+            //Debug.Log("Broke on" +  collision.gameObject.name);
             //Debug.Log("collide stay");
             if (tendrilOwner != null && !dontRelease)
             {
@@ -376,7 +389,7 @@ public class Moveable : MonoBehaviour, ISlowable
             }
             //Debug.Log(collision.gameObject.name);
             //Debug.Log("Hit object");
-            if (!isStopping)
+            if (!isStopping && !dontRelease)
                 stopping = StartCoroutine(Stop());
         }
     }
@@ -390,14 +403,25 @@ public class Moveable : MonoBehaviour, ISlowable
         {
             //Debug.Log("trigger calculations going on " + collision.name);
             Collider[] colliders = collision.gameObject.GetComponentsInChildren<Collider>();
-            foreach (Collider collider in colliders)
+            Moveable moveable = collision.transform.GetComponentInParent<Moveable>();
+            if (moveable != null)
             {
-                if (collidersHit.Contains(collider))
-                    return;
-                foreach (Collider myCollider in myColliders)
+                foreach (Collider collider in colliders)
                 {
+                    if (collidersHit.Contains(collider))
+                    {
+                        Debug.Log("collider " + collider + " found in " + this);
+                        return;
+                    }
                     collidersHit.Add(collider);
-                    Physics.IgnoreCollision(myCollider, collider, true);
+                    foreach (Collider myCollider in myColliders)
+                    {   
+                        Physics.IgnoreCollision(myCollider, collider, true);
+                    }
+                    if (dontRelease)
+                    {
+                        StartCoroutine(ResetColliderDelayed(collider, moveable));
+                    }
                 }
             }
 
@@ -408,7 +432,12 @@ public class Moveable : MonoBehaviour, ISlowable
                 tendrilOwner.ForceRelease();
                 tendrilOwner = null;
             }
-            Moveable moveable = collision.transform.GetComponentInParent<Moveable>();
+            //Moveable moveable = collision.transform.GetComponentInParent<Moveable>();
+            if (dontRelease)
+            {
+                foreach (Collider collider in colliders)
+                    StartCoroutine(ResetColliderDelayed(collider, moveable));
+            }
             OnClash();
             previousSpeed = speed;
             if (moveable != null)
@@ -471,13 +500,13 @@ public class Moveable : MonoBehaviour, ISlowable
             //if wall, hard stop
             else if (!isStopping && collision.gameObject.activeInHierarchy)
             {
-                Debug.Log("Collision name: " + collision.gameObject.name);
+                //Debug.Log("Collision name: " + collision.gameObject.name);
                 EnemyAttackTemplate at = transform.GetComponent<EnemyAttackTemplate>();
                 if (at != null)
                 {
                     at.ForceAnimationChange();
                 }
-                if (gameObject.activeInHierarchy)
+                if (gameObject.activeInHierarchy && !dontRelease)
                     stopping = StartCoroutine(Stop());
             }
 
@@ -593,6 +622,33 @@ public class Moveable : MonoBehaviour, ISlowable
         hasDamaged.Clear();
         collidersHit.Clear();
         collidersRubbed.Clear();
+    }
+
+    IEnumerator ResetColliderDelayed(Collider collider, Moveable moveable = null)
+    {
+        //Debug.Log("Reset has been set for " + collider);
+        yield return new WaitForSeconds(dontReleaseBufferTimer);
+        if(collidersHit.Contains(collider))
+        {
+            collidersHit.Remove(collider);
+            foreach(Collider myCollider in myColliders)
+            {
+                if (collider != null)
+                    Physics.IgnoreCollision(myCollider, collider, false);
+            }
+        }
+        else
+        {
+            //Debug.Log("Collider not found to reset");
+        }
+        if(collidersRubbed.Contains(collider))
+        {
+            collidersRubbed.Remove(collider);
+        }
+        if(moveable!=null && hasDamaged.Contains(moveable))
+        {
+            hasDamaged.Remove(moveable);
+        }
     }
 
     public void Launched(Vector3 target, float force)

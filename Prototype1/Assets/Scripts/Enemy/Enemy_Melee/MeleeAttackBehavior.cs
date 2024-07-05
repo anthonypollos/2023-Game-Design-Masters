@@ -8,6 +8,9 @@ public class MeleeAttackBehavior : MonoBehaviour
     [SerializeField]
     int damage;
 
+    [SerializeField] bool causeBleed = false;
+    [SerializeField] float bleedTime = 3;
+
     int LAYER1 = 7;
     int LAYER2 = 26;
 
@@ -28,13 +31,13 @@ public class MeleeAttackBehavior : MonoBehaviour
 
     public void IgnoreAllInteractables()
     {
-        Debug.Log("Changing layer to ignore");
+        //Debug.Log("Changing layer to ignore");
         gameObject.layer = LAYER2;
     }
 
     public void RecognizeAllInteractables()
     {
-        Debug.Log("Resetting layer");
+        //Debug.Log("Resetting layer");
         gameObject.layer = LAYER1;
     }
 
@@ -47,6 +50,11 @@ public class MeleeAttackBehavior : MonoBehaviour
             {
                 hasHit.Add(other.gameObject);
                 target.TakeDamage(damage);
+            }
+            Bleedable bleedable = other.GetComponent<Bleedable>();
+            if (bleedable != null)
+            {
+                bleedable.Activate(bleedTime);
             }
         }
     }
