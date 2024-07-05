@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class CollectableInstance : InteractableBehaviorTemplate, ISaveable
 {
@@ -12,8 +13,9 @@ public class CollectableInstance : InteractableBehaviorTemplate, ISaveable
     [SerializeField] int collectAnimIndex;
     [SerializeField] string itemName;
     [TextArea(5, 20)] [SerializeField] string[] description;
+    [SerializeField] private EventReference collectsound;
 
-    [SerializeField] private JukeBox jukebox;
+    //[SerializeField] private JukeBox jukebox;
 
     [ContextMenu("Generate guid for id")]
     private void GenerateGuid()
@@ -23,7 +25,7 @@ public class CollectableInstance : InteractableBehaviorTemplate, ISaveable
 
     private void Awake()
     {
-        jukebox.SetTransform(transform);
+        //jukebox.SetTransform(transform);
     }
     public override bool Interact()
     {
@@ -42,7 +44,8 @@ public class CollectableInstance : InteractableBehaviorTemplate, ISaveable
             Debug.Log("Play text here");
         }
         collected = true;
-        jukebox.PlaySound(0);
+        //jukebox.PlaySound(0);
+        AudioManager.instance.PlayOneShot(collectsound, this.transform.position);
         SaveLoadManager.instance.SaveGame();
         return true;
     }
