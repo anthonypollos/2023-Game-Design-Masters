@@ -5,7 +5,7 @@
 			<value>Maria Ruby Post Town 6</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{065de75d-4f2d-448a-b257-182343e37985}</destination>
@@ -59,11 +59,18 @@
 	<object class="EventAutomatableProperties" id="{18a0b919-f304-4c9f-a4cf-d841d3610d94}" />
 	<object class="MarkerTrack" id="{ea05e697-c320-42a3-86f6-f963419a7bb4}" />
 	<object class="GroupTrack" id="{6bd4486f-97e5-4748-b33a-66a0c9d7b321}">
+		<relationship name="modules">
+			<destination>{d485f7b2-1e77-4e59-a903-02c7ab5ab439}</destination>
+		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{f62c7789-48f6-4409-8bdc-531d7a7d5b11}</destination>
 		</relationship>
 	</object>
-	<object class="Timeline" id="{d675ce4a-4b20-4215-b95b-8040f0e36e84}" />
+	<object class="Timeline" id="{d675ce4a-4b20-4215-b95b-8040f0e36e84}">
+		<relationship name="modules">
+			<destination>{d485f7b2-1e77-4e59-a903-02c7ab5ab439}</destination>
+		</relationship>
+	</object>
 	<object class="EventMixerMaster" id="{4a1c3518-0c81-4455-b666-a685ff8ffe70}">
 		<relationship name="effectChain">
 			<destination>{d4d20370-3f9a-4956-9524-6eb8c760b6ec}</destination>
@@ -81,7 +88,18 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{eec1e33f-7824-43d1-bcef-3e828dd4d9c1}" />
+	<object class="SingleSound" id="{d485f7b2-1e77-4e59-a903-02c7ab5ab439}">
+		<property name="length">
+			<value>2.4000000000000004</value>
+		</property>
+		<relationship name="audioFile">
+			<destination>{e9b6190e-9485-4737-bb19-fdb65f762846}</destination>
+		</relationship>
+	</object>
 	<object class="EventMixerGroup" id="{f62c7789-48f6-4409-8bdc-531d7a7d5b11}">
+		<property name="volume">
+			<value>-8</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
