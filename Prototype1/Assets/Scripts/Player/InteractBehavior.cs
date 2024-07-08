@@ -6,6 +6,7 @@ using TMPro;
 public class InteractBehavior : MonoBehaviour
 {
     List<InteractableBehaviorTemplate> currentInteractables;
+    InteractableBehaviorTemplate previous;
     MainControls mc;
     List<string> buttons;
     [SerializeField] TextMeshProUGUI textBox;
@@ -62,6 +63,11 @@ public class InteractBehavior : MonoBehaviour
         {
             if (currentInteractables.Count > 0)
             {
+                if(previous == currentInteractables[0])
+                {
+                    previous = null;
+                    return;
+                }
                 if (!currentInteractables[0].Interact())
                 {
                     currentInteractables.Add(currentInteractables[0]);
@@ -84,7 +90,9 @@ public class InteractBehavior : MonoBehaviour
             InteractableBehaviorTemplate temp = other.GetComponent<InteractableBehaviorTemplate>();
             if (temp != null)
                 if (!currentInteractables.Contains(temp))
+                {
                     currentInteractables.Add(temp);
+                }
         }
         Changed();
     }
@@ -96,7 +104,13 @@ public class InteractBehavior : MonoBehaviour
             InteractableBehaviorTemplate temp = other.GetComponent<InteractableBehaviorTemplate>();
             if (temp != null)
                 if (currentInteractables.Contains(temp))
+                {
+                    if(previous == temp)
+                    {
+                        previous = null;
+                    }
                     currentInteractables.Remove(temp);
+                }
         }
         Changed();
     }
