@@ -38,8 +38,8 @@ public class InteractBehavior : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector3 pos = cam.position;
-        textBox.transform.LookAt(textBox.transform.position - (pos-textBox.transform.position));
+        //Vector3 pos = cam.position;
+        //textBox.transform.LookAt(textBox.transform.position - (pos-textBox.transform.position));
 
     }
 
@@ -119,7 +119,7 @@ public class InteractBehavior : MonoBehaviour
         {
             string one = buttons[0] + "/" + buttons[1];
             string two = currentInteractables[0].Activate();
-            textBox.text = "Press " + one + " to " + two;
+            textBox.text = "" + one + "to " + two;
             textBox.gameObject.SetActive(true);
         }
         else

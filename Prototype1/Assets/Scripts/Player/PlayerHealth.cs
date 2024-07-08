@@ -12,7 +12,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     [SerializeField] GameObject bloodParticle;
     [SerializeField] int maxHealth = 100;
     IsoPlayerController pc;
-    Slider hpBar;
+    //Slider hpBar;
+    [SerializeField] private Image healthFill;
 
     [Header("Animator Variables")]
     [SerializeField] Animator anim; //assigned in inspector for now; can change
@@ -28,10 +29,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
    }
     private void Start()
     {
-        hpBar = GetComponentInChildren<Slider>();
+        //hpBar = GetComponentInChildren<Slider>();
         pc = GetComponent<IsoPlayerController>();
         //maxHealth = health;
-        hpBar.value = (float)health / (float)maxHealth;
+        //hpBar.value = (float)health / (float)maxHealth;
+        healthFill.fillAmount = (float)health / (float)maxHealth;
         DeveloperConsole.instance.SetHealth(this);
     }
 
@@ -55,7 +57,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         {
             health -= dmg;
         }
-        hpBar.value = (float)health / (float)maxHealth;
+        //hpBar.value = (float)health / (float)maxHealth;
+        healthFill.fillAmount = (float)health / (float)maxHealth;
         if (health <= 0) Die();
         else if (dmg > 0) anim.SetTrigger("Damage");
 
