@@ -5,7 +5,7 @@
 			<value>Maria Ruby Post Rail 4</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{f0379185-3948-48a5-ad51-94bf71e9fa46}</destination>
@@ -59,11 +59,18 @@
 	<object class="EventAutomatableProperties" id="{ed75cb53-03fa-4118-ad06-0187a1012c66}" />
 	<object class="MarkerTrack" id="{99d3ff5b-8731-4f64-abee-f32304ce68d9}" />
 	<object class="GroupTrack" id="{29461677-fe06-40af-af8c-e928e8991b76}">
+		<relationship name="modules">
+			<destination>{dd0a7d8c-0fe7-4047-969c-3b38d0773856}</destination>
+		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{8b651449-34d9-4e58-b40c-2cc46e33a9d5}</destination>
 		</relationship>
 	</object>
-	<object class="Timeline" id="{b9e9780b-b45c-490b-8aed-ba5820eee36c}" />
+	<object class="Timeline" id="{b9e9780b-b45c-490b-8aed-ba5820eee36c}">
+		<relationship name="modules">
+			<destination>{dd0a7d8c-0fe7-4047-969c-3b38d0773856}</destination>
+		</relationship>
+	</object>
 	<object class="EventMixerMaster" id="{06b4d147-619a-421c-8ad3-c3164181734f}">
 		<relationship name="effectChain">
 			<destination>{3afe2d75-9db1-4359-86d9-328c969aac16}</destination>
@@ -81,7 +88,24 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{ed113ca4-5b14-48ef-96fb-cf58f35ac61e}" />
+	<object class="SingleSound" id="{dd0a7d8c-0fe7-4047-969c-3b38d0773856}">
+		<property name="length">
+			<value>2.3000000000000003</value>
+		</property>
+		<property name="timelockedOffset">
+			<value>0.10000000000000001</value>
+		</property>
+		<property name="volume">
+			<value>-6</value>
+		</property>
+		<relationship name="audioFile">
+			<destination>{cc5c23e0-ff87-4102-997d-7539c1fac938}</destination>
+		</relationship>
+	</object>
 	<object class="EventMixerGroup" id="{8b651449-34d9-4e58-b40c-2cc46e33a9d5}">
+		<property name="volume">
+			<value>-6</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
