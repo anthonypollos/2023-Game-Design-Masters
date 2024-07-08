@@ -5,7 +5,7 @@
 			<value>Maria Ezra Post Rail</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{71a9bc12-4b72-4f7c-a311-1ce749e24bde}</destination>
@@ -59,11 +59,18 @@
 	<object class="EventAutomatableProperties" id="{5dc333b2-cd01-4029-b76d-3bf6d8b05952}" />
 	<object class="MarkerTrack" id="{ce132709-bdf2-44e5-b5ae-feff45cd8bd8}" />
 	<object class="GroupTrack" id="{1502b865-efc7-442e-b7e6-920d1bfce3ff}">
+		<relationship name="modules">
+			<destination>{20e631ca-5caf-4217-b0bd-90155e50f45d}</destination>
+		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{98399cf0-e1cc-4619-94b0-3eb0bb024475}</destination>
 		</relationship>
 	</object>
-	<object class="Timeline" id="{8cf615f8-425a-474c-bd09-dad79d38e723}" />
+	<object class="Timeline" id="{8cf615f8-425a-474c-bd09-dad79d38e723}">
+		<relationship name="modules">
+			<destination>{20e631ca-5caf-4217-b0bd-90155e50f45d}</destination>
+		</relationship>
+	</object>
 	<object class="EventMixerMaster" id="{c1c3bc2d-64a4-4dfd-966a-8f53ae547af8}">
 		<relationship name="effectChain">
 			<destination>{0143ebab-bde1-4794-9055-b17372ec8816}</destination>
@@ -81,6 +88,14 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{64e96d1b-c8a7-4322-87c2-293f449f87b6}" />
+	<object class="SingleSound" id="{20e631ca-5caf-4217-b0bd-90155e50f45d}">
+		<property name="length">
+			<value>2</value>
+		</property>
+		<relationship name="audioFile">
+			<destination>{9d76ecb1-de1b-477a-a3b2-62107a3c299b}</destination>
+		</relationship>
+	</object>
 	<object class="EventMixerGroup" id="{98399cf0-e1cc-4619-94b0-3eb0bb024475}">
 		<property name="name">
 			<value>Audio 1</value>
