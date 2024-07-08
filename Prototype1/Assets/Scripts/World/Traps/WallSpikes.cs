@@ -71,7 +71,7 @@ public class WallSpikes : MonoBehaviour, ITrap
     {
         //We don't want this to be usable while the death animation is playing.
         //First, disable the collider
-        GetComponent<BoxCollider>().enabled = false;
+        GetComponent<Collider>().enabled = false;
         //2nd, start the death animation
         modelVisualizer.SetTrigger("Die");
         //3rd, set the object to die after "timeToDeath," which is set to the length of our death anim
