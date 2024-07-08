@@ -71,7 +71,7 @@ public class InteractBehavior : MonoBehaviour
                     currentInteractables[0].gameObject.SetActive(false);
                 }
                 currentInteractables.RemoveAt(0);
-                if(textBox.gameObject.activeInHierarchy)
+                if(textBox!=null && textBox.gameObject.activeInHierarchy)
                     Changed();
             }
         }
@@ -103,7 +103,7 @@ public class InteractBehavior : MonoBehaviour
 
     public void Toggle()
     {
-        if(textBox.gameObject.activeInHierarchy)
+        if(textBox!=null && textBox.gameObject.activeInHierarchy)
         {
             textBox.gameObject.SetActive(false);
         }
@@ -119,12 +119,16 @@ public class InteractBehavior : MonoBehaviour
         {
             string one = buttons[0] + "/" + buttons[1];
             string two = currentInteractables[0].Activate();
-            textBox.text = "" + one + "to " + two;
-            textBox.gameObject.SetActive(true);
+            if (textBox != null)
+            {
+                textBox.text = "" + one + "to " + two;
+                textBox.gameObject.SetActive(true);
+            }
         }
         else
         {
-            textBox.gameObject.SetActive(false);
+            if(textBox != null)
+                textBox.gameObject.SetActive(false);
         }
     }
 
