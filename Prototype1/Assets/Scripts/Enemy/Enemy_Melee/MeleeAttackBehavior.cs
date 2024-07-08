@@ -51,10 +51,13 @@ public class MeleeAttackBehavior : MonoBehaviour
                 hasHit.Add(other.gameObject);
                 target.TakeDamage(damage);
             }
-            Bleedable bleedable = other.GetComponent<Bleedable>();
-            if (bleedable != null)
+            if (causeBleed)
             {
-                bleedable.Activate(bleedTime);
+                Bleedable bleedable = other.GetComponent<Bleedable>();
+                if (bleedable != null)
+                {
+                    bleedable.Activate(bleedTime);
+                }
             }
         }
     }

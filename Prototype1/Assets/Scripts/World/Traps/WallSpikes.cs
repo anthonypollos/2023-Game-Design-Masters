@@ -12,6 +12,10 @@ public class WallSpikes : MonoBehaviour, ITrap
     //[SerializeField] private JukeBox jukebox;
     [SerializeField] private EventReference stab;
 
+    [SerializeField] [Tooltip("The animator that this trap uses.")] Animator modelVisualizer;
+    [SerializeField] [Tooltip("How long is the death animation?")] float timeToDeath;
+    [SerializeField] [Tooltip("The object that spawns on death.\nPreferably a particle system.")] GameObject DeathObject;
+
     private void Awake()
     {
         //jukebox.SetTransform(transform);
@@ -47,15 +51,33 @@ public class WallSpikes : MonoBehaviour, ITrap
         AudioManager.instance.PlayOneShot(stab, this.transform.position);
         uses--;
 
-        if (uses==0)
+        
+        if (uses<1)
         {
-            Break();
+            if (modelVisualizer != null) StartCoroutine(DelayedBreak()); else Break();
         }
+        else if (modelVisualizer != null) modelVisualizer.SetTrigger("Hit");
     }
 
+    //Break is called if the trap does NOT have an animator
     private void Break()
     {
-        //Play breaking animation/sound here
+        if (DeathObject != null) Instantiate(DeathObject, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+    }
+
+    //DelayedBreak is called if the trap DOES have an animator
+    private IEnumerator DelayedBreak()
+    {
+        //We don't want this to be usable while the death animation is playing.
+        //First, disable the collider
+        GetComponent<BoxCollider>().enabled = false;
+        //2nd, start the death animation
+        modelVisualizer.SetTrigger("Die");
+        //3rd, set the object to die after "timeToDeath," which is set to the length of our death anim
+        yield return new WaitForSeconds(timeToDeath);
+        //finally, make the death object and destroy self.
+        if (DeathObject != null) Instantiate(DeathObject, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }
