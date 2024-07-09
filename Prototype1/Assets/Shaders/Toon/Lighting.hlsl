@@ -56,7 +56,7 @@ void AddAdditionalLights_float(float Smoothness, float3 WorldPosition, float3 Wo
         half atten = light.distanceAttenuation * light.shadowAttenuation;
         half thisDiffuse = atten * NdotL;
         half thisSpecular = LightingSpecular(thisDiffuse, light.direction, WorldNormal, WorldView, 1, Smoothness);
-        Diffuse += thisDiffuse;
+        Diffuse += (thisDiffuse*7.5);
         Specular += thisSpecular;
         Color += light.color * (thisDiffuse + thisSpecular);
     }
