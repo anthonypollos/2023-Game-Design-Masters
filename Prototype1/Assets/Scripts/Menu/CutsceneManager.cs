@@ -31,4 +31,6 @@ public class CutsceneManager : MonoBehaviour
     {
         SceneLoader.Instance.LoadScene(sceneToLoad);
     }
+
+    // level progression instance check, move things to one scene instead of 5
 }
