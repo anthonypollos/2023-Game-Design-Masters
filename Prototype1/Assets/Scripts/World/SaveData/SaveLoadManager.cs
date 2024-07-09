@@ -22,12 +22,12 @@ public class SaveLoadManager : MonoBehaviour
     {
         if (SaveLoadManager.instance != null)
         {
-            Debug.Log("Second instance, destroying");
+            //Debug.Log("Second instance, destroying");
             Destroy(gameObject);
         }
         else
         {
-            Debug.Log("first instance, setting");
+            //Debug.Log("first instance, setting");
             instance = this;
             dataHandler = new FileDataHandler(Application.persistentDataPath);
             transform.parent = null;

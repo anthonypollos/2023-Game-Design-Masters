@@ -4,6 +4,7 @@ using System.Runtime;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using FMODUnity;
 
 public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 {
@@ -37,6 +38,8 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 
 
     Coroutine coroutineCheck;
+    private StudioEventEmitter studioEventEmitter;
+    Coroutine waitForBark;
 
     private void OnEnable()
     {
@@ -70,13 +73,16 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
             foreach (MissionBehavior folder in missions)
             {
                 folder.SetFolder(this);
-                Debug.Log(folder.name);
+                //Debug.Log(folder.name);
             }
             combatMissionActive = false;
             //currentDisplayedMission = 0;
             SetMission();
             DeveloperConsole.instance.SetMissionFolder(this);
         }
+        studioEventEmitter = gameObject.GetComponent<StudioEventEmitter>();
+        if (studioEventEmitter != null)
+            studioEventEmitter.Stop();
     }
 
     private void Update()
@@ -102,23 +108,31 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
                 //if all missions finished
                 if (missionsCompleted == missions.Count)
                 {
-                    text += "<s>" + previous + "</s>Leave the area";
+                    text += "<s>" + previous + "</s>\nLeave the area";
                     return text;
                 }
             }
 
             //hold new text
             string temp = missions[i].GetMissionText().Item1;
-            //if new text is empty or same as its previous ignore
-            if (temp == string.Empty|| temp.CompareTo(previous) == 0)
+            MultiMissionBehavior multi;
+            if(missions[i].TryGetComponent<MultiMissionBehavior>(out multi))
             {
+                temp = multi.GetStandardMissionText();
+            }
+            //if new text is empty or same as its previous ignore
+            //Debug.Log("Comparing " + previous + " with " + temp + " and got " + temp.CompareTo(previous));
+            if (temp == string.Empty || temp.CompareTo(previous) == 0)
+            {
+                //Debug.Log("Empty or the same");
                 continue;
             }
             //if new text is unique, strike out previous mission as completed and set new text as previous
             else
             { 
-                text += "<s>" + previous + "</s>";
-                previous = temp+"\n";
+                if(previous!=string.Empty)
+                    text += "<s>" + previous + "</s>\n";
+                previous = temp;
             }
         }
         //combine previous to end
@@ -131,6 +145,16 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         {
             currentDisplayedMission++;
             SetMission();
+        }
+    }
+    
+    public void AreaPlayVoiceClip(EventReference eventReference)
+    {
+        if(studioEventEmitter!=null)
+        {
+            studioEventEmitter.Stop();
+            studioEventEmitter.ChangeEvent(eventReference);
+            studioEventEmitter.Play();
         }
     }
 
@@ -184,7 +208,14 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     private IEnumerator WaitTillNotFrozenCompletion(int idx)
     {
         yield return new WaitUntil(() => Time.timeScale != 0);
-       
+        (EventReference, bool) temp = missions[idx].GetMissionCompleteVC();
+        if (temp.Item2)
+        {
+            yield return new WaitUntil(() => !studioEventEmitter.IsPlaying());
+            studioEventEmitter.Stop();
+            studioEventEmitter.ChangeEvent(temp.Item1);
+            studioEventEmitter.Play();
+        }
         //SaveLoadManager.instance.SaveGame();
         if (missionsCompleted >= missions.Count)
             Victory();
@@ -234,18 +265,44 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         if (!combatMissionActive)
         {
 
+            if(waitForBark!=null)
+            {
+                StopCoroutine(waitForBark);
+
+            }
+            MissionBehavior mission = missions[currentDisplayedMission];
+            if(studioEventEmitter!=null)
+                waitForBark = StartCoroutine(BarkTimer(mission.GetMin(), mission.GetMax()));
             string message = "";
+            
             //bool temp = missionsStatuses[currentDisplayedMission];
             if (!missions[currentDisplayedMission].GetMissionText().Item2)
             {
-                message = missions[currentDisplayedMission].GetMissionText().Item1;
+                message = mission.GetMissionText().Item1;
             }
             else
             {
-                message = missions[currentDisplayedMission].GetMissionText().Item1;
+                message = mission.GetMissionText().Item1;
+            }
+            MultiMissionBehavior multi = mission.GetComponent<MultiMissionBehavior>();
+            if(multi!=null)
+            {
+                string basicMessage = multi.GetStandardMissionText();
+                if(basicMessage==string.Empty)
+                {
+                    message = previousMissionText + "\n" + message;
+                }
+                missionTextBox.text = message;
+                if (basicMessage.CompareTo(previousMissionText) != 0 && basicMessage != string.Empty)
+                {
+                    string temp = "<s>" + previousMissionText + "</s>";
+                    previousMissionText = basicMessage;
+                }
+               
+
             }
             //Only change text if mission's text is unique
-            if (message.CompareTo(previousMissionText) != 0 && message != string.Empty)
+            else if (message.CompareTo(previousMissionText) != 0 && message != string.Empty)
             {
                 string temp = "<s>" + previousMissionText + "</s>";
                 missionTextBox.text = message;
@@ -258,6 +315,29 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
             }
         }
         
+    }
+
+    [ContextMenu("Display GetText")]
+    private void GetTextDebug()
+    {
+        Debug.Log(GetText());
+    }
+
+    private IEnumerator BarkTimer(float min, float max)
+    {
+        while (true)
+        {
+            float timer = Random.Range(min, max);
+            yield return new WaitForSeconds(timer);
+            (EventReference, bool) temp = missions[currentDisplayedMission].GetBark();
+            if (temp.Item2)
+            {
+                yield return new WaitUntil(() => !studioEventEmitter.IsPlaying());
+                studioEventEmitter.Stop();
+                studioEventEmitter.ChangeEvent(temp.Item1);
+                studioEventEmitter.Play();
+            }
+        }
     }
 
     public void EnemyRemoved(GameObject enemy)
@@ -435,24 +515,37 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         else
         {
             checkPoint = Vector3.zero;
+            string lastString = "";
             missionsStatuses = savedValues.currentLevelMissionStatuses;
             for (int temp = 0; temp<missionsStatuses.Count; temp++)
             {
                 //Debug.Log("Mission " + (temp+1).ToString() + " is completed: " + missionsStatuses[temp]);
-                if (missionsStatuses[temp] && missions.Count>0)
+                if (missionsStatuses[temp] && missions.Count > 0)
                 {
                     missions[temp].SetFolder(this);
                     missions[temp].QuickSetToggles();
                     missions[temp].OnComplete();
+                    string test = missions[temp].GetMissionText().Item1;
+                    MultiMissionBehavior multi = missions[temp].GetComponent<MultiMissionBehavior>();
+                    if (multi != null)
+                    {
+                        test = multi.GetStandardMissionText();
+                    }
+                    if (test != string.Empty && test.CompareTo(lastString) != 0)
+                    {
+                        lastString = test;
+                    }
+                    NextUnfinished();
                 }
             }
-            Debug.Log("Checkpoint location: " + checkPoint);
+                previousMissionText = lastString;
+            //Debug.Log("Checkpoint location: " + checkPoint);
             
             if(checkPoint != Vector3.zero)
             {
                 IsoPlayerController player = FindObjectOfType<IsoPlayerController>();
                 player.GetComponent<Rigidbody>().position = checkPoint;
-                Debug.Log("Player Position: " + player.transform.position);
+                //Debug.Log("Player Position: " + player.transform.position);
             }
             
         }
