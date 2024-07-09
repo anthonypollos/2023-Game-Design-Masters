@@ -22,6 +22,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     //[SerializeField] GameObject victoryMenu;
     int missionsCompleted;
     int currentDisplayedMission = 0;
+    string previousMissionText = "";
 
     [SerializeField] string cutSceneOnFinishName;
     [SerializeField]
@@ -91,23 +92,37 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 
     public string GetText()
     {
-        string text = "<s>";
+        string previous = "";
+        string text = "";
         for(int i = 0; i<=missionsCompleted; i++)
         {
+            //If reached current mission
             if (i == missionsCompleted)
             {
-                text += "</s>";
+                //if all missions finished
                 if (missionsCompleted == missions.Count)
                 {
-                    text += "Leave the area";
+                    text += "<s>" + previous + "</s>Leave the area";
+                    return text;
                 }
             }
-            else
+
+            //hold new text
+            string temp = missions[i].GetMissionText().Item1;
+            //if new text is empty or same as its previous ignore
+            if (temp == string.Empty|| temp.CompareTo(previous) == 0)
             {
-                text += missions[i].GetMissionText().Item1 + "\n";
+                continue;
+            }
+            //if new text is unique, strike out previous mission as completed and set new text as previous
+            else
+            { 
+                text += "<s>" + previous + "</s>";
+                previous = temp+"\n";
             }
         }
-        return text;
+        //combine previous to end
+        return text + previous;
     }
 
     void NextMission()
@@ -216,19 +231,33 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     private IEnumerator WaitTillNotFrozenText()
     {
         yield return new WaitUntil(() => Time.timeScale != 0);
-        string message = "";
-        bool temp = missionsStatuses[currentDisplayedMission];
-        if (!missions[currentDisplayedMission].GetMissionText().Item2)
+        if (!combatMissionActive)
         {
-            message = missions[currentDisplayedMission].GetMissionText().Item1;
+
+            string message = "";
+            //bool temp = missionsStatuses[currentDisplayedMission];
+            if (!missions[currentDisplayedMission].GetMissionText().Item2)
+            {
+                message = missions[currentDisplayedMission].GetMissionText().Item1;
+            }
+            else
+            {
+                message = missions[currentDisplayedMission].GetMissionText().Item1;
+            }
+            //Only change text if mission's text is unique
+            if (message.CompareTo(previousMissionText) != 0 && message != string.Empty)
+            {
+                string temp = "<s>" + previousMissionText + "</s>";
+                missionTextBox.text = message;
+                previousMissionText = message;
+                //Mission completion animation here
+            }
+            else
+            {
+                missionTextBox.text = previousMissionText;
+            }
         }
-        else
-        {
-            message = missions[currentDisplayedMission].GetMissionText().Item1;
-        }
-        if (temp)
-            message = "<s>" + message + "</s>";
-        missionTextBox.text = message;
+        
     }
 
     public void EnemyRemoved(GameObject enemy)
@@ -262,7 +291,12 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     {
         if (combatMissionActive)
         {
-            string message = currentCombatMissionActive.GetMissionText().Item1 +
+            string temp = currentCombatMissionActive.GetMissionText().Item1;
+            if(temp==string.Empty)
+            {
+                temp = previousMissionText;
+            }
+            string message = temp +
                 "\nEnemies Slain: " + currentCombatMissionActive.GetCount();
             missionTextBox.text = message;
         }
