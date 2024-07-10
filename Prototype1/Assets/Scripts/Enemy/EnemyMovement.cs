@@ -85,6 +85,8 @@ public class EnemyMovement : MonoBehaviour, ISlowable
         isforward = true;
         currentPoint = 0;
         corner = 0;
+        if (wanderRadius == 0)
+            isIdle = true;
         if (isMoving)
         {
             RandomPoint(out targetPosition);
