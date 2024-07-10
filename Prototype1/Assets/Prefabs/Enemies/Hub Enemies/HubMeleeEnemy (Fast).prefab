@@ -573,6 +573,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0
+  causeBleed: 0
+  bleedTime: 3
 --- !u!65 &5528714464959331504
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -889,7 +891,7 @@ GameObject:
   - component: {fileID: 8378607039561445571}
   - component: {fileID: 8293747043059497067}
   m_Layer: 6
-  m_Name: HubMeleeEnemy
+  m_Name: HubMeleeEnemy (Fast)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -905,7 +907,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 94.829025, y: 0.41830826, z: -59.454285}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.726, y: 0.726, z: 0.726}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4703637872922893924}
@@ -966,7 +968,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -986,7 +988,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9f7b7bc8d897b2439ad8081aa9d2e71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 50
+  health: 5
   staggerThreshold: 20
   bloodParticle: {fileID: 3819351497248801758, guid: 825a543a483823647818e91c51585d77, type: 3}
   healthFill: {fileID: 2741676044888424273}
@@ -1030,6 +1032,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPickup: 0
+  dontRelease: 0
+  dontReleaseBufferTimer: 1
   clashDamage: 5
   neutralSpeed: 15
   rateOfChange: 1
@@ -1063,12 +1067,12 @@ MonoBehaviour:
   interaction: {fileID: 0}
   moveable: {fileID: 0}
   player: {fileID: 0}
-  sightDistance: 10
+  sightDistance: 0
   isAggro: 0
   an: {fileID: 0}
   layermask:
     serializedVersion: 2
-    m_Bits: 1073417
+    m_Bits: 1073408
   state: 0
   optimalRange: 1.5
   useOutsideAnimator: 0
@@ -1102,8 +1106,10 @@ MonoBehaviour:
   isMoving: 1
   isIdle: 0
   movementSpeed: 6.25
-  isPatrolling: 0
-  patrolPoints: []
+  isPatrolling: 1
+  patrolPoints:
+  - {x: 79.1, y: 0, z: -43.95}
+  - {x: 96.85, y: 0, z: -43.95}
   centerPoint: {x: 0, y: 0, z: 0}
   wanderRadius: 8.028358
   brain: {fileID: 0}
