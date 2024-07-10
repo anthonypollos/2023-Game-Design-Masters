@@ -377,7 +377,7 @@ Transform:
   m_GameObject: {fileID: 901049939726711971}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: 0.1313411, z: 0}
+  m_LocalPosition: {x: 0, y: -0.174, z: 0}
   m_LocalScale: {x: 33.26259, y: 33.262585, z: 33.262585}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -742,6 +742,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 25
+  causeBleed: 0
+  bleedTime: 3
 --- !u!65 &6949303971084116432
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2833,6 +2835,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPickup: 0
   dontRelease: 0
+  dontReleaseBufferTimer: 1
   clashDamage: 5
   neutralSpeed: 15
   rateOfChange: 1

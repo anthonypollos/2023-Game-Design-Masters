@@ -227,7 +227,7 @@ Transform:
   m_GameObject: {fileID: 661084835853228140}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: -0.9, z: -0}
   m_LocalScale: {x: 39, y: 39, z: 39}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -11233,6 +11233,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 8
+  causeBleed: 0
+  bleedTime: 3
 --- !u!65 &737278962919856504
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18023,6 +18025,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPickup: 0
   dontRelease: 0
+  dontReleaseBufferTimer: 1
   clashDamage: 5
   neutralSpeed: 15
   rateOfChange: 1
@@ -24050,6 +24053,10 @@ PrefabInstance:
     - target: {fileID: 756853430613428139, guid: bebb9aa70b19047089003984b4c77cd4, type: 3}
       propertyPath: m_Name
       value: Enemy HUD
+      objectReference: {fileID: 0}
+    - target: {fileID: 3755164369279340782, guid: bebb9aa70b19047089003984b4c77cd4, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8675585050836498913, guid: bebb9aa70b19047089003984b4c77cd4, type: 3}
       propertyPath: m_Pivot.x

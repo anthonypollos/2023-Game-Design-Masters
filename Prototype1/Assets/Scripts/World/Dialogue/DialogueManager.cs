@@ -114,7 +114,7 @@ public class DialogueManager : MonoBehaviour
             }
         }
         //dialogBox.gameObject.SetActive(false);
-        Debug.Log("disabling db");
+        //Debug.Log("disabling db");
     }
 
     public void SetPlayerInteraction(InteractBehavior temp)

@@ -50,7 +50,6 @@ GameObject:
   - component: {fileID: 3657817560485933155}
   - component: {fileID: 4098175655782479622}
   - component: {fileID: 1518948759952963888}
-  - component: {fileID: 3474031673101436193}
   - component: {fileID: 3681258278350685709}
   - component: {fileID: 7373477360047462577}
   - component: {fileID: 3833262242289331318}
@@ -182,7 +181,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 0.75728595, g: 1, b: 0.3820755, a: 1}
   m_Intensity: 10
-  m_Range: 10
+  m_Range: 3
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -266,23 +265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a05eb6ae060ae84c8aa4565ac160515, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  availableDistance: 50
---- !u!114 &3474031673101436193
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4458190356548084724}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c244bef1d164263409ecb131ebdefae7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flickerMin: 0.9
-  flickerMax: 1.1
-  rate: 30
-  debugVerbose: 0
+  availableDistance: 40
 --- !u!114 &3681258278350685709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,6 +279,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPickup: 0
+  dontRelease: 0
+  dontReleaseBufferTimer: 1
   clashDamage: 10
   neutralSpeed: 15
   rateOfChange: 1

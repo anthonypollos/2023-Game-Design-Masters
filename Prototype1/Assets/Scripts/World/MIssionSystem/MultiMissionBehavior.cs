@@ -33,6 +33,11 @@ public class MultiMissionBehavior : MissionBehavior, IMissionContainer
         return (combinedMissionText, true);
     }
 
+    public string GetStandardMissionText()
+    {
+        return missionText;
+    }
+
     public void EnemyRemoved(GameObject enemy)
     {
         foreach (MissionBehavior objective in objectives)
@@ -73,7 +78,7 @@ public class MultiMissionBehavior : MissionBehavior, IMissionContainer
     {
         if(objectivesCompleted >= objectives.Count) 
         {
-            combinedMissionText = "<s>" + missionText + "</s>";
+            combinedMissionText = missionText;
 
         }
         else

@@ -26,6 +26,13 @@ public class MissionBehavior : MonoBehaviour
 
     //[SerializeField] private JukeBox jukebox;
     [SerializeField] protected EventReference objectiveSound;
+    [Header("VoiceClip values")]
+    [SerializeField] bool hasCompleteVC = false;
+    [SerializeField] protected EventReference objectiveCompleteVoiceClip;
+    [SerializeField] protected EventReference[] objectiveBarks;
+    [SerializeField] protected float minTimeForBarks = 30f;
+    [SerializeField] protected float maxTimeForBarks = 60f;
+    List<int> usedBag = new List<int>();
 
     private void Awake()
     {
@@ -76,7 +83,8 @@ public class MissionBehavior : MonoBehaviour
     
     protected virtual void OnTriggered()
     {
-        AudioManager.instance.PlayOneShot(objectiveSound, this.transform.position);
+        if(missionText!=string.Empty)
+            AudioManager.instance.PlayOneShot(objectiveSound, this.transform.position);
         OnComplete();
     }
 
@@ -106,7 +114,7 @@ public class MissionBehavior : MonoBehaviour
     {
         if (!completed)
         {
-            Debug.Log(gameObject.name + ": completed");
+            //Debug.Log(gameObject.name + ": completed");
             QuickSetToggles();
             triggered = true;
             completed = true;
@@ -137,6 +145,49 @@ public class MissionBehavior : MonoBehaviour
             if (initialDialogue != null)
                 DialogueManager.instance.EnterDialogMode(initialDialogue);
         }
+    }
+
+    public (EventReference, bool) GetMissionCompleteVC()
+    {
+        return (objectiveCompleteVoiceClip, hasCompleteVC);
+    }
+
+    public (EventReference, bool) GetBark()
+    {
+        EventReference temp = default;
+        if(objectiveBarks.Length == 0)
+        {
+            return (temp, false);
+        }
+        List<int> bag = new List<int>();
+
+        for(int i = 0; i<objectiveBarks.Length; i++)
+        {
+            if(!usedBag.Contains(i))
+            {
+                bag.Add(i);
+            }
+        }
+
+        int idx = Random.Range(0, bag.Count);
+        temp = objectiveBarks[idx];
+        usedBag.Add(idx);
+        if(usedBag.Count == objectiveBarks.Length)
+        {
+            usedBag.Clear();
+        }
+        return (temp, true);
+        
+    }
+
+    public float GetMin()
+    {
+        return minTimeForBarks;
+    }
+
+    public float GetMax()
+    {
+        return maxTimeForBarks;
     }
 
 
