@@ -270,7 +270,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
             }
         }
     }
-    public void Aggro()
+    public virtual void Aggro()
     {
         if (!isAggro)
         {

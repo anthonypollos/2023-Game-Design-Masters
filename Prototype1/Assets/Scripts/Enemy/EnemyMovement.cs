@@ -85,6 +85,8 @@ public class EnemyMovement : MonoBehaviour, ISlowable
         isforward = true;
         currentPoint = 0;
         corner = 0;
+        if (wanderRadius == 0)
+            isIdle = true;
         if (isMoving)
         {
             RandomPoint(out targetPosition);
@@ -134,7 +136,8 @@ public class EnemyMovement : MonoBehaviour, ISlowable
         {
             if (count >= 1f || corner >= corners.Count)
             {
-                isIdle = false;
+                if(brain.isAggro || wanderRadius != 0)
+                    isIdle = false;
                 SavePrevious();
                 if (!NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path))
                 {

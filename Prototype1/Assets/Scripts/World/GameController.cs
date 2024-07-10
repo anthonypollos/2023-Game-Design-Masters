@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using FMODUnity;
 
 public class GameController : MonoBehaviour
 {
@@ -327,6 +328,14 @@ public class GameController : MonoBehaviour
 
             }
         }
+    }
+
+    public void StartBossFight(EventReference bossTheme)
+    {
+        StudioEventEmitter emitter = AManager.GetComponent<StudioEventEmitter>();
+        emitter.Stop();
+        emitter.ChangeEvent(bossTheme);
+        emitter.Play();
     }
     public void CombatState(bool state)
     {

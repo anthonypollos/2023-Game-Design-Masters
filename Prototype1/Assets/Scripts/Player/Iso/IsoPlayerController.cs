@@ -53,6 +53,10 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
     [Header("Sound Variables")]
     [SerializeField] GroundTypes currentGroundType = GroundTypes.DEFAULT;
     [SerializeField] private EventReference footsteps;
+    [SerializeField] private EventReference footstepsDirt;
+    [SerializeField] private EventReference footstepsWood;
+    [SerializeField] private EventReference footstepsMetal;
+    [SerializeField] private EventReference footstepsStone;
     [SerializeField] private EventReference dashing;
     [SerializeField] private EventReference dashing2;
     [SerializeField] private EventReference dashing3;
@@ -397,16 +401,16 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
                 AudioManager.instance.PlayOneShot(footsteps, this.transform.position);
                 break;
             case GroundTypes.DIRT:
-                AudioManager.instance.PlayOneShot(footsteps, this.transform.position);
+                AudioManager.instance.PlayOneShot(footstepsDirt, this.transform.position);
                 break;
             case GroundTypes.METAL:
-                AudioManager.instance.PlayOneShot(footsteps, this.transform.position);
+                AudioManager.instance.PlayOneShot(footstepsMetal, this.transform.position);
                 break;
             case GroundTypes.STONE:
-                AudioManager.instance.PlayOneShot(footsteps, this.transform.position);
+                AudioManager.instance.PlayOneShot(footstepsStone, this.transform.position);
                 break;
             case GroundTypes.WOOD:
-                AudioManager.instance.PlayOneShot(footsteps, this.transform.position);
+                AudioManager.instance.PlayOneShot(footstepsWood, this.transform.position);
                 break;
 
 
