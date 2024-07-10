@@ -155,12 +155,15 @@ public class MissionBehavior : MonoBehaviour
     public (EventReference, bool) GetBark()
     {
         EventReference temp = default;
+        //makes sure its populated
         if(objectiveBarks.Length == 0)
         {
             return (temp, false);
         }
+        //make empty list
         List<int> bag = new List<int>();
 
+        //check every event in the serialized list, find all that aren't in the used bag
         for(int i = 0; i<objectiveBarks.Length; i++)
         {
             if(!usedBag.Contains(i))
@@ -169,9 +172,12 @@ public class MissionBehavior : MonoBehaviour
             }
         }
 
+        //pick a random index in the now occupied unused bag
         int idx = Random.Range(0, bag.Count);
         temp = objectiveBarks[idx];
+        //add the index to the usedBag
         usedBag.Add(idx);
+        //if the used bag contains all the indexes, empty it
         if(usedBag.Count == objectiveBarks.Length)
         {
             usedBag.Clear();

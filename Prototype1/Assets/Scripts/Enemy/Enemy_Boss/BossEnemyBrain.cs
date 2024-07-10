@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using FMODUnity;
 public class BossEnemyBrain : EnemyBrain
 {
     [HideInInspector]
@@ -20,6 +20,23 @@ public class BossEnemyBrain : EnemyBrain
 
     [SerializeField] GameObject model;
 
+    [Header("Boss Sound Files")]
+    StudioEventEmitter studioEventEmitter;
+    [SerializeField] bool isBossFightThemeFilled = false;
+    [SerializeField] EventReference bossFightTheme;
+
+    [SerializeField] float minTimeBetweenBarks;
+    [SerializeField] float maxTimeBetweenBarks;
+    [SerializeField] List<EventReference> zeroCystsBrokenBarks;
+    [SerializeField] List<EventReference> oneCystBrokenBarks;
+    [SerializeField] List<EventReference> twoCystsBrokenBarks;
+    [SerializeField] List<EventReference> threeCystsBrokenBarks;
+
+    [Header("These will need 3 parameters for each cyst")]
+    [SerializeField] List<EventReference> cystBrokenBarks;
+    [SerializeField] List<EventReference> cystSpawnBarks;
+
+
     [SerializeField]
     bool debugToggleTrigger = false;
     protected override void Starting()
@@ -34,6 +51,7 @@ public class BossEnemyBrain : EnemyBrain
         bossMovevment = movement.GetComponent<BossEnemyMovevment>();
         bossMovevment.bossBrain = this;
         bossManager = FindObjectOfType<NeoBossFightController>();
+        studioEventEmitter = GetComponent<StudioEventEmitter>();
 
         //if we can find a material in a child of this, assign that as the default material
         if (model.GetComponentInChildren<MeshRenderer>().material != null)
@@ -102,6 +120,89 @@ public class BossEnemyBrain : EnemyBrain
         base.CheckMovement();
     }
 
+    public override void Aggro()
+    {
+        if (!isAggro)
+        {
+            if(isBossFightThemeFilled)
+                FindObjectOfType<GameController>().StartBossFight(bossFightTheme);
+            if(studioEventEmitter!=null)
+            {
+                StartCoroutine(BattleBarks());
+            }
+            base.Aggro();
+        }
+    }
+
+    IEnumerator BattleBarks()
+    {
+        List<int> usedBag = new List<int>();
+        while(true)
+        {
+            float timer = Random.Range(minTimeBetweenBarks, maxTimeBetweenBarks);
+            yield return new WaitForSeconds(timer);
+            yield return new WaitUntil(() => !studioEventEmitter.IsPlaying());
+            List<EventReference> currentList = null;
+            switch(bossManager.GetTargetsHit())
+            {
+                case 0: 
+                    if(currentList!=zeroCystsBrokenBarks && zeroCystsBrokenBarks.Count!=0)
+                    {
+                        currentList = zeroCystsBrokenBarks;
+                        usedBag.Clear();
+                    }
+                    break;
+                case 1:
+                    if(currentList!=oneCystBrokenBarks && oneCystBrokenBarks.Count!=0)
+                    {
+                        currentList = oneCystBrokenBarks;
+                        usedBag.Clear();
+                    }
+                    break;
+                case 2:
+                    if(currentList!=twoCystsBrokenBarks && twoCystsBrokenBarks.Count!=0)
+                    {
+                        currentList = twoCystsBrokenBarks;
+                        usedBag.Clear();
+                    }
+                    break;
+                case 3:
+                    if(currentList!=threeCystsBrokenBarks && threeCystsBrokenBarks.Count!=0)
+                    {
+                        currentList = threeCystsBrokenBarks;
+                        usedBag.Clear();
+                    }
+                    break;
+            }
+
+            EventReference reference = default;
+            if(currentList == null)
+            {
+                continue;
+            }
+            List<int> bag = new List<int>();
+            for (int i = 0; i<currentList.Count; i++)
+            {
+                if(!usedBag.Contains(i))
+                {
+                    bag.Add(i);
+                }
+            }
+
+            int idx = Random.Range(0, bag.Count);
+            reference = currentList[idx];
+            usedBag.Add(idx);
+            if (usedBag.Count == currentList.Count)
+            {
+                usedBag.Clear();
+            }
+
+            studioEventEmitter.Stop();
+            studioEventEmitter.ChangeEvent(reference);
+            studioEventEmitter.Play();
+        }
+    }
+
     public void Enrage()
     {
         bossAttacks.Enrage();
@@ -113,6 +214,34 @@ public class BossEnemyBrain : EnemyBrain
         {
             //if this child has a renderer, set its material to enraged
             if (child.GetComponent<Renderer>() != null) child.GetComponent<Renderer>().material = enragedMaterial;
+        }
+
+        if(studioEventEmitter!=null)
+        {
+            EventReference reference = default;
+
+            switch(bossManager.GetTargetsHit())
+            {
+                case 0:
+                    if (cystSpawnBarks.Count < 1)
+                        return;
+                    reference = cystSpawnBarks[0];
+                    break;
+                case 1:
+                    if (cystSpawnBarks.Count < 2)
+                        return;
+                    reference = cystSpawnBarks[1];
+                    break;
+                case 2:
+                    if (cystSpawnBarks.Count < 3)
+                        return;
+                    reference = cystSpawnBarks[2];
+                    break;
+            }
+
+            studioEventEmitter.Stop();
+            studioEventEmitter.ChangeEvent(reference);
+            studioEventEmitter.Play();
         }
 
     }
@@ -127,6 +256,34 @@ public class BossEnemyBrain : EnemyBrain
         {
             //if this child has a renderer, set its material to default
             if (child.GetComponent<Renderer>() != null) child.GetComponent<Renderer>().material = defaultMaterial;
+        }
+
+        if (studioEventEmitter != null)
+        {
+            EventReference reference = default;
+
+            switch (bossManager.GetTargetsHit())
+            {
+                case 1:
+                    if (cystSpawnBarks.Count < 1)
+                        return;
+                    reference = cystSpawnBarks[0];
+                    break;
+                case 2:
+                    if (cystSpawnBarks.Count < 2)
+                        return;
+                    reference = cystSpawnBarks[1];
+                    break;
+                case 3:
+                    if (cystSpawnBarks.Count < 3)
+                        return;
+                    reference = cystSpawnBarks[2];
+                    break;
+            }
+
+            studioEventEmitter.Stop();
+            studioEventEmitter.ChangeEvent(reference);
+            studioEventEmitter.Play();
         }
     }
 }

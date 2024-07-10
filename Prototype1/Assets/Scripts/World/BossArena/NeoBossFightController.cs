@@ -15,6 +15,11 @@ public class NeoBossFightController : MonoBehaviour
         targetsHit++;
     }
 
+    public int GetTargetsHit()
+    {
+        return targetsHit;
+    }
+
     public void Enrage()
     {
         switch (targetsHit)
