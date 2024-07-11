@@ -103,7 +103,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
             //We don't want to stagger for every Spike damage, so check for stagger again here
             if (dmg > staggerThreshold)
             {
-                AudioManager.instance.PlayOneShot(enemyDamaged, transform.position);
+                AudioManager.instance.PlayOneShotAttached(enemyDamaged, this.gameObject);
                 brain.interaction.Stagger();
             }
                 
@@ -214,7 +214,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public void Death()
     {
         //jukebox.PlaySound(1);
-        AudioManager.instance.PlayOneShot(enemyDeath, this.transform.position);
+        AudioManager.instance.PlayOneShotAttached(enemyDeath, this.gameObject);
         ec.RemoveEnemy(gameObject);
         ec.RemoveAggro(gameObject);
         if (DeathParticle != null)

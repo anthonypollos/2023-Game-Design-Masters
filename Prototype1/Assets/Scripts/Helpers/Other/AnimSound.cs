@@ -13,7 +13,7 @@ public class AnimSound : MonoBehaviour
     public void PlaySound(int index)
     {
         //jukebox.PlaySound(index);
-        AudioManager.instance.PlayOneShot(enemyAttack, this.transform.position);
+        AudioManager.instance.PlayOneShotAttached(enemyAttack, this.gameObject);
     }
 
 
@@ -27,6 +27,6 @@ public class AnimSound : MonoBehaviour
     public void PlaySoundRandom(int min, int max)
     {
         //jukebox.PlaySound(Random.Range(min, max + 1));
-        AudioManager.instance.PlayOneShot(enemyAttack, this.transform.position);
+        AudioManager.instance.PlayOneShotAttached(enemyAttack, this.gameObject);
     }
 }

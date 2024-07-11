@@ -277,7 +277,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
             isAggro = true;
             health.ec.AddAggro(gameObject);
             StopCoroutine(Ambiance());
-            AudioManager.instance.PlayOneShot(enemyAggro, this.transform.position);
+            AudioManager.instance.PlayOneShotAttached(enemyAggro, this.gameObject);
         }
         
     }
@@ -292,7 +292,7 @@ public class EnemyBrain : MonoBehaviour, IEnemy
         while(!isAggro)
         {
             //jukebox.PlaySound(0);
-            AudioManager.instance.PlayOneShot(enemyAmbient, this.transform.position);
+            AudioManager.instance.PlayOneShotAttached(enemyAmbient, this.gameObject);
             yield return new WaitForSeconds(10f);
         }
     }
