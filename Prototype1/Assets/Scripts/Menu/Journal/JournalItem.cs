@@ -239,7 +239,7 @@ public class JournalItem : MonoBehaviour
             switch (itemLocation)
             {
                 case ItemLocation.Tutorial:
-                    text += "in the [Tutorial Name Here].";
+                    text += "in the Tunnels.";
                     break;
                 case ItemLocation.Hub:
                     text += "at The Last Spike.";
@@ -261,13 +261,13 @@ public class JournalItem : MonoBehaviour
                     text += "rescuing Ezra.";
                     break;
                 case ItemLocation.Town:
-                    text += "[exploring the town]";
+                    text += "investigating the Town";
                     break;
                 case ItemLocation.Railyard:
-                    text += "defeating the Overseer.";
+                    text += "defeating The Overseer.";
                     break;
                 case ItemLocation.Final:
-                    text += "[winning the game].";
+                    text += "restoring peace to Grimstone Valley.";
                     break;
             }
         }

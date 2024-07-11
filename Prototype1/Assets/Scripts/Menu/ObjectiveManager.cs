@@ -1,39 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class ObjectiveManager : MonoBehaviour
 {
+    public static ObjectiveManager Instance;
+
     [SerializeField] private Animator anim;
 
     [SerializeField] private GameObject hoverTrigger;
 
-
     [SerializeField] private TextMeshProUGUI objectiveText;
-    public string currentObjective, nextObjective;
 
+    [SerializeField] private ObjectiveItem[] objectives;
+    private int index = 0;
+    private ObjectiveItem currentObjective;
+
+    [SerializeField] private float strikeSpeed;
+    [SerializeField] private Image[] strikeThrus;
+
+    private float strikeOneTarget, strikeTwoTarget;
 
     //private GameController gc;
 
     public bool inCombat;
 
-    private bool hoverActive = true;
+    private bool hoverActive;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        //gc = FindObjectOfType<GameController>();
+        if (Instance == null)
+            Instance = this;
 
         ToggleObjectiveHover(true);
 
-        // Mainly for testing, will likely get rid of this later
-        Invoke("DisplayCurrentObjective", 0.25f);
+        // Mainly for testing, probably get rid of later?
+        FirstObjective();
     }
 
     // Update is called once per frame
     void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.A))
             ToggleObjectiveHover(true);
 
@@ -41,33 +51,87 @@ public class ObjectiveManager : MonoBehaviour
             ToggleObjectiveHover(false);
 
         else if (Input.GetKeyDown(KeyCode.W))
-            anim.SetTrigger("ObjComplete");
-    }
-
-    public void SetCurrentObjective(string objective)
-    {
-        currentObjective = objective;
-        objectiveText.text = currentObjective;
-    }
-
-    public void SetNextObjective(string objective)
-    {
-        nextObjective = objective;
-    }
-
-    public void DisplayCurrentObjective()
-    {
-        objectiveText.text = currentObjective;
+            CompleteCurrentObjective();
+        */
     }
 
     /// <summary>
-    /// 
+    /// Displays level's first objective
     /// </summary>
-    public void DisplayNextObjective()
+    public void FirstObjective()
     {
-        objectiveText.text = nextObjective;
-        currentObjective = nextObjective;
+        ToggleObjectiveHover(false);
+
+        index = 0;
+
+        anim.SetTrigger("ObjFirst");
     }
+
+    /// <summary>
+    /// Completes current objective, triggers animation to advance to next objective
+    /// </summary>
+    public void CompleteCurrentObjective()
+    {
+        anim.SetTrigger("ObjComplete");
+    }
+
+    /// <summary>
+    /// Set objective to a certain index
+    /// </summary>
+    /// <param name="objIndex">Objective index to set</param>
+    public void SetObjective(int objIndex)
+    {
+        if (index < objectives.Length)
+        {
+            objectiveText.text = objectives[index].objectiveText;
+            currentObjective = objectives[index];
+        }
+    }
+
+    /// <summary>
+    /// Called in objective complete animation, updates current objective/displayed objective text
+    /// </summary>
+    public void UpdateObjective()
+    {
+        index++;
+        SetObjective(index);
+    }
+
+    /// <summary>
+    /// Starts strike thru animaiton
+    /// </summary>
+    public void StartStrikeThru()
+    {
+        strikeThrus[0].fillAmount = 0;
+        strikeThrus[1].fillAmount = 0;
+
+        strikeOneTarget = objectives[index].strikeThruLengths[0];
+        strikeTwoTarget = objectives[index].strikeThruLengths[1];
+
+        StartCoroutine(StrikeThru());
+    }
+
+    public IEnumerator StrikeThru()
+    {
+        float strikeOneTarget = objectives[index].strikeThruLengths[0];
+        float strikeTwoTarget = objectives[index].strikeThruLengths[1];
+
+        while(strikeThrus[0].fillAmount < strikeOneTarget)
+        {
+            print("filling");
+
+            strikeThrus[0].fillAmount = Mathf.Lerp(strikeThrus[0].fillAmount, (strikeOneTarget + 0.5f), strikeSpeed * Time.deltaTime);
+            strikeThrus[1].fillAmount = Mathf.Lerp(strikeThrus[1].fillAmount, (strikeTwoTarget), strikeSpeed * Time.deltaTime);
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        strikeThrus[0].fillAmount = objectives[index].strikeThruLengths[0];
+        strikeThrus[1].fillAmount = objectives[index].strikeThruLengths[1];
+
+        yield return null;
+    }
+    
 
     /// <summary>
     /// 
@@ -102,4 +166,22 @@ public class ObjectiveManager : MonoBehaviour
                 hoverTrigger.SetActive(false);
         }
     }
+
+    /// <summary>
+    /// Called in first objective anim
+    /// </summary>
+    public void ActivateHover()
+    {
+        ToggleObjectiveHover(true);
+    }
+}
+
+
+
+[System.Serializable]
+public class ObjectiveItem
+{
+    public string objectiveText;
+
+    public float[] strikeThruLengths = new float[2];
 }
