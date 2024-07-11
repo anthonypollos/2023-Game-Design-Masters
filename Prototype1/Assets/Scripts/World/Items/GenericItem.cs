@@ -169,7 +169,7 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
         {
             health -= dmg;
             //jukebox.PlaySound(0);
-            AudioManager.instance.PlayOneShot(collideSound, this.transform.position);
+            AudioManager.instance.PlayOneShotAttached(collideSound, this.gameObject);
             if (dmg > 0)
                 if (health <= 0)
                 {
@@ -218,8 +218,8 @@ public class GenericItem : MonoBehaviour, IKickable, IPullable, IDamageable
                         }
                         //jukebox.PlaySound(0);
                         //jukebox.PlaySound(1);
-                        AudioManager.instance.PlayOneShot(collideSound, this.transform.position);
-                        AudioManager.instance.PlayOneShot(breakSound, this.transform.position);
+                        AudioManager.instance.PlayOneShotAttached(collideSound, this.gameObject);
+                        AudioManager.instance.PlayOneShotAttached(breakSound, this.gameObject);
                         gameObject.SetActive(false);
                     }
                 }
