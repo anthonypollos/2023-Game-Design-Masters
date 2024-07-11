@@ -54,7 +54,7 @@ public class Caltrops : MonoBehaviour
             }
             v.distance += Vector3.Distance(v.transform.position, v.previousPos);
             v.previousPos = v.transform.position;
-            Debug.Log(v.distance);
+            //Debug.Log(v.distance);
             if(v.transform.gameObject.layer == LayerMask.NameToLayer("PlayerDashing"))
             {
                 v.distance = values[i].distance;
@@ -62,8 +62,8 @@ public class Caltrops : MonoBehaviour
             while(v.distance>=distanceToDamage)
             {
                 v.distance -= distanceToDamage;
-                Debug.Log("Deal damage and subtract");
-                Debug.Log(v.distance);
+                //Debug.Log("Deal damage and subtract");
+                //Debug.Log(v.distance);
                 if (v.transform.gameObject.CompareTag("Player"))
                 {
                     v.damageable.TakeDamage(PlayerDmgPerInstance, DamageTypes.SPIKE);

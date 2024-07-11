@@ -124,8 +124,11 @@ public class BossEnemyBrain : EnemyBrain
     {
         if (!isAggro)
         {
-            if(isBossFightThemeFilled)
+            if (isBossFightThemeFilled)
+            {
+                //Debug.Log("Starting Boss Fight Music");
                 FindObjectOfType<GameController>().StartBossFight(bossFightTheme);
+            }
             if(studioEventEmitter!=null)
             {
                 StartCoroutine(BattleBarks());
