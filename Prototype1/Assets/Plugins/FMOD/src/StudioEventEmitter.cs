@@ -386,7 +386,9 @@ namespace FMODUnity
 
         public void ChangeEvent(EventReference newEvent)
         {
+            //Debug.Log("EventReference before: " + EventReference);
             EventReference = newEvent;
+            //Debug.Log("EventReference after: " + EventReference);
             Lookup();
         }
     }

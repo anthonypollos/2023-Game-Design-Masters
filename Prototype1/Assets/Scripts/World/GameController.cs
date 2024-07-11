@@ -332,7 +332,8 @@ public class GameController : MonoBehaviour
 
     public void StartBossFight(EventReference bossTheme)
     {
-        StudioEventEmitter emitter = AManager.GetComponent<StudioEventEmitter>();
+        //Debug.Log("Changing boss fight music");
+        StudioEventEmitter emitter = CombatMusicManager.GetComponent<StudioEventEmitter>();
         emitter.Stop();
         emitter.ChangeEvent(bossTheme);
         emitter.Play();
