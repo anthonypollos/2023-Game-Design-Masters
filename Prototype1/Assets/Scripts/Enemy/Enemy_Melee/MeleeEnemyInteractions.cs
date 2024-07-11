@@ -12,6 +12,8 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     [SerializeField] MeleeAttackBehavior mab;
 
+    [SerializeField] private GameObject stunParticle;
+
     private void Awake()
     {
         //jukebox.SetTransform(transform);
@@ -108,6 +110,8 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         base.Stunned();
         stunned = true;
+        //if we're stunned by a way other than being lassoed (such as spikes) enable the stun particle
+        if (!lassoed && stunParticle != null) stunParticle.SetActive(true);
         //brain.an.SetBool("Stunned", true);
         brain.an.SetBool("Attacking", false);
         brain.an.SetBool("Tendriled", true);
@@ -117,6 +121,7 @@ public class MeleeEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         if(!lassoed && !launched && !brain.moveable.isLaunched)
         {
+            if (stunParticle != null) stunParticle.SetActive(false);
             brain.an.SetBool("Tendriled", false);
             brain.an.SetTrigger("NextState");
             //brain.an.SetBool("Stunned", false);

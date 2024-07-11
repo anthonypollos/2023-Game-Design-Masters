@@ -10,6 +10,7 @@ public class NewRangedEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     [SerializeField] GameObject KickedParticle;
     [SerializeField] private JukeBox jukebox;
+    [SerializeField] private GameObject stunParticle;
 
     private void Awake()
     {
@@ -93,6 +94,8 @@ public class NewRangedEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         base.Stunned();
         stunned = true;
+        //if we're stunned by a way other than being lassoed (such as spikes) enable the stun particle
+        if (!lassoed && stunParticle != null) stunParticle.SetActive(true);
         brain.an.SetBool("Stunned", true);
         brain.an.SetBool("Attacking", false);
     }
@@ -101,6 +104,7 @@ public class NewRangedEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         if (!lassoed && !launched && !brain.moveable.isLaunched)
         {
+            if (stunParticle != null) stunParticle.SetActive(false);
             brain.an.SetBool("Stunned", false);
             base.UnStunned();
         }
