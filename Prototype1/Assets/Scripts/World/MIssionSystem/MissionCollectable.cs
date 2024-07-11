@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using FMODUnity;
 public class MissionCollectable : InteractableBehaviorTemplate, ISaveable
 {
     bool collected = false;
@@ -13,6 +13,8 @@ public class MissionCollectable : InteractableBehaviorTemplate, ISaveable
     [SerializeField] int collectAnimIndex;
     [SerializeField] string itemName;
     [TextArea(5, 20)] [SerializeField] string[] description;
+
+    [SerializeField] private EventReference collectsound;
 
     public void SetMission(CollectMissionBehavior mission)
     {
@@ -43,6 +45,7 @@ public class MissionCollectable : InteractableBehaviorTemplate, ISaveable
         }
         mission.Collected();
         collected = true;
+        AudioManager.instance.PlayOneShot(collectsound, this.transform.position);
         SaveLoadManager.instance.SaveGame();
         return true;
     }
