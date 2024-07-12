@@ -16,38 +16,70 @@ public class LightDistanceDisabler : MonoBehaviour
     private Light Lightcomponent;
     private GameObject Player;
 
+    private bool isOn;
+
+
     // Start is called before the first frame update
     void Start()
     {
+        isOn = false;
         //Get this object's light component
         Lightcomponent = gameObject.GetComponent<Light>();
         //Find the player by searching for them with the tag
         Player = GameObject.FindGameObjectWithTag("Player");
-        //start slowly checking once a second for lights outside of max distance
-        InvokeRepeating(nameof(SlowUpdate), Random.Range(0, 1f), 1f);
+
+        //If this light does not have a collider on it, begin the old repeating method
+        if (GetComponent<Collider>() == null)
+        {
+            InvokeRepeating(nameof(SlowUpdate), Random.Range(0, 1f), 1f);
+        }
     }
-    //testtest
+
+    public void TurnOn()
+    {
+        Lightcomponent.enabled = true;
+        if (Lightcomponent.GetComponent<LightFlicker>()) Lightcomponent.GetComponent<LightFlicker>().StartFlicker();
+        isOn = true;
+    }
+
+    public void TurnOff()
+    {
+        Lightcomponent.enabled = false;
+        if (Lightcomponent.GetComponent<LightFlicker>()) Lightcomponent.GetComponent<LightFlicker>().StopFlicker();
+        isOn = false;
+    }
 
     void SlowUpdate()
     {
-        //NOTE: This code is VERY inefficient.
-        //Ideally, we want to enable or disable the lights only once, instead of checking constantly
-        //We should replace this with a capsule raycast from the player at some point
 
         Distance = Vector3.Distance(Player.transform.position, transform.position);
 
-        if (Distance < availableDistance)
+        if (Distance <= availableDistance && !isOn)
         {
-            Lightcomponent.enabled = true;
-            if (Lightcomponent.GetComponent<LightFlicker>()) Lightcomponent.GetComponent<LightFlicker>().StartFlicker();
+            TurnOn();
             return; //Return just to save a little on perf
         }
             
-        if (Distance > availableDistance)
+        if (Distance > availableDistance && isOn)
         {
-            Lightcomponent.enabled = false;
-            if (Lightcomponent.GetComponent<LightFlicker>()) Lightcomponent.GetComponent<LightFlicker>().StopFlicker();
+            TurnOff();
             return;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject == Player)
+        {
+            TurnOn();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject == Player)
+        {
+            TurnOff();
         }
     }
 }
