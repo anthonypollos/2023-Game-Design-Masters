@@ -22,7 +22,6 @@ public class LightDistanceDisabler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        isOn = false;
         //Get this object's light component
         Lightcomponent = gameObject.GetComponent<Light>();
         //Find the player by searching for them with the tag
@@ -33,6 +32,7 @@ public class LightDistanceDisabler : MonoBehaviour
         {
             InvokeRepeating(nameof(SlowUpdate), Random.Range(0, 1f), 1f);
         }
+        TurnOff();
     }
 
     public void TurnOn()
