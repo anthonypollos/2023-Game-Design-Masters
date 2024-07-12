@@ -11,6 +11,12 @@ public class MissionBehavior : MonoBehaviour
     [Tooltip("Game Objects you want to be toggled on or off completely when finished")]
     [SerializeField] List<GameObject> toggleIfActiveOnFinish;
     [SerializeField] protected string missionText;
+
+    [Tooltip("Does this mission advance displayed objective?")]
+    [SerializeField] private bool advanceObjective;
+    [Tooltip("Mission's index, corresponds to objective lists in Objective Manager and Journal")]
+    [SerializeField] private int objectiveIndex;
+
     public Vector3 checkPointLocation;
     protected IMissionContainer folder;
     protected bool triggered;
@@ -43,7 +49,7 @@ public class MissionBehavior : MonoBehaviour
     {
         completed = false;
         toggles = new List<IToggleable>();
-        if (toggles == null && toggleOnFinish.Count>0)
+        if (toggles == null && toggleOnFinish.Count > 0)
         {
             //toggles = new List<IToggleable>();
             foreach (GameObject temp in toggleOnFinish)
@@ -80,11 +86,11 @@ public class MissionBehavior : MonoBehaviour
     {
         return (missionText, false);
     }
-    
+
     protected virtual void OnTriggered()
     {
-        if(missionText!=string.Empty)
-            AudioManager.instance.PlayOneShot(objectiveSound, this.transform.position);
+        if (missionText != string.Empty)
+            //AudioManager.instance.PlayOneShot(objectiveSound, this.transform.position);
         OnComplete();
     }
 
@@ -99,7 +105,7 @@ public class MissionBehavior : MonoBehaviour
 
     public void QuickSetToggles()
     {
-        if (toggles == null && toggleOnFinish.Count>0)
+        if (toggles == null && toggleOnFinish.Count > 0)
         {
             toggles = new List<IToggleable>();
             foreach (GameObject temp in toggleOnFinish)
@@ -138,6 +144,13 @@ public class MissionBehavior : MonoBehaviour
                     }
                 }
             }
+            if (advanceObjective)
+            {
+                print("new objective");
+                ObjectiveManager.Instance.CompleteCurrentObjective(objectiveIndex);
+                JournalObjectiveManager.Instance.CompleteToObjective(objectiveIndex);
+            }
+
             //AudioManager.instance.PlayOneShot(objectiveSound, this.transform.position);
             folder.MissionComplete(this);
             //jukebox.PlaySound(0);
@@ -156,7 +169,7 @@ public class MissionBehavior : MonoBehaviour
     {
         EventReference temp = default;
         //makes sure its populated
-        if(objectiveBarks.Length == 0)
+        if (objectiveBarks.Length == 0)
         {
             return (temp, false);
         }
@@ -164,9 +177,9 @@ public class MissionBehavior : MonoBehaviour
         List<int> bag = new List<int>();
 
         //check every event in the serialized list, find all that aren't in the used bag
-        for(int i = 0; i<objectiveBarks.Length; i++)
+        for (int i = 0; i < objectiveBarks.Length; i++)
         {
-            if(!usedBag.Contains(i))
+            if (!usedBag.Contains(i))
             {
                 bag.Add(i);
             }
@@ -178,12 +191,12 @@ public class MissionBehavior : MonoBehaviour
         //add the index to the usedBag
         usedBag.Add(idx);
         //if the used bag contains all the indexes, empty it
-        if(usedBag.Count == objectiveBarks.Length)
+        if (usedBag.Count == objectiveBarks.Length)
         {
             usedBag.Clear();
         }
         return (temp, true);
-        
+
     }
 
     public float GetMin()
@@ -195,7 +208,4 @@ public class MissionBehavior : MonoBehaviour
     {
         return maxTimeForBarks;
     }
-
-
-
 }

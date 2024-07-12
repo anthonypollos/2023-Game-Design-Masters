@@ -15,13 +15,15 @@ public class ObjectiveManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI objectiveText;
 
     [SerializeField] private ObjectiveItem[] objectives;
-    private int index = 0;
+    [SerializeField] private int index = 0;
     private ObjectiveItem currentObjective;
 
     [SerializeField] private float strikeSpeed;
     [SerializeField] private Image[] strikeThrus;
 
     private float strikeOneTarget, strikeTwoTarget;
+
+    private int objShown = 0;
 
     //private GameController gc;
 
@@ -34,45 +36,39 @@ public class ObjectiveManager : MonoBehaviour
         if (Instance == null)
             Instance = this;
 
-        ToggleObjectiveHover(true);
+        ToggleObjectiveHover(false);
 
-        // Mainly for testing, probably get rid of later?
-        FirstObjective();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        /*
-        if (Input.GetKeyDown(KeyCode.A))
-            ToggleObjectiveHover(true);
-
-        else if (Input.GetKeyDown(KeyCode.D))
-            ToggleObjectiveHover(false);
-
-        else if (Input.GetKeyDown(KeyCode.W))
-            CompleteCurrentObjective();
-        */
+        Invoke("DisplayFirstObjective", 0.25f);
     }
 
     /// <summary>
-    /// Displays level's first objective
+    /// 
     /// </summary>
-    public void FirstObjective()
+    private void DisplayFirstObjective()
     {
-        ToggleObjectiveHover(false);
-
-        index = 0;
-
-        anim.SetTrigger("ObjFirst");
+        if (index==0)
+            anim.SetTrigger("ObjFirst");
     }
 
     /// <summary>
     /// Completes current objective, triggers animation to advance to next objective
     /// </summary>
-    public void CompleteCurrentObjective()
+    /// /// <param name="objIndex">Objective index to complete</param>
+    public void CompleteCurrentObjective(int objIndex)
     {
-        anim.SetTrigger("ObjComplete");
+        if (objShown == 0)
+        {
+            anim.SetTrigger("ObjFirst");
+            //index = objIndex;
+        }
+
+        else
+        {
+            anim.SetTrigger("ObjComplete");
+            //index = objIndex + 1;
+        }
+
+        index = objIndex + 1;
     }
 
     /// <summary>
@@ -81,7 +77,7 @@ public class ObjectiveManager : MonoBehaviour
     /// <param name="objIndex">Objective index to set</param>
     public void SetObjective(int objIndex)
     {
-        if (index < objectives.Length)
+        if (objIndex < objectives.Length)
         {
             objectiveText.text = objectives[index].objectiveText;
             currentObjective = objectives[index];
@@ -93,8 +89,9 @@ public class ObjectiveManager : MonoBehaviour
     /// </summary>
     public void UpdateObjective()
     {
-        index++;
         SetObjective(index);
+
+        objShown++;
     }
 
     /// <summary>
@@ -105,16 +102,16 @@ public class ObjectiveManager : MonoBehaviour
         strikeThrus[0].fillAmount = 0;
         strikeThrus[1].fillAmount = 0;
 
-        strikeOneTarget = objectives[index].strikeThruLengths[0];
-        strikeTwoTarget = objectives[index].strikeThruLengths[1];
+        strikeOneTarget = objectives[index-1].strikeThruLengths[0];
+        strikeTwoTarget = objectives[index-1].strikeThruLengths[1];
 
         StartCoroutine(StrikeThru());
     }
 
     public IEnumerator StrikeThru()
     {
-        float strikeOneTarget = objectives[index].strikeThruLengths[0];
-        float strikeTwoTarget = objectives[index].strikeThruLengths[1];
+        float strikeOneTarget = objectives[index-1].strikeThruLengths[0];
+        float strikeTwoTarget = objectives[index-1].strikeThruLengths[1];
 
         while(strikeThrus[0].fillAmount < strikeOneTarget)
         {
@@ -126,8 +123,8 @@ public class ObjectiveManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        strikeThrus[0].fillAmount = objectives[index].strikeThruLengths[0];
-        strikeThrus[1].fillAmount = objectives[index].strikeThruLengths[1];
+        strikeThrus[0].fillAmount = objectives[index-1].strikeThruLengths[0];
+        strikeThrus[1].fillAmount = objectives[index-1].strikeThruLengths[1];
 
         yield return null;
     }
