@@ -24,20 +24,9 @@ public class LightDistanceDisabler : MonoBehaviour
         //Find the player by searching for them with the tag
         Player = GameObject.FindGameObjectWithTag("Player");
         //start slowly checking once a second for lights outside of max distance
-        InvokeRepeating(nameof(SlowUpdate), Random.Range(0, 1f), 1f);
+        InvokeRepeating("SlowUpdate", Random.Range(0, 1f), 1f);
     }
 
-    public void turnOn()
-    {
-        Lightcomponent.enabled = true;
-        if (Lightcomponent.GetComponent<LightFlicker>()) Lightcomponent.GetComponent<LightFlicker>().StartFlicker();
-    }
-
-    public void turnOff()
-    {
-        Lightcomponent.enabled = false;
-        if (Lightcomponent.GetComponent<LightFlicker>()) Lightcomponent.GetComponent<LightFlicker>().StopFlicker();
-    }
 
     void SlowUpdate()
     {
@@ -49,13 +38,15 @@ public class LightDistanceDisabler : MonoBehaviour
 
         if (Distance < availableDistance)
         {
-            turnOn();
+            Lightcomponent.enabled = true;
+            if (Lightcomponent.GetComponent<LightFlicker>()) Lightcomponent.GetComponent<LightFlicker>().StartFlicker();
             return; //Return just to save a little on perf
         }
             
         if (Distance > availableDistance)
         {
-            turnOff();
+            Lightcomponent.enabled = false;
+            if (Lightcomponent.GetComponent<LightFlicker>()) Lightcomponent.GetComponent<LightFlicker>().StopFlicker();
             return;
         }
     }
