@@ -26,7 +26,7 @@ public class LightDistanceDisabler : MonoBehaviour
         //start slowly checking once a second for lights outside of max distance
         InvokeRepeating(nameof(SlowUpdate), Random.Range(0, 1f), 1f);
     }
-
+    //testtest
 
     void SlowUpdate()
     {
