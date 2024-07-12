@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.011154419, g: 0.02120917, b: 0.047523037, a: 1}
+  m_IndirectSpecularColor: {r: 0.0111544095, g: 0.021209154, b: 0.047522977, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5948,6 +5948,14 @@ PrefabInstance:
       value: Search the Overseer's Office for clues
       objectReference: {fileID: 0}
     - target: {fileID: 3190503277874905826, guid: cdba237ee666d3a40b0635681befbfc5, type: 3}
+      propertyPath: objectiveIndex
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3190503277874905826, guid: cdba237ee666d3a40b0635681befbfc5, type: 3}
+      propertyPath: advanceObjective
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3190503277874905826, guid: cdba237ee666d3a40b0635681befbfc5, type: 3}
       propertyPath: checkPointLocation.x
       value: 32
       objectReference: {fileID: 0}
@@ -7114,6 +7122,8 @@ MonoBehaviour:
   - {fileID: 2022912780}
   - {fileID: 261063727}
   missionText: Unlock the trainshed
+  advanceObjective: 0
+  objectiveIndex: 0
   checkPointLocation: {x: -9, y: 0, z: 8}
   dialogueText1: {fileID: 0}
   dialogueTexts: []
@@ -15839,6 +15849,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: db83c17b1653dc24c940b17851dbc743, type: 2}
+    - target: {fileID: 820970002899541738, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1285237881727641487, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
       propertyPath: m_Colors.m_NormalColor.b
       value: 0.8584906
@@ -15850,6 +15864,58 @@ PrefabInstance:
     - target: {fileID: 1285237881727641487, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
       propertyPath: m_Colors.m_NormalColor.r
       value: 0.8584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813241894919696383, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: objectives.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813241894919696383, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: objectives.Array.data[0].objectiveText
+      value: Find a way into the railyard
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813241894919696383, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: objectives.Array.data[1].objectiveText
+      value: Explore the company town
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813241894919696383, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: objectives.Array.data[2].objectiveText
+      value: Search the Overseer's Office
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813241894919696383, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: objectives.Array.data[3].objectiveText
+      value: Follow the trail of destruction
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813241894919696383, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: objectives.Array.data[4].objectiveText
+      value: Defeat the creature guarding the Overseer
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813241894919696383, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: objectives.Array.data[5].objectiveText
+      value: Speak to the Overseer
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813241894919696383, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: objectives.Array.data[0].strikeThruLengths.Array.data[0]
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813241894919696383, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: objectives.Array.data[1].strikeThruLengths.Array.data[0]
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813241894919696383, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: objectives.Array.data[2].strikeThruLengths.Array.data[0]
+      value: 0.725
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813241894919696383, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: objectives.Array.data[3].strikeThruLengths.Array.data[0]
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813241894919696383, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: objectives.Array.data[4].strikeThruLengths.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813241894919696383, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: objectives.Array.data[5].strikeThruLengths.Array.data[0]
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 1824294743327544646, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -15955,6 +16021,22 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 4961051349545211493, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4961051349545211493, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4961051349545211493, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4961051349545211493, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5057444290879375547, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -15974,6 +16056,22 @@ PrefabInstance:
     - target: {fileID: 6325385305698455670, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331383513076126094, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331383513076126094, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331383513076126094, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331383513076126094, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6535081268428213523, guid: e9e678ac08fbbd145ad4dd8bfaabb246, type: 3}
       propertyPath: m_Colors.m_NormalColor.b
@@ -20052,6 +20150,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 881593183}
     m_Modifications:
+    - target: {fileID: 7192911182151594712, guid: 33a92115ef7ed6a43bff2a2d3b8248a1, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192911182151594712, guid: 33a92115ef7ed6a43bff2a2d3b8248a1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1929323331306157345, guid: bce08e5510e88764eaf6b8428611893a, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -20107,14 +20213,6 @@ PrefabInstance:
     - target: {fileID: 8185734340718288516, guid: bce08e5510e88764eaf6b8428611893a, type: 3}
       propertyPath: m_Name
       value: NewRangedenemy (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7192911182151594712, guid: 33a92115ef7ed6a43bff2a2d3b8248a1, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7192911182151594712, guid: 33a92115ef7ed6a43bff2a2d3b8248a1, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -23613,6 +23711,13 @@ MonoBehaviour:
   collectAnimIndex: 0
   itemName: 
   description: []
+  collectsound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!65 &651525882
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -53074,6 +53179,10 @@ PrefabInstance:
       value: Continue into the Work Town
       objectReference: {fileID: 0}
     - target: {fileID: 1812206452326804781, guid: 4060ec637f038c64cba1c6fe8f940b8e, type: 3}
+      propertyPath: objectiveIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1812206452326804781, guid: 4060ec637f038c64cba1c6fe8f940b8e, type: 3}
       propertyPath: checkPointLocation.x
       value: 10
       objectReference: {fileID: 0}
@@ -55195,6 +55304,14 @@ PrefabInstance:
     - target: {fileID: 3074487046039092605, guid: 71db1a29138adc549b9b65fd8ad69f49, type: 3}
       propertyPath: missionText
       value: Clear the Work Town of monsters
+      objectReference: {fileID: 0}
+    - target: {fileID: 3074487046039092605, guid: 71db1a29138adc549b9b65fd8ad69f49, type: 3}
+      propertyPath: objectiveIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3074487046039092605, guid: 71db1a29138adc549b9b65fd8ad69f49, type: 3}
+      propertyPath: advanceObjective
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3074487046039092605, guid: 71db1a29138adc549b9b65fd8ad69f49, type: 3}
       propertyPath: enemies.Array.size
@@ -62495,6 +62612,14 @@ PrefabInstance:
       value: Defeat the creature guarding the Overseer
       objectReference: {fileID: 0}
     - target: {fileID: 3074487046039092605, guid: 71db1a29138adc549b9b65fd8ad69f49, type: 3}
+      propertyPath: objectiveIndex
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3074487046039092605, guid: 71db1a29138adc549b9b65fd8ad69f49, type: 3}
+      propertyPath: advanceObjective
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3074487046039092605, guid: 71db1a29138adc549b9b65fd8ad69f49, type: 3}
       propertyPath: enemies.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -65990,6 +66115,10 @@ PrefabInstance:
     - target: {fileID: 1812206452326804781, guid: 4060ec637f038c64cba1c6fe8f940b8e, type: 3}
       propertyPath: missionText
       value: Search the Work Town
+      objectReference: {fileID: 0}
+    - target: {fileID: 1812206452326804781, guid: 4060ec637f038c64cba1c6fe8f940b8e, type: 3}
+      propertyPath: objectiveIndex
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1812206452326804781, guid: 4060ec637f038c64cba1c6fe8f940b8e, type: 3}
       propertyPath: checkPointLocation.x
@@ -71088,6 +71217,10 @@ PrefabInstance:
       value: Follow the trail of destruction
       objectReference: {fileID: 0}
     - target: {fileID: 1812206452326804781, guid: 4060ec637f038c64cba1c6fe8f940b8e, type: 3}
+      propertyPath: objectiveIndex
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1812206452326804781, guid: 4060ec637f038c64cba1c6fe8f940b8e, type: 3}
       propertyPath: checkPointLocation.x
       value: 44
       objectReference: {fileID: 0}
@@ -71908,6 +72041,14 @@ PrefabInstance:
     - target: {fileID: 1812206452326804781, guid: 4060ec637f038c64cba1c6fe8f940b8e, type: 3}
       propertyPath: missionText
       value: Approach the turntable
+      objectReference: {fileID: 0}
+    - target: {fileID: 1812206452326804781, guid: 4060ec637f038c64cba1c6fe8f940b8e, type: 3}
+      propertyPath: objectiveIndex
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1812206452326804781, guid: 4060ec637f038c64cba1c6fe8f940b8e, type: 3}
+      propertyPath: advanceObjective
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1812206452326804781, guid: 4060ec637f038c64cba1c6fe8f940b8e, type: 3}
       propertyPath: checkPointLocation.x
@@ -73302,6 +73443,10 @@ PrefabInstance:
       value: Kill the monsters in the Train Shed
       objectReference: {fileID: 0}
     - target: {fileID: 3074487046039092605, guid: 71db1a29138adc549b9b65fd8ad69f49, type: 3}
+      propertyPath: advanceObjective
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3074487046039092605, guid: 71db1a29138adc549b9b65fd8ad69f49, type: 3}
       propertyPath: enemies.Array.size
       value: 8
       objectReference: {fileID: 0}
@@ -74229,6 +74374,8 @@ MonoBehaviour:
   toggleIfActiveOnFinish:
   - {fileID: 651525878}
   missionText: Find a way into the railyard
+  advanceObjective: 0
+  objectiveIndex: 0
   checkPointLocation: {x: -9, y: 0, z: 8}
   dialogueText1: {fileID: 0}
   dialogueTexts: []
@@ -75613,6 +75760,13 @@ MonoBehaviour:
   collectAnimIndex: 0
   itemName: 
   description: []
+  collectsound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!4 &7908478099997953725
 Transform:
   m_ObjectHideFlags: 0

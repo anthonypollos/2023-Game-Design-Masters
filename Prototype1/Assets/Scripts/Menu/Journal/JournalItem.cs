@@ -264,7 +264,7 @@ public class JournalItem : MonoBehaviour
                     text += "investigating the Town";
                     break;
                 case ItemLocation.Railyard:
-                    text += "defeating The Overseer.";
+                    text += "defeating the Overseer.";
                     break;
                 case ItemLocation.Final:
                     text += "restoring peace to Grimstone Valley.";

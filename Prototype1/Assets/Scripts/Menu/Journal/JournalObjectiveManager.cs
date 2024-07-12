@@ -35,7 +35,7 @@ public class JournalObjectiveManager : MonoBehaviour
     /// </summary>
     public void CompleteCurrentObjective()
     {
-        CompleteObjective(index);
+        //CompleteObjective(index);
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ public class JournalObjectiveManager : MonoBehaviour
     /// <param name="index">Index of objective to complete</param>
     public void CompleteObjective(int objIndex)
     {
-        if(index < objectives.Length)
+        if(objIndex < objectives.Length)
         {
             JournalObjectiveItem currentObj = objectives[objIndex];
 
@@ -60,24 +60,24 @@ public class JournalObjectiveManager : MonoBehaviour
                 currentObj.nextObjective.SetActive(true);
             }
 
-            index++;
+            //index++;
         }
     }
 
     /// <summary>
-    /// Completes all objectives up to given index; INDEX EXCLUDED
+    /// Completes all objectives up to given index, index included
     /// </summary>
-    /// <param name="objIndex">Complete all objectives before this vaule</param>
+    /// <param name="objIndex">Complete all objectives including this vaule</param>
     public void CompleteToObjective(int objIndex)
     {
-        if(index < objectives.Length)
+        if(objIndex < objectives.Length)
         {
-            for(int i = 0; i < objIndex; i++)
+            for(int i = 0; i <= objIndex; i++)
             {
                 CompleteObjective(i);
             }
 
-            index = objIndex;
+            //index = objIndex;
         }
     }
 }
