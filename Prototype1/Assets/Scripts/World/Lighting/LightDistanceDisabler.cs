@@ -24,7 +24,7 @@ public class LightDistanceDisabler : MonoBehaviour
         //Find the player by searching for them with the tag
         Player = GameObject.FindGameObjectWithTag("Player");
         //start slowly checking once a second for lights outside of max distance
-        InvokeRepeating("SlowUpdate", Random.Range(0, 1f), 1f);
+        InvokeRepeating(nameof(SlowUpdate), Random.Range(0, 1f), 1f);
     }
 
 
