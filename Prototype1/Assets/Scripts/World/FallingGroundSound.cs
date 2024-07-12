@@ -11,7 +11,7 @@ public class FallingGroundSound : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlaySound();
+        
         //asource.Play();
     }
 
