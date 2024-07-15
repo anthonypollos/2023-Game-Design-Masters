@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
 {
 
     MenuControls mc;
+    MainControls mainCont;
     List<Camera> mainCameras;
     [SerializeField] bool isThirdPerson = false;
     [SerializeField] [Tooltip("First value = orhographic zoom, Second value = vertical FOV")] float[] nonCombatZoom = { 5, 15 };
@@ -48,7 +49,7 @@ public class GameController : MonoBehaviour
 
     public static GameController instance;
 
-    private OutlineToggle outlineManager;
+    //private OutlineToggle outlineManager;
     [Header("FMOD")]
     public GameObject AManager;
     public GameObject CombatMusicManager;
@@ -56,7 +57,7 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        outlineManager = FindObjectOfType<OutlineToggle>();
+        //outlineManager = FindObjectOfType<OutlineToggle>();
         paused = false;
         //journalOpen = false;
         Cursor.lockState = CursorLockMode.Confined;
@@ -116,6 +117,10 @@ public class GameController : MonoBehaviour
     {
         mc = new MenuControls();
         mc.Main.Enable();
+
+        mainCont = new MainControls();
+        mainCont.Main.Enable();
+
         mc.Main.Menu.performed += _ => TogglePauseMenu();
         mc.Main.Menu.performed += _ => ToggleOptionsMenu();
         mc.Main.Restart.performed += _ => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -125,7 +130,10 @@ public class GameController : MonoBehaviour
         if (levelSelectMenuNav != null)
             mc.Main.Menu.performed += _ => ToggleLevelSelect();
         if (collectMenuNav != null)
+        {
             mc.Main.Menu.performed += _ => ToggleCollectibleView();
+            mainCont.Main.Interact.performed += _ => ToggleCollectibleView();
+        }
 
         //CombatState(true);
     }
@@ -436,8 +444,8 @@ public class GameController : MonoBehaviour
             //Check the children of the respawned object. Find whatever child has the outline and add it
             if (child.GetComponent<Outline>() != null)
             {
-                if(outlineManager != null)
-                    outlineManager.AddOutline(child.gameObject);
+                //if(outlineManager != null)
+                    //outlineManager.AddOutline(child.gameObject);
                 //de-activate the outline
                 child.GetComponent<Outline>().enabled = false;
             }
@@ -461,8 +469,8 @@ public class GameController : MonoBehaviour
             //Check the children of the respawned object. Find whatever child has the outline and add it
             if (child.GetComponent<Outline>() != null)
             {
-                if (outlineManager != null)
-                    outlineManager.AddOutline(child.gameObject);
+                //if (outlineManager != null)
+                    //outlineManager.AddOutline(child.gameObject);
                 //de-activate the outline
                 child.GetComponent<Outline>().enabled = false;
             }
