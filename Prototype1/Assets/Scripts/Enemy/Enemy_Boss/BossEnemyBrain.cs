@@ -203,6 +203,7 @@ public class BossEnemyBrain : EnemyBrain
             studioEventEmitter.Stop();
             studioEventEmitter.ChangeEvent(reference.eventReference);
             studioEventEmitter.Play();
+            SubtitleManager.instance.StartDialog(reference.subtitle, studioEventEmitter);
         }
     }
 
@@ -245,6 +246,7 @@ public class BossEnemyBrain : EnemyBrain
             studioEventEmitter.Stop();
             studioEventEmitter.ChangeEvent(reference.eventReference);
             studioEventEmitter.Play();
+            SubtitleManager.instance.StartDialog(reference.subtitle, studioEventEmitter);
         }
 
     }
@@ -287,6 +289,7 @@ public class BossEnemyBrain : EnemyBrain
             studioEventEmitter.Stop();
             studioEventEmitter.ChangeEvent(reference.eventReference);
             studioEventEmitter.Play();
+            SubtitleManager.instance.StartDialog(reference.subtitle, studioEventEmitter);
         }
     }
 }

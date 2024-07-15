@@ -24,6 +24,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     int missionsCompleted;
     int currentDisplayedMission = 0;
     string previousMissionText = "";
+    bool isLoading = false;
 
     [SerializeField] string cutSceneOnFinishName;
     [SerializeField]
@@ -202,19 +203,23 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         missionsStatuses[idx] = true;
         SetMission();
         checkPoint = mission.checkPointLocation;
-        StartCoroutine(WaitTillNotFrozenCompletion(idx));
+        StartCoroutine(WaitTillNotFrozenCompletion(idx, isLoading));
     }
 
-    private IEnumerator WaitTillNotFrozenCompletion(int idx)
+    private IEnumerator WaitTillNotFrozenCompletion(int idx, bool wasLoading)
     {
         yield return new WaitUntil(() => Time.timeScale != 0);
-        (VoiceClip, bool) temp = missions[idx].GetMissionCompleteVC();
-        if (temp.Item2)
+        if (!wasLoading)
         {
-            yield return new WaitUntil(() => !studioEventEmitter.IsPlaying());
-            studioEventEmitter.Stop();
-            studioEventEmitter.ChangeEvent(temp.Item1.eventReference);
-            studioEventEmitter.Play();
+            (VoiceClip, bool) temp = missions[idx].GetMissionCompleteVC();
+            if (temp.Item2)
+            {
+                yield return new WaitUntil(() => !studioEventEmitter.IsPlaying());
+                studioEventEmitter.Stop();
+                studioEventEmitter.ChangeEvent(temp.Item1.eventReference);
+                studioEventEmitter.Play();
+                SubtitleManager.instance.StartDialog(temp.Item1.subtitle, studioEventEmitter);
+            }
         }
         //SaveLoadManager.instance.SaveGame();
         if (missionsCompleted >= missions.Count)
@@ -336,6 +341,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
                 studioEventEmitter.Stop();
                 studioEventEmitter.ChangeEvent(temp.Item1.eventReference);
                 studioEventEmitter.Play();
+                SubtitleManager.instance.StartDialog(temp.Item1.subtitle, studioEventEmitter);
             }
         }
     }
@@ -500,6 +506,7 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 
     public void LoadData(SavedValues savedValues)
     {
+        isLoading = true;
         finalCutsceneWatched = savedValues.finalCutsceneWatched;
         savedValues.levels.TryGetValue(SceneManager.GetActiveScene().name, out win);
         toggle = savedValues.hubReset;
@@ -564,5 +571,6 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
                 toggle = false;
             }
         }
+        isLoading = false;
     }
 }
