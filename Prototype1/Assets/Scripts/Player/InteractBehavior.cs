@@ -151,7 +151,7 @@ public class InteractBehavior : MonoBehaviour
         }
         else
         {
-            if(interactText != null)
+            if(interactText != null && interactPromptAnim != null)
                 interactPromptAnim.SetBool("Visible", false);
             //interactPromptUI.SetActive(false);
         }
