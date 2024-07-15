@@ -9,8 +9,9 @@ public class InteractBehavior : MonoBehaviour
     InteractableBehaviorTemplate previous;
     MainControls mc;
     List<string> buttons;
-    [SerializeField] TextMeshProUGUI interactKey, interactText;
+    [SerializeField] TextMeshProUGUI interactText;
     [SerializeField] GameObject interactPromptUI;
+    private Animator interactPromptAnim;
     Transform cam;
 
 
@@ -36,6 +37,8 @@ public class InteractBehavior : MonoBehaviour
             DialogueManager.instance.SetPlayerInteraction(this);
         if(NoteManager.instance!=null)
             NoteManager.instance.SetPlayerInteraction(this);
+
+        interactPromptAnim = interactPromptUI.GetComponent<Animator>();
     }
 
     private void LateUpdate()
@@ -137,15 +140,20 @@ public class InteractBehavior : MonoBehaviour
             string two = currentInteractables[0].Activate();
             if (interactText != null)
             {
-                interactKey.text = one;
-                interactText.text = two;
-                interactPromptUI.SetActive(true);
+                //interactKey.text = one;
+                //interactText.text = two;
+
+                interactText.text = one + "<cspace=1><size=27> " + two;
+
+                interactPromptAnim.SetBool("Visible", true);
+                //interactPromptUI.SetActive(true);
             }
         }
         else
         {
             if(interactText != null)
-                interactPromptUI.SetActive(false);
+                interactPromptAnim.SetBool("Visible", false);
+            //interactPromptUI.SetActive(false);
         }
     }
 
