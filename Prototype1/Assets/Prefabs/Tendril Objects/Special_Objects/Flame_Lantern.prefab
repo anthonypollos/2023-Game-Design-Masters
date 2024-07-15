@@ -107,6 +107,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPickup: 0
+  dontRelease: 0
+  dontReleaseBufferTimer: 1
   clashDamage: 10
   neutralSpeed: 15
   rateOfChange: 1
@@ -180,6 +182,7 @@ MonoBehaviour:
   startOnFire: 1
   isBurning: 0
   an: {fileID: 0}
+  fireEffects: []
 --- !u!54 &-6726584002751740166
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -578,6 +581,7 @@ GameObject:
   - component: {fileID: 8688906145931451708}
   - component: {fileID: 8834614283091581368}
   - component: {fileID: 7397630835593690327}
+  - component: {fileID: 1792540742439714705}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -697,10 +701,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c244bef1d164263409ecb131ebdefae7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flickerMin: 0.8
+  flickerMin: 0.5
   flickerMax: 1.2
-  rate: 30
+  rate: 5
   debugVerbose: 0
+--- !u!114 &1792540742439714705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6979899372161135808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a05eb6ae060ae84c8aa4565ac160515, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  availableDistance: 40
 --- !u!1001 &3609099464596123653
 PrefabInstance:
   m_ObjectHideFlags: 0
