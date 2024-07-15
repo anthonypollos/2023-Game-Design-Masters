@@ -349,12 +349,14 @@ public class GameController : MonoBehaviour
                 targetZoom = combatZoom;
                 if (CombatMusicManager != null) CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Play();
                 AManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
+                ObjectiveManager.Instance.ToggleHud(false);
             }
             else
             {
                 targetZoom = nonCombatZoom;
                 AManager.GetComponent<FMODUnity.StudioEventEmitter>().Play();
                 if (CombatMusicManager != null) CombatMusicManager.GetComponent<FMODUnity.StudioEventEmitter>().Stop();
+                ObjectiveManager.Instance.ToggleHud(true);
             }
     }
 

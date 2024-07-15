@@ -27,8 +27,6 @@ public class ObjectiveManager : MonoBehaviour
 
     //private GameController gc;
 
-    public bool inCombat;
-
     private bool hoverActive;
 
     private void Awake()
@@ -129,6 +127,19 @@ public class ObjectiveManager : MonoBehaviour
         yield return null;
     }
     
+    public void ToggleHud(bool toggle)
+    {
+        if (toggle == true)
+        {
+            anim.SetBool("InCombat", false);
+            ToggleObjectiveHover(true);
+        }
+        else if (toggle == false)
+        {
+            anim.SetBool("InCombat", true);
+            ToggleObjectiveHover(false);
+        }
+    }
 
     /// <summary>
     /// 
@@ -165,11 +176,14 @@ public class ObjectiveManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Called in first objective anim
+    /// Called in objective anims
     /// </summary>
-    public void ActivateHover()
+    public void ActivateHover(int toggle)
     {
-        ToggleObjectiveHover(true);
+        if (toggle == 0)
+            ToggleObjectiveHover(false);
+        else if (toggle == 1)
+            ToggleObjectiveHover(true);
     }
 }
 
