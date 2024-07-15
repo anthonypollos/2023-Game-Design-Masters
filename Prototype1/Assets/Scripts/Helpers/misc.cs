@@ -1,6 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
+
+[System.Serializable]
+public struct VoiceClip
+{
+    public EventReference eventReference;
+    public string subtitle;
+}
 
 public static class BasicMath
 {

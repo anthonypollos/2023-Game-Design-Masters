@@ -34,8 +34,8 @@ public class MissionBehavior : MonoBehaviour
     [SerializeField] protected EventReference objectiveSound;
     [Header("VoiceClip values")]
     [SerializeField] bool hasCompleteVC = false;
-    [SerializeField] protected EventReference objectiveCompleteVoiceClip;
-    [SerializeField] protected EventReference[] objectiveBarks;
+    [SerializeField] protected VoiceClip objectiveCompleteVoiceClip;
+    [SerializeField] protected VoiceClip[] objectiveBarks;
     [SerializeField] protected float minTimeForBarks = 30f;
     [SerializeField] protected float maxTimeForBarks = 60f;
     List<int> usedBag = new List<int>();
@@ -161,14 +161,14 @@ public class MissionBehavior : MonoBehaviour
         }
     }
 
-    public (EventReference, bool) GetMissionCompleteVC()
+    public (VoiceClip, bool) GetMissionCompleteVC()
     {
         return (objectiveCompleteVoiceClip, hasCompleteVC);
     }
 
-    public (EventReference, bool) GetBark()
+    public (VoiceClip, bool) GetBark()
     {
-        EventReference temp = default;
+        VoiceClip temp = default;
         //makes sure its populated
         if (objectiveBarks.Length == 0)
         {

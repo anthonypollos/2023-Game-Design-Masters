@@ -27,14 +27,14 @@ public class BossEnemyBrain : EnemyBrain
 
     [SerializeField] float minTimeBetweenBarks;
     [SerializeField] float maxTimeBetweenBarks;
-    [SerializeField] List<EventReference> zeroCystsBrokenBarks;
-    [SerializeField] List<EventReference> oneCystBrokenBarks;
-    [SerializeField] List<EventReference> twoCystsBrokenBarks;
-    [SerializeField] List<EventReference> threeCystsBrokenBarks;
+    [SerializeField] List<VoiceClip> zeroCystsBrokenBarks;
+    [SerializeField] List<VoiceClip> oneCystBrokenBarks;
+    [SerializeField] List<VoiceClip> twoCystsBrokenBarks;
+    [SerializeField] List<VoiceClip> threeCystsBrokenBarks;
 
     [Header("These will need 3 parameters for each cyst")]
-    [SerializeField] List<EventReference> cystBrokenBarks;
-    [SerializeField] List<EventReference> cystSpawnBarks;
+    [SerializeField] List<VoiceClip> cystBrokenBarks;
+    [SerializeField] List<VoiceClip> cystSpawnBarks;
 
 
     [SerializeField]
@@ -145,7 +145,7 @@ public class BossEnemyBrain : EnemyBrain
             float timer = Random.Range(minTimeBetweenBarks, maxTimeBetweenBarks);
             yield return new WaitForSeconds(timer);
             yield return new WaitUntil(() => !studioEventEmitter.IsPlaying());
-            List<EventReference> currentList = null;
+            List<VoiceClip> currentList = null;
             switch(bossManager.GetTargetsHit())
             {
                 case 0: 
@@ -178,7 +178,7 @@ public class BossEnemyBrain : EnemyBrain
                     break;
             }
 
-            EventReference reference = default;
+            VoiceClip reference = default;
             if(currentList == null)
             {
                 continue;
@@ -201,7 +201,7 @@ public class BossEnemyBrain : EnemyBrain
             }
 
             studioEventEmitter.Stop();
-            studioEventEmitter.ChangeEvent(reference);
+            studioEventEmitter.ChangeEvent(reference.eventReference);
             studioEventEmitter.Play();
         }
     }
@@ -221,7 +221,7 @@ public class BossEnemyBrain : EnemyBrain
 
         if(studioEventEmitter!=null)
         {
-            EventReference reference = default;
+            VoiceClip reference = default;
 
             switch(bossManager.GetTargetsHit())
             {
@@ -243,7 +243,7 @@ public class BossEnemyBrain : EnemyBrain
             }
 
             studioEventEmitter.Stop();
-            studioEventEmitter.ChangeEvent(reference);
+            studioEventEmitter.ChangeEvent(reference.eventReference);
             studioEventEmitter.Play();
         }
 
@@ -263,7 +263,7 @@ public class BossEnemyBrain : EnemyBrain
 
         if (studioEventEmitter != null)
         {
-            EventReference reference = default;
+            VoiceClip reference = default;
 
             switch (bossManager.GetTargetsHit())
             {
@@ -285,7 +285,7 @@ public class BossEnemyBrain : EnemyBrain
             }
 
             studioEventEmitter.Stop();
-            studioEventEmitter.ChangeEvent(reference);
+            studioEventEmitter.ChangeEvent(reference.eventReference);
             studioEventEmitter.Play();
         }
     }

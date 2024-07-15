@@ -208,12 +208,12 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     private IEnumerator WaitTillNotFrozenCompletion(int idx)
     {
         yield return new WaitUntil(() => Time.timeScale != 0);
-        (EventReference, bool) temp = missions[idx].GetMissionCompleteVC();
+        (VoiceClip, bool) temp = missions[idx].GetMissionCompleteVC();
         if (temp.Item2)
         {
             yield return new WaitUntil(() => !studioEventEmitter.IsPlaying());
             studioEventEmitter.Stop();
-            studioEventEmitter.ChangeEvent(temp.Item1);
+            studioEventEmitter.ChangeEvent(temp.Item1.eventReference);
             studioEventEmitter.Play();
         }
         //SaveLoadManager.instance.SaveGame();
@@ -329,12 +329,12 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
         {
             float timer = Random.Range(min, max);
             yield return new WaitForSeconds(timer);
-            (EventReference, bool) temp = missions[currentDisplayedMission].GetBark();
+            (VoiceClip, bool) temp = missions[currentDisplayedMission].GetBark();
             if (temp.Item2)
             {
                 yield return new WaitUntil(() => !studioEventEmitter.IsPlaying());
                 studioEventEmitter.Stop();
-                studioEventEmitter.ChangeEvent(temp.Item1);
+                studioEventEmitter.ChangeEvent(temp.Item1.eventReference);
                 studioEventEmitter.Play();
             }
         }
