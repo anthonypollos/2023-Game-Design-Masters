@@ -123,7 +123,7 @@ public class InteractBehavior : MonoBehaviour
     {
         if(interactText != null && interactText.gameObject.activeInHierarchy)
         {
-            interactPromptUI.SetActive(false);
+            interactPromptAnim.SetBool("Visible", false);
         }
         else
         {
