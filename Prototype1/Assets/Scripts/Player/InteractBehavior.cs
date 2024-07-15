@@ -9,7 +9,8 @@ public class InteractBehavior : MonoBehaviour
     InteractableBehaviorTemplate previous;
     MainControls mc;
     List<string> buttons;
-    [SerializeField] TextMeshProUGUI textBox;
+    [SerializeField] TextMeshProUGUI interactKey, interactText;
+    [SerializeField] GameObject interactPromptUI;
     Transform cam;
 
 
@@ -77,7 +78,7 @@ public class InteractBehavior : MonoBehaviour
                     currentInteractables[0].gameObject.SetActive(false);
                 }
                 currentInteractables.RemoveAt(0);
-                if(textBox!=null && textBox.gameObject.activeInHierarchy)
+                if(interactText!=null && interactPromptUI.activeInHierarchy)
                     Changed();
             }
         }
@@ -117,9 +118,9 @@ public class InteractBehavior : MonoBehaviour
 
     public void Toggle()
     {
-        if(textBox!=null && textBox.gameObject.activeInHierarchy)
+        if(interactText != null && interactText.gameObject.activeInHierarchy)
         {
-            textBox.gameObject.SetActive(false);
+            interactPromptUI.SetActive(false);
         }
         else
         {
@@ -131,18 +132,20 @@ public class InteractBehavior : MonoBehaviour
     {
         if(currentInteractables.Count>0)
         {
-            string one = buttons[0] + "/" + buttons[1];
+            string one = buttons[0]; //+ "/" + buttons[1];
+
             string two = currentInteractables[0].Activate();
-            if (textBox != null)
+            if (interactText != null)
             {
-                textBox.text = "" + one + "to " + two;
-                textBox.gameObject.SetActive(true);
+                interactKey.text = one;
+                interactText.text = two;
+                interactPromptUI.SetActive(true);
             }
         }
         else
         {
-            if(textBox != null)
-                textBox.gameObject.SetActive(false);
+            if(interactText != null)
+                interactPromptUI.SetActive(false);
         }
     }
 

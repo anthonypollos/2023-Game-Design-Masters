@@ -75,13 +75,13 @@ public class DialogueManager : MonoBehaviour
     public void UpdateKeybinds()
     {
         mc = ControlsContainer.instance.mainControls;
-        mc.Main.Interact.performed += Interact;
-        nextText.text = mc.Main.Interact.bindings[0].ToDisplayString().ToUpper().TranslateToSprite() + "/" + mc.Main.Interact.bindings[1].ToDisplayString().ToUpper().TranslateToSprite() + " NEXT";
-        choiceText.text = mc.Main.Interact.bindings[0].ToDisplayString().ToUpper().TranslateToSprite() + "/" + mc.Main.Interact.bindings[1].ToDisplayString().ToUpper().TranslateToSprite() + " SELECT CHOICE";
+        mc.Main.Primary.performed += Interact;
+        nextText.text = mc.Main.Primary.bindings[0].ToDisplayString().ToUpper().TranslateToSprite();// + "/" + mc.Main.Interact.bindings[1].ToDisplayString().ToUpper().TranslateToSprite() + " NEXT";
+        choiceText.text = mc.Main.Primary.bindings[0].ToDisplayString().ToUpper().TranslateToSprite();// + "/" + mc.Main.Interact.bindings[1].ToDisplayString().ToUpper().TranslateToSprite() + " SELECT CHOICE";
     }
     private void OnDisable()
     {
-        mc.Main.Interact.performed -= Interact;
+        mc.Main.Primary.performed -= Interact;
     }
 
     private void Interact(InputAction.CallbackContext ctx)
