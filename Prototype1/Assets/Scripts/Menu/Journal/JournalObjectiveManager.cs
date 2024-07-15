@@ -16,6 +16,11 @@ public class JournalObjectiveManager : MonoBehaviour
     {
         if (Instance == null)
             Instance = this;
+
+        for (int i = 1; i < objectives.Length; i++)
+        {
+            objectives[i].objectiveText.gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -50,14 +55,21 @@ public class JournalObjectiveManager : MonoBehaviour
 
             currentObj.objectiveText.color = new Color(0.4811321f, 0.4366501f, 0.369927f);
 
-            foreach (GameObject strike in currentObj.strikes)
+            foreach (Transform child in currentObj.objectiveText.gameObject.transform)
             {
+                GameObject strike = child.gameObject;
                 strike.SetActive(true);
             }
-
+            /*
             if(currentObj.nextObjective != null)
             {
                 currentObj.nextObjective.SetActive(true);
+            }
+            */
+
+            if(objIndex + 1 < objectives.Length)
+            {
+                objectives[objIndex + 1].objectiveText.gameObject.SetActive(true);
             }
 
             //index++;
@@ -86,7 +98,7 @@ public class JournalObjectiveManager : MonoBehaviour
 public class JournalObjectiveItem
 {
     public TextMeshProUGUI objectiveText;
-    public GameObject[] strikes = new GameObject[1];
+    //public GameObject[] strikes;
 
-    public GameObject nextObjective;
+    //public GameObject nextObjective;
 }
