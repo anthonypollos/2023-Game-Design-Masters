@@ -206,7 +206,9 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
         if (!bypass && attackState == Helpers.LASSOING)
         {
             var direction = savedMousePos - transform.position;
-            transform.forward = direction.normalized;
+            direction.y = 0;
+            if(direction!=Vector3.zero)
+                transform.forward = direction.normalized;
             return;
         }
         var (success, position) = GetMousePosition();
@@ -216,7 +218,8 @@ public class IsoPlayerController : MonoBehaviour, IKickable, ISlowable
             var direction = position - transform.position;
 
             direction.y = 0;
-            transform.forward = direction.normalized;
+            if(direction!=Vector3.zero)
+                transform.forward = direction.normalized;
         }
     }
 

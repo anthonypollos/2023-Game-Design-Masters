@@ -242,9 +242,15 @@ public static class Translations
                 return "<sprite=82><sprite=83>";
             case "LEFT BUTTON":
                 return "<sprite=85>";
+            case "LMB":
+                return "<sprite=85>";
             case "RIGHT BUTTON":
                 return "<sprite=86>";
+            case "RMB":
+                return "<sprite=86>";
             case "MIDDLE BUTTON":
+                return "<sprite=87>";
+            case "MMB":
                 return "<sprite=87>";
             case "+":
                 return "<sprite=114>";

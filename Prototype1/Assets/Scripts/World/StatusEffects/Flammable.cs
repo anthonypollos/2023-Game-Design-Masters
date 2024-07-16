@@ -70,7 +70,7 @@ public class Flammable : IStatus
     {
 
         //if we use the serialized array, activate all objects
-        if (fireEffects.Length > 0)
+        if (fireEffects.Length > 0 && !isBurning)
         {
             foreach (GameObject g in fireEffects)
             {
@@ -79,9 +79,9 @@ public class Flammable : IStatus
         }
 
         //if we're using the old system, let's make sure that the fire Effect object is active.
-        if (fireEffect != null) fireEffect.gameObject.SetActive(true);
+        if (fireEffect != null && !isBurning) fireEffect.gameObject.SetActive(true);
         //Ditto for the glow effect
-        if (glow != null) glow.gameObject.SetActive(true);
+        if (glow != null && !isBurning) glow.gameObject.SetActive(true);
 
         Effect();
         currentTime = 0;
@@ -131,7 +131,7 @@ public class Flammable : IStatus
 
     protected override void Effect()
     {
-        if(fireEffect != null)
+        if(fireEffect != null && !isBurning)
         {
             fireEffect.Play(true);
             //Check if the fire particle gameobject has an AudioSource and play it if it does.
