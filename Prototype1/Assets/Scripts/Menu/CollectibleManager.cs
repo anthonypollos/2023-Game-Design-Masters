@@ -17,6 +17,11 @@ public class CollectibleManager : MonoBehaviour
     [SerializeField] private Animator anim;
     [SerializeField] private MultiPageText multiPage;
 
+    private MainControls mainCont;
+    private MenuControls menuCont;
+
+    [SerializeField] private TextMeshProUGUI keysText;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -26,6 +31,18 @@ public class CollectibleManager : MonoBehaviour
             Destroy(this);
         }
         instance = this;
+    }
+
+    private void OnEnable()
+    {
+        mainCont = ControlsContainer.instance.mainControls;
+        menuCont = new MenuControls();
+        menuCont.Enable();
+
+        string one = menuCont.Main.Menu.bindings[0].ToDisplayString().ToUpper().TranslateToSprite();
+        string two = mainCont.Main.Interact.bindings[0].ToDisplayString().ToUpper().TranslateToSprite();
+
+        keysText.text = one + "| " + two;
     }
 
     int tempIndex;

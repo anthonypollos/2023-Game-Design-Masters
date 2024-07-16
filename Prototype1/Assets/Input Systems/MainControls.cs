@@ -123,17 +123,6 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""18a55a44-d8b3-40a3-a267-b053336025c8"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""K&M"",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""8345d9e1-5854-4dfd-9737-28be5d056c87"",
                     ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",

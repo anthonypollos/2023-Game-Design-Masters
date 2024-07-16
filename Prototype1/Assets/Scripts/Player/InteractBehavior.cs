@@ -9,7 +9,9 @@ public class InteractBehavior : MonoBehaviour
     InteractableBehaviorTemplate previous;
     MainControls mc;
     List<string> buttons;
-    [SerializeField] TextMeshProUGUI textBox;
+    [SerializeField] TextMeshProUGUI interactText;
+    [SerializeField] GameObject interactPromptUI;
+    private Animator interactPromptAnim;
     Transform cam;
 
 
@@ -35,6 +37,8 @@ public class InteractBehavior : MonoBehaviour
             DialogueManager.instance.SetPlayerInteraction(this);
         if(NoteManager.instance!=null)
             NoteManager.instance.SetPlayerInteraction(this);
+
+        interactPromptAnim = interactPromptUI.GetComponent<Animator>();
     }
 
     private void LateUpdate()
@@ -77,7 +81,7 @@ public class InteractBehavior : MonoBehaviour
                     currentInteractables[0].gameObject.SetActive(false);
                 }
                 currentInteractables.RemoveAt(0);
-                if(textBox!=null && textBox.gameObject.activeInHierarchy)
+                if(interactText!=null && interactPromptUI.activeInHierarchy)
                     Changed();
             }
         }
@@ -117,9 +121,9 @@ public class InteractBehavior : MonoBehaviour
 
     public void Toggle()
     {
-        if(textBox!=null && textBox.gameObject.activeInHierarchy)
+        if(interactText != null && interactText.gameObject.activeInHierarchy)
         {
-            textBox.gameObject.SetActive(false);
+            interactPromptAnim.SetBool("Visible", false);
         }
         else
         {
@@ -131,18 +135,25 @@ public class InteractBehavior : MonoBehaviour
     {
         if(currentInteractables.Count>0)
         {
-            string one = buttons[0] + "/" + buttons[1];
+            string one = buttons[0]; //+ "/" + buttons[1];
+
             string two = currentInteractables[0].Activate();
-            if (textBox != null)
+            if (interactText != null)
             {
-                textBox.text = "" + one + "to " + two;
-                textBox.gameObject.SetActive(true);
+                //interactKey.text = one;
+                //interactText.text = two;
+
+                interactText.text = one + "<cspace=1><size=27> " + two;
+
+                interactPromptAnim.SetBool("Visible", true);
+                //interactPromptUI.SetActive(true);
             }
         }
         else
         {
-            if(textBox != null)
-                textBox.gameObject.SetActive(false);
+            if(interactText != null && interactPromptAnim != null)
+                interactPromptAnim.SetBool("Visible", false);
+            //interactPromptUI.SetActive(false);
         }
     }
 
