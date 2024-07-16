@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using FMODUnity;
 
 //Josh Bonovich
 //This is for all objects that is a field of damage on the ground that deals damage based on an objects movement
@@ -15,6 +16,8 @@ public class Caltrops : MonoBehaviour
     [SerializeField] int dmgPerInstance;
     [SerializeField] int PlayerDmgPerInstance;
     [SerializeField] bool destroyParent;
+
+    [SerializeField] private EventReference DamageObject;
     private struct Values: IEquatable<Values>
     {
         public Values(Transform transform, IDamageable damageable)
@@ -67,11 +70,13 @@ public class Caltrops : MonoBehaviour
                 if (v.transform.gameObject.CompareTag("Player"))
                 {
                     v.damageable.TakeDamage(PlayerDmgPerInstance, DamageTypes.SPIKE);
+                    AudioManager.instance.PlayOneShot(DamageObject, this.transform.position);
                 }
 
                 else
                 {
                     v.damageable.TakeDamage(dmgPerInstance, DamageTypes.SPIKE);
+                    AudioManager.instance.PlayOneShot(DamageObject, this.transform.position);
                 }
                 maxDamageAvalible -= dmgPerInstance;
                 if(maxDamageAvalible<=0)
