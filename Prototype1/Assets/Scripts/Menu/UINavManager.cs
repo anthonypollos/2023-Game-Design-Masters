@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UINavManager : MonoBehaviour
 {
@@ -20,6 +21,12 @@ public class UINavManager : MonoBehaviour
     [Tooltip("Is this menu in the Main Menu scene?")]
     private bool isMainMenu = false;
 
+    private void Awake()
+    {
+        isMainMenu = (SceneManager.GetActiveScene().name == "MainMenu_New");
+    }
+
+
     /// <summary>
     /// opens desired menu, sets timeScale to 0 and unlocks cursor
     /// </summary>
@@ -32,6 +39,21 @@ public class UINavManager : MonoBehaviour
         mainMenu.SetActive(true);
 
         if(!isMainMenu)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Time.timeScale = 0;
+        }
+    }
+
+    public void OpenMainMenu(string animTrigger)
+    {
+        isClosed = false;
+        subMenuActive = false;
+        popUpActive = false;
+
+        anim.SetTrigger(animTrigger);
+
+        if (!isMainMenu)
         {
             Cursor.lockState = CursorLockMode.None;
             Time.timeScale = 0;
