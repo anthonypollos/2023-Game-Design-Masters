@@ -9,6 +9,7 @@ using FMODUnity;
 public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
 {
     [SerializeField] bool isHub;
+    [SerializeField] Vector3 firstTimeHubSpawnPoint;
     
     [SerializeField] bool isTutorial;
     [SerializeField] List<MissionBehavior> missions;
@@ -60,7 +61,14 @@ public class MissionFolder : MonoBehaviour, ISaveable, IMissionContainer
     void Start()
     {
         if (isHub)
-            Win();
+        {
+            if (!win && firstTimeHubSpawnPoint!=Vector3.zero)
+            {
+                IsoPlayerController player = FindObjectOfType<IsoPlayerController>();
+                player.GetComponent<Rigidbody>().position = firstTimeHubSpawnPoint;
+                Win();
+            }
+        }
         if (missions.Count == 0)
         {
             win = true;
