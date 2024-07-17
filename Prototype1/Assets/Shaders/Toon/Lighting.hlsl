@@ -27,11 +27,13 @@ void CalculateMainLight_float(float3 WorldPos, float3 LightColor, float3 LightDi
     //Direction = float3(0.5, 0.5, 0);
     //Color = 1;
     Direction = LightDirection;
+
+    //Light mainLight = GetMainLight(0);
+    //Direction = mainLight.direction;
     Color = LightColor;
     DistanceAtten = 1;
     ShadowAtten = 1;
 
-    //Light mainLight = GetMainLight(0);
     //Direction = mainLight.direction;
     //Color = mainLight.color;
     //DistanceAtten = mainLight.distanceAttenuation;

@@ -34,9 +34,9 @@ public class GlobalCustomLight : MonoBehaviour
     {
         foreach (Material mat in customLitMats)
         {
-            mat.SetFloat("_LightDirX", globalLightDirX);
-            mat.SetFloat("_LightDirY", globalLightDirY);
-            mat.SetFloat("_LightDirZ", globalLightDirZ);
+            //mat.SetFloat("_LightDirX", globalLightDirX);
+            //mat.SetFloat("_LightDirY", globalLightDirY);
+            //mat.SetFloat("_LightDirZ", globalLightDirZ);
 
             mat.SetColor("_LightColor", globalLightColor);
         }
