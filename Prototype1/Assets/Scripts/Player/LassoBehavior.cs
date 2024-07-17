@@ -45,6 +45,8 @@ public class LassoBehavior : MonoBehaviour
     [SerializeField] private EventReference tendrilUse;
     [SerializeField] private EventReference tendrilBreak;
 
+    [SerializeField] private Animator tendrilHandAnim;
+
     // Start is called before the first frame update
     private void Awake()
     {
@@ -144,7 +146,9 @@ public class LassoBehavior : MonoBehaviour
                 if(attachedTendrilVisual != null)
                 {
                     attachedTendrilVisual.SetActive(true);
+                    tendrilHandAnim.SetTrigger("Grab");
                 }
+
                 //Physics.IgnoreCollision(GetComponent<Collider>(), temp.GetComponent<Collider>(), true);
                 //gameObject.transform.parent = temp.transform;
                 //transform.localPosition = Vector3.zero;
