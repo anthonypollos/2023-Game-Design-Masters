@@ -146,7 +146,7 @@ public class LassoBehavior : MonoBehaviour
                 if(attachedTendrilVisual != null)
                 {
                     attachedTendrilVisual.SetActive(true);
-                    tendrilHandAnim.SetTrigger("Grab");
+                    //tendrilHandAnim.SetTrigger("Grab");
                 }
 
                 //Physics.IgnoreCollision(GetComponent<Collider>(), temp.GetComponent<Collider>(), true);

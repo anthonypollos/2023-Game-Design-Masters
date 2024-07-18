@@ -610,7 +610,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
             lb.StartRetracting();
             //lassoRB.isKinematic = false;
             //lasso.transform.parent = null;
-            tendrilHandAnim.SetTrigger("Retract");
+            //tendrilHandAnim.SetTrigger("Retract");
         }
     }
 
