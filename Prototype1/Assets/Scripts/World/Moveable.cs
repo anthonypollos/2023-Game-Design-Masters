@@ -214,7 +214,7 @@ public class Moveable : MonoBehaviour, ISlowable
             }
             //Debug.Log("Broke on " + collision.gameObject.name);
             //Debug.Log("collide stay");
-            if (tendrilOwner != null && !dontRelease)
+            if (tendrilOwner != null)
             {
                 //Debug.Log("Force release");
                 tendrilOwner.ForceRelease();
@@ -222,7 +222,7 @@ public class Moveable : MonoBehaviour, ISlowable
             }
             //Debug.Log(collision.gameObject.name);
             //Debug.Log("Hit object");
-            if (!isStopping && !dontRelease)
+            if (!isStopping)
                 stopping = StartCoroutine(Stop());
         }
     }
@@ -325,6 +325,12 @@ public class Moveable : MonoBehaviour, ISlowable
                 {
                     if(!isEnemy)
                         myDamageable.TakeDamage(CalculateClashDamage(true));
+                    if (dontRelease)
+                    {
+                        if (tendrilOwner != null)
+                            tendrilOwner.ForceRelease();
+                        ForceReleaseDelayed();
+                    }
                 }
                 else if (!AlreadyDamaged(moveable))
                 {
@@ -350,7 +356,7 @@ public class Moveable : MonoBehaviour, ISlowable
                 {
                     at.ForceAnimationChange();
                 }
-                if(gameObject.activeInHierarchy && !dontRelease)
+                if(gameObject.activeInHierarchy)
                     stopping = StartCoroutine(Stop());
             }
             
@@ -481,6 +487,12 @@ public class Moveable : MonoBehaviour, ISlowable
                 {
                     if(!isEnemy)
                         myDamageable.TakeDamage(CalculateClashDamage(true));
+                    if(dontRelease)
+                    {
+                        if (tendrilOwner != null)
+                            tendrilOwner.ForceRelease();
+                        ForceReleaseDelayed();
+                    }
                 }
                 else if (!AlreadyDamaged(moveable))
                 {
@@ -506,7 +518,7 @@ public class Moveable : MonoBehaviour, ISlowable
                 {
                     at.ForceAnimationChange();
                 }
-                if (gameObject.activeInHierarchy && !dontRelease)
+                if (gameObject.activeInHierarchy)
                     stopping = StartCoroutine(Stop());
             }
 
