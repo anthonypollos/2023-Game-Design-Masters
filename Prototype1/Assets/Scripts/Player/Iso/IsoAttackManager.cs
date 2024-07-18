@@ -79,7 +79,7 @@ public class IsoAttackManager : MonoBehaviour, ICanKick
 
     [Header("Animator Variables")]
     [SerializeField] Animator anim; //assigned in inspector for now; can change
-    [SerializeField] private Animator tendrilHandAnim;
+    //[SerializeField] private Animator tendrilHandAnim;
 
     //[Header("TEMP Outlines")]
     //[SerializeField] OutlineToggle outlineToggle;

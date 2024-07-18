@@ -45,7 +45,7 @@ public class LassoBehavior : MonoBehaviour
     [SerializeField] private EventReference tendrilUse;
     [SerializeField] private EventReference tendrilBreak;
 
-    [SerializeField] private Animator tendrilHandAnim;
+    //[SerializeField] private Animator tendrilHandAnim;
 
     // Start is called before the first frame update
     private void Awake()
