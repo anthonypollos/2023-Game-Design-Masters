@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OptionsButtonAnim : MonoBehaviour
 {
-    enum PanelType {cycle, slider, button };
+    enum PanelType {cycle, slider, button, sliderSmall };
 
     [SerializeField] private PanelType panelType;
 
@@ -31,13 +31,16 @@ public class OptionsButtonAnim : MonoBehaviour
             case PanelType.button:
                 anim.SetBool("Button", true);
                 break;
+            case PanelType.sliderSmall:
+                anim.SetBool("SliderSmall", true);
+                break;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isController != inputChecker.IsController())
+        /*if (isController != inputChecker.IsController())
         {
             isController = inputChecker.IsController();
 
@@ -46,6 +49,6 @@ public class OptionsButtonAnim : MonoBehaviour
 
             else
                 anim.SetBool("Controller", false);
-        }
+        }*/
     }
 }

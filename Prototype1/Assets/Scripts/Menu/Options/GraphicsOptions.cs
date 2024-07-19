@@ -316,35 +316,6 @@ public class GraphicsOptions : MonoBehaviour
             colorAdjustments.contrast.value = ((value - 10) * 3);
     }
     #endregion
-
-    #region Sepia
-    public void SetSepia(bool sepia)
-    {
-        if(oldTimeyVol == null)
-            oldTimeyVol = GameObject.Find("Old Timey Volume");
-
-        if(vol == null)
-            vol = oldTimeyVol.GetComponent<Volume>();
-
-        oldTimeyPass.SetActive(sepia);
-
-        switch (sepia)
-        {
-            case true:
-                sepiaText.text = sepiaTexts[1];
-                PlayerPrefs.SetInt("SepiaMode", 1);
-                vol.weight = 1;
-                break;
-
-            case false:
-                sepiaText.text = sepiaTexts[0];
-                PlayerPrefs.SetInt("SepiaMode", 0);
-                vol.weight = 0;
-                break;
-        }
-    }
-
-    #endregion
 }
 
 [System.Serializable]

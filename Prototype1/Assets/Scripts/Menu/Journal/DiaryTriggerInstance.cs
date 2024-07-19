@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
 
-public class DiaryInstance : MonoBehaviour, ISaveable
+public class DiaryTriggerInstance : MonoBehaviour, ISaveable
 {
     private bool collected = false;
-    [SerializeField] string id;
-    [TextArea(5, 20)] [SerializeField] string[] description;
-    [SerializeField] private EventReference collectsound;
 
+    [SerializeField] string id;
 
     [ContextMenu("Generate guid for id")]
     private void GenerateGuid()
@@ -19,12 +17,11 @@ public class DiaryInstance : MonoBehaviour, ISaveable
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.tag == "Player")
         {
-            collected = true;
+            
 
-            AudioManager.instance.PlayOneShot(collectsound, this.transform.position);
-            SaveLoadManager.instance.SaveGame();
+            gameObject.SetActive(false);
         }
     }
 

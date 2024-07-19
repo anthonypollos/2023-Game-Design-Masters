@@ -83,20 +83,6 @@ public class SetOptions : MonoBehaviour
 
         graphicsOptions.SetBrightness(PlayerPrefs.GetFloat("Brightness", defaultBrightness));
         graphicsOptions.SetContrast(PlayerPrefs.GetFloat("Contrast", defaultContrast));
-
-        /* silly settings down here                                                                         */
-
-        // 1 = sepia on, 0 = sepia off
-        int sepia = PlayerPrefs.GetInt("SepiaMode", 0);
-        switch (sepia)
-        {
-            case 1:
-                graphicsOptions.SetSepia(true);
-                break;
-            case 0:
-                graphicsOptions.SetSepia(false);
-                break;
-        }
     }
 
     #region Resolution Functions
@@ -218,7 +204,7 @@ public class SetOptions : MonoBehaviour
         graphicsOptions.SetFPS(defaultFPS);
         graphicsOptions.SetQuality(defaultQuality);
         //ResetBrightnessContrast();
-        graphicsOptions.SetSepia(false);
+        //graphicsOptions.SetSepia(false);
     }
 
     public void ResetBrightnessContrast()

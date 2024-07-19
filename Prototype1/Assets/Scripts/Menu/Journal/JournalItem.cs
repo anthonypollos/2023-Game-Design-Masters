@@ -151,8 +151,8 @@ public class JournalItem : MonoBehaviour
             underline.sizeDelta = new Vector2(underlineLengthFound, underline.sizeDelta.y);
         }
 
-        if(selectOnStart)
-        SelectItem();
+        if (selectOnStart)
+            SelectItem();
     }
 
     public void SelectItem()
