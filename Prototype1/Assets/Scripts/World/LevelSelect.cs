@@ -5,12 +5,21 @@ using UnityEngine;
 public class LevelSelect : InteractableBehaviorTemplate//, ISaveable
 {
     //[SerializeField] private GameObject levelSelectUI;
-    [SerializeField] private UINavManager levelSelectMenuNav;
+    [SerializeField] private GameController gc;
+
+    [SerializeField] private UINavManager uINav;
     // [SerializeField] private GameObject[] menus;
+
+    private void Awake()
+    {
+        gc = FindObjectOfType<GameController>();
+    }
 
     public override bool Interact()
     {
-        levelSelectMenuNav.OpenMainMenu();
+        //gc.ToggleLevelSelect();
+
+        uINav.OpenMainMenu();
 
         //ToggleLevelSelect();
         return false;
