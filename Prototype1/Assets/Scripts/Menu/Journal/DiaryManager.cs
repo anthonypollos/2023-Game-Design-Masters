@@ -9,24 +9,92 @@ public class DiaryManager : MonoBehaviour
 
     [SerializeField] private EventReference collectsound;
 
+    [SerializeField] private DiaryEntryInstance[] entries;
+    private DiaryTriggerInstance[] triggers;
+
     private void Awake()
     {
         if (instance == null)
             instance = this;
+
+        entries = FindObjectsOfType<DiaryEntryInstance>();
+        triggers = FindObjectsOfType<DiaryTriggerInstance>();
     }
 
-    public void CollectDiaryEntry(string id)
+    public void CollectDiaryEntry(string entryID)
     {
-        SavedValues temp = GameController.instance.savedValuesInstance;
+        foreach (DiaryEntryInstance entry in entries)
+        {
+            if (entry.id.Equals(entryID) && !entry.collected)
+            {
+                entry.CollectDiaryEntry();
+                CollectDiaryUI();
+            }
+        }
+        //SaveLoadManager.instance.SaveGame();
+    }
 
-        if (temp.collectables.ContainsKey(id))
-            temp.collectables.Remove(id);
-        temp.collectables.Add(id, true);
+    public void CollectAllEntries()
+    {
+        foreach (DiaryEntryInstance entry in entries)
+        {
+            if (!entry.collected)
+                entry.CollectDiaryEntry();
+        }
 
+        if(triggers != null)
+        {
+            foreach (DiaryTriggerInstance trigger in triggers)
+            {
+                if (trigger.gameObject.activeInHierarchy)
+                    trigger.CollectTrigger();
+            }
+
+        }
+    }
+
+    public void CollectDiaryEntryHub()
+    {
+        print("Hub entry");
+
+        SavedValues temp = SaveLoadManager.instance.GetCopy();
+
+        bool beatRail = temp.levels.TryGetValue("C_ArtPass_railyard", out beatRail);
+
+        if (beatRail)
+            SearchEntries("Railyard");
+
+        bool beatTown = temp.levels.TryGetValue("Town_Connor_Art_Pass", out beatTown);
+
+        if (beatTown)
+            SearchEntries("Town");
+
+        bool beatTut = temp.levels.TryGetValue("Tutorial_new", out beatTut);
+
+        if (beatTut)
+            SearchEntries("Tutorial");
+
+        print(" hub Beat Rail: " + beatRail);
+        print("hub BeatTown: " + beatTown);
+        print("hub BeatTut: " + beatTut);
+    }
+
+    private void SearchEntries(string key)
+    {
+        foreach (DiaryEntryInstance entry in entries)
+        {
+            if (entry.prevLevel.ToString().Equals(key) && !entry.collected)
+            {
+                entry.CollectDiaryEntry();
+                CollectDiaryUI();
+            }
+        }
+    }
+
+    public void CollectDiaryUI()
+    {
+        JournalPopUpSpawner.instance.SpawnDiaryPopUp();
         AudioManager.instance.PlayOneShot(collectsound, this.transform.position);
-
-
-        // trigger animation, sound effect
     }
 }
 

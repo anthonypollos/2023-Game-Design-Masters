@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuNavigation : MonoBehaviour
 {
@@ -36,30 +37,36 @@ public class MainMenuNavigation : MonoBehaviour
 
     public void ToggleMainMenu()
     {
-        if(optionsMenuNav.isClosed)
+        if (SceneManager.GetActiveScene().ToString() == "MainMenu_New")
         {
-            if (mainMenuNav.popUpActive)
-                mainMenuNav.ClosePopUp("Main");
+            if (optionsMenuNav.isClosed)
+            {
+                if (mainMenuNav.popUpActive)
+                    mainMenuNav.ClosePopUp("Main");
+            }
         }
     }
 
     public void ToggleOptionsMenu()
     {
-        if(!optionsMenuNav.isClosed)
+        if (SceneManager.GetActiveScene().ToString() == "MainMenu_New")
         {
-            // if options menu is on a pop-up within a sub-menu, close pop-up and return to sub-menu
-            if (optionsMenuNav.subMenuActive && optionsMenuNav.popUpActive)
-                optionsMenuNav.ClosePopUp("SubMenu");
-            // if options menu open to sub-menu, close sub-menu and return to main
-            else if (optionsMenuNav.subMenuActive)
-                optionsMenuNav.CloseSubMenu("Main");
-            // if options menu open to pop-up, close pop-up
-            else if (optionsMenuNav.popUpActive)
-                optionsMenuNav.ClosePopUp("Main");
-            else
+            if (!optionsMenuNav.isClosed)
             {
-                optionsMenuNav.CloseMainMenu();
-                mainMenuNav.OpenMainMenu("Intro");
+                // if options menu is on a pop-up within a sub-menu, close pop-up and return to sub-menu
+                if (optionsMenuNav.subMenuActive && optionsMenuNav.popUpActive)
+                    optionsMenuNav.ClosePopUp("SubMenu");
+                // if options menu open to sub-menu, close sub-menu and return to main
+                else if (optionsMenuNav.subMenuActive)
+                    optionsMenuNav.CloseSubMenu("Main");
+                // if options menu open to pop-up, close pop-up
+                else if (optionsMenuNav.popUpActive)
+                    optionsMenuNav.ClosePopUp("Main");
+                else
+                {
+                    optionsMenuNav.CloseMainMenu();
+                    mainMenuNav.OpenMainMenu("Intro");
+                }
             }
         }
     }
