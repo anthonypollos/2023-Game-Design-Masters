@@ -18,6 +18,8 @@ public class LevelManager : MonoBehaviour
 
     private string sceneToLoad;
 
+    private bool isLoading = false;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -41,50 +43,57 @@ public class LevelManager : MonoBehaviour
     /// <param name="sceneName">Scene to Load</param>
     public async void LoadScene(string sceneName)
     {
-        Time.timeScale = 0;
-
-        fillTarget = 0;
-        progressBar.fillAmount = 0;
-
-        loadScreen.SetActive(true);
-
-        await Task.Delay(2);
-
-        var scene = SceneManager.LoadSceneAsync(sceneName);
-        scene.allowSceneActivation = false;
-
-        while(!scene.isDone)
+        if(!isLoading)
         {
-            fillTarget = scene.progress + 0.1f;
+            isLoading = true;
 
-            //print(fillTarget);
+            Time.timeScale = 0;
 
-            if (scene.progress >= 0.9f)
+            fillTarget = 0;
+            progressBar.fillAmount = 0;
+
+            loadScreen.SetActive(true);
+
+            await Task.Delay(2);
+
+            var scene = SceneManager.LoadSceneAsync(sceneName);
+            scene.allowSceneActivation = false;
+
+            while (!scene.isDone)
             {
-                await Task.Delay(1);
-                //fillTarget = 1.0f;
-                scene.allowSceneActivation = true;
+                fillTarget = scene.progress + 0.1f;
+
+                //print(fillTarget);
+
+                if (scene.progress >= 0.9f)
+                {
+                    await Task.Delay(1);
+                    //fillTarget = 1.0f;
+                    scene.allowSceneActivation = true;
+                }
             }
+
+            await Task.Delay(2);
+            if (loadScreen != null)
+                loadScreen.SetActive(false);
+
+            Time.timeScale = 1;
+
+            isLoading = false;
+
+            //do {
+            //    await Task.Delay(100);
+            //    fillTarget = scene.progress;// + 0.1f;
+            //} while (scene.progress < 0.9f);
+
+            //await Task.Delay(1000);
+
+            //scene.allowSceneActivation = true;
+
+            //await Task.Delay(10);
+
+            //loadScreen.SetActive(false);
         }
-
-        await Task.Delay(2);
-        if(loadScreen!=null)
-            loadScreen.SetActive(false);
-
-        Time.timeScale = 1;
-
-        //do {
-        //    await Task.Delay(100);
-        //    fillTarget = scene.progress;// + 0.1f;
-        //} while (scene.progress < 0.9f);
-
-        //await Task.Delay(1000);
-
-        //scene.allowSceneActivation = true;
-
-        //await Task.Delay(10);
-
-        //loadScreen.SetActive(false);
     }
 
     /// <summary>
@@ -93,47 +102,6 @@ public class LevelManager : MonoBehaviour
     /// <param name="sceneName">Scene to Load</param>
     public async void LoadCutscene(string sceneName)
     {
-        Time.timeScale = 0;
-
-        fillTarget = 0;
-        progressBar.fillAmount = 0;
-
-        loadScreen.SetActive(true);
-
-        await Task.Delay(2);
-
-        var scene = SceneManager.LoadSceneAsync(sceneName);
-        scene.allowSceneActivation = false;
-
-        while (!scene.isDone)
-        {
-            fillTarget = scene.progress + 0.1f;
-
-            if (scene.progress >= 0.9f)
-            {
-                await Task.Delay(1);
-                //fillTarget = 1.0f;
-                scene.allowSceneActivation = true;
-            }
-        }
-
-        await Task.Delay(2);
-        if (loadScreen != null)
-            loadScreen.SetActive(false);
-
-        Time.timeScale = 1;
-
-        //do {
-        //    await Task.Delay(100);
-        //    fillTarget = scene.progress;// + 0.1f;
-        //} while (scene.progress < 0.9f);
-
-        //await Task.Delay(1000);
-
-        //scene.allowSceneActivation = true;
-
-        //await Task.Delay(10);
-
-        //loadScreen.SetActive(false);
+        LoadScene(sceneName);
     }
 }
