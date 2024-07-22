@@ -35,7 +35,7 @@ public class JournalItem : MonoBehaviour
     /// <summary>
     /// Used to create descriptionNotFound
     /// </summary>
-    public enum ItemType { Note, Collectible, Character, Enemy, Cutscene };
+    public enum ItemType { Note, Collectible, Character, Enemy, Cutscene, Diary };
     public ItemType itemType;
 
     public enum ItemLocation { Tutorial, Hub, Town, Railyard, Final }
@@ -137,22 +137,35 @@ public class JournalItem : MonoBehaviour
         if(buttonText==null)
             buttonText = GetComponentInChildren<TextMeshProUGUI>();
 
-        if (itemName.CompareTo("") == 0)
+        if(itemName.CompareTo("") == 0)
             itemName = buttonText.text;
 
-        if (!isFound)
+        if(itemType != ItemType.Diary)
         {
-            buttonText.text = "> " + nameNotFound;
-            underline.sizeDelta = new Vector2(underlineLengthNotFound, underline.sizeDelta.y);
-        }
-        else if (collectedCheck != CollectedCheck.nothing)
-        {
-            buttonText.text = "> " + itemName;
-            underline.sizeDelta = new Vector2(underlineLengthFound, underline.sizeDelta.y);
-        }
+            if (!isFound)
+            {
+                buttonText.text = "> " + nameNotFound;
+                underline.sizeDelta = new Vector2(underlineLengthNotFound, underline.sizeDelta.y);
+            }
+            else if (collectedCheck != CollectedCheck.nothing)
+            {
+                buttonText.text = "> " + itemName;
+                underline.sizeDelta = new Vector2(underlineLengthFound, underline.sizeDelta.y);
+            }
 
-        if (selectOnStart)
-            SelectItem();
+            if (selectOnStart)
+                SelectItem();
+        }
+        /*
+        else if(itemType == ItemType.Diary)
+        {
+            if (!isFound)
+            {
+                buttonText.text = "notfound";
+                GetComponent<Button>().interactable = false;
+            }
+        }
+        */
     }
 
     public void SelectItem()

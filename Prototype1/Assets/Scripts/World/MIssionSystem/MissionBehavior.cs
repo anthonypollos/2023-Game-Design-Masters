@@ -40,6 +40,9 @@ public class MissionBehavior : MonoBehaviour
     [SerializeField] protected float maxTimeForBarks = 60f;
     List<int> usedBag = new List<int>();
 
+    [Header("Diary Trigger")]
+    [SerializeField] private string diaryEntryID;
+
     private void Awake()
     {
         //jukebox.SetTransform(transform);
@@ -147,10 +150,14 @@ public class MissionBehavior : MonoBehaviour
             }
             if (advanceObjective)
             {
-                print("new objective");
                 ObjectiveManager.Instance.CompleteCurrentObjective(objectiveIndex);
                 JournalObjectiveManager.Instance.CompleteToObjective(objectiveIndex);
             }
+            if (diaryEntryID.Equals("Hub"))
+                DiaryManager.instance.CollectDiaryEntryHub();
+            else if (!diaryEntryID.Equals(""))
+                DiaryManager.instance.CollectDiaryEntry(diaryEntryID);
+
 
             //AudioManager.instance.PlayOneShot(objectiveSound, this.transform.position);
             folder.MissionComplete(this);
