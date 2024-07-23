@@ -18,7 +18,7 @@ public class BossEnemyBrain : EnemyBrain
     [SerializeField] Material enragedMaterial;
     private Material defaultMaterial;
 
-    [SerializeField] GameObject model;
+    //[SerializeField] GameObject model;
 
     [Header("Boss Sound Files")]
     StudioEventEmitter studioEventEmitter;
@@ -54,19 +54,19 @@ public class BossEnemyBrain : EnemyBrain
         studioEventEmitter = GetComponent<StudioEventEmitter>();
 
         //if we can find a material in a child of this, assign that as the default material
-        /*
-        if (model.GetComponentInChildren<MeshRenderer>().material != null)
-        {
-            defaultMaterial = model.GetComponentInChildren<MeshRenderer>().material;
-            //Return as soon as we get one, we don't need to go through every child object in this so long as we have something.
-            return;
-        }
-        //if we can't find a material in the children, give up and set it to the one we have serialized. This should NOT occur but it beats being broken
-        else
-        {
-            defaultMaterial = enragedMaterial;
-        }
-        */
+        
+        //if (model.GetComponentInChildren<MeshRenderer>().material != null)
+        //{
+        //    defaultMaterial = model.GetComponentInChildren<MeshRenderer>().material;
+        //    //Return as soon as we get one, we don't need to go through every child object in this so long as we have something.
+        //    return;
+        //}
+        ////if we can't find a material in the children, give up and set it to the one we have serialized. This should NOT occur but it beats being broken
+        //else
+        //{
+        //    defaultMaterial = enragedMaterial;
+        //}
+        
     }
 
     private void FixedUpdate()
@@ -218,13 +218,13 @@ public class BossEnemyBrain : EnemyBrain
         an.SetFloat("MoveState", 0);
 
         //Iterate each material in the child and set it to the enraged mat
-        /*
-        foreach(Transform child in model.transform)
-        {
-            //if this child has a renderer, set its material to enraged
-            if (child.GetComponent<Renderer>() != null) child.GetComponent<Renderer>().material = enragedMaterial;
-        }
-        */
+        
+        //foreach(Transform child in model.transform)
+        //{
+        //    //if this child has a renderer, set its material to enraged
+        //    if (child.GetComponent<Renderer>() != null) child.GetComponent<Renderer>().material = enragedMaterial;
+        //}
+        
 
         if (studioEventEmitter!=null)
         {
@@ -265,12 +265,14 @@ public class BossEnemyBrain : EnemyBrain
 
         state = EnemyStates.NOTHING;
 
+        
         //Iterate each material in the child and set it to the normal mat
-        foreach (Transform child in model.transform)
-        {
+        //foreach (Transform child in model.transform)
+        //{
             //if this child has a renderer, set its material to default
-            if (child.GetComponent<Renderer>() != null) child.GetComponent<Renderer>().material = defaultMaterial;
-        }
+            //if (child.GetComponent<Renderer>() != null) child.GetComponent<Renderer>().material = defaultMaterial;
+        //}
+        
 
         if (studioEventEmitter != null)
         {
