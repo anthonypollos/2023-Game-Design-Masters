@@ -14,6 +14,7 @@ public class CollectableInstance : InteractableBehaviorTemplate, ISaveable
     [SerializeField] string itemName;
     [TextArea(5, 20)] [SerializeField] string[] description;
     [SerializeField] private EventReference collectsound;
+    [SerializeField] private EventReference collectBark;
 
     //[SerializeField] private JukeBox jukebox;
 
@@ -46,6 +47,7 @@ public class CollectableInstance : InteractableBehaviorTemplate, ISaveable
         collected = true;
         //jukebox.PlaySound(0);
         AudioManager.instance.PlayOneShot(collectsound, this.transform.position);
+        AudioManager.instance.PlayOneShot(collectBark, this.transform.position);
         SaveLoadManager.instance.SaveGame();
         return true;
     }
