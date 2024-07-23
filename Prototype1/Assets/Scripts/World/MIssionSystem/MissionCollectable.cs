@@ -15,6 +15,7 @@ public class MissionCollectable : InteractableBehaviorTemplate, ISaveable
     [TextArea(5, 20)] [SerializeField] string[] description;
 
     [SerializeField] private EventReference collectsound;
+    [SerializeField] private EventReference barksound;
 
     public void SetMission(CollectMissionBehavior mission)
     {
@@ -46,6 +47,7 @@ public class MissionCollectable : InteractableBehaviorTemplate, ISaveable
         mission.Collected();
         collected = true;
         AudioManager.instance.PlayOneShot(collectsound, this.transform.position);
+        AudioManager.instance.PlayOneShot(barksound, this.transform.position);
         SaveLoadManager.instance.SaveGame();
         return true;
     }
