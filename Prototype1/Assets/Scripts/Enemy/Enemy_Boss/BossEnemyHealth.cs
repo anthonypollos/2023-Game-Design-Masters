@@ -29,6 +29,9 @@ public class BossEnemyHealth : EnemyHealth
                 //destroy the particle
                 Destroy(vfxobj, 4);
             }
+            brain.an.ResetTrigger("Damaged");
+            brain.an.SetTrigger("Damaged");
+            //brain.an.ResetTrigger("Damaged");
         }
         if (health <= 0) Die();
         //healthSlider.value = (float)health / maxHealth;

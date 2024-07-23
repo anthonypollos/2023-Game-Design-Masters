@@ -26,4 +26,44 @@ public class EnemyAnimHelper : MonoBehaviour
     {
         enemyHealth.Death();
     }
+
+    [SerializeField] private BossEnemyAttacks bossAttacks;
+    [SerializeField] private BossEnemyInteractions bossInteractions;
+    [SerializeField] private BossEnemyHealth bossHeath;
+
+    public void BossWindUp(int Int)
+    {
+        bossAttacks.WindUpTrigger(Int);
+    }
+
+    public void BossAttackEnd()
+    {
+        bossAttacks.AttackEnd();
+    }
+
+    public void BossDashing(int Int)
+    {
+        bossAttacks.Dashing(Int);
+    }
+
+    public void BossDashCollide()
+    {
+        bossInteractions.DashCollide();
+    }
+
+    public void BossTriggerAttack(int Int)
+    {
+        bossAttacks.TriggerAttack(Int);
+    }
+
+    public void BossWindDownTrigger(int Int)
+    {
+        bossAttacks.WindDownTrigger(Int);
+    }
+
+    public void BossDeath()
+    {
+        bossHeath.Death();
+    }
+
 }

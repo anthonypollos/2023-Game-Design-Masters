@@ -54,6 +54,7 @@ public class BossEnemyBrain : EnemyBrain
         studioEventEmitter = GetComponent<StudioEventEmitter>();
 
         //if we can find a material in a child of this, assign that as the default material
+        /*
         if (model.GetComponentInChildren<MeshRenderer>().material != null)
         {
             defaultMaterial = model.GetComponentInChildren<MeshRenderer>().material;
@@ -65,6 +66,7 @@ public class BossEnemyBrain : EnemyBrain
         {
             defaultMaterial = enragedMaterial;
         }
+        */
     }
 
     private void FixedUpdate()
@@ -211,16 +213,20 @@ public class BossEnemyBrain : EnemyBrain
     {
         bossAttacks.Enrage();
         state = EnemyStates.ENRAGED;
-        bossManager.Enrage();  
+        bossManager.Enrage();
+
+        an.SetFloat("MoveState", 0);
 
         //Iterate each material in the child and set it to the enraged mat
+        /*
         foreach(Transform child in model.transform)
         {
             //if this child has a renderer, set its material to enraged
             if (child.GetComponent<Renderer>() != null) child.GetComponent<Renderer>().material = enragedMaterial;
         }
+        */
 
-        if(studioEventEmitter!=null)
+        if (studioEventEmitter!=null)
         {
             VoiceClip reference = default;
 
@@ -254,6 +260,9 @@ public class BossEnemyBrain : EnemyBrain
     public void Calm()
     {
         an.SetTrigger("Calmed");
+
+        an.SetFloat("MoveState", 0);
+
         state = EnemyStates.NOTHING;
 
         //Iterate each material in the child and set it to the normal mat

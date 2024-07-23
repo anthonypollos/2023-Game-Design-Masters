@@ -22,6 +22,8 @@ public class BossEnemyMovevment : EnemyMovement
     {
         if (brain.state == EnemyStates.CHARGING)
         {
+            bossBrain.an.SetFloat("MoveState", 3);
+
             dir.y = 0;
             dir = dir.normalized;
             if (debug)

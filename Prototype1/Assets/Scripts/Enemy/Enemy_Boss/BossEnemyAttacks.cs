@@ -70,7 +70,8 @@ public class BossEnemyAttacks : EnemyAttackTemplate
     IEnumerator ChargingDuration()
     {
         float time = 0;
-        while(time < timeToEndCharging && bossBrain.state == EnemyStates.CHARGING)
+
+        while (time < timeToEndCharging && bossBrain.state == EnemyStates.CHARGING)
         {
             yield return new WaitForFixedUpdate();
             time += Time.fixedDeltaTime;
@@ -80,6 +81,7 @@ public class BossEnemyAttacks : EnemyAttackTemplate
         if (bossBrain.state == EnemyStates.CHARGING)
             bossBrain.state = EnemyStates.NOTHING;
         count = 0;
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -108,7 +110,7 @@ public class BossEnemyAttacks : EnemyAttackTemplate
         playerInvulnerable = false;
     }
 
-    private void TriggerAttack(int attack)
+    public void TriggerAttack(int attack)
     {
         brain.an.SetFloat("AttackMod", 1);
         brain.an.SetBool("Attacking", true);
@@ -150,6 +152,8 @@ public class BossEnemyAttacks : EnemyAttackTemplate
         
         base.AttackEnd();
         isRamming = false;
+
+        brain.an.SetFloat("MoveState", 0);
     }
 
 }
