@@ -20,8 +20,8 @@ public class JournalPopUpSpawner : MonoBehaviour
         GameObject toSpawn = popUp;
 
         toSpawn.GetComponent<JournalPopUpButton>().SetButton(popUpText, pageToLoad);
-
-        Instantiate(toSpawn, spawnParent.transform);
+        if(spawnParent != null)
+            Instantiate(toSpawn, spawnParent.transform);
     }
 
     public void SpawnCollectPopUp()
