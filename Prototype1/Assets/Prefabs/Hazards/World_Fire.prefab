@@ -134,6 +134,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flickerMin: 0.8
   flickerMax: 1.2
+  rate: 30
+  debugVerbose: 0
 --- !u!114 &1354986941657410748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,7 +163,7 @@ GameObject:
   - component: {fileID: 5266964625380155780}
   - component: {fileID: 1591026484044494914}
   - component: {fileID: 5802769661139601110}
-  - component: {fileID: 4956209186711194673}
+  - component: {fileID: -660359176951685735}
   m_Layer: 0
   m_Name: World_Fire
   m_TagString: Untagged
@@ -5098,7 +5100,8 @@ MonoBehaviour:
   startOnFire: 1
   isBurning: 0
   an: {fileID: 0}
---- !u!114 &4956209186711194673
+  fireEffects: []
+--- !u!114 &-660359176951685735
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5107,16 +5110,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 513702797507006251}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b62b1bf39a9d4544c8cd50c438616a6c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loopingSound:
+  CollisionTag: 
+  EventReference:
     Guid:
-      Data1: -2092422450
-      Data2: 1273566323
-      Data3: 1090807996
-      Data4: -1236640294
-    Path: event:/Fire
+      Data1: 1265597351
+      Data2: 1283514752
+      Data3: 2082454660
+      Data4: -1410429388
+    Path: event:/World Fire
+  Event: 
+  PlayEvent: 1
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &1779854773096471744
 GameObject:
   m_ObjectHideFlags: 0
