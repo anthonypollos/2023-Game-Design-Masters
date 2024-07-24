@@ -31,6 +31,11 @@ public class DiaryTriggerInstance : MonoBehaviour, ISaveable
 
         gameObject.SetActive(false);
 
+        Invoke("SaveDelay", 0.3f);
+    }
+
+    private void SaveDelay()
+    {
         SaveLoadManager.instance.SaveGame();
     }
 

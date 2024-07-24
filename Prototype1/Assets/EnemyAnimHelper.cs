@@ -30,6 +30,7 @@ public class EnemyAnimHelper : MonoBehaviour
     [SerializeField] private BossEnemyAttacks bossAttacks;
     [SerializeField] private BossEnemyInteractions bossInteractions;
     [SerializeField] private BossEnemyHealth bossHeath;
+    [SerializeField] private Animator bossHUDAnim;
 
     public void BossWindUp(int Int)
     {
@@ -66,4 +67,8 @@ public class EnemyAnimHelper : MonoBehaviour
         bossHeath.Death();
     }
 
+    public void TriggerBossHud(string trigger)
+    {
+        bossHUDAnim.SetTrigger(trigger);
+    }
 }
