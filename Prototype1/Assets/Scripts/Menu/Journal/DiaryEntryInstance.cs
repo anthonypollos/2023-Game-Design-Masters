@@ -17,6 +17,11 @@ public class DiaryEntryInstance : MonoBehaviour, ISaveable
     {
         collected = true;
 
+        Invoke("SaveDelay", 0.3f);
+    }
+
+    private void SaveDelay()
+    {
         SaveLoadManager.instance.SaveGame();
     }
 

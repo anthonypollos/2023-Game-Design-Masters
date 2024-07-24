@@ -103,11 +103,14 @@ public class MovingFadingObject : MonoBehaviour
 
     private void OnDestroy()
     {
-        foreach (Material material in render.materials)
-            if(parentFade!=null)
-            {
-                parentFade.materials.Remove(material);
-                parentFade.moveables.Remove(gameObject);
-            }
+        if(render != null)
+        {
+            foreach (Material material in render.materials)
+                if (parentFade != null)
+                {
+                    parentFade.materials.Remove(material);
+                    parentFade.moveables.Remove(gameObject);
+                }
+        }
     }
 }
