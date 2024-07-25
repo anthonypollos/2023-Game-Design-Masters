@@ -127,6 +127,7 @@ public class GameController : MonoBehaviour
         mc.Main.ToggleLasso.performed += _ => ToggleLasso();
         mc.Main.Journal.performed += _ => ToggleJournal();
         mc.Main.Menu.performed += _ => CloseJournal();
+        mc.Main.Menu.performed += _ => CloseDeath();
         if (levelSelectMenuNav != null)
             mc.Main.Menu.performed += _ => ToggleLevelSelect();
         if (collectMenuNav != null)
@@ -150,7 +151,8 @@ public class GameController : MonoBehaviour
     {
         if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) &&
             !cutSceneScenes.Contains(SceneManager.GetActiveScene().name) &&
-            !DeveloperConsole.instance.consoleUI.activeInHierarchy)
+            !DeveloperConsole.instance.consoleUI.activeInHierarchy &&
+            deathMenuNav.isClosed)
         {
             if (!pauseMenuNav.isClosed)
             {
@@ -312,12 +314,20 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void CloseDeath()
+    {
+        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) &&
+            !cutSceneScenes.Contains(SceneManager.GetActiveScene().name) &&
+            !DeveloperConsole.instance.consoleUI.activeInHierarchy)
+        {
+            if (deathMenuNav.popUpActive)
+                deathMenuNav.ReturnToMain("Main");
+        }
+    }
+
     public void Lose()
     {
-        Cursor.lockState = CursorLockMode.None;
-        deathMenu.SetActive(true);
-        //topButtonDead.Select();
-        Time.timeScale = 0;
+        deathMenuNav.OpenDeathMenu();
     }
 
     #endregion
@@ -348,6 +358,12 @@ public class GameController : MonoBehaviour
                 }
 
             }
+        }
+
+        if(deathMenu.activeInHierarchy && Time.timeScale > 0.125)
+        {
+            float timeSpeed = Mathf.MoveTowards(Time.timeScale, 0.1f, 0.45f * Time.deltaTime);
+            Time.timeScale = timeSpeed;
         }
     }
 

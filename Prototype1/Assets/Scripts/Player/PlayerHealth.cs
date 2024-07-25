@@ -94,8 +94,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     public IEnumerator Death()
     {
-        yield return new WaitUntil(IsAnimationFinished);
-        yield return new WaitForSeconds(2);
+        //yield return new WaitUntil(IsAnimationFinished);
+        //yield return new WaitForSeconds(2);
+        yield return null;
         GameController.instance.Lose();
     }
 

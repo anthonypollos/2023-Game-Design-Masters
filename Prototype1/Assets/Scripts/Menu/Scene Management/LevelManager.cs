@@ -118,7 +118,7 @@ public class LevelManager : MonoBehaviour
 
                 if (scene.progress >= 0.9f)
                 {
-                    await Task.Delay(800);
+                    await Task.Delay(1500);
 
                     fillTarget = 1.0f;
                     progressBar.fillAmount = 1.0f;

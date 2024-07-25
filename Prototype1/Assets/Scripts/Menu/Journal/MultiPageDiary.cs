@@ -43,7 +43,9 @@ public class MultiPageDiary : MonoBehaviour
         int page = currentPage + value;
 
         if (page < 1)
+        {
             page = 1;
+        }
         else if (page > maxPages)
             page = maxPages;
 

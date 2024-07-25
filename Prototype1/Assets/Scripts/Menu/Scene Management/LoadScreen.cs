@@ -64,7 +64,7 @@ public class LoadScreen : MonoBehaviour
         "If you're not sure where to go, following the trail of destruction is usually a safe bet.",
         "Enemies are quick to break out of your tendril's grasp. If you grab one, think fast.",
         "Whatever you do, DO NOT JUMP IN THE PIT.",
-        "When a hoard of monsters is chasing you, don't panic. Look around for something that will hit a lot of enemies at once."
+        "When a horde of monsters is chasing you, don't panic. Look around for something that will hit a lot of enemies at once."
         };
 
         tooltips = texts;
