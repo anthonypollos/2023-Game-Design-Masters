@@ -14,6 +14,10 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject loadScreen;
     [SerializeField] private Image progressBar;
 
+    [Header("CutsceneTransition")]
+    [SerializeField] private GameObject cutsceneTransition;
+    [SerializeField] private Animator cutsceneTransAnim;
+
     private float fillTarget;
 
     private string sceneToLoad;
@@ -26,15 +30,16 @@ public class LevelManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-//            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
-//        else
-//            Destroy(gameObject);
+       // else
+            //Destroy(gameObject);
     }
 
     private void Update()
     {
-        progressBar.fillAmount = Mathf.MoveTowards(progressBar.fillAmount, fillTarget, 1 * Time.unscaledDeltaTime);
+        if(progressBar != null)
+            progressBar.fillAmount = Mathf.MoveTowards(progressBar.fillAmount, fillTarget, 0.3f * Time.unscaledDeltaTime);
     }
 
     /// <summary>
@@ -61,38 +66,75 @@ public class LevelManager : MonoBehaviour
 
             while (!scene.isDone)
             {
-                fillTarget = scene.progress + 0.1f;
-
-                //print(fillTarget);
+                fillTarget = scene.progress + 0.3f;
 
                 if (scene.progress >= 0.9f)
                 {
-                    await Task.Delay(1);
-                    //fillTarget = 1.0f;
-                    scene.allowSceneActivation = true;
+                    await Task.Delay(4200);
+
+                    fillTarget = 1.0f;
+                    progressBar.fillAmount = 1.0f;
+
+                    break;
                 }
             }
 
-            await Task.Delay(2);
-            if (loadScreen != null)
-                loadScreen.SetActive(false);
-
+            scene.allowSceneActivation = true;
+            isLoading = false;
             Time.timeScale = 1;
 
+            await Task.Delay(2);
+
+            if (loadScreen != null)
+                loadScreen.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sceneName">Scene to Load</param>
+    public async void LoadSceneQuick(string sceneName)
+    {
+        if (!isLoading)
+        {
+            isLoading = true;
+
+            Time.timeScale = 0;
+
+            fillTarget = 0;
+            progressBar.fillAmount = 0;
+
+            loadScreen.SetActive(true);
+
+            await Task.Delay(2);
+
+            var scene = SceneManager.LoadSceneAsync(sceneName);
+            scene.allowSceneActivation = false;
+
+            while (!scene.isDone)
+            {
+                fillTarget = scene.progress + 0.05f;
+
+                if (scene.progress >= 0.9f)
+                {
+                    await Task.Delay(800);
+
+                    fillTarget = 1.0f;
+                    progressBar.fillAmount = 1.0f;
+
+                    break;
+                }
+            }
+
+            scene.allowSceneActivation = true;
             isLoading = false;
+            Time.timeScale = 1;
 
-            //do {
-            //    await Task.Delay(100);
-            //    fillTarget = scene.progress;// + 0.1f;
-            //} while (scene.progress < 0.9f);
+            await Task.Delay(2);
 
-            //await Task.Delay(1000);
-
-            //scene.allowSceneActivation = true;
-
-            //await Task.Delay(10);
-
-            //loadScreen.SetActive(false);
+            if (loadScreen != null)
+                loadScreen.SetActive(false);
         }
     }
 
@@ -102,6 +144,31 @@ public class LevelManager : MonoBehaviour
     /// <param name="sceneName">Scene to Load</param>
     public async void LoadCutscene(string sceneName)
     {
-        LoadScene(sceneName);
+        if (!isLoading)
+        {
+            isLoading = true;
+
+            Time.timeScale = 0;
+
+            cutsceneTransition.SetActive(true);
+
+            await Task.Delay(500);
+
+            var scene = SceneManager.LoadSceneAsync(sceneName);
+            scene.allowSceneActivation = false;
+
+            while (!scene.isDone)
+            {
+                if (scene.progress >= 0.9f)
+                {
+                    await Task.Delay(500);
+
+                    scene.allowSceneActivation = true;
+                    Time.timeScale = 1;
+                    isLoading = false;
+                }
+            }
+
+        }
     }
 }
