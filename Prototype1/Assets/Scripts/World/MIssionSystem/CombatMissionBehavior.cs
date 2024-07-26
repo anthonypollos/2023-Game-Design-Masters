@@ -10,6 +10,7 @@ public class CombatMissionBehavior : MissionBehavior
     [SerializeField] List<GameObject> arenaBarriers;
     //bool completed;
 
+    [SerializeField] bool disableBarriers = true;
     [SerializeField] bool isNextWave = false;
     //[SerializeField] new protected EventReference objectiveSound;
 
@@ -77,10 +78,15 @@ public class CombatMissionBehavior : MissionBehavior
             }
         }
         enemies.Clear();
+
         foreach (GameObject barrier in arenaBarriers)
         {
-            barrier.SetActive(false);
+            if (barrier.GetComponent<BarrierController>() != null && disableBarriers)
+                barrier.GetComponent<BarrierController>().ToggleBarrier(false);
+            else if (disableBarriers)
+                barrier.SetActive(false);
         }
+
         folder.CombatFinished();
         //Destroy(musicTrigger);
         //AManager.GetComponent<FMODUnity.StudioEventEmitter>().Play();

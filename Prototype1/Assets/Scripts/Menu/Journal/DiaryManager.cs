@@ -93,7 +93,8 @@ public class DiaryManager : MonoBehaviour
 
     public void CollectDiaryUI()
     {
-        JournalPopUpSpawner.instance.SpawnDiaryPopUp();
+        if(JournalPopUpSpawner.instance != null)
+            JournalPopUpSpawner.instance.SpawnDiaryPopUp();
         AudioManager.instance.PlayOneShot(collectsound, this.transform.position);
     }
 }
