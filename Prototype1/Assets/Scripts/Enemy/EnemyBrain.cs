@@ -278,6 +278,11 @@ public class EnemyBrain : MonoBehaviour, IEnemy
             health.ec.AddAggro(gameObject);
             StopCoroutine(Ambiance());
             AudioManager.instance.PlayOneShotAttached(enemyAggro, this.gameObject);
+            //If this enemy has an IsoCameraMover with the CameraOnAggro boolean, steal the camera
+            if (GetComponent<IsoCameraMover>() && GetComponent<IsoCameraMover>().GetCamOnAggro())
+            {
+                GetComponent<IsoCameraMover>().StealCamera();
+            }
         }
         
     }
