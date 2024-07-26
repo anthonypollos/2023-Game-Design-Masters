@@ -22,6 +22,10 @@ public class SetOptions : MonoBehaviour
     [SerializeField] [Tooltip("Exposed AudioMixer volume parameter names *IN SAME ORDER AS SLIDERS*")] private string[] mixerVarNames;
 
     [Header("---------------------------")]
+    [Header("Accessibility Settings")]
+    [SerializeField] private AccessibilityOptions accessOptions;
+
+    [Header("---------------------------")]
     [Header("Default Setting Values")]
     [SerializeField] private int defaultFPS = 60;
     [SerializeField] [Range(0, 4)] private int defaultQuality = 1;
@@ -29,6 +33,17 @@ public class SetOptions : MonoBehaviour
     [SerializeField] [Range(0, 20)] private float defaultContrast = 6f;
     [SerializeField] [Range(0, 20)] private float defaultVolume = 15f;
     private int defaultResolutionIndex = 0;
+    private float defaultCursorScale = 1.2f;
+    [SerializeField] private Vector3 defaultOuterCursorColor;
+    [SerializeField] private Vector3 defaultInnerCursorColor;
+
+    private float defaultOutlineWidth;
+    [SerializeField] private Vector3 defaultPlayerOutline;
+    [SerializeField] private Vector3 defaultEnemyOutline;
+    [SerializeField] private Vector3 defaultThrowableOutline;
+    [SerializeField] private Vector3 defaultHazardOutline;
+    [SerializeField] private Vector3 defaultPickupOutline;
+    [SerializeField] private Vector3 defaultNPCOutline;
 
     void Start()
     {

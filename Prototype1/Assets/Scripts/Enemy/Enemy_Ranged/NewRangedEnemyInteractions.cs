@@ -31,9 +31,11 @@ public class NewRangedEnemyInteractions : EnemyInteractionBehaviorTemplate
         {
             if (launched)
             {
+                brain.an.SetTrigger("Damaged");
                 hasCollided = true;
                 UnStunned();
                 launched = false;
+                brain.an.SetBool("Knockback", false);
             }
             else if (stunned)
             {
@@ -66,13 +68,14 @@ public class NewRangedEnemyInteractions : EnemyInteractionBehaviorTemplate
         lassoed = true;
         base.Lassoed();
         Stunned();
-        brain.an.SetBool("Lassoed", true);
+        brain.an.SetBool("Tendriled", true);
     }
 
     public override void Pulled(IsoAttackManager player = null)
     {
         base.Pulled();
         launched = true;
+        brain.an.SetBool("Knockback", true);
         hasCollided = false;
     }
 
@@ -81,7 +84,10 @@ public class NewRangedEnemyInteractions : EnemyInteractionBehaviorTemplate
     {
         base.Break();
         lassoed = false;
-        brain.an.SetBool("Lassoed", false);
+
+        brain.an.SetBool("Tendriled", false);
+
+        brain.an.SetTrigger("TendrilBreak");
         UnStunned();
     }
 
@@ -112,10 +118,10 @@ public class NewRangedEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     protected override IEnumerator Staggered()
     {
+        brain.an.SetTrigger("Damaged");
         StopCoroutine(base.Staggered());
         StartCoroutine(base.Staggered());
         yield break;
-
     }
 
 
@@ -124,7 +130,10 @@ public class NewRangedEnemyInteractions : EnemyInteractionBehaviorTemplate
         base.Stun(time);
     }
 
-
+    public override void Death()
+    {
+        brain.an.SetTrigger("Death");
+    }
 
     protected override IEnumerator StunTimer(float seconds)
     {

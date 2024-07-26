@@ -13,6 +13,8 @@ public class BossEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     public override void Lassoed()
     {
+        brain.an.ResetTrigger("Damaged");
+        brain.an.SetTrigger("Damaged");
         Break();
     }
 
@@ -23,7 +25,7 @@ public class BossEnemyInteractions : EnemyInteractionBehaviorTemplate
 
     public override void Death()
     {
-        base.Death();
+        brain.an.SetTrigger("Death");
     }
 
     public override void Pulled(IsoAttackManager player = null)

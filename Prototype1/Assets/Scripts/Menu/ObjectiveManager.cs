@@ -155,7 +155,7 @@ public class ObjectiveManager : MonoBehaviour
         {
             hoverActive = true;
 
-            anim.SetBool("InCombat", false);
+            //anim.SetBool("InCombat", false);
             anim.SetBool("MouseOver", false);
 
             if (!hoverTrigger.activeInHierarchy)
@@ -167,7 +167,7 @@ public class ObjectiveManager : MonoBehaviour
         {
             hoverActive = false;
 
-            anim.SetBool("InCombat", true);
+            //anim.SetBool("InCombat", true);
             anim.SetBool("MouseOver", false);
 
             if (hoverTrigger.activeInHierarchy)

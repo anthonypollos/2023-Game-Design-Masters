@@ -19,10 +19,24 @@ public class DiaryTriggerInstance : MonoBehaviour, ISaveable
     {
         if (other.tag == "Player")
         {
-            
-
-            gameObject.SetActive(false);
+            CollectTrigger();
         }
+    }
+
+    public void CollectTrigger()
+    {
+        collected = true;
+
+        DiaryManager.instance.CollectDiaryUI();
+
+        gameObject.SetActive(false);
+
+        Invoke("SaveDelay", 0.3f);
+    }
+
+    private void SaveDelay()
+    {
+        SaveLoadManager.instance.SaveGame();
     }
 
     public void LoadData(SavedValues savedValues)

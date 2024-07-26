@@ -127,6 +127,7 @@ public class GameController : MonoBehaviour
         mc.Main.ToggleLasso.performed += _ => ToggleLasso();
         mc.Main.Journal.performed += _ => ToggleJournal();
         mc.Main.Menu.performed += _ => CloseJournal();
+        mc.Main.Menu.performed += _ => CloseDeath();
         if (levelSelectMenuNav != null)
             mc.Main.Menu.performed += _ => ToggleLevelSelect();
         if (collectMenuNav != null)
@@ -148,7 +149,10 @@ public class GameController : MonoBehaviour
 
     public void TogglePauseMenu()
     {
-        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
+        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) &&
+            !cutSceneScenes.Contains(SceneManager.GetActiveScene().name) &&
+            !DeveloperConsole.instance.consoleUI.activeInHierarchy &&
+            deathMenuNav.isClosed)
         {
             if (!pauseMenuNav.isClosed)
             {
@@ -187,7 +191,9 @@ public class GameController : MonoBehaviour
     public void ToggleOptionsMenu()
     {
         // if not on main menu
-        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
+        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) &&
+            !cutSceneScenes.Contains(SceneManager.GetActiveScene().name) &&
+            !DeveloperConsole.instance.consoleUI.activeInHierarchy)
         {
             if(!optionsMenuNav.isClosed)
             {
@@ -208,7 +214,8 @@ public class GameController : MonoBehaviour
             }
         }
         // if on main menu; maybe TEMP, use less redundant way to do this
-        else if(nonGameScenes.Contains(SceneManager.GetActiveScene().name))
+        else if (nonGameScenes.Contains(SceneManager.GetActiveScene().name) &&
+                !cutSceneScenes.Contains(SceneManager.GetActiveScene().name))
         {
             if (!optionsMenuNav.isClosed)
             {
@@ -233,7 +240,9 @@ public class GameController : MonoBehaviour
     // Journal Nav using Journal Key
     public void ToggleJournal()
     {
-        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
+        if  (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) &&
+            !cutSceneScenes.Contains(SceneManager.GetActiveScene().name) &&
+            !DeveloperConsole.instance.consoleUI.activeInHierarchy)
         {
             if(Time.timeScale != 0)
             {
@@ -259,7 +268,9 @@ public class GameController : MonoBehaviour
     // Journal Nav using Menu Key; Menu Key will only close journal (sub)menus
     public void CloseJournal()
     {
-        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
+        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) &&
+            !cutSceneScenes.Contains(SceneManager.GetActiveScene().name) &&
+            !DeveloperConsole.instance.consoleUI.activeInHierarchy)
         {
             if(!journalMenuNav.isClosed)
             {
@@ -276,7 +287,9 @@ public class GameController : MonoBehaviour
     // Level Select Navigation; Menu Key will only close level select (sub)menus and pop-ups
     public void ToggleLevelSelect()
     {
-        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
+        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) &&
+            !cutSceneScenes.Contains(SceneManager.GetActiveScene().name) &&
+            !DeveloperConsole.instance.consoleUI.activeInHierarchy)
         {
             if(!levelSelectMenuNav.isClosed)
             {
@@ -292,19 +305,29 @@ public class GameController : MonoBehaviour
 
     public void ToggleCollectibleView()
     {
-        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) && !DeveloperConsole.instance.consoleUI.activeInHierarchy)
+        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) &&
+            !cutSceneScenes.Contains(SceneManager.GetActiveScene().name) &&
+            !DeveloperConsole.instance.consoleUI.activeInHierarchy)
         {
             if (!collectMenuNav.isClosed)
                 collectMenuNav.CloseMainMenu("NextState");
         }
     }
 
+    public void CloseDeath()
+    {
+        if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) &&
+            !cutSceneScenes.Contains(SceneManager.GetActiveScene().name) &&
+            !DeveloperConsole.instance.consoleUI.activeInHierarchy)
+        {
+            if (deathMenuNav.popUpActive)
+                deathMenuNav.ReturnToMain("Main");
+        }
+    }
+
     public void Lose()
     {
-        Cursor.lockState = CursorLockMode.None;
-        deathMenu.SetActive(true);
-        //topButtonDead.Select();
-        Time.timeScale = 0;
+        deathMenuNav.OpenDeathMenu();
     }
 
     #endregion
@@ -335,6 +358,12 @@ public class GameController : MonoBehaviour
                 }
 
             }
+        }
+
+        if(deathMenu.activeInHierarchy && Time.timeScale > 0.125)
+        {
+            float timeSpeed = Mathf.MoveTowards(Time.timeScale, 0.1f, 0.45f * Time.deltaTime);
+            Time.timeScale = timeSpeed;
         }
     }
 

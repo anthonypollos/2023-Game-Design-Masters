@@ -50,13 +50,6 @@ public class GraphicsOptions : MonoBehaviour
     [SerializeField] private VolumeProfile globalVolume;
     private ColorAdjustments colorAdjustments;
 
-    [Header("---------------------------")]
-    [Header("Funny Variables")]
-    [SerializeField] private TextMeshProUGUI sepiaText;
-    [SerializeField] private string[] sepiaTexts;
-    [SerializeField] private ScriptableRendererFeature oldTimeyPass;
-    private GameObject oldTimeyVol;
-    private Volume vol;
     #endregion
 
     void Awake()

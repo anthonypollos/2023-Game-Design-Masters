@@ -56,15 +56,13 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
         brain.LookAtPlayer();
     }
 
-
-  
-
     public void ShootProjectile()
     {
         currentShot++;
         int projectilesToSpawn = (currentShot%multiShotInterval)==0 ? 3 : 1;
         //jukebox.PlaySound(1);
         AudioManager.instance.PlayOneShotAttached(enemyShoot, this.gameObject);
+
         //if (currentShot%multiShotInterval == 0) Debug.Log("trigger multi");
         //TEMP HACK FOR SPAWNING THE MUZZLEFLASH
         GameObject placeholderMuzzleflash = Instantiate(muzzleFlash,transform,false);
@@ -89,6 +87,8 @@ public class RangedEnemyAttacks : EnemyAttackTemplate
                     break;
             }
         }
+
+        brain.an.SetTrigger("NextState");
     }
 
     // Start is called before the first frame update

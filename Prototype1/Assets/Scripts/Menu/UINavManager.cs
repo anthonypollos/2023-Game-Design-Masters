@@ -60,6 +60,20 @@ public class UINavManager : MonoBehaviour
         }
     }
 
+    public void OpenDeathMenu()
+    {
+        isClosed = false;
+        subMenuActive = false;
+        popUpActive = false;
+
+        mainMenu.SetActive(true);
+
+        if (!isMainMenu)
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+    }
+
     /// <summary>
     /// closes desired menu/returns to gameplay, sets timeScale back to 1 and locks cursor
     /// </summary>
