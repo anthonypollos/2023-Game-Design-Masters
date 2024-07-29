@@ -7,7 +7,7 @@
 [LOG] OutputWASAPI::init                       : Output buffer size: 4096 samples, latency: 0.00ms, period: 10.00ms, DSP buffer: 1024 * 4
 [LOG] Thread::initThread                       : Init FMOD stream thread. Affinity: 0x4000000000000003, Priority: 0xFFFF7FFB, Stack Size: 98304, Semaphore: No, Sleep Time: 10, Looping: Yes.
 [LOG] Thread::initThread                       : Init FMOD mixer thread. Affinity: 0x4000000000000001, Priority: 0xFFFF7FFA, Stack Size: 81920, Semaphore: No, Sleep Time: 0, Looping: Yes.
-[LOG] AsyncManager::init                       : manager 00000160BE6D2DE8 isAsync 0 updatePeriod 0.02
+[LOG] AsyncManager::init                       : manager 00000290C7802388 isAsync 0 updatePeriod 0.02
 [LOG] AsyncManager::init                       : done
 [LOG] PlaybackSystem::init                     : 
 [LOG] Thread::initThread                       : Init FMOD Studio sample load thread. Affinity: 0x4000000000000003, Priority: 0xFFFF7FFD, Stack Size: 98304, Semaphore: No, Sleep Time: 1, Looping: No.
@@ -24,5 +24,254 @@
 [LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
 [LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
 [LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
-[WRN] OutputWASAPI::mixerThread                : Starvation detected in WASAPI output buffer!
-[ERR] assert                                   : assertion: 'gSystemInitCount == 0' failed
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] PlaybackSystem::acquireMasterBus         : Setting master channel group format to 6
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] SystemI::createSound                     : filename = FMOD Assets/Build/Desktop/TownLevel-bank.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] Thread::initThread                       : Init FMOD nonblocking thread (0). Affinity: 0x4000000000000003, Priority: 0xFFFF7FFC, Stack Size: 114688, Semaphore: Yes, Sleep Time: 0, Looping: Yes.
+[LOG] AsyncThread::add                         : add sound to async queue : soundi = 00000291235D4C68, queue head = 00000290C839C868, queue count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000291235D4C68
+[LOG] SystemI::createSoundInternal             :     Create name='FMOD Assets/Build/Desktop/TownLevel-bank.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 1253888
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 1664
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002903A970760
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='GrimHub', format=5, channels=2, frequency=48000, lengthbytes=1252736, lengthpcm=4712728, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.169617.
+[LOG] Thread::initThread                       :     Init FMOD file thread. Affinity: 0x4000000000000003, Priority: 0xFFFF7FFC, Stack Size: 65536, Semaphore: No, Sleep Time: 10, Looping: Yes.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000291235D4C68
+[LOG] SoundI::release                          : GrimHub (00000291235D4C68)
+[LOG] SoundI::release                          :     GrimHub (00000291236AB368)
+[LOG] SoundI::release                          :     GrimHub (000002911F28F278)
+[LOG] SystemI::createSound                     : filename = FMOD Assets/Build/Desktop/Music.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] AsyncThread::add                         : add sound to async queue : soundi = 00000291235D4758, queue head = 00000290C839C868, queue count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000291235D4758
+[LOG] SystemI::createSoundInternal             :     Create name='FMOD Assets/Build/Desktop/Music.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 8758784
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 9408
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002903A970760
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='Grimboss610', format=5, channels=2, frequency=48000, lengthbytes=1147264, lengthpcm=4152000, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.413666.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000291235D4758
+[LOG] SoundI::release                          : Grimboss610 (00000291235D4758)
+[LOG] SoundI::release                          :     Grimboss610 (00000291236AB1C8)
+[LOG] SoundI::release                          :     Grimboss610 (000002911F28F5D8)
+[LOG] SystemI::createSound                     : filename = FMOD Assets/Build/Desktop/Music.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] AsyncThread::add                         : add sound to async queue : soundi = 00000291235D4C68, queue head = 00000290C839C868, queue count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000291235D4C68
+[LOG] SystemI::createSoundInternal             :     Create name='FMOD Assets/Build/Desktop/Music.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 8758784
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 9408
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002903A970DA0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekposition = 900
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='GrimCombat610', format=5, channels=2, frequency=48000, lengthbytes=827072, lengthpcm=3504000, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.350128.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000291235D4C68
+[LOG] SoundI::release                          : GrimCombat610 (00000291235D4C68)
+[LOG] SoundI::release                          :     GrimCombat610 (00000291236AB1C8)
+[LOG] SoundI::release                          :     GrimCombat610 (000002911F28F278)
+[LOG] SystemI::createSound                     : filename = FMOD Assets/Build/Desktop/Music.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] AsyncThread::add                         : add sound to async queue : soundi = 00000291235D4248, queue head = 00000290C839C868, queue count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000291235D4248
+[LOG] SystemI::createSoundInternal             :     Create name='FMOD Assets/Build/Desktop/Music.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 8758784
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 9408
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002903A9704E0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='Grimboss610', format=5, channels=2, frequency=48000, lengthbytes=1147264, lengthpcm=4152000, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.413666.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000291235D4248
+[LOG] SoundI::release                          : Grimboss610 (00000291235D4248)
+[LOG] SoundI::release                          :     Grimboss610 (00000291236AB9E8)
+[LOG] SoundI::release                          :     Grimboss610 (000002911F28F278)
+[LOG] SystemI::createSound                     : filename = FMOD Assets/Build/Desktop/Music.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] AsyncThread::add                         : add sound to async queue : soundi = 00000291235D4C68, queue head = 00000290C839C868, queue count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000291235D4C68
+[LOG] SystemI::createSoundInternal             :     Create name='FMOD Assets/Build/Desktop/Music.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 8758784
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 9408
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002903A970760
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='GrimMainMenu624', format=5, channels=2, frequency=48000, lengthbytes=1384288, lengthpcm=5364275, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.544708.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000291235D4C68
+[LOG] SoundI::release                          : GrimMainMenu624 (00000291235D4C68)
+[LOG] SoundI::release                          :     GrimMainMenu624 (00000291236AB9E8)
+[LOG] SoundI::release                          :     GrimMainMenu624 (000002911F28F5D8)
+[LOG] SystemI::createSound                     : filename = FMOD Assets/Build/Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] AsyncThread::add                         : add sound to async queue : soundi = 00000291235D4098, queue head = 00000290C839C868, queue count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000291235D4098
+[LOG] SystemI::createSoundInternal             :     Create name='FMOD Assets/Build/Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 1931872
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 7232
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002903A9704E0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='Grimtown', format=5, channels=2, frequency=48000, lengthbytes=1015168, lengthpcm=4416000, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.612640.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000291235D4098
+[LOG] SoundI::release                          : Grimtown (00000291235D4098)
+[LOG] SoundI::release                          :     Grimtown (00000291236AB028)
+[LOG] SoundI::release                          :     Grimtown (000002911F28F278)
+[LOG] SystemI::createSound                     : filename = FMOD Assets/Build/Desktop/Music.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] AsyncThread::add                         : add sound to async queue : soundi = 00000291235D43F8, queue head = 00000290C839C868, queue count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000291235D43F8
+[LOG] SystemI::createSoundInternal             :     Create name='FMOD Assets/Build/Desktop/Music.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 8758784
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 9408
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002903A970DA0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='Main Menu Placeholder', format=5, channels=2, frequency=48000, lengthbytes=2407040, lengthpcm=8421041, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=1.015817.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000291235D43F8
+[LOG] SoundI::release                          : Main Menu Placeholder (00000291235D43F8)
+[LOG] SoundI::release                          :     Main Menu Placeholder (0000028DF11D3EF8)
+[LOG] SoundI::release                          :     Main Menu Placeholder (00000290A16F1428)
+[LOG] SystemI::createSound                     : filename = FMOD Assets/Build/Desktop/Music.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] AsyncThread::add                         : add sound to async queue : soundi = 00000291235D4C68, queue head = 00000290C839C868, queue count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000291235D4C68
+[LOG] SystemI::createSoundInternal             :     Create name='FMOD Assets/Build/Desktop/Music.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 8758784
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 9408
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002903A970DA0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='GrimRailyeard618', format=5, channels=2, frequency=48000, lengthbytes=1055392, lengthpcm=4320000, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.830963.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000291235D4C68
+[LOG] SoundI::release                          : GrimRailyeard618 (00000291235D4C68)
+[LOG] SoundI::release                          :     GrimRailyeard618 (0000028DF11D3878)
+[LOG] SoundI::release                          :     GrimRailyeard618 (00000290A16F15D8)
+[LOG] SystemI::createSound                     : filename = FMOD Assets/Build/Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] AsyncThread::add                         : add sound to async queue : soundi = 00000291235D45A8, queue head = 00000290C839C868, queue count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000291235D45A8
+[LOG] SystemI::createSoundInternal             :     Create name='FMOD Assets/Build/Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 1931872
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 7232
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002903A970120
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='Grimtown', format=5, channels=2, frequency=48000, lengthbytes=1015168, lengthpcm=4416000, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.612640.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000291235D45A8
+[LOG] SoundI::release                          : Grimtown (00000291235D45A8)
+[LOG] SoundI::release                          :     Grimtown (0000028DF11D3EF8)
+[LOG] SoundI::release                          :     Grimtown (00000290A16F1278)
+[LOG] SystemI::createSound                     : filename = FMOD Assets/Build/Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] AsyncThread::add                         : add sound to async queue : soundi = 00000291235D43F8, queue head = 00000290C839C868, queue count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000291235D43F8
+[LOG] SystemI::createSoundInternal             :     Create name='FMOD Assets/Build/Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 1931872
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 7232
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002903A970C60
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='Grimtown', format=5, channels=2, frequency=48000, lengthbytes=1015168, lengthpcm=4416000, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.612640.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000291235D43F8
+[LOG] SoundI::release                          : Grimtown (00000291235D43F8)
+[LOG] SoundI::release                          :     Grimtown (0000028DF11D36D8)
+[LOG] SoundI::release                          :     Grimtown (00000290A16F1428)
+[LOG] SystemI::createSound                     : filename = FMOD Assets/Build/Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] AsyncThread::add                         : add sound to async queue : soundi = 00000291235D4C68, queue head = 00000290C839C868, queue count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000291235D4C68
+[LOG] SystemI::createSoundInternal             :     Create name='FMOD Assets/Build/Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 1931872
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 7232
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002903A970260
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='Grimtown', format=5, channels=2, frequency=48000, lengthbytes=1015168, lengthpcm=4416000, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.612640.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000291235D4C68
+[LOG] SoundI::release                          : Grimtown (00000291235D4C68)
+[LOG] SoundI::release                          :     Grimtown (0000028DF11D3A18)
+[LOG] SoundI::release                          :     Grimtown (00000290A16F1278)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] PlaybackSystem::acquireMasterBus         : Setting master channel group format to 6
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] PlaybackSystem::acquireMasterBus         : Setting master channel group format to 6
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] SystemI::createSound                     : filename = FMOD Assets/Build/Desktop/Music.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] AsyncThread::add                         : add sound to async queue : soundi = 000002912378EFA8, queue head = 00000290C839C868, queue count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002912378EFA8
+[LOG] SystemI::createSoundInternal             :     Create name='FMOD Assets/Build/Desktop/Music.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 9823936
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 10496
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002903A970760
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='GrimMine3-2524', format=5, channels=2, frequency=48000, lengthbytes=1064128, lengthpcm=4320000, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.988495.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002912378EFA8
+[LOG] SoundI::release                          : GrimMine3-2524 (000002912378EFA8)
+[LOG] SoundI::release                          :     GrimMine3-2524 (00000291237A8028)
+[LOG] SoundI::release                          :     GrimMine3-2524 (000002911F28F278)
+[LOG] Thread::callback                         : FMOD Studio bank load thread finished.
+[LOG] Thread::callback                         : FMOD Studio sample load thread finished.
+[LOG] LiveUpdate::release                      : 
+[LOG] LiveUpdate::reset                        : Reset connection (reason Disconnected)
+[LOG] Thread::callback                         : FMOD stream thread finished.
+[LOG] Thread::callback                         : FMOD mixer thread finished.
+[LOG] SystemI::close                           : Closed.
+[LOG] Thread::callback                         : FMOD nonblocking thread (0) finished.
+[LOG] Thread::callback                         : FMOD file thread finished.
