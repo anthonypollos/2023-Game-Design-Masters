@@ -37,20 +37,15 @@ public class MainMenuNavigation : MonoBehaviour
 
     public void ToggleMainMenu()
     {
-        if (SceneManager.GetActiveScene().ToString() == "MainMenu_New")
-        {
             if (optionsMenuNav.isClosed)
             {
                 if (mainMenuNav.popUpActive)
                     mainMenuNav.ClosePopUp("Main");
             }
-        }
     }
 
     public void ToggleOptionsMenu()
     {
-        if (SceneManager.GetActiveScene().ToString() == "MainMenu_New")
-        {
             if (!optionsMenuNav.isClosed)
             {
                 // if options menu is on a pop-up within a sub-menu, close pop-up and return to sub-menu
@@ -68,6 +63,5 @@ public class MainMenuNavigation : MonoBehaviour
                     mainMenuNav.OpenMainMenu("Intro");
                 }
             }
-        }
     }
 }

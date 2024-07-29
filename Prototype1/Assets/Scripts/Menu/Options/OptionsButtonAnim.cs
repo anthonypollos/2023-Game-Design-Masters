@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OptionsButtonAnim : MonoBehaviour
 {
-    enum PanelType {cycle, slider, button, sliderSmall };
+    enum PanelType {cycle, slider, button, sliderSmall, colorPick };
 
     [SerializeField] private PanelType panelType;
 
@@ -33,6 +33,9 @@ public class OptionsButtonAnim : MonoBehaviour
                 break;
             case PanelType.sliderSmall:
                 anim.SetBool("SliderSmall", true);
+                break;
+            case PanelType.colorPick:
+                anim.SetBool("ColorPick", true);
                 break;
         }
     }

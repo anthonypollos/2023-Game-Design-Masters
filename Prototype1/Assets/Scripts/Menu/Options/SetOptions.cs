@@ -8,9 +8,6 @@ using UnityEngine.UI;
 
 public class SetOptions : MonoBehaviour
 {
-    [Header("Control Settings")]
-    [SerializeField] [Tooltip("Mouse Sensitivity Slider")] private Slider mouseSensSlider;
-
     [Header("---------------------------")]
     [Header("Graphics Settings")]
     [SerializeField] private GraphicsOptions graphicsOptions;
@@ -33,17 +30,13 @@ public class SetOptions : MonoBehaviour
     [SerializeField] [Range(0, 20)] private float defaultContrast = 6f;
     [SerializeField] [Range(0, 20)] private float defaultVolume = 15f;
     private int defaultResolutionIndex = 0;
-    private float defaultCursorScale = 1.2f;
-    [SerializeField] private Vector3 defaultOuterCursorColor;
-    [SerializeField] private Vector3 defaultInnerCursorColor;
 
-    private float defaultOutlineWidth;
-    [SerializeField] private Vector3 defaultPlayerOutline;
-    [SerializeField] private Vector3 defaultEnemyOutline;
-    [SerializeField] private Vector3 defaultThrowableOutline;
-    [SerializeField] private Vector3 defaultHazardOutline;
-    [SerializeField] private Vector3 defaultPickupOutline;
-    [SerializeField] private Vector3 defaultNPCOutline;
+    private float defaultCursorScale = 12f;
+    [SerializeField] private Color defaultOuterCursorColor;
+    [SerializeField] private Color defaultInnerCursorColor;
+
+    private float defaultOutlineWidth = 17f;
+    [SerializeField] private Color defaultOutlineColor;
 
     void Start()
     {
@@ -57,6 +50,7 @@ public class SetOptions : MonoBehaviour
     {
         SetVolPrefs();
         SetGraphicsSettings();
+        SetAccessibiltyOptions();
     }
 
     #region Graphics Functions
@@ -203,6 +197,36 @@ public class SetOptions : MonoBehaviour
     }
     #endregion
 
+    #region Accessibilty Functions
+    /// <summary>
+    /// 
+    /// </summary>
+    private void SetAccessibiltyOptions()
+    {
+        accessOptions.SetCursorScale(PlayerPrefs.GetFloat("CursorScale", defaultCursorScale));
+
+        float innerColorR = PlayerPrefs.GetFloat("InnerCursorR", defaultInnerCursorColor.r);
+        float innerColorG = PlayerPrefs.GetFloat("InnerCursorG", defaultInnerCursorColor.g);
+        float innerColorB = PlayerPrefs.GetFloat("InnerCursorB", defaultInnerCursorColor.b);
+
+        Color innerColor = new Color(innerColorR, innerColorG, innerColorB);
+
+        float outerColorR = PlayerPrefs.GetFloat("OuterCursorR", defaultOuterCursorColor.r);
+        float outerColorG = PlayerPrefs.GetFloat("OuterCursorG", defaultOuterCursorColor.g);
+        float outerColorB = PlayerPrefs.GetFloat("OuterCursorB", defaultOuterCursorColor.b);
+
+        Color outerColor = new Color(outerColorR, outerColorG, outerColorB);
+
+        accessOptions.SetCursorColor(innerColor, outerColor);
+
+        // set outline width
+        accessOptions.SetOutlineWidth(PlayerPrefs.GetFloat("OutlineWidth", defaultOutlineWidth));
+
+        // set outline colors
+        accessOptions.SetOutlineColors();
+
+    }
+    #endregion
 
     #region Reset to Defaults
     public void ResetVolume()
@@ -226,6 +250,23 @@ public class SetOptions : MonoBehaviour
     {
         graphicsOptions.SetBrightness(defaultBrightness);
         graphicsOptions.SetContrast(defaultContrast);
+    }
+
+    public void ResetAccessibility()
+    {
+        accessOptions.SetCursorScale(defaultCursorScale);
+
+        accessOptions.SetOutlineWidth(defaultOutlineWidth);
+    }
+
+    public void ResetCursorColor()
+    {
+        accessOptions.SetCursorColor(defaultInnerCursorColor, defaultOuterCursorColor);
+    }
+
+    public void ResetOutlineColor()
+    {
+        accessOptions.ResetSliders();
     }
     #endregion
 }
