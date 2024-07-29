@@ -41,7 +41,9 @@ public class OutlineCustomizer : MonoBehaviour
     public void UpdateOutlines()
     {
         float width = PlayerPrefs.GetFloat("OutlineWidth", 17f);
-        outline.OutlineWidth = (width/10) * outlineWidthMod;
+
+        if(outline != null)
+            outline.OutlineWidth = (width/10) * outlineWidthMod;
 
         Color outlineColor = defaultOutlineColor;
         outlineColor.a = 1f;
@@ -85,6 +87,7 @@ public class OutlineCustomizer : MonoBehaviour
                 break;
         }
 
-        outline.OutlineColor = outlineColor;
+        if(outline != null)
+            outline.OutlineColor = outlineColor;
     }
 }
