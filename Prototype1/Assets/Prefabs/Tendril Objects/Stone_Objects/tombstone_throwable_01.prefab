@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 3888837882441838103}
   - component: {fileID: 1279281530656789245}
   - component: {fileID: 4232293778303179042}
+  - component: {fileID: 1126561365409908837}
   m_Layer: 9
   m_Name: tombstone_throwable_01
   m_TagString: Interactable
@@ -152,6 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPickup: 0
+  dontRelease: 0
+  dontReleaseBufferTimer: 1
   clashDamage: 10
   neutralSpeed: 15
   rateOfChange: 1
@@ -558,6 +561,21 @@ MonoBehaviour:
     - {x: 0.5432757, y: 0.57735026, z: 0.6095229}
     - {x: 0.54327583, y: -0.5773504, z: 0.60952276}
     - {x: 0.6095228, y: -0.5773502, z: -0.54327583}
+--- !u!114 &1126561365409908837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7189279340334542923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb0a1404e74ce472bbd1e8abd26a9a43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectType: 1
+  defaultOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidthMod: 1
 --- !u!1001 &6178766818661334213
 PrefabInstance:
   m_ObjectHideFlags: 0
