@@ -224,6 +224,7 @@ public class SetOptions : MonoBehaviour
 
         // set outline colors
         accessOptions.SetOutlineColors();
+        accessOptions.UpdateOutlineColors();
 
     }
     #endregion
