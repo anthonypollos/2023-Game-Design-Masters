@@ -281,19 +281,19 @@ public class BossEnemyBrain : EnemyBrain
             switch (bossManager.GetTargetsHit())
             {
                 case 1:
-                    if (cystSpawnBarks.Count < 1)
+                    if (cystBrokenBarks.Count < 1)
                         return;
-                    reference = cystSpawnBarks[0];
+                    reference = cystBrokenBarks[0];
                     break;
                 case 2:
-                    if (cystSpawnBarks.Count < 2)
+                    if (cystBrokenBarks.Count < 2)
                         return;
-                    reference = cystSpawnBarks[1];
+                    reference = cystBrokenBarks[1];
                     break;
                 case 3:
-                    if (cystSpawnBarks.Count < 3)
+                    if (cystBrokenBarks.Count < 3)
                         return;
-                    reference = cystSpawnBarks[2];
+                    reference = cystBrokenBarks[2];
                     break;
             }
 
