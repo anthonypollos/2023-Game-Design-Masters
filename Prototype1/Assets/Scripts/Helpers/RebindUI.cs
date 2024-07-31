@@ -32,12 +32,15 @@ public class RebindUI : MonoBehaviour
     private TextMeshProUGUI rebindText;
     [SerializeField]
     private Button resetButton;
+    [SerializeField]
+    private Button resetAllButton;
 
 
     private void OnEnable()
     {
         rebindButton.onClick.AddListener(() => DoRebind());
         resetButton.onClick.AddListener(() => ResetBinding());
+        resetAllButton.onClick.AddListener(() => ResetBinding());
 
         if(inputActionReference != null)
         {
