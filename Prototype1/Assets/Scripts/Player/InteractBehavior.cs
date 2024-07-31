@@ -13,6 +13,7 @@ public class InteractBehavior : MonoBehaviour
     [SerializeField] GameObject interactPromptUI;
     private Animator interactPromptAnim;
     Transform cam;
+    bool toggle = true;
 
 
     private void OnEnable()
@@ -119,9 +120,10 @@ public class InteractBehavior : MonoBehaviour
         Changed();
     }
 
-    public void Toggle()
+    public void Toggle(bool on = false)
     {
-        if(interactText != null && interactText.gameObject.activeInHierarchy)
+        toggle = on;
+        if(interactText != null && !on)
         {
             interactPromptAnim.SetBool("Visible", false);
         }
@@ -145,7 +147,8 @@ public class InteractBehavior : MonoBehaviour
 
                 interactText.text = one + "<cspace=1><size=27> " + two;
 
-                interactPromptAnim.SetBool("Visible", true);
+                if(toggle)
+                    interactPromptAnim.SetBool("Visible", true);
                 //interactPromptUI.SetActive(true);
             }
         }

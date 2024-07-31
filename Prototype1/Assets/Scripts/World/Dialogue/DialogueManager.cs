@@ -132,7 +132,7 @@ public class DialogueManager : MonoBehaviour
         //portraitAnimator.Play("Default");
         currentStory = new Story(inkJSON.text);
         Time.timeScale = 0f;
-        playerInteraction.Toggle();
+        playerInteraction.Toggle(false);
         dialogueMenu.SetActive(true);
         //dialogBox.SetActive(true);
         //Debug.Log("enabling db");
@@ -310,7 +310,7 @@ public class DialogueManager : MonoBehaviour
     private IEnumerator EndStory()
     {
         currentStory = null;
-        playerInteraction.Toggle();
+        playerInteraction.Toggle(true);
         //Debug.Log("Ending Dialog");
         yield return new WaitForSecondsRealtime(0.05f);
         foreach (GameObject button in choiceButtons)

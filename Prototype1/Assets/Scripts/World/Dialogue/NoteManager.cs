@@ -92,7 +92,7 @@ public class NoteManager : MonoBehaviour
         portraitAnimator.Play("Default");
         currentStory = new Story(inkJSON.text);
         Time.timeScale = 0f;
-        playerInteraction.Toggle();
+        playerInteraction.Toggle(false);
         noteBox.SetActive(true);
         ContinueStory();
 
@@ -163,7 +163,7 @@ public class NoteManager : MonoBehaviour
 
     private IEnumerator EndStory()
     {
-        playerInteraction.Toggle();
+        playerInteraction.Toggle(true);
         Debug.Log("Ending Dialog");
         yield return new WaitForSecondsRealtime(0.05f);
         foreach (GameObject button in noteButtons)
