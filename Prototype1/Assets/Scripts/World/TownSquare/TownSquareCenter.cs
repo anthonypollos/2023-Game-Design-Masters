@@ -22,7 +22,9 @@ public class TownSquareCenter : MonoBehaviour
         int param = 3 - cystsAlive;
         if(param < cystDestroyedBarks.Count)
         {
+            emitter.Stop();
             emitter.ChangeEvent(cystDestroyedBarks[param].eventReference);
+            emitter.Play();
             SubtitleManager.instance.StartDialog(cystDestroyedBarks[param].subtitle, emitter);
         }
         cystsAlive--;
