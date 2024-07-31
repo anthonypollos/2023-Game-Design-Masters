@@ -59,18 +59,17 @@ public class DiaryManager : MonoBehaviour
 
         SavedValues temp = SaveLoadManager.instance.GetCopy();
 
-        bool beatRail = temp.levels.TryGetValue("C_ArtPass_railyard", out beatRail);
+        bool beatRail = temp.levels.TryGetValue("C_ArtPass_railyard_v2", out beatRail);
 
-        if (beatRail)
-            SearchEntries("Railyard");
 
         bool beatTown = temp.levels.TryGetValue("Town_Connor_Art_Pass", out beatTown);
 
-        if (beatTown)
-            SearchEntries("Town");
-
         bool beatTut = temp.levels.TryGetValue("Tutorial_new", out beatTut);
 
+        if (beatRail)
+            SearchEntries("Railyard");
+        if (beatTown)
+            SearchEntries("Town");
         if (beatTut)
             SearchEntries("Tutorial");
 
