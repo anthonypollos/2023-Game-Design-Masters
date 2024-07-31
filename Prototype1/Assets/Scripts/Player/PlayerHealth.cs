@@ -82,6 +82,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             pc.isDead = true;
             pc.isStunned = true;
             pc.attackState = Helpers.NOTATTACKING;
+            pc.GetComponent<IsoAttackManager>().ForceRelease();
             //GameController.instance.Lose();
             StartCoroutine(Death());
         }
