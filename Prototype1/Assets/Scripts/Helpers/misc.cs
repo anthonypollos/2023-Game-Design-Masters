@@ -222,6 +222,10 @@ public static class Translations
                 return "<sprite=70><sprite=71>";
             case "ESCAPE":
                 return "<sprite=72><sprite=73>";
+            case "ESC":
+                return "<sprite=72><sprite=73>";
+            case "[ESC]":
+                return "<sprite=72><sprite=73>";
             case "ALT":
                 return "<sprite=74><sprite=75>";
             case "LEFT ALT":
@@ -261,6 +265,7 @@ public static class Translations
             case "BACKSPACE":
                 return "<sprite=118><sprite=119>";
             default:
+                Debug.Log("Not found: " + rawUpper);
                 return "[" + rawUpper + "]";
         }
 

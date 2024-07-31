@@ -63,6 +63,15 @@ public class ControlsContainer : MonoBehaviour, ISaveable
 
     }
 
+    public bool CheckComposite(string actionName, int bindingIndex)
+    {
+        InputAction action = mainControls.asset.FindAction(actionName);
+        if(action!=null)
+            return action.bindings[bindingIndex].isComposite;
+        else
+            return false;
+    }
+
     //Script by One Wheel Studio here https://youtu.be/TD0R5x0yL0Y?si=8uKwY1sPx7yUnuVs
 
     public void StartRebind(string actionName, int bindingIndex, TextMeshProUGUI statusText)
@@ -129,6 +138,7 @@ public class ControlsContainer : MonoBehaviour, ISaveable
         });
 
         rebind.WithCancelingThrough("<Keyboard>/escape");
+        rebind.WithCancelingThrough("<Keyboard>/tab");
         rebind.WithCancelingThrough("<Gamepad>/start");
         rebind.WithCancelingThrough("<Keyboard>/p");
         rebind.WithControlsExcluding("<Gamepad>/leftstick");

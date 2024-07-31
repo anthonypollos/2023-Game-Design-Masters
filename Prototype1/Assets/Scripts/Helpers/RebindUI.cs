@@ -34,6 +34,7 @@ public class RebindUI : MonoBehaviour
     private Button resetButton;
     [SerializeField]
     private Button resetAllButton;
+    bool isComposite;
 
 
     private void OnEnable()
@@ -59,6 +60,7 @@ public class RebindUI : MonoBehaviour
     }
 
 
+
     private void OnValidate()
     {
         if (inputActionReference == null)
@@ -78,6 +80,7 @@ public class RebindUI : MonoBehaviour
                 inputBinding = inputActionReference.action.bindings[selectBinding];
                 bindingIndex = selectBinding;
             }
+            isComposite = ControlsContainer.instance.CheckComposite(actionName, bindingIndex);
         }
 
 
@@ -92,7 +95,19 @@ public class RebindUI : MonoBehaviour
         {
             if (Application.isPlaying)
             {
-                rebindText.text = ControlsContainer.instance.GetBindingName(actionName, bindingIndex, displayStringOptions).TranslateToSprite();
+                if(isComposite)
+                {
+                    string temp = ControlsContainer.instance.GetBindingName(actionName, bindingIndex, displayStringOptions);
+                    string[] tempArray = temp.Split("/");
+                    string result = "";
+                    foreach(string bind in tempArray)
+                    {
+                        result += bind.TranslateToSprite();
+                    }
+                    rebindText.text = result;
+                }
+                else
+                    rebindText.text = ControlsContainer.instance.GetBindingName(actionName, bindingIndex, displayStringOptions).TranslateToSprite();
             }
             else
             {
