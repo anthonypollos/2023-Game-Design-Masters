@@ -165,6 +165,7 @@ public class UINavManager : MonoBehaviour
     {
         popUpActive = false;
 
-        anim.SetTrigger(animTrigger);
+        if(anim != null)
+            anim.SetTrigger(animTrigger);
     }
 }
