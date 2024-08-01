@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Video;
-using FMOD;
+using TMPro;
 
 public class CutsceneManager : MonoBehaviour
 {
@@ -18,6 +18,8 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField] private VideoPlayer cutscene;
 
     [SerializeField] private GameObject audioManager;
+
+    [SerializeField] private TextMeshProUGUI skipText;
 
     MainControls mainControls;
 
@@ -34,12 +36,22 @@ public class CutsceneManager : MonoBehaviour
         mainControls.Main.Interact.performed += ProgressBar;
         mainControls.Main.Interact.canceled += CancelProgress;
 
+        string skipSprite = mainControls.Main.Interact.bindings[0].ToDisplayString().ToUpper().TranslateToSprite();
+        skipText.text = "Hold<size=28>" + skipSprite + "</size>to Skip";
+
         cutscene.loopPointReached += Skip;
         //cutscene.
     }
 
     private void Update()
     {
+        if(Input.anyKeyDown && skipPanel.activeInHierarchy == false)
+        {
+            skipPanel.SetActive(true);
+
+            Invoke("Away", 2.0f);
+        }
+
         if(skipping)
         {
             triggeredAway = false;
