@@ -65,8 +65,11 @@ public class RebindUI : MonoBehaviour
     {
         if (inputActionReference == null)
             return;
-        GetBindingInfo();
-        UpdateUI();
+        if (gameObject.activeInHierarchy)
+        {
+            GetBindingInfo();
+            UpdateUI();
+        }
     }
 
     private void GetBindingInfo()
