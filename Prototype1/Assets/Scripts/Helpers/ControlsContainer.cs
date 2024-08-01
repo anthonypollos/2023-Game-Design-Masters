@@ -106,7 +106,7 @@ public class ControlsContainer : MonoBehaviour, ISaveable
             return;
 
         //Rebind Feedback
-        statusText.text = $"Press a {actionToRebind.expectedControlType}";
+        statusText.text = $"Press a button";
 
         actionToRebind.Disable();
 
