@@ -24,7 +24,7 @@ public class BarrierController : MonoBehaviour
         if(!toggle)
         {
             Invoke("DisableCollider", 0.4f);
-            Invoke("DisableBarrier", 1f);
+            Invoke("DisableBarrier", 2.5f);
         }
     }
 
