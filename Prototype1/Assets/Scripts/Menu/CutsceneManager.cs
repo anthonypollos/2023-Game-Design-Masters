@@ -107,7 +107,7 @@ public class CutsceneManager : MonoBehaviour
 
     private void LoadNextScene()
     {
-        SceneLoader.Instance.LoadScene(sceneToLoad);
+        SceneLoader.Instance.LoadCutscene(sceneToLoad);
     }
 
     private void Skip(UnityEngine.Video.VideoPlayer vid)
