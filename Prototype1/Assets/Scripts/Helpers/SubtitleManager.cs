@@ -11,6 +11,7 @@ public class SubtitleManager : MonoBehaviour
     StudioEventEmitter previousEmitter;
     Coroutine coroutine;
     [SerializeField] float lingerTime = 2f;
+    [SerializeField] StudioEventEmitter defaultEmitter;
 
 
     private void Awake()
@@ -26,6 +27,25 @@ public class SubtitleManager : MonoBehaviour
         textBox.gameObject.SetActive(false);
     }
 
+    public void StartDialog(VoiceClip clip, bool waitTillUnpause = false)
+    {
+        if (!waitTillUnpause)
+        {
+            if (coroutine != null)
+                StopCoroutine(coroutine);
+            if (previousEmitter != null && previousEmitter != defaultEmitter)
+                previousEmitter.Stop();
+            previousEmitter = defaultEmitter;
+            defaultEmitter.ChangeEvent(clip.eventReference);
+            defaultEmitter.Play();
+            coroutine = StartCoroutine(WaitTillFinish(clip.subtitle, defaultEmitter));
+        }
+        else
+        {
+            StartCoroutine(WaitUntilUnpause(clip, defaultEmitter));
+        }
+            
+    }
 
 
     public void StartDialog(string subText, StudioEventEmitter emitter)
@@ -36,6 +56,20 @@ public class SubtitleManager : MonoBehaviour
             previousEmitter.Stop();
         previousEmitter = emitter;
         coroutine = StartCoroutine(WaitTillFinish(subText, emitter));
+    }
+
+    IEnumerator WaitUntilUnpause(VoiceClip clip, StudioEventEmitter emitter)
+    {
+        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitUntil(() => Time.timeScale != 0);
+        if (coroutine != null)
+            StopCoroutine(coroutine);
+        if (previousEmitter != null && previousEmitter != emitter)
+            previousEmitter.Stop();
+        previousEmitter = emitter;
+        defaultEmitter.ChangeEvent(clip.eventReference);
+        defaultEmitter.Play();
+        coroutine = StartCoroutine(WaitTillFinish(clip.subtitle, emitter));
     }
 
     public IEnumerator WaitTillFinish(string subText, StudioEventEmitter emitter)

@@ -15,6 +15,7 @@ public class CollectableInstance : InteractableBehaviorTemplate, ISaveable
     [TextArea(5, 20)] [SerializeField] string[] description;
     [SerializeField] private EventReference collectsound;
     [SerializeField] private EventReference collectBark;
+    [SerializeField] private VoiceClip collectBarkVoiceClip;
 
     //[SerializeField] private JukeBox jukebox;
 
@@ -45,12 +46,21 @@ public class CollectableInstance : InteractableBehaviorTemplate, ISaveable
             Debug.Log("Play text here");
         }
         collected = true;
+
         //jukebox.PlaySound(0);
         AudioManager.instance.PlayOneShot(collectsound, this.transform.position);
-        AudioManager.instance.PlayOneShot(collectBark, this.transform.position);
+        if (collectBarkVoiceClip.subtitle == null || collectBarkVoiceClip.subtitle == string.Empty)
+        {
+            AudioManager.instance.PlayOneShot(collectBark, this.transform.position);
+        }
+        else
+        {
+            SubtitleManager.instance.StartDialog(collectBarkVoiceClip, true);
+        }
         SaveLoadManager.instance.SaveGame();
         return true;
     }
+
 
     public void LoadData(SavedValues savedValues)
     {
