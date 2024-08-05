@@ -36,8 +36,11 @@ public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
     [Tooltip("The Manually set offset after a Cyst is 'killed' for the killed sound to play")]
     [SerializeField] protected float timeToKillSound;
 
-    [SerializeField] private VoiceClip overseerCystHitSound;
-    [SerializeField] private VoiceClip overseerCystBreakSound;
+    [SerializeField] private EventReference overseerCystHitSound;
+    [SerializeField] private EventReference overseerCystBreakSound;
+
+    [SerializeField] private VoiceClip overseerCystHit;
+    [SerializeField] private VoiceClip overseerCystBreak;
 
     private int twothirds;
     private int onethird;
@@ -71,7 +74,7 @@ public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
 
         //If we have a damaged sound, play it
         AudioManager.instance.PlayOneShot(cystDamagedSound, transform.position);
-        AudioManager.instance.PlayOneShot(overseerCystHitSound, transform.position);
+        SubtitleManager.instance.StartDialog(overseerCystHit);
 
         if (damageParticle != null)
         {
