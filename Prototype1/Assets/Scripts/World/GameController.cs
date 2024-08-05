@@ -38,6 +38,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private UINavManager pauseMenuNav;
     [SerializeField] private UINavManager journalMenuNav,levelSelectMenuNav, dialogueMenuNav,
                                            optionsMenuNav, collectMenuNav, deathMenuNav;
+    [SerializeField] private GameObject cutscenePlayer;
 
     bool inCombat = true;
 
@@ -242,7 +243,8 @@ public class GameController : MonoBehaviour
     {
         if  (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) &&
             !cutSceneScenes.Contains(SceneManager.GetActiveScene().name) &&
-            !DeveloperConsole.instance.consoleUI.activeInHierarchy)
+            !DeveloperConsole.instance.consoleUI.activeInHierarchy &&
+            !cutscenePlayer.activeInHierarchy)
         {
             if(Time.timeScale != 0)
             {
@@ -270,7 +272,8 @@ public class GameController : MonoBehaviour
     {
         if (!nonGameScenes.Contains(SceneManager.GetActiveScene().name) &&
             !cutSceneScenes.Contains(SceneManager.GetActiveScene().name) &&
-            !DeveloperConsole.instance.consoleUI.activeInHierarchy)
+            !DeveloperConsole.instance.consoleUI.activeInHierarchy &&
+            !cutscenePlayer.activeInHierarchy)
         {
             if(!journalMenuNav.isClosed)
             {
