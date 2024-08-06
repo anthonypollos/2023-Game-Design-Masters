@@ -37,7 +37,7 @@ public class MissionCollectable : InteractableBehaviorTemplate, ISaveable
         else if (/*textToDisplay != null &&*/ isNote && id != "")
         {
             //NoteManager.instance.EnterDialogMode(textToDisplay);
-            CollectibleManager.instance.DisplayNote(16, itemName, description);
+            CollectibleManager.instance.DisplayNote(collectAnimIndex, itemName, description);
         }
 
         else
