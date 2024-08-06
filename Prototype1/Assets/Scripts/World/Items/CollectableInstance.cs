@@ -39,7 +39,7 @@ public class CollectableInstance : InteractableBehaviorTemplate, ISaveable
         else if (/*textToDisplay != null &&*/ isNote)
         {
             //NoteManager.instance.EnterDialogMode(textToDisplay);
-            CollectibleManager.instance.DisplayNote(16, itemName, description);
+            CollectibleManager.instance.DisplayNote(collectAnimIndex, itemName, description);
         }
         else
         {
