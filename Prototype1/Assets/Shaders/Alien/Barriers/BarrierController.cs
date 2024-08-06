@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class BarrierController : MonoBehaviour
 {
     [SerializeField] barrierShader[] barriersList;
+
+    [SerializeField] private EventReference appearSound;
 
     // Start is called before the first frame update
     void Awake()
@@ -26,6 +29,7 @@ public class BarrierController : MonoBehaviour
             Invoke("DisableCollider", 0.4f);
             Invoke("DisableBarrier", 2.5f);
         }
+        AudioManager.instance.PlayOneShot(appearSound, this.transform.position);
     }
 
     private void DisableCollider()
