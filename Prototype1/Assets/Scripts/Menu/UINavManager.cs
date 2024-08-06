@@ -18,6 +18,9 @@ public class UINavManager : MonoBehaviour
     [Tooltip("Animator Component; Should be on the mainMenu GameObject")]
     [SerializeField] private Animator anim;
 
+
+    [SerializeField] private Animator popUpAnim;
+
     [Tooltip("Is this menu in the Main Menu scene?")]
     private bool isMainMenu = false;
 
@@ -98,6 +101,8 @@ public class UINavManager : MonoBehaviour
         isClosed = true;
         subMenuActive = false;
         popUpActive = false;
+
+        CloseAnim();
     }
 
     public void CloseAnim()
@@ -169,5 +174,13 @@ public class UINavManager : MonoBehaviour
 
         if(anim != null)
             anim.SetTrigger(animTrigger);
+    }
+
+    public void ClosePopUpAnim(string animTrigger)
+    {
+        popUpActive = false;
+
+        if (popUpAnim != null)
+            popUpAnim.SetTrigger(animTrigger);
     }
 }
