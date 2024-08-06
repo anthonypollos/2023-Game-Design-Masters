@@ -26,7 +26,6 @@ public class UINavManager : MonoBehaviour
         isMainMenu = (SceneManager.GetActiveScene().name == "MainMenu_New");
     }
 
-
     /// <summary>
     /// opens desired menu, sets timeScale to 0 and unlocks cursor
     /// </summary>
@@ -99,7 +98,10 @@ public class UINavManager : MonoBehaviour
         isClosed = true;
         subMenuActive = false;
         popUpActive = false;
+    }
 
+    public void CloseAnim()
+    {
         if (!isMainMenu)
         {
             Cursor.lockState = CursorLockMode.None;

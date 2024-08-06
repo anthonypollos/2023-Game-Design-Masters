@@ -301,7 +301,7 @@ public class GameController : MonoBehaviour
                     levelSelectMenuNav.ReturnToMain("Main");
                 // else if not ^, close level select menu
                 else
-                    levelSelectMenuNav.CloseMainMenu();
+                    levelSelectMenuNav.CloseMainMenu("Outro");
             }
         }
     }
