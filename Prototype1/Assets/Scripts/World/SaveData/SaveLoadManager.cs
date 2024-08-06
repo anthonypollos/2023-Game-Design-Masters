@@ -37,13 +37,13 @@ public class SaveLoadManager : MonoBehaviour
         }
     }
 
-    public void ChangeDataHandler(int slot)
+    /*public void ChangeDataHandler(int slot)
     {
         PlayerPrefs.SetInt("SaveSlot", slot);
         dataHandler = new FileDataHandler(Application.persistentDataPath);
         LoadGame();
     }
-
+    */
     private void Start()
     {
         

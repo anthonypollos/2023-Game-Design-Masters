@@ -10,12 +10,12 @@ public class SaveSlotTemp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        dropdown.value = PlayerPrefs.GetInt("SaveSlot", 0);
+        //dropdown.value = PlayerPrefs.GetInt("SaveSlot", 0);
     }
 
     public void SaveSlotUpdated(int slot)
     {
-        SaveLoadManager.instance.ChangeDataHandler(slot);
+        //SaveLoadManager.instance.ChangeDataHandler(slot);
     }
 
     // Update is called once per frame
