@@ -39,7 +39,7 @@ public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
     [SerializeField] private EventReference overseerCystHitSound;
     [SerializeField] private EventReference overseerCystBreakSound;
 
-    [SerializeField] protected VoiceClip overseerCystHitVC;
+    //[SerializeField] protected VoiceClip overseerCystHitVC;
     [SerializeField] protected VoiceClip overseerCystBreakVC;
 
     private int twothirds;
@@ -74,7 +74,7 @@ public class NeoRammingTarget : MonoBehaviour, IDamageable, ITrap
 
         //If we have a damaged sound, play it
         AudioManager.instance.PlayOneShot(cystDamagedSound, transform.position);
-        SubtitleManager.instance.StartDialog(overseerCystHitVC);
+        //SubtitleManager.instance.StartDialog(overseerCystHitVC);
 
         if (damageParticle != null)
         {
