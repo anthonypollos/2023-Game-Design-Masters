@@ -159,13 +159,13 @@ public class GameController : MonoBehaviour
             {
                 // if pause menu pop-up is active, close pop-up
                 if (pauseMenuNav.popUpActive)
-                    pauseMenuNav.ClosePopUp("Main");
+                    pauseMenuNav.ClosePopUpAnim("PopOut");
                 // if pause menu is open to a sub-menu (ie options), close sub-menu and return to main pause menu
                 else if (pauseMenuNav.subMenuActive)
                     pauseMenuNav.CloseSubMenu("Main");
                 // if pause menu is on main pause menu, close pause menu
                 else
-                    pauseMenuNav.CloseMainMenu();
+                    pauseMenuNav.CloseMainMenu("OutroMain");
 
                 //paused = false;
                 //Cursor.lockState = CursorLockMode.Confined;                     // previous/commented code moved to UINavManager script
@@ -209,7 +209,7 @@ public class GameController : MonoBehaviour
                     optionsMenuNav.ClosePopUp("Main");
                 else
                 {
-                    optionsMenuNav.CloseMainMenu();
+                    optionsMenuNav.CloseMainMenu("Outro");
                     pauseMenuNav.OpenMainMenu();
                 }
             }
@@ -231,7 +231,7 @@ public class GameController : MonoBehaviour
                     optionsMenuNav.ClosePopUp("Main");
                 else
                 {
-                    optionsMenuNav.CloseMainMenu();
+                    optionsMenuNav.CloseMainMenu("Outro");
                     // open main menu again
                 }
             }
@@ -259,7 +259,7 @@ public class GameController : MonoBehaviour
             // if journal is on main contents page, close journal
             else if (!journalMenuNav.isClosed && !journalMenuNav.subMenuActive)
             {
-                journalMenuNav.CloseMainMenu();
+                journalMenuNav.CloseMainMenu("Outro");
             }
             // if journal is on sub-menu, return to main contents page
             else if (journalMenuNav.subMenuActive)
@@ -279,7 +279,7 @@ public class GameController : MonoBehaviour
             {
                 // if journal is on main contents page, close journal
                 if (!journalMenuNav.subMenuActive)
-                    journalMenuNav.CloseMainMenu();
+                    journalMenuNav.CloseMainMenu("Outro");
                 // if journal is on sub-menu, return to main contents page
                 else if (journalMenuNav.subMenuActive)
                     journalMenuNav.ReturnToMain("Main");
@@ -298,7 +298,7 @@ public class GameController : MonoBehaviour
             {
                 // if level select extras menu or confirmation pop-up active, return to main level select menu
                 if (levelSelectMenuNav.subMenuActive || levelSelectMenuNav.popUpActive)
-                    levelSelectMenuNav.ReturnToMain("Main");
+                    levelSelectMenuNav.ClosePopUpAnim("PopOut");
                 // else if not ^, close level select menu
                 else
                     levelSelectMenuNav.CloseMainMenu("Outro");

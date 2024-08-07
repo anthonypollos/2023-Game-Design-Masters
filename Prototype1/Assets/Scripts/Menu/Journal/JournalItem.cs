@@ -78,6 +78,10 @@ public class JournalItem : MonoBehaviour
     [SerializeField] private float underlineLengthFound;
     private float underlineLengthNotFound = 120;
 
+    private RectTransform circle;
+    [SerializeField] private float circleLengthFound;
+    private float circleLengthNotFound = 150;
+
     [SerializeField] private GameObject cutsceneButton;
 
     /// <summary>
@@ -104,6 +108,7 @@ public class JournalItem : MonoBehaviour
         SetDescriptionNotFoundText();
 
         underline = transform.Find("Underline").GetComponent<RectTransform>();
+        circle = transform.Find("Circle").GetComponent<RectTransform>();
 
         SavedValues temp =
         GameController.instance.savedValuesInstance;
@@ -146,11 +151,13 @@ public class JournalItem : MonoBehaviour
             {
                 buttonText.text = "> " + nameNotFound;
                 underline.sizeDelta = new Vector2(underlineLengthNotFound, underline.sizeDelta.y);
+                circle.sizeDelta = new Vector2(circleLengthNotFound, circle.sizeDelta.y);
             }
             else if (collectedCheck != CollectedCheck.nothing)
             {
                 buttonText.text = "> " + itemName;
                 underline.sizeDelta = new Vector2(underlineLengthFound, underline.sizeDelta.y);
+                circle.sizeDelta = new Vector2(circleLengthFound, circle.sizeDelta.y);
             }
 
             if (selectOnStart)

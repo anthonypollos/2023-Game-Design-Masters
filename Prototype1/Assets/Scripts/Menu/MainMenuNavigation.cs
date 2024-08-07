@@ -40,7 +40,7 @@ public class MainMenuNavigation : MonoBehaviour
             if (optionsMenuNav.isClosed)
             {
                 if (mainMenuNav.popUpActive)
-                    mainMenuNav.ClosePopUp("Main");
+                    mainMenuNav.ClosePopUpAnim("PopOut");
             }
     }
 
@@ -59,7 +59,7 @@ public class MainMenuNavigation : MonoBehaviour
                     optionsMenuNav.ClosePopUp("Main");
                 else
                 {
-                    optionsMenuNav.CloseMainMenu();
+                    optionsMenuNav.CloseMainMenu("Outro");
                     mainMenuNav.OpenMainMenu("Intro");
                 }
             }

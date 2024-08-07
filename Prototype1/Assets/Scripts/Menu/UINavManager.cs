@@ -102,11 +102,22 @@ public class UINavManager : MonoBehaviour
         subMenuActive = false;
         popUpActive = false;
 
-        CloseAnim();
+        //CloseAnim();
+    }
+
+    public void CloseMenuFreezeTime()
+    {
+        isClosed = true;
+        subMenuActive = false;
+        popUpActive = false;
+
+        mainMenu.SetActive(false);
     }
 
     public void CloseAnim()
     {
+        DisableMain();
+
         if (!isMainMenu)
         {
             Cursor.lockState = CursorLockMode.None;

@@ -96,6 +96,8 @@ public class LevelManager : MonoBehaviour
     /// <param name="sceneName">Scene to Load</param>
     public async void LoadSceneQuick(string sceneName)
     {
+        LoadScene(sceneName);
+        /*
         if (!isLoading)
         {
             isLoading = true;
@@ -136,6 +138,7 @@ public class LevelManager : MonoBehaviour
             if (loadScreen != null)
                 loadScreen.SetActive(false);
         }
+        */
     }
 
     /// <summary>

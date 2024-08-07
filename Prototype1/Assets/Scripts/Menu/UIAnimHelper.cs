@@ -22,6 +22,9 @@ public class UIAnimHelper : MonoBehaviour
 
     [SerializeField] private UINavManager navManager;
     // Start is called before the first frame update
+
+    [SerializeField] private JournalButtonHelper[] journalHelper;
+
     void Start()
     {
         
@@ -64,6 +67,16 @@ public class UIAnimHelper : MonoBehaviour
         navManager.CloseAnim();
     }
 
+    public void CloseAnim(string trigger)
+    {
+        navManager.CloseMainMenu(trigger);
+    }
+
+    public void CloseMenuFreezeTime()
+    {
+        navManager.CloseMenuFreezeTime();
+    }
+
     public void DisableSelf()
     {
         gameObject.SetActive(false);
@@ -80,6 +93,21 @@ public class UIAnimHelper : MonoBehaviour
         {
             button.gameObject.GetComponent<Animator>().SetBool("Select", false);
         }
+    }
+
+    public void ClosePopUpAnim()
+    {
+        navManager.ClosePopUp("Main");
+    }
+
+    public void SetJournalButton(int index)
+    {
+        journalHelper[index].SelectButton(0);
+    }
+
+    public void SetJournalButtonAlt(int index)
+    {
+        journalHelper[index].SelectButton(1);
     }
 }
 

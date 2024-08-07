@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using TMPro;
+using FMODUnity;
 
 public class CutsceneManager : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class CutsceneManager : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
+        MuteAudio(true);
         mainControls = ControlsContainer.instance.mainControls;
         mainControls.Main.Interact.performed += ProgressBar;
         mainControls.Main.Interact.canceled += CancelProgress;
@@ -107,6 +109,7 @@ public class CutsceneManager : MonoBehaviour
 
     private void LoadNextScene()
     {
+        MuteAudio(false);
         SceneLoader.Instance.LoadSceneQuick(sceneToLoad);
     }
 
@@ -119,5 +122,14 @@ public class CutsceneManager : MonoBehaviour
     {
         //animation here
         skipPanel.SetActive(false);
+    }
+
+    private void MuteAudio(bool mute)
+    {
+        RuntimeManager.GetBus("bus:/SFX").setMute(mute);
+        RuntimeManager.GetBus("bus:/Voice").setMute(mute);
+        RuntimeManager.GetBus("bus:/Ambience").setMute(mute);
+        RuntimeManager.GetBus("bus:/UI").setMute(mute);
+        RuntimeManager.GetBus("bus:/Music").setMute(mute);
     }
 }
