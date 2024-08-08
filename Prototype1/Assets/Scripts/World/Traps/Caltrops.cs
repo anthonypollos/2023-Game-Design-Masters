@@ -18,6 +18,7 @@ public class Caltrops : MonoBehaviour
     [SerializeField] bool destroyParent;
 
     [SerializeField] private EventReference DamageObject;
+
     private struct Values: IEquatable<Values>
     {
         public Values(Transform transform, IDamageable damageable)
@@ -55,6 +56,8 @@ public class Caltrops : MonoBehaviour
                 itemsToRemove.Add(v);
                 continue;
             }
+            //check tells if we're a GenericItem or not
+            GenericItem isObj = v.transform.gameObject.GetComponent<GenericItem>();
             v.distance += Vector3.Distance(v.transform.position, v.previousPos);
             v.previousPos = v.transform.position;
             //Debug.Log(v.distance);
@@ -72,13 +75,14 @@ public class Caltrops : MonoBehaviour
                     v.damageable.TakeDamage(PlayerDmgPerInstance, DamageTypes.SPIKE);
                     AudioManager.instance.PlayOneShot(DamageObject, this.transform.position);
                 }
-
-                else
+                //If-check to see if this is a genericItem. If it is, don't run damage and don't play sound.
+                else if (!isObj)
                 {
                     v.damageable.TakeDamage(dmgPerInstance, DamageTypes.SPIKE);
                     AudioManager.instance.PlayOneShot(DamageObject, this.transform.position);
                 }
-                maxDamageAvalible -= dmgPerInstance;
+                //If-check to see if this is a genericItem. If it is, don't remove health from caltrop.
+                if (!isObj)  maxDamageAvalible -= dmgPerInstance;
                 if(maxDamageAvalible<=0)
                 {
                     //Due to parenting and scaling, I've made the caltrops part of broken glass a child of an empty gameobject so that I could keep the scale as 1 1 1
