@@ -3,6 +3,7 @@
  */
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class MultiPageText : MonoBehaviour
 {
@@ -21,6 +22,15 @@ public class MultiPageText : MonoBehaviour
 
         if(textList.Length > 1)
         {
+            if(currentPage == 0)
+            {
+                backArrow.GetComponent<Image>().enabled = false;
+                backArrow.GetComponent<Button>().enabled = false;
+            }
+
+            nextArrow.GetComponent<Image>().enabled = true;
+            nextArrow.GetComponent<Button>().enabled = true;
+
             backArrow.SetActive(true);
             nextArrow.SetActive(true);
             pageDisplay.gameObject.SetActive(true);
@@ -39,9 +49,34 @@ public class MultiPageText : MonoBehaviour
         int page = currentPage + value;
 
         if (page < 0)
+        {
             page = 0;
+        }
+        else if (page == 0)
+        {
+            backArrow.GetComponent<Image>().enabled = false;
+            backArrow.GetComponent<Button>().enabled = false;
+            nextArrow.GetComponent<Image>().enabled = true;
+            nextArrow.GetComponent<Button>().enabled = true;
+        }
         else if (page >= textList.Length)
+        {
             page = textList.Length - 1;
+        }
+        else if(page == textList.Length - 1)
+        {
+            backArrow.GetComponent<Image>().enabled = true;
+            backArrow.GetComponent<Button>().enabled = true;
+            nextArrow.GetComponent<Image>().enabled = false;
+            nextArrow.GetComponent<Button>().enabled = false;
+        }
+        else
+        {
+            backArrow.GetComponent<Image>().enabled = true;
+            backArrow.GetComponent<Button>().enabled = true;
+            nextArrow.GetComponent<Image>().enabled = true;
+            nextArrow.GetComponent<Button>().enabled = true;
+        }
 
         currentPage = page;
 
