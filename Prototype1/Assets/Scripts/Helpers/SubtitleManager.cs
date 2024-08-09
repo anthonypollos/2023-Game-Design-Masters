@@ -62,7 +62,8 @@ public class SubtitleManager : MonoBehaviour
     {
         if (coroutine != null)
             StopCoroutine(coroutine);
-        previousEmitter.Stop();
+        if(previousEmitter!=null)
+            previousEmitter.Stop();
         textBox.gameObject.SetActive(false);
     }
 
