@@ -36,6 +36,13 @@ public class RebindUI : MonoBehaviour
     private Button resetAllButton;
     bool isComposite;
 
+    InteractBehavior ib;
+
+    private void Start()
+    {
+        ib = FindObjectOfType<InteractBehavior>();
+    }
+
 
     private void OnEnable()
     {
@@ -117,11 +124,17 @@ public class RebindUI : MonoBehaviour
                 rebindText.text = inputActionReference.action.GetBindingDisplayString(bindingIndex, displayStringOptions).TranslateToSprite();
             }
         }
+        if (DialogueManager.instance != null)
+            DialogueManager.instance.UpdateKeybinds();
+        if (ib != null)
+            ib.UpdateKeybind();
+            
     }
 
     private void DoRebind()
     {
         ControlsContainer.instance.StartRebind(actionName, bindingIndex, rebindText);
+        
     }
 
     private void ResetBinding()

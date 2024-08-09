@@ -32,6 +32,17 @@ public class InteractBehavior : MonoBehaviour
         Changed();
     }
 
+    public void UpdateKeybind()
+    {
+        buttons.Clear();
+        foreach (InputBinding action in mc.Main.Interact.bindings)
+        {
+            buttons.Add(action.ToDisplayString().ToUpper().TranslateToSprite());
+            //Debug.Log(action.ToDisplayString());
+        }
+        Changed();
+    }
+
     private void Start()
     {
         if(DialogueManager.instance!=null)

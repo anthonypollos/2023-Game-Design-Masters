@@ -7,6 +7,7 @@ using Ink.Runtime;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using FMODUnity;
+using System;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -75,7 +76,15 @@ public class DialogueManager : MonoBehaviour
     public void UpdateKeybinds()
     {
         mc = ControlsContainer.instance.mainControls;
-        mc.Main.Primary.performed += Interact;
+        try
+        {
+            mc.Main.Primary.performed -= Interact;
+            mc.Main.Primary.performed += Interact;
+        }
+        catch(Exception _)
+        {
+            mc.Main.Primary.performed += Interact;
+        }
         nextText.text = mc.Main.Primary.bindings[0].ToDisplayString().ToUpper().TranslateToSprite();// + "/" + mc.Main.Interact.bindings[1].ToDisplayString().ToUpper().TranslateToSprite() + " NEXT";
         choiceText.text = mc.Main.Primary.bindings[0].ToDisplayString().ToUpper().TranslateToSprite();// + "/" + mc.Main.Interact.bindings[1].ToDisplayString().ToUpper().TranslateToSprite() + " SELECT CHOICE";
     }
@@ -269,6 +278,7 @@ public class DialogueManager : MonoBehaviour
                         studioEventEmitter.Stop();
                         if (index2 < voiceClips.Length)
                         {
+                            SubtitleManager.instance.CancleDialog();
                             studioEventEmitter.ChangeEvent(voiceClips[index2]);
                             studioEventEmitter.Play();
                             playDialogue = false;

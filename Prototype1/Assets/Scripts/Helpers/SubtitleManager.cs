@@ -58,6 +58,14 @@ public class SubtitleManager : MonoBehaviour
         coroutine = StartCoroutine(WaitTillFinish(subText, emitter));
     }
 
+    public void CancleDialog()
+    {
+        if (coroutine != null)
+            StopCoroutine(coroutine);
+        previousEmitter.Stop();
+        textBox.gameObject.SetActive(false);
+    }
+
     IEnumerator WaitUntilUnpause(VoiceClip clip, StudioEventEmitter emitter)
     {
         yield return new WaitForSecondsRealtime(1f);

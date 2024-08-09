@@ -16,6 +16,7 @@ public class MissionCollectable : InteractableBehaviorTemplate, ISaveable
 
     [SerializeField] private EventReference collectsound;
     [SerializeField] private EventReference barksound;
+    [SerializeField] private VoiceClip barkClip;
 
     public void SetMission(CollectMissionBehavior mission)
     {
@@ -47,7 +48,14 @@ public class MissionCollectable : InteractableBehaviorTemplate, ISaveable
         mission.Collected();
         collected = true;
         AudioManager.instance.PlayOneShot(collectsound, this.transform.position);
-        AudioManager.instance.PlayOneShot(barksound, this.transform.position);
+        if (barkClip.subtitle == null || barkClip.subtitle == string.Empty)
+        {
+            AudioManager.instance.PlayOneShot(barksound, this.transform.position);
+        }
+        else
+        {
+            SubtitleManager.instance.StartDialog(barkClip, true);
+        }
         SaveLoadManager.instance.SaveGame();
         return true;
     }
