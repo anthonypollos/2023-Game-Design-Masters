@@ -50,6 +50,9 @@ public class GraphicsOptions : MonoBehaviour
     [SerializeField] private VolumeProfile globalVolume;
     private ColorAdjustments colorAdjustments;
 
+    [Header("---------------------------")]
+    [Header("Arrows")]
+    [SerializeField] private Button[] arrowButtons;
     #endregion
 
     void Awake()
@@ -80,6 +83,28 @@ public class GraphicsOptions : MonoBehaviour
     /// <param name="index">Index of chosen resolution</param>
     public void SetResolution(int index)
     {
+        switch (index)
+        {
+            case (0):
+                arrowButtons[0].GetComponent<Image>().enabled = false;
+                arrowButtons[0].GetComponent<Button>().enabled = false;
+                arrowButtons[1].GetComponent<Image>().enabled = true;
+                arrowButtons[1].GetComponent<Button>().enabled = true;
+                break;
+            case (7):
+                arrowButtons[0].GetComponent<Image>().enabled = true;
+                arrowButtons[0].GetComponent<Button>().enabled = true;
+                arrowButtons[1].GetComponent<Image>().enabled = false;
+                arrowButtons[1].GetComponent<Button>().enabled = false;
+                break;
+            default:
+                arrowButtons[0].GetComponent<Image>().enabled = true;
+                arrowButtons[0].GetComponent<Button>().enabled = true;
+                arrowButtons[1].GetComponent<Image>().enabled = true;
+                arrowButtons[1].GetComponent<Button>().enabled = true;
+                break;
+        }
+
         currentResIndex = index;
 
         string ratio = resolutions[index].aspectRatio;
@@ -117,11 +142,19 @@ public class GraphicsOptions : MonoBehaviour
         {
             //fullscreen on
             case true:
+                arrowButtons[3].GetComponent<Image>().enabled = false;
+                arrowButtons[3].GetComponent<Button>().enabled = false;
+                arrowButtons[2].GetComponent<Image>().enabled = true;
+                arrowButtons[2].GetComponent<Button>().enabled = true;
                 displayModeText.text = displayModeTexts[1];
                 PlayerPrefs.SetInt("DisplayMode", 1);
                 break;
             //fullscreen off
             case false:
+                arrowButtons[3].GetComponent<Image>().enabled = true;
+                arrowButtons[3].GetComponent<Button>().enabled = true;
+                arrowButtons[2].GetComponent<Image>().enabled = false;
+                arrowButtons[2].GetComponent<Button>().enabled = false;
                 displayModeText.text = displayModeTexts[0];
                 PlayerPrefs.SetInt("DisplayMode", 0);
                 break;
@@ -140,12 +173,20 @@ public class GraphicsOptions : MonoBehaviour
         {
             //vsync on
             case true:
+                arrowButtons[5].GetComponent<Image>().enabled = false;
+                arrowButtons[5].GetComponent<Button>().enabled = false;
+                arrowButtons[4].GetComponent<Image>().enabled = true;
+                arrowButtons[4].GetComponent<Button>().enabled = true;
                 QualitySettings.vSyncCount = 1;
                 vsyncText.text = vsyncTexts[1];
                 PlayerPrefs.SetInt("VSync", 1);
                 break;
             //vsync off
             case false:
+                arrowButtons[5].GetComponent<Image>().enabled = true;
+                arrowButtons[5].GetComponent<Button>().enabled = true;
+                arrowButtons[4].GetComponent<Image>().enabled = false;
+                arrowButtons[4].GetComponent<Button>().enabled = false;
                 QualitySettings.vSyncCount = 0;
                 vsyncText.text = vsyncTexts[0];
                 PlayerPrefs.SetInt("VSync", 0);
@@ -167,6 +208,29 @@ public class GraphicsOptions : MonoBehaviour
         else if (currentFPSIndex >= targetFPS.Length)
             currentFPSIndex = (targetFPS.Length - 1);
 
+        switch (currentFPSIndex)
+        {
+            case (0):
+                arrowButtons[6].GetComponent<Image>().enabled = false;
+                arrowButtons[6].GetComponent<Button>().enabled = false;
+                arrowButtons[7].GetComponent<Image>().enabled = true;
+                arrowButtons[7].GetComponent<Button>().enabled = true;
+                break;
+            case (3):
+                arrowButtons[6].GetComponent<Image>().enabled = true;
+                arrowButtons[6].GetComponent<Button>().enabled = true;
+                arrowButtons[7].GetComponent<Image>().enabled = false;
+                arrowButtons[7].GetComponent<Button>().enabled = false;
+                break;
+            default:
+                arrowButtons[6].GetComponent<Image>().enabled = true;
+                arrowButtons[6].GetComponent<Button>().enabled = true;
+                arrowButtons[7].GetComponent<Image>().enabled = true;
+                arrowButtons[7].GetComponent<Button>().enabled = true;
+                break;
+        }
+
+        //        SetFPS(targetFPS[currentFPSIndex]);
         SetFPS(targetFPS[currentFPSIndex]);
     }
 
@@ -176,6 +240,8 @@ public class GraphicsOptions : MonoBehaviour
     /// <param name="framerate">Target FPS</param>
     public void SetFPS(int framerate)
     {
+        //int framerate = targetFPS[index];
+
         fpsText.text = framerate + " FPS";
 
         Application.targetFrameRate = framerate;
@@ -205,6 +271,28 @@ public class GraphicsOptions : MonoBehaviour
     /// <param name="index">Graphics quality level; 0 = low, 3 = ultra</param>
     public void SetQuality(int index)
     {
+        switch(index)
+        {
+            case (0):
+                arrowButtons[8].GetComponent<Image>().enabled = false;
+                arrowButtons[8].GetComponent<Button>().enabled = false;
+                arrowButtons[9].GetComponent<Image>().enabled = true;
+                arrowButtons[9].GetComponent<Button>().enabled = true;
+                break;
+            case (3):
+                arrowButtons[8].GetComponent<Image>().enabled = true;
+                arrowButtons[8].GetComponent<Button>().enabled = true;
+                arrowButtons[9].GetComponent<Image>().enabled = false;
+                arrowButtons[9].GetComponent<Button>().enabled = false;
+                break;
+            default:
+                arrowButtons[8].GetComponent<Image>().enabled = true;
+                arrowButtons[8].GetComponent<Button>().enabled = true;
+                arrowButtons[9].GetComponent<Image>().enabled = true;
+                arrowButtons[9].GetComponent<Button>().enabled = true;
+                break;
+        }
+
         qualityText.text = qualityTexts[index];
 
         PlayerPrefs.SetInt("TargetQuality", index);
@@ -245,6 +333,28 @@ public class GraphicsOptions : MonoBehaviour
     /// <param name="value">Target brightness value</param>
     public void SetBrightness(float value)
     {
+        switch(value)
+        {
+            case (0):
+                arrowButtons[10].GetComponent<Image>().enabled = false;
+                arrowButtons[10].GetComponent<Button>().enabled = false;
+                arrowButtons[11].GetComponent<Image>().enabled = true;
+                arrowButtons[11].GetComponent<Button>().enabled = true;
+                break;
+            case (20):
+                arrowButtons[10].GetComponent<Image>().enabled = true;
+                arrowButtons[10].GetComponent<Button>().enabled = true;
+                arrowButtons[11].GetComponent<Image>().enabled = false;
+                arrowButtons[11].GetComponent<Button>().enabled = false;
+                break;
+            default:
+                arrowButtons[10].GetComponent<Image>().enabled = true;
+                arrowButtons[10].GetComponent<Button>().enabled = true;
+                arrowButtons[11].GetComponent<Image>().enabled = true;
+                arrowButtons[11].GetComponent<Button>().enabled = true;
+                break;
+        }
+
         PlayerPrefs.SetFloat("Brightness", value);
 
         foreach (TextMeshProUGUI text in brightnessTexts)
@@ -293,6 +403,28 @@ public class GraphicsOptions : MonoBehaviour
     /// <param name="value">Target contrast value</param>
     public void SetContrast(float value)
     {
+        switch (value)
+        {
+            case (0):
+                arrowButtons[12].GetComponent<Image>().enabled = false;
+                arrowButtons[12].GetComponent<Button>().enabled = false;
+                arrowButtons[13].GetComponent<Image>().enabled = true;
+                arrowButtons[13].GetComponent<Button>().enabled = true;
+                break;
+            case (20):
+                arrowButtons[12].GetComponent<Image>().enabled = true;
+                arrowButtons[12].GetComponent<Button>().enabled = true;
+                arrowButtons[13].GetComponent<Image>().enabled = false;
+                arrowButtons[13].GetComponent<Button>().enabled = false;
+                break;
+            default:
+                arrowButtons[12].GetComponent<Image>().enabled = true;
+                arrowButtons[12].GetComponent<Button>().enabled = true;
+                arrowButtons[13].GetComponent<Image>().enabled = true;
+                arrowButtons[13].GetComponent<Button>().enabled = true;
+                break;
+        }
+
         PlayerPrefs.SetFloat("Contrast", value);
 
         foreach (TextMeshProUGUI text in contrastTexts)

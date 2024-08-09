@@ -38,6 +38,8 @@ public class AccessibilityOptions : MonoBehaviour
 
     [SerializeField] private FlexibleColorPicker[] pickers;
 
+    [SerializeField] private Button[] arrowButtons;
+
     private void Awake()
     {
 
@@ -71,6 +73,28 @@ public class AccessibilityOptions : MonoBehaviour
     /// <param name="value">Cursor scale modifier</param>
     public void SetCursorScale(float value)
     {
+        switch (value)
+        {
+            case (10):
+                arrowButtons[0].GetComponent<Image>().enabled = false;
+                arrowButtons[0].GetComponent<Button>().enabled = false;
+                arrowButtons[1].GetComponent<Image>().enabled = true;
+                arrowButtons[1].GetComponent<Button>().enabled = true;
+                break;
+            case (20):
+                arrowButtons[0].GetComponent<Image>().enabled = true;
+                arrowButtons[0].GetComponent<Button>().enabled = true;
+                arrowButtons[1].GetComponent<Image>().enabled = false;
+                arrowButtons[1].GetComponent<Button>().enabled = false;
+                break;
+            default:
+                arrowButtons[0].GetComponent<Image>().enabled = true;
+                arrowButtons[0].GetComponent<Button>().enabled = true;
+                arrowButtons[1].GetComponent<Image>().enabled = true;
+                arrowButtons[1].GetComponent<Button>().enabled = true;
+                break;
+        }
+
         PlayerPrefs.SetFloat("CursorScale", value);
 
         cursorScaleSlider.value = value;
@@ -151,9 +175,9 @@ public class AccessibilityOptions : MonoBehaviour
 
         switch (val)
         {
-            case (9):
+            case (14):
                 break;
-            case (21):
+            case (26):
                 break;
             default:
                 SetOutlineWidth(val);
@@ -163,6 +187,28 @@ public class AccessibilityOptions : MonoBehaviour
 
     public void SetOutlineWidth(float value)
     {
+        switch(value)
+        {
+            case (15):
+                arrowButtons[2].GetComponent<Image>().enabled = false;
+                arrowButtons[2].GetComponent<Button>().enabled = false;
+                arrowButtons[3].GetComponent<Image>().enabled = true;
+                arrowButtons[3].GetComponent<Button>().enabled = true;
+                break;
+            case (25):
+                arrowButtons[2].GetComponent<Image>().enabled = true;
+                arrowButtons[2].GetComponent<Button>().enabled = true;
+                arrowButtons[3].GetComponent<Image>().enabled = false;
+                arrowButtons[3].GetComponent<Button>().enabled = false;
+                break;
+            default:
+                arrowButtons[2].GetComponent<Image>().enabled = true;
+                arrowButtons[2].GetComponent<Button>().enabled = true;
+                arrowButtons[3].GetComponent<Image>().enabled = true;
+                arrowButtons[3].GetComponent<Button>().enabled = true;
+                break;
+        }
+
         PlayerPrefs.SetFloat("OutlineWidth", value);
 
         outlineWidthSlider.value = value;

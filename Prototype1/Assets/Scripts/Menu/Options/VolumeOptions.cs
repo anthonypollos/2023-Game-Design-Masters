@@ -21,6 +21,8 @@ public class VolumeOptions : MonoBehaviour
 
     [SerializeField] private GameObject muteIcon, audioIcon, audioLowIcon, audioMidIcon, audioHighIcon;
 
+    [SerializeField] private Button[] arrowButtons;
+
     /// <summary>
     /// 
     /// </summary>
@@ -91,6 +93,28 @@ public class VolumeOptions : MonoBehaviour
     /// <param name="value">Value set by slider</param>
     public void SetLevel(float value)
     {
+        switch (value)
+        {
+            case (0):
+                arrowButtons[0].GetComponent<Image>().enabled = false;
+                arrowButtons[0].GetComponent<Button>().enabled = false;
+                arrowButtons[1].GetComponent<Image>().enabled = true;
+                arrowButtons[1].GetComponent<Button>().enabled = true;
+                break;
+            case (20):
+                arrowButtons[0].GetComponent<Image>().enabled = true;
+                arrowButtons[0].GetComponent<Button>().enabled = true;
+                arrowButtons[1].GetComponent<Image>().enabled = false;
+                arrowButtons[1].GetComponent<Button>().enabled = false;
+                break;
+            default:
+                arrowButtons[0].GetComponent<Image>().enabled = true;
+                arrowButtons[0].GetComponent<Button>().enabled = true;
+                arrowButtons[1].GetComponent<Image>().enabled = true;
+                arrowButtons[1].GetComponent<Button>().enabled = true;
+                break;
+        }
+
         float newVal;
 
         if (value == 0)
