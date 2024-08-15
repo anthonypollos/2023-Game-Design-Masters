@@ -8,7 +8,7 @@ using Unity.VisualScripting;
 //using UnityEditor.UIElements;
 //using UnityEditor.SceneTemplate;
 using UnityEngine;
-using static Unity.Burst.Intrinsics.X86.Avx;
+// using static Unity.Burst.Intrinsics.X86.Avx;
 using static UnityEngine.UI.Image;
 
 public class Moveable : MonoBehaviour, ISlowable
